@@ -1,139 +1,178 @@
 <script>
-    export let name;
-    export let location;
-    export let text;
-    export let image;
-  </script>
-  
-  <div class="testimonial-card">
-    <div class="testimonial-content">
-      <div class="quote-icon">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 7H7.5C6.12 7 5 8.12 5 9.5V11C5 12.38 6.12 13.5 7.5 13.5H9V15.5C9 16.33 8.33 17 7.5 17H7C6.45 17 6 17.45 6 18C6 18.55 6.45 19 7 19H7.5C9.43 19 11 17.43 11 15.5V9C11 7.9 10.1 7 9 7ZM7.5 11.5C7.22 11.5 7 11.28 7 11V9.5C7 9.22 7.22 9 7.5 9H9V11.5H7.5Z" fill="currentColor"/>
-          <path d="M19.5 7H16C14.9 7 14 7.9 14 9V15.5C14 17.43 15.57 19 17.5 19H18C18.55 19 19 18.55 19 18C19 17.45 18.55 17 18 17H17.5C16.67 17 16 16.33 16 15.5V13.5H17.5C18.88 13.5 20 12.38 20 11V9.5C20 8.12 18.88 7 17.5 7ZM18 11.5H16V9H17.5C17.78 9 18 9.22 18 9.5V11C18 11.28 17.78 11.5 17.5 11.5H18Z" fill="currentColor"/>
-        </svg>
+  export let name;
+  export let location;
+  export let text;
+  export let image;
+  export let index = 0;
+  export let isVisible = false;
+</script>
+
+<div class="testimonial-card {isVisible ? 'visible' : ''}" style="transition-delay: {150 * index}ms">
+  <div class="card-side-line"></div>
+  <div class="testimonial-content">
+    <div class="quote-icon">
+      <svg width="42" height="36" viewBox="0 0 42 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.928 36C8.208 36 5.184 34.704 2.856 32.112C0.952 29.52 0 26.352 0 22.608C0 16.8 2.38 11.664 7.14 7.2C11.9 2.4 17.612 0 24.276 0L26.18 6.768C21.42 7.104 17.374 8.4 14.042 10.656C10.71 12.576 8.856 15.12 8.58 18.288C9.964 17.28 11.69 16.776 13.766 16.776C16.65 16.776 19.058 17.76 20.994 19.728C22.93 21.648 23.898 24.144 23.898 27.216C23.898 30.288 22.93 32.784 20.994 34.704C19.058 35.568 15.904 36 11.928 36ZM30.03 36C26.31 36 23.286 34.704 20.958 32.112C19.054 29.52 18.102 26.352 18.102 22.608C18.102 16.8 20.482 11.664 25.242 7.2C30.002 2.4 35.714 0 42.378 0L44.282 6.768C39.522 7.104 35.476 8.4 32.144 10.656C28.812 12.576 26.958 15.12 26.682 18.288C28.066 17.28 29.792 16.776 31.868 16.776C34.752 16.776 37.16 17.76 39.096 19.728C41.032 21.648 42 24.144 42 27.216C42 30.288 41.032 32.784 39.096 34.704C37.16 35.568 34.006 36 30.03 36Z" fill="currentColor"/>
+      </svg>
+    </div>
+    <p class="testimonial-text">{text}</p>
+    <div class="testimonial-author">
+      <div class="author-image">
+        {#if image}
+          <img src={image} alt={name} />
+        {:else}
+          <div class="author-initials">{name.charAt(0)}</div>
+        {/if}
       </div>
-      <p class="testimonial-text">{text}</p>
-      <div class="testimonial-author">
-        <div class="author-image">
-          {#if image}
-            <img src={image} alt={name} />
-          {:else}
-            <div class="author-initials">{name.charAt(0)}</div>
-          {/if}
-        </div>
-        <div class="author-info">
-          <h4>{name}</h4>
-          {#if location}
-            <span>{location}</span>
-          {/if}
-        </div>
+      <div class="author-info">
+        <h4>{name}</h4>
+        {#if location}
+          <span>{location}</span>
+        {/if}
       </div>
     </div>
   </div>
+</div>
+
+<style>
+  .testimonial-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 32px;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    will-change: transform, opacity;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
   
-  <style>
+  .testimonial-card.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  
+  .card-side-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 0; /* Start with 0 height */
+    background: linear-gradient(to bottom, #00bae5, #0088cc);
+    transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  /* Only show the side line on hover */
+  .testimonial-card:hover .card-side-line {
+    height: 100%; /* Animate to full height on hover */
+  }
+  
+  .testimonial-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  }
+  
+  .testimonial-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .quote-icon {
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+  }
+  
+  .testimonial-card:hover .quote-icon {
+    color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px);
+  }
+  
+  .testimonial-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 24px;
+    flex-grow: 1;
+    font-style: italic;
+  }
+  
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    position: relative;
+    padding-top: 16px;
+  }
+  
+  .testimonial-author::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .author-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    overflow: hidden;
+    background-color: rgba(0, 186, 229, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .author-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .author-initials {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  
+  .author-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .author-info h4 {
+    font-size: 1.1rem;
+    margin: 0 0 5px 0;
+    font-weight: 700;
+    color: white;
+  }
+  
+  .author-info span {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  /* Responsive adjustments */
+  @media screen and (max-width: 768px) {
     .testimonial-card {
-      background-color: white;
-      border-radius: 12px;
-      padding: 30px;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-      position: relative;
-      overflow: hidden;
-      height: 100%;
-    }
-    
-    .testimonial-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-    }
-    
-    .testimonial-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 0;
-      background-color: rgba(0, 186, 229, 1);
-      transition: all 0.5s ease;
-    }
-    
-    .testimonial-card:hover::before {
-      height: 100%;
-    }
-    
-    .testimonial-content {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    
-    .quote-icon {
-      margin-bottom: 15px;
-      color: rgba(0, 186, 229, 0.2);
-      transition: all 0.3s ease;
-    }
-    
-    .testimonial-card:hover .quote-icon {
-      color: rgba(0, 186, 229, 0.6);
+      padding: 28px;
     }
     
     .testimonial-text {
-      font-size: 1rem;
-      line-height: 1.7;
-      color: #666;
-      margin-bottom: 20px;
-      flex-grow: 1;
-      font-style: italic;
+      font-size: 0.95rem;
     }
-    
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      margin-top: auto;
-    }
-    
-    .author-image {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      margin-right: 15px;
-      overflow: hidden;
-      background-color: rgba(0, 186, 229, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .author-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .author-initials {
-      color: white;
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-    
-    .author-info {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .author-info h4 {
-      font-size: 1.1rem;
-      margin: 0 0 5px 0;
-      font-weight: 700;
-    }
-    
-    .author-info span {
-      font-size: 0.85rem;
-      color: #888;
-    }
-  </style>
+  }
+</style>

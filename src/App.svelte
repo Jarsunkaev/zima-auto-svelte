@@ -21,12 +21,18 @@
 	  const hash = window.location.hash.slice(1);
 	  if (hash && ['home', 'about', 'services', 'contact'].includes(hash)) {
 		navigate(hash);
+	  } else {
+	    // Default to home if no valid hash
+	    navigate('home');
 	  }
 	  
 	  // Check browser language or saved preference
 	  const savedLang = localStorage.getItem('zimaAutoLang');
 	  if (savedLang && (savedLang === 'hu' || savedLang === 'en')) {
 		currentLang.set(savedLang);
+	  } else {
+	    // Default to Hungarian if no saved preference
+	    currentLang.set('hu');
 	  }
 	  
 	  // Listen for hash changes
@@ -36,19 +42,22 @@
 		  navigate(newHash);
 		}
 	  });
+	  
+	  console.log('App mounted successfully');
 	});
 	
 	// Save language preference when it changes
 	currentLang.subscribe(value => {
-	  if (typeof localStorage !== 'undefined') {
+	  if (typeof localStorage !== 'undefined' && value) {
 		localStorage.setItem('zimaAutoLang', value);
+		console.log('Language set to:', value);
 	  }
 	});
-  </script>
-  
-  <Header {navigate} {currentPage} />
-  
-  <main>
+</script>
+
+<Header {navigate} {currentPage} />
+
+<main>
 	{#if currentPage === 'home'}
 	  <Home />
 	{:else if currentPage === 'about'}
@@ -57,12 +66,18 @@
 	  <Services />
 	{:else if currentPage === 'contact'}
 	  <Contact />
+	{:else}
+	  <!-- Fallback if no page matches -->
+	  <div class="error-container">
+	    <h1>Page not found</h1>
+	    <button on:click={() => navigate('home')}>Go to Home</button>
+	  </div>
 	{/if}
-  </main>
-  
-  <Footer {navigate} />
-  
-  <style>
+</main>
+
+<Footer {navigate} />
+
+<style>
 	:global(*) {
 	  margin: 0;
 	  padding: 0;
@@ -70,10 +85,11 @@
 	}
 	
 	:global(body) {
-	  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	  font-family: 'Inter', sans-serif;
 	  color: #333;
 	  line-height: 1.6;
 	  overflow-x: hidden;
+	  background-color: #ffffff;
 	}
 	
 	:global(a) {
@@ -138,4 +154,35 @@
 	main {
 	  min-height: calc(100vh - 140px);
 	}
-  </style>
+
+	.error-container {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  justify-content: center;
+	  height: 50vh;
+	  text-align: center;
+	  padding: 2rem;
+	}
+
+	.error-container h1 {
+	  margin-bottom: 1.5rem;
+	  color: #333;
+	}
+
+	.error-container button {
+	  padding: 0.75rem 1.5rem;
+	  background-color: rgba(0, 186, 229, 1);
+	  color: white;
+	  border: none;
+	  border-radius: 4px;
+	  font-weight: 600;
+	  cursor: pointer;
+	  transition: all 0.3s ease;
+	}
+
+	.error-container button:hover {
+	  background-color: rgba(0, 150, 190, 1);
+	  transform: translateY(-2px);
+	}
+</style>
