@@ -7,7 +7,7 @@
 	import About from './pages/About.svelte';
 	import Services from './pages/Services.svelte';
 	import Contact from './pages/Contact.svelte';
-	import Booking from './pages/Booking.svelte'; // Make sure this import exists
+	import Booking from './pages/Booking.svelte';
   
 	// Page routing
 	let currentPage = 'home';
@@ -50,14 +50,9 @@
 	    window.history.replaceState(null, null, '#home');
 	  }
 	  
-	  // Check browser language or saved preference
-	  const savedLang = localStorage.getItem('zimaAutoLang');
-	  if (savedLang && (savedLang === 'hu' || savedLang === 'en')) {
-		currentLang.set(savedLang);
-	  } else {
-	    // Default to Hungarian if no saved preference
-	    currentLang.set('hu');
-	  }
+	  // ALWAYS default to Hungarian language regardless of browser settings
+	  currentLang.set('hu');
+	  localStorage.setItem('zimaAutoLang', 'hu');
 	  
 	  // Listen for hash changes
 	  window.addEventListener('hashchange', () => {
@@ -67,8 +62,8 @@
 		}
 	  });
 
-          // Debug log the current page to verify routing is working
-          console.log("Initial page:", currentPage);
+      // Debug log the current page to verify routing is working
+      console.log("Initial page:", currentPage);
 	});
 	
 	// Save language preference when it changes
