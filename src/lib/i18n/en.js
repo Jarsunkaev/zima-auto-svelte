@@ -16,6 +16,7 @@ export default {
       button: "Book Airport Parking"
     },
     services: {
+      title: "OUR SERVICES",
       parking: {
         title: "24/7 AIRPORT PARKING",
         description: "Our secure parking facility features fenced boundaries and 24-hour camera surveillance, guaranteeing the highest security for your vehicle."
