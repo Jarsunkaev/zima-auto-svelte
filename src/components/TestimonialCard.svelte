@@ -51,15 +51,6 @@
       </div>
     </div>
   </div>
-  
-  <!-- Floating elements for visual appeal -->
-  <div class="floating-elements">
-    <div class="circle c1"></div>
-    <div class="circle c2"></div>
-    <div class="dot d1"></div>
-    <div class="dot d2"></div>
-    <div class="dot d3"></div>
-  </div>
 </div>
 
 <style>
@@ -201,69 +192,6 @@
   .author-info span {
     font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.6);
-  }
-  
-  /* Floating elements */
-  .floating-elements {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-  }
-  
-  .circle {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 186, 229, 0.2) 0%, rgba(0, 186, 229, 0) 70%);
-  }
-  
-  .c1 {
-    top: -100px;
-    right: -100px;
-    width: 200px;
-    height: 200px;
-    opacity: 0.4;
-  }
-  
-  .c2 {
-    bottom: -80px;
-    left: -80px;
-    width: 180px;
-    height: 180px;
-    opacity: 0.3;
-  }
-  
-  .dot {
-    position: absolute;
-    border-radius: 50%;
-    background-color: #00bae5;
-  }
-  
-  .d1 {
-    top: 20%;
-    right: 10%;
-    width: 8px;
-    height: 8px;
-    opacity: 0.2;
-  }
-  
-  .d2 {
-    bottom: 30%;
-    right: 20%;
-    width: 5px;
-    height: 5px;
-    opacity: 0.15;
-  }
-  
-  .d3 {
-    top: 40%;
-    left: 15%;
-    width: 6px;
-    height: 6px;
-    opacity: 0.1;
   }
   
   /* Responsive adjustments */

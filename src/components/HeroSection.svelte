@@ -5,6 +5,17 @@
   
   let animationPlayed = false;
   
+  function scrollToNextSection() {
+    // Get the height of the viewport
+    const viewportHeight = window.innerHeight;
+    
+    // Scroll down to the next section smoothly
+    window.scrollTo({
+      top: viewportHeight,
+      behavior: 'smooth'
+    });
+  }
+  
   onMount(() => {
     if (!animationPlayed) {
       const tl = gsap.timeline();
@@ -28,7 +39,21 @@
       .from('.hero-overlay', {
         opacity: 0.3,
         duration: 0.8
-      }, '-=0.5');
+      }, '-=0.5')
+      .from('.scroll-down-indicator', {
+        y: -20,
+        opacity: 0,
+        duration: 0.5
+      });
+      
+      // Set up continuous animation for the scroll indicator
+      gsap.to('.scroll-down-indicator', {
+        y: 10,
+        duration: 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut'
+      });
       
       animationPlayed = true;
     }
@@ -43,6 +68,21 @@
       <h1>{t('hero.welcome', $currentLang)}</h1>
       <p>{t('hero.subtitle', $currentLang)}</p>
       <button class="btn btn-primary">{t('hero.cta', $currentLang)}</button>
+    </div>
+    
+    <!-- Scroll down indicator -->
+    <div 
+      class="scroll-down-indicator" 
+      on:click={scrollToNextSection} 
+      on:keydown={(e) => e.key === 'Enter' && scrollToNextSection()} 
+      tabindex="0" 
+      role="button" 
+      aria-label={$currentLang === 'hu' ? 'Görgessen lefelé' : 'Scroll down'}
+    >
+      <span>{$currentLang === 'hu' ? 'Görgessen lefelé' : 'Scroll down'}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
     </div>
   </div>
 </section>
@@ -99,6 +139,11 @@
     position: relative;
     z-index: 2;
     padding: 0 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   
   .hero-content {
@@ -144,6 +189,51 @@
     outline: none;
   }
   
+  /* Scroll down indicator */
+  .scroll-down-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    opacity: 0.8;
+  }
+  
+  .scroll-down-indicator:hover,
+  .scroll-down-indicator:focus {
+    opacity: 1;
+    outline: none;
+  }
+  
+  .scroll-down-indicator span {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+  
+  .scroll-down-indicator svg {
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-10px);
+    }
+    60% {
+      transform: translateY(-5px);
+    }
+  }
+  
   @media screen and (max-width: 768px) {
     .hero-content h1 {
       font-size: 2.5rem;
@@ -151,6 +241,10 @@
     
     .hero-content p {
       font-size: 1.1rem;
+    }
+    
+    .scroll-down-indicator {
+      bottom: 20px;
     }
   }
   

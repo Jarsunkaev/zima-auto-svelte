@@ -1,11 +1,12 @@
 <script>
-  export let id;
-  export let icon;
+  export let svgIcon;
   export let image;
   export let title;
   export let description;
   export let index = 0;
   export let shouldAnimate = false;
+  export let ctaText = 'Learn more';
+  export let ctaAction = () => {};
   
   import { onMount } from 'svelte';
   
@@ -35,7 +36,7 @@
   on:mouseleave={handleMouseLeave}
 >
   <div class="service-icon">
-    <img src={icon} alt={title} />
+    {@html svgIcon}
   </div>
   
   <h3>{title}</h3>
@@ -44,8 +45,8 @@
   <div class="service-overlay" style="background-image: url('{image}')"></div>
   <div class="gradient-overlay"></div>
   
-  <div class="card-action">
-    <span>Learn more</span>
+  <div class="card-action" on:click={ctaAction} on:keydown={(e) => e.key === 'Enter' && ctaAction()} tabindex="0" role="button">
+    <span>{ctaText}</span>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
@@ -56,7 +57,7 @@
   .service-card {
     position: relative;
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
     padding: 30px 25px;
     height: 100%;
@@ -77,7 +78,7 @@
   
   .service-card.hovered {
     transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
   }
   
   .service-icon {
@@ -98,10 +99,10 @@
     transform: scale(1.05);
   }
   
-  .service-icon img {
+  .service-icon :global(svg) {
     width: 35px;
     height: 35px;
-    filter: brightness(0) invert(1);
+    color: white;
   }
   
   h3 {
@@ -142,7 +143,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6));
+    background: linear-gradient(to bottom, rgba(30, 10, 60, 0.95), rgba(13, 13, 30, 0.9));
     opacity: 0;
     transition: opacity 0.4s ease;
     z-index: 1;
@@ -171,6 +172,13 @@
     position: relative;
     z-index: 2;
     transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .card-action:focus {
+    outline: 2px solid #00bae5;
+    outline-offset: 2px;
+    border-radius: 4px;
   }
   
   .service-card.hovered .card-action {
