@@ -105,7 +105,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('images/hero-airport.jpg');
     background-size: cover;
     background-position: center;
     transform: scale(1.05);

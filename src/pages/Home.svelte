@@ -50,21 +50,21 @@
       id: 1,
       name: 'Csilla Demcsák',
       location: '',
-      text: 'Nagyon profi. Fiatalos, energialusok, jó áron dolgoznak! Nagyon szép és kényelmes volt, hogy a járművet, a gumipulálást és az autóbérlést egypen elővégezhettem.',
+      text: 'Nagyon profik. Fiatalok, energikusak, jó áron dolgoznak! Nagyon szép és kényelmes volt, hogy a javítást, a gumijavítást és az autótisztítást egyben elvégezhettem.',
       image: null
     },
     {
       id: 2,
       name: 'Helyi idegenvezető',
       location: '',
-      text: 'Minden dícséretet a tulajnak, bízik minket a reptére és vissza a parkolóba. Problémánk volt az autón a kerbleet, amit a tulajdonos segítségével megoldottunk. Még egyszer köszönöm és minden ajánlást elhng a parkolóhoz.',
+      text: 'Minden dicséret a tulajnak, kivitt minket a reptérre és vissza a parkolóba. Problémánk volt az autón a kerékkel, amit a tulajdonos segítségével megoldottunk. Még egyszer köszönöm és minden ajánlást ehhez a parkolóhoz.',
       image: null
     },
     {
       id: 3,
       name: 'Kubilay Öztürk',
       location: '',
-      text: 'Minden gördilékeniy volt, ajánlom őket!',
+      text: 'Minden gördülékeny volt, ajánlom őket!!',
       image: null
     }
   ];
@@ -319,7 +319,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('images/hero-airport.jpg');
+    background-image: url('/images/airport-parking.jpg');
     background-size: cover;
     background-position: center;
     transform: scale(1.05);

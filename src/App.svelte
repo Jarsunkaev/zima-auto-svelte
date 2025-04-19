@@ -7,6 +7,7 @@
 	import About from './pages/About.svelte';
 	import Services from './pages/Services.svelte';
 	import Contact from './pages/Contact.svelte';
+	import Booking from './pages/Booking.svelte'; // Make sure this import exists
   
 	// Page routing
 	let currentPage = 'home';
@@ -41,7 +42,7 @@
 	  }, 300);
 	  
 	  const hash = window.location.hash.slice(1);
-	  if (hash && ['home', 'about', 'services', 'contact'].includes(hash)) {
+	  if (hash && ['home', 'about', 'services', 'contact', 'booking'].includes(hash)) {
 		currentPage = hash;
 	  } else {
 	    // Default to home if no valid hash
@@ -61,10 +62,13 @@
 	  // Listen for hash changes
 	  window.addEventListener('hashchange', () => {
 		const newHash = window.location.hash.slice(1);
-		if (newHash && ['home', 'about', 'services', 'contact'].includes(newHash) && newHash !== currentPage) {
+		if (newHash && ['home', 'about', 'services', 'contact', 'booking'].includes(newHash) && newHash !== currentPage) {
 		  navigate(newHash);
 		}
 	  });
+
+          // Debug log the current page to verify routing is working
+          console.log("Initial page:", currentPage);
 	});
 	
 	// Save language preference when it changes
@@ -87,13 +91,15 @@
 
   <main>
     {#if currentPage === 'home'}
-      <Home />
+      <Home {navigate} />
     {:else if currentPage === 'about'}
       <About />
     {:else if currentPage === 'services'}
       <Services />
     {:else if currentPage === 'contact'}
       <Contact />
+    {:else if currentPage === 'booking'}
+      <Booking />
     {:else}
       <!-- Fallback if no page matches -->
       <div class="error-container">

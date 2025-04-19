@@ -74,7 +74,7 @@
       role="button" 
       aria-label="Go to homepage"
     >
-      <img src="images/logo.svg" alt="Zima Auto" />
+      <img src="images/zima-logo.avif" alt="Zima Auto" />
     </div>
     
     <nav class:open={mobileMenuOpen}>
@@ -82,6 +82,11 @@
         <li class:active={currentPage === 'home'}>
           <a href="#home" on:click|preventDefault={() => handleNavClick('home')}>
             {t('nav.home', $currentLang)}
+          </a>
+        </li>
+        <li class:active={currentPage === 'booking'}>
+          <a href="#booking" on:click|preventDefault={() => handleNavClick('booking')}>
+            {t('nav.booking', $currentLang)}
           </a>
         </li>
         <li class:active={currentPage === 'about'}>

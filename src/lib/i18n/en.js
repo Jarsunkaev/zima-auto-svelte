@@ -2,6 +2,7 @@
 export default {
     nav: {
       home: "HOME",
+      booking: "BOOKING",
       about: "ABOUT US",
       services: "SERVICES",
       contact: "CONTACT"

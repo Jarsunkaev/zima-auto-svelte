@@ -2,6 +2,7 @@
 export default {
   nav: {
     home: "FŐOLDAL",
+    booking: "FOGLALÁS",
     about: "RÓLUNK",
     services: "SZOLGÁLTATÁSOK",
     contact: "KAPCSOLAT"
