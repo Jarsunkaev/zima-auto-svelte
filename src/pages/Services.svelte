@@ -233,7 +233,7 @@
           </button>
         </div>
         <div class="service-image">
-          <img src="images/tire-service.jpg" alt="Tire Service" />
+          <img src="images/merc-tyre.jpg" alt="Tire Service" />
         </div>
       </div>
 
@@ -442,7 +442,7 @@
 
     /* Parking Table Specific Styles */
     .parking-table-container {
-        max-height: 600px; /* Increased height to show more rows */
+        max-height: 500px; /* Increased height to show more rows */
         overflow-y: auto; /* Enable vertical scrolling */
     }
 

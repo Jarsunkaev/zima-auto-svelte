@@ -17,7 +17,7 @@
       <div class="footer-grid">
         <div class="footer-info">
           <div class="footer-logo">
-            <img src="images/logo.svg" alt="Zima Auto" />
+            <img src="images/zima-logo.avif" alt="Zima Auto" />
           </div>
           <div class="contact-info">
             <h3>{t('footer.visit', $currentLang)}</h3>
@@ -115,7 +115,6 @@
   
   .footer-logo img {
     height: 45px;
-    filter: brightness(0) invert(1);
   }
   
   .contact-info h3 {
