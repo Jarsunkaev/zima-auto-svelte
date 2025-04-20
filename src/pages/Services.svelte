@@ -55,6 +55,18 @@
     ]
   };
 
+    // Maintenance services data
+    const maintenanceServices = [
+        { name: { hu: 'Autóvizsgálat', en: 'Car Inspection' } },
+        { name: { hu: 'Fékjavítás', en: 'Brake Repair' } },
+        { name: { hu: 'Futómű javítások', en: 'Chassis Repairs' } },
+        { name: { hu: 'Kuplung javítás, kuplungcsere', en: 'Clutch Repair, Replacement' } },
+        { name: { hu: 'Olajcsere, szűrők és váltó olajcsere', en: 'Oil Change, Filters, and Gearbox Oil Change' } },
+        { name: { hu: 'Vezérműszíj csere', en: 'Timing Belt Replacement' } },
+        { name: { hu: 'Váltó felújítás', en: 'Gearbox Overhaul' } },
+        { name: { hu: 'Motorjavítás, felújítás', en: 'Engine Repair, Overhaul' } }
+    ];
+
 
   onMount(() => {
     // Animate service sections
@@ -162,7 +174,7 @@
           <h3 class="car-wash-title smart-title">{$currentLang === 'hu' ? 'SMART Csomag Árak' : 'SMART Package Prices'}</h3>
           <div class="pricing-table-container scrollable-table car-wash-table-container">
               <table class="pricing-table car-wash-table smart-table">
-                  <thead>
+                   <thead>
                       <tr>
                           <th>{$currentLang === 'hu' ? 'Autó típus' : 'Car type'}</th>
                           <th>{$currentLang === 'hu' ? 'Külső & Belső' : 'Exterior & Interior'}</th>
@@ -195,7 +207,8 @@
                       </tr>
                   </thead>
                   <tbody>
-                       {#each carWashPrices.premium as price}
+
+                      {#each carWashPrices.premium as price}
                           <tr>
                               <td>{price.type}</td>
                               <td>{price['Exterior & Interior']}</td>
@@ -263,9 +276,36 @@
       </div>
     </div>
   </section>
-</div>
 
-<style>
+  <section class="service-section" id="maintenance">
+    <div class="container">
+      <div class="service-content centered-content">
+        <h2>{$currentLang === 'hu' ? 'MÁRKAFÜGGETLEN AUTÓSZERVIZ' : 'BRAND-AGNOSTIC CAR SERVICE'}</h2>
+        <p class="service-description">
+          {$currentLang === 'hu'
+            ? 'Szakértő csapatunk széles körű szervizszolgáltatást nyújt minden autómárka számára, a rendszeres karbantartástól a komplex javításokig.'
+            : 'Our expert team provides a wide range of maintenance services for all car brands, from routine maintenance to complex repairs.'}
+        </p>
+      </div>
+
+      <div class="maintenance-bubbles-container">
+        {#each maintenanceServices as service}
+          <div class="maintenance-bubble">
+              {service.name[$currentLang]}
+          </div>
+        {/each}
+      </div>
+
+      <div class="centered-button-container">
+            <a href="/contact" class="btn btn-primary maintenance-contact-btn">
+              {$currentLang === 'hu' ? 'Kérj árajánlatot' : 'Request a Quote'}
+          </a>
+      </div>
+
+    </div>
+  </section>
+
+</div><style>
   :root {
     /* Define your color variables here if they are not in a global file */
     --primary: #00baff; /* Example primary color */
@@ -276,6 +316,10 @@
     --light: #f4f4f4; /* Example light background color */
     --teal-dark: #00796b; /* Darker teal for SMART title */
     --teal-light: #4db6ac; /* Lighter teal for PREMIUM title */
+    /* Removed unused purple variables */
+    /* --purple-dark: #4a148c; */
+    /* --purple-light: #7b1fa2; */
+    /* --purple-accent: #9c27b0; */
   }
 
   .services-hero {
@@ -301,9 +345,15 @@
     padding: 5rem 2rem;
   }
 
-  .service-section:nth-child(even) {
-    background-color: var(--light);
+  /* Alternating background colors for sections */
+  .services-container section:nth-child(odd) {
+       background-color: white; /* Default white background */
+   }
+
+  .services-container section:nth-child(even) {
+    background-color: var(--light); /* Light grey background */
   }
+
 
   .container {
       max-width: 1200px;
@@ -335,15 +385,31 @@
     padding-bottom: 12px;
   }
 
-  .service-content h2::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 50px;
-    height: 3px;
-    background-color: var(--primary);
-  }
+    /* Consistent Primary Blue underline for all titles */
+   .service-content h2::after {
+       content: '';
+       position: absolute;
+       bottom: 0;
+       left: 0; /* Align to left by default */
+       width: 50px;
+       height: 3px;
+       background-color: var(--primary); /* Primary Blue underline */
+   }
+
+     /* Specific rule to center the underline only for the maintenance section */
+    #maintenance .service-content h2::after {
+        left: 50%; /* Center the underline */
+        transform: translateX(-50%);
+    }
+
+    /* Mobile adjustment for centering underline on all titles */
+    @media (max-width: 992px) {
+        .services-container section .service-content h2::after {
+             left: 50%;
+             transform: translateX(-50%);
+         }
+    }
+
 
   .service-description {
     margin-bottom: 2rem;
@@ -351,6 +417,17 @@
     line-height: 1.7;
     color: var(--text-light);
   }
+
+   .centered-content {
+       text-align: center; /* Center content block */
+   }
+
+   .centered-content .service-description {
+       max-width: 800px; /* Limit width for centering */
+       margin-left: auto;
+       margin-right: auto;
+   }
+
 
   .feature-list {
     list-style: none;
@@ -512,30 +589,79 @@
           color: white;
       }
 
+    /* Maintenance Services Styles (Black Bubble Style) */
+    #maintenance {
+        /* Background color handled by .service-section:nth-child(even) */
+    }
 
-  /* Button Styles */
-  .btn {
-    display: inline-block;
-    padding: 0.8rem 1.8rem;
-    border-radius: 50px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: none;
-    font-size: 0.95rem;
-  }
+    /* Title and description centering handled by .centered-content */
 
-  .btn-primary {
-    background-color: var(--primary);
-    color: white;
-  }
 
-  .btn-primary:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 186, 229, 0.3);
-  }
+    .maintenance-bubbles-container {
+        display: flex;
+        flex-wrap: wrap; /* Allow bubbles to wrap to the next line */
+        justify-content: center; /* Center bubbles horizontally */
+        gap: 1rem; /* Space between bubbles */
+        margin-top: 3rem;
+        padding: 0 1rem; /* Add some padding inside the container */
+    }
+
+    .maintenance-bubble {
+        background-color: #1a1a1a; /* Black/very dark grey background */
+        color: white; /* White text color */
+        padding: 0.8rem 1.5rem; /* Padding inside the bubble */
+        border-radius: 50px; /* Large border-radius for bubble shape */
+        font-size: 1.1rem;
+        font-weight: 500;
+        text-align: center;
+        white-space: nowrap; /* Prevent text from wrapping inside the bubble */
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        cursor: pointer; /* Indicate it's interactive (even without a link) */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+        flex-shrink: 0; /* Prevent bubbles from shrinking */
+    }
+
+    /* Hover effects for black bubbles */
+    .maintenance-bubble:hover {
+        background-color: var(--secondary); /* Darker grey on hover */
+        transform: translateY(-4px); /* Slight lift on hover */
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Stronger shadow on hover */
+    }
+
+
+    /* Button Styles */
+    .btn {
+        display: inline-block;
+        padding: 0.8rem 1.8rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background-color: var(--primary);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 186, 229, 0.3);
+    }
+
+   /* Specific style for the maintenance contact button */
+   .maintenance-contact-btn {
+       margin-top: 3rem; /* Add space above the button */
+   }
+
+    .centered-button-container {
+        text-align: center; /* Center the button container */
+    }
+
 
   /* Mobile Responsive */
   @media (max-width: 992px) {
@@ -609,6 +735,20 @@
          .tire-table td {
              min-width: 70px; /* Ensure minimum width for tire size columns */
          }
+
+    /* Maintenance bubbles mobile adjustments */
+    .maintenance-bubble {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+    }
+    .maintenance-bubbles-container {
+        gap: 0.8rem; /* Reduce gap on smaller screens */
+    }
+
+    /* Center underline on mobile */
+    /* This rule is now redundant due to the general rule above */
+    /* .services-container section .service-content h2::after { ... } */
+
 
   }
 
@@ -686,6 +826,22 @@
        .tire-table td {
            min-width: 50px;
        }
+
+     /* Maintenance bubbles smaller mobile adjustments */
+     .maintenance-bubble {
+         font-size: 0.9rem;
+         padding: 0.6rem 1rem;
+     }
+      .maintenance-bubbles-container {
+         gap: 0.6rem; /* Further reduce gap */
+     }
+
+     #maintenance .service-content h2 {
+         font-size: 1.5rem; /* Adjust heading size */
+     }
+      #maintenance .service-description {
+         font-size: 1rem; /* Adjust description size */
+     }
   }
 
    /* Style the scrollbar */
