@@ -6,11 +6,8 @@
     export let content = {};
     export let currentLang = 'hu';
     export let onSelectService; // Function to call when a service is selected
-  
-    // State
-    let servicesLoaded = false;
-  
-    // Service data with SVG icons
+    
+    // Define service data
     const services = [
       {
         id: 'airportParking',
@@ -38,33 +35,17 @@
         </svg>`
       }
     ];
-  
-    // Set servicesLoaded to true immediately upon mounting
-    onMount(() => {
-      // Force servicesLoaded to true immediately
-      servicesLoaded = true;
-      
-      // After a slight delay, apply animations to make the cards appear nicely
-      setTimeout(() => {
-        // Apply GSAP animation to service cards
-        gsap.from('.service-card', {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out"
-        });
-      }, 100);
-      
-      // Log for debugging
-      console.log('ServiceSelection component mounted, servicesLoaded =', servicesLoaded);
-    });
     
-    // Function to handle service card click
-    function handleServiceClick(serviceId) {
-      console.log('Service selected:', serviceId);
+    // Animation state
+    let servicesLoaded = false;
+    
+    // Function to select a service
+    function selectService(serviceId) {
+      // Call the parent component's function with the selected service ID
       onSelectService(serviceId);
     }
+    
+
   </script>
   
   <section class="service-selection-section">
@@ -72,15 +53,12 @@
       <h2 class="section-title">{content[currentLang].serviceSelection.title}</h2>
       <p class="section-subtitle">{content[currentLang].serviceSelection.description}</p>
   
-      <!-- Add debug message to check servicesLoaded state -->
-      <!-- <div style="color: red; margin-bottom: 20px;">Debug: servicesLoaded = {servicesLoaded}</div> -->
-  
-      <div class="services-grid" class:visible={true}>
-        {#each services as service}
+      <div class="services-grid" class:visible={servicesLoaded}>
+        {#each services as service, i}
           <div 
             class="service-card" 
-            on:click={() => handleServiceClick(service.id)} 
-            on:keydown={(e) => e.key === 'Enter' && handleServiceClick(service.id)} 
+            on:click={() => selectService(service.id)} 
+            on:keydown={(e) => e.key === 'Enter' && selectService(service.id)} 
             tabindex="0" 
             role="button"
           >
@@ -134,23 +112,19 @@
       font-size: 1.1rem;
     }
   
-    /* Services grid - FIXED: set display immediately but animate with GSAP */
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1.5rem;
       margin-top: 3rem;
-      width: 100%;
-      /* Changed to ensure visibility */
-      opacity: 1;
     }
-  
-    /* Only apply visibility class if not already visible */
+    
     .services-grid.visible {
       opacity: 1;
     }
   
     .service-card {
+      position: relative;
       background-color: white;
       border-radius: 12px;
       padding: 1.5rem;
@@ -188,14 +162,14 @@
       transition: all 0.3s ease;
     }
   
-    .service-icon :global(svg) {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-  
     .service-card:hover .service-icon {
       transform: scale(1.1);
+    }
+  
+    .service-icon :global(svg) {
+      width: 35px;
+      height: 35px;
+      color: white;
     }
   
     .service-card h3 {
@@ -229,12 +203,6 @@
       }
     }
   
-    @media screen and (max-width: 992px) {
-      .services-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-  
     @media screen and (max-width: 768px) {
       .section-title {
         font-size: 1.8rem;
@@ -247,11 +215,28 @@
       .services-grid {
         grid-template-columns: 1fr;
       }
+      
+      .service-card {
+        min-height: 250px;
+        padding: 1.2rem;
+      }
+      
+      .service-card h3 {
+        font-size: 1.1rem;
+      }
+      
+      .service-card p {
+        font-size: 0.85rem;
+      }
     }
   
     @media screen and (max-width: 480px) {
       .section-title {
         font-size: 1.5rem;
       }
+      
+      .section-subtitle {
+        font-size: 0.9rem;
+      }
     }
-  </style>
+    </style>
