@@ -1,458 +1,673 @@
 <script>
-    import { onMount } from 'svelte';
-    import { currentLang, t } from '../lib/i18n';
-    import { gsap } from 'gsap';
-    
-    let lang;
-    
-    // Subscribe to language changes
-    currentLang.subscribe(value => {
-      lang = value;
-    });
-    
-    // About content translations
-    const content = {
-      hu: {
-        title: 'RÓLUNK',
-        subtitle: 'Ismerje meg a Zima Auto történetét és szolgáltatásait',
-        story: {
-          title: 'TÖRTÉNETÜNK',
-          text: 'A Zima Auto Kft. 2015-ben alakult családi vállalkozásként. Célunk kezdettől fogva az volt, hogy magas színvonalú, megbízható szolgáltatásokat nyújtsunk az autótulajdonosok számára. A reptéri parkolástól kezdve az autóápolási szolgáltatásokig mindent egy helyen kínálunk ügyfeleinknek, megkönnyítve ezzel a mindennapi életüket és utazásaikat.'
-        },
-        mission: {
-          title: 'KÜLDETÉSÜNK',
-          text: 'Küldetésünk, hogy az ügyfelek számára stresszmentes, biztonságos és kényelmes megoldást kínáljunk járműveik parkolására és karbantartására. Hiszünk abban, hogy a kiváló ügyfélszolgálat és a megbízható szolgáltatások kombinációja kulcsfontosságú a hosszú távú sikeres ügyfélkapcsolatok kialakításában.'
-        },
-        values: {
-          title: 'ÉRTÉKEINK',
-          items: [
-            {
-              title: 'Megbízhatóság',
-              text: 'Pontosan azt nyújtjuk, amit ígérünk, minden alkalommal.'
-            },
-            {
-              title: 'Biztonság',
-              text: 'Az Ön járműve biztonságban van nálunk, 24 órás felügyelettel és bekerített területtel.'
-            },
-            {
-              title: 'Ügyfélközpontúság',
-              text: 'Az ügyfelek igényei és elégedettsége mindig az első helyen áll számunkra.'
-            },
-            {
-              title: 'Szakértelem',
-              text: 'Képzett szakembereink naprakész tudással rendelkeznek.'
-            }
-          ]
-        },
-        team: {
-          title: 'CSAPATUNK',
-          text: 'A Zima Auto csapata tapasztalt szakemberekből áll, akik elkötelezettek a kiváló minőségű szolgáltatások nyújtása mellett. Munkatársaink folyamatos képzéseken vesznek részt, hogy a legújabb technikákat és technológiákat is alkalmazhassák munkájuk során.'
-        },
-        cta: 'Vegye igénybe szolgáltatásainkat'
+  import { onMount } from 'svelte';
+  import { currentLang, t } from '../lib/i18n';
+  import { gsap } from 'gsap';
+  // Ensure ScrollTrigger is installed (npm install gsap scrolltrigger)
+  // and imported if you want the values animation to trigger on scroll.
+  // If you don't want scroll-triggered animation, you can remove these lines
+  // and the scrollTrigger property from the gsap.from call.
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+
+  let lang;
+
+  // Subscribe to language changes
+  currentLang.subscribe(value => {
+    lang = value;
+  });
+
+  // About content translations - UPDATED AND STRUCTURED FOR NEW LAYOUT
+  const content = {
+    hu: {
+      title: 'Kik vagyunk?',
+      subtitle: 'A Zima Autó Kft-nél új értelmet kap a kényelem és a kiválóság az autóápolási szolgáltatások terén. Több mint egy évtizedes tapasztalattal és szakértelemmel, büszkén kínáljuk az egyik legkiterjedtebb autószolgáltatási kínálatot, amely az Ön járművének minden igényét kielégíti egy helyen.',
+      story: {
+        title: 'Tapasztalat, amiben megbízhat',
+        text: 'Több mint 10 év tapasztalattal szolgálva ügyfeleinket, tökéletesítettük képességeinket és finomítottuk folyamatainkat annak érdekében, hogy a legmagasabb színvonalú szolgáltatást és ügyfél-elégedettséget biztosítsuk. Járműve csak a legjobbat érdemli, és pontosan ezt nyújtjuk a Zima Autó Kft-nél.'
       },
-      en: {
-        title: 'ABOUT US',
-        subtitle: 'Get to know Zima Auto\'s story and services',
-        story: {
-          title: 'OUR STORY',
-          text: 'Zima Auto Ltd. was established in 2015 as a family business. From the beginning, our goal has been to provide high-quality, reliable services for car owners. From airport parking to car care services, we offer everything in one place for our customers, making their daily lives and travels easier.'
-        },
-        mission: {
-          title: 'OUR MISSION',
-          text: 'Our mission is to offer customers a stress-free, safe, and convenient solution for parking and maintaining their vehicles. We believe that the combination of excellent customer service and reliable services is key to establishing long-term successful customer relationships.'
-        },
-        values: {
-          title: 'OUR VALUES',
-          items: [
-            {
-              title: 'Reliability',
-              text: 'We deliver exactly what we promise, every time.'
-            },
-            {
-              title: 'Security',
-              text: 'Your vehicle is safe with us, with 24-hour supervision and a fenced area.'
-            },
-            {
-              title: 'Customer Focus',
-              text: 'Customer needs and satisfaction are always our top priority.'
-            },
-            {
-              title: 'Expertise',
-              text: 'Our trained professionals have up-to-date knowledge.'
-            }
-          ]
-        },
-        team: {
-          title: 'OUR TEAM',
-          text: 'The Zima Auto team consists of experienced professionals who are committed to providing excellent quality services. Our employees participate in continuous training to apply the latest techniques and technologies in their work.'
-        },
-        cta: 'Use our services'
+      // Repurposed 'mission' section for location
+      mission: {
+        title: 'Kiváló elhelyezkedés',
+        text: 'Stratégiai helyen, mindössze 5 kilométerre és 5 percre a Budapest Liszt Ferenc Nemzetközi Repülőtértől, Vecsésen, létesítményünk páratlan elérhetőséget és kényelmet biztosít. Búcsút mondhat a városban szétszórva lévő szolgáltatók keresési nehézségeinek. A Zima Autó Kft-vel gyorsan és hatékonyan kezelheti minden autójával kapcsolatos igényét, időt és energiát megtakarítva ezzel.'
+      },
+      // Repurposed 'values' section for 'Why Choose Us?'
+      values: {
+        title: 'Miért válasszon minket?',
+        items: [
+          {
+            title: 'Kényelem',
+            text: 'Spóroljon meg időt és energiát, egy helyen elérve minden autóápolási szolgáltatást.'
+          },
+          {
+            title: 'Szakértelem',
+            text: 'Használja ki széleskörű iparági tapasztalatunkat és szakértelmünket, hogy járműve számára a legjobb szolgáltatást biztosíthassuk.'
+          },
+          {
+            title: 'Minőség',
+            text: 'Minden tevékenységünkben ragaszkodunk a legmagasabb minőségi és szakmai szabványokhoz, ezzel is biztosítva ügyfeleink teljes elégedettségét.'
+          },
+          {
+            title: 'Nyugalom',
+            text: 'A Zima Autó Kft. kiváló elhelyezkedése, széleskörű szolgáltatási kínálata, biztonságos parkoló létesítménye, ingyenes repülőtéri transzfere, a parkolóhelyek bőséges volta, a rugalmas fizetési lehetőségek és versenyképes áraink biztosítják, hogy megbízhasson a Zima Autó Kft-ben, hogy járműve mindvégig a legjobb kezekben lesz, miközben Ön a legfontosabb dolgaival van elfoglalva.'
+          }
+        ]
+      },
+      // New structure for services, pricing, and conclusion - split for grid layout
+      offerings: {
+          mainTitle: 'Szolgáltatásaink, áraink és fizetési lehetőségek',
+          block1: { // First grid block content
+              title: 'Átfogó Szolgáltatási Kínálat',
+              text: 'Megértjük, hogy járműve több, mint egyszerű közlekedési eszköz; egy befektetés, amely megérdemli a legnagyobb gondosságot és figyelmet. Ezért kínálunk teljes körű szolgáltatási listát, ideértve:',
+               listItems: [ // Detailed list for HU
+                  'Repülőtéri parkoló: Nyugodtan utazzon tudva, hogy járműve biztonságban van, amíg Ön távol van. Biztonságos parkoló létesítményünk körbekerített és 24/7-es kamerafelügyelettel biztosítja járműve maximális biztonságát. Ráadásul élvezze az ingyenes repülőtéri transzfert a parkolóból a repülőtérre kényelmes shuttle szolgáltatásunkkal, ami megszünteti az utazási logisztika stresszét. 3000 négyzetméteres, nyitott parkolóhelyünkön 150 parkolóhely áll rendelkezésre, így járművének helyet találni sosem jelenthet gondot. Akár online foglalja, akár egyszerűen csak behajt, mi gondoskodunk róla.',
+                  'Kézi Autómosó: Kényeztesse járművét egy profi külső-belső autómosás szolgáltatással, amely ragyogóan tisztává és újjászületetté varázsolja autóját.',
+                  'Gumiszervíz: Ne engedje, hogy egy defektes gumi gátat szabjon a programjának. Szakértőink azonnal foglalkoznak bármilyen gumival kapcsolatos problémával, gumicserével, és biztonságosan visszajuttatják Önt az útra.',
+                  'Autószervíz: A rutinellenőrzésektől a bonyolult javításokig képzett szerelőink fel vannak készülve az Ön karbantartási és javítási igényeinek kezelésére, hogy járműve zökkenőmentesen és hatékonyan működjön.'
+              ]
+          },
+          block2: { // Second grid block content
+              paymentOptionsTitle: 'Rugalmas fizetési lehetőségek',
+              paymentOptionsText: 'Tudjuk, hogy a kényelem fontos, ezért rugalmas fizetési lehetőségeket kínálunk, beleértve a készpénzes, bankkártyás fizetést is.',
+              pricesTitle: 'Versenyképes árak',
+              pricesText: 'A Zima Autó Kft-nél úgy véljük, hogy a minőségi autóápolásnak mindenki számára elérhetőnek kell lennie. Ezért kínáljuk a legjobb árakat minden szolgáltatásunkra, biztosítva, hogy a lehető legtöbbet kapja pénzéért, anélkül, hogy engednénk a minőségből.',
+               conclusion: 'Tapasztalja meg a különbséget a Zima Autó Kft-nél - ahol minden alkalommal a kiválóság találkozik a kényelemmel.\n\nLépjen kapcsolatba velünk még ma, hogy felfedezze, hogyan emelhetjük autóápolási élményét új magasságokba!'
+          }
+      },
+      cta: 'Vegye igénybe szolgáltatásainkat'
+    },
+    en: {
+      title: 'Who We Are',
+      subtitle: 'With over a decade of unwavering dedication and expertise in the industry, we take pride in offering an unmatched range of services tailored to meet all your automotive requirements under one roof.',
+      story: {
+        title: 'Experience You Can Trust',
+        text: 'With more than 10 years of experience serving our valued customers, we have honed our skills and refined our processes to ensure the highest quality of service and customer satisfaction. Your vehicle deserves nothing but the best, and that\'s precisely what we deliver at Zima Auto Kft.'
+      },
+       // Repurposed 'mission' section for location
+      mission: {
+        title: 'Unbeatable Location',
+        text: 'Strategically situated just 4.8 kilometers and 5 minutes away from the Budapest Airport, at Vecsés our facility provides unparalleled accessibility and convenience. Say goodbye to the hassle of searching for multiple service providers scattered across the city. With Zima Auto Kft, you can address all your car care needs swiftly and efficiently, saving both time and effort.'
+      },
+      // Repurposed 'values' section for 'Why Choose Us?'
+      values: {
+        title: 'Why Choose Us?',
+        items: [
+          {
+            title: 'Convenience',
+            text: 'Save time and effort by accessing all your car care services in one convenient location.'
+          },
+          {
+            title: 'Expertise',
+            text: 'Benefit from our extensive industry experience and technical know-how to ensure top-notch service for your vehicle.'
+          },
+          {
+            title: 'Quality',
+            text: 'We adhere to the highest standards of quality and professionalism in everything we do, ensuring your complete satisfaction.'
+          },
+          {
+            title: 'Peace of Mind',
+            text: 'With our prime location near the Budapest Airport at Vecsés, comprehensive range of services, secure parking facility, complimentary airport transfers, ample parking space, flexible payment options, and competitive prices, you can trust Zima Auto Kft to take care of your vehicle while you focus on what matters most.'
+          }
+        ]
+      },
+       // New structure for services, pricing, and conclusion - split for grid layout
+      offerings: {
+          mainTitle: 'Our Offerings: Services, Pricing, and More', // Adjusted main title
+          block1: { // First grid block content
+              title: 'Comprehensive Range of Services',
+              text: 'We understand that your vehicle is more than just a mode of transportation; it\'s an investment that deserves the utmost care and attention. That\'s why we offer a comprehensive suite of services, including:',
+               listItems: [ // Simple list for EN
+                  'Airport Parking',
+                  'Car Wash',
+                  'Tyre Repair Service',
+                  'Car Maintenance Service'
+              ]
+          },
+           block2: { // Second grid block content
+              paymentOptionsTitle: 'Flexible Payment Options',
+              paymentOptionsText: 'We understand the importance of convenience, which is why we offer flexible payment options including cash, debit, and credit cards, making your car care experience seamless and hassle-free.',
+              pricesTitle: 'Competitive Prices',
+              pricesText: 'At Zima Auto Kft, we believe that quality car care should be accessible to everyone. That\'s why we offer the best competitive prices on all our services, ensuring that you get the most value for your money without compromising on quality.',
+              conclusion: 'Experience the difference with Zima Auto - where excellence meets convenience, every time.\n\nGet in touch with us today to discover how we can elevate your car care experience to new heights!'
+          }
+      },
+      cta: 'Use our services'
+    }
+  };
+
+  // Keep existing animation logic and ensure ScrollTrigger is used
+  onMount(() => {
+    // Animate sections
+    gsap.from('.about-section', {
+      y: 50,
+      duration: 0.8,
+      stagger: 0.3,
+      ease: 'power2.out',
+      scrollTrigger: { // Use scrollTrigger for sections
+          trigger: '.about-section',
+          start: 'top 80%', // Adjust trigger point as needed
+          // markers: true // Uncomment for debugging trigger
       }
-    };
-    
-    onMount(() => {
-      // Animate elements
-      gsap.from('.about-section', {
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.3,
-        ease: 'power2.out'
-      });
-      
-      // Enhanced animation for values cards - one by one fade in with subtle scale
-      gsap.from('.values-card', {
-        y: 50,
-        opacity: 0,
-        scale: 0.9,
-        duration: 0.7,
-        stagger: 0.2, // This creates the one-by-one effect
-        ease: 'back.out(1.4)',
-        scrollTrigger: {
-          trigger: '.values-section',
-          start: 'top 70%',
-          // Add markers: true, to debug the trigger points
-        }
-      });
     });
-  </script>
-  
-  <section class="about-hero">
-    <div class="container">
-      <h1>{content[$currentLang].title}</h1>
-      <p>{content[$currentLang].subtitle}</p>
+
+    // Enhanced animation for values cards - one by one fade in with subtle scale
+    gsap.from('.values-card', {
+      y: 50,
+      scale: 0.9,
+      duration: 0.7,
+      stagger: 0.2, // This creates the one-by-one effect
+      ease: 'back.out(1.4)',
+      scrollTrigger: {
+        trigger: '.values-section', // Trigger when the values section comes into view
+        start: 'top 70%', // Adjust trigger point as needed
+        // markers: true, // Uncomment for debugging trigger points
+      }
+    });
+
+    // Animate the two new content blocks in the offerings section grid
+    // This selects the .about-content divs specifically within the .team-section
+     gsap.from('.team-section .about-content', {
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+      stagger: 0.3, // Stagger animation between the two blocks
+      ease: 'power2.out',
+       scrollTrigger: {
+        trigger: '.team-section', // Trigger when the offerings section comes into view
+        start: 'top 80%', // Adjust trigger point
+        // markers: true, // Uncomment for debugging
+      }
+    });
+     // Animate the images in the two new grid blocks
+     gsap.from('.team-section .about-image', {
+      y: 50,
+      opacity: 0,
+      duration: 0.8,
+       delay: 0.15, // Slightly delay image animation
+      stagger: 0.3, // Stagger animation between the two images
+      ease: 'power2.out',
+       scrollTrigger: {
+        trigger: '.team-section', // Trigger when the offerings section comes into view
+        start: 'top 80%', // Adjust trigger point
+        // markers: true, // Uncomment for debugging
+      }
+    });
+  });
+</script>
+
+<section class="about-hero">
+<div class="container">
+  <h1>{content[$currentLang].title}</h1>
+  <p>{content[$currentLang].subtitle}</p>
+</div>
+</section>
+
+<div class="about-container">
+<section class="about-section story-section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-content">
+        <h2>{content[$currentLang].story.title}</h2>
+        <p>{content[$currentLang].story.text}</p>
+      </div>
+      <div class="about-image">
+        <img src="images/parking-lot.jpg" alt="Zima Auto parking lot" />
+      </div>
     </div>
-  </section>
-  
-  <div class="about-container">
-    <!-- Story Section -->
-    <section class="about-section story-section">
-      <div class="container">
-        <div class="about-grid">
-          <div class="about-content">
-            <h2>{content[$currentLang].story.title}</h2>
-            <p>{content[$currentLang].story.text}</p>
-          </div>
-          <div class="about-image">
-            <img src="images/parking-lot.jpg" alt="Zima Auto parking lot" />
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Mission Section -->
-    <section class="about-section mission-section">
-      <div class="container">
-        <div class="about-grid reverse">
-          <div class="about-image">
-            <img src="images/car-wash.jpg" alt="Car Wash Service" />
-          </div>
-          <div class="about-content">
-            <h2>{content[$currentLang].mission.title}</h2>
-            <p>{content[$currentLang].mission.text}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Values Section -->
-    <section class="about-section values-section">
-      <div class="container">
-        <h2 class="section-title">{content[$currentLang].values.title}</h2>
-        
-        <div class="values-grid">
-          {#each content[$currentLang].values.items as value, index}
-            <div class="values-card">
-              <span class="values-number">{index + 1}</span>
-              <h3>{value.title}</h3>
-              <p>{value.text}</p>
-            </div>
-          {/each}
-        </div>
-      </div>
-    </section>
-    
-    <!-- Team Section -->
-    <section class="about-section team-section">
-      <div class="container">
-        <div class="team-content">
-          <h2>{content[$currentLang].team.title}</h2>
-          <p>{content[$currentLang].team.text}</p>
-        </div>
-        
-        <div class="team-image">
-          <div class="image-overlay"></div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- CTA Section -->
-    <section class="about-cta">
-      <div class="container">
-        <a href="#services" class="btn btn-primary">{content[$currentLang].cta}</a>
-      </div>
-    </section>
   </div>
-  
-  <style>
-    .about-hero {
-      background-color: var(--secondary);
-      color: white;
-      padding: 8rem 2rem 5rem;
-      text-align: center;
-    }
-    
-    .about-hero h1 {
-      font-size: 3rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .about-hero p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto;
-      opacity: 0.9;
-    }
-    
-    .about-container {
-      padding-bottom: 4rem;
-    }
-    
-    .about-section {
-      padding: 5rem 2rem;
-    }
-    
-    .about-section:nth-child(even) {
-      background-color: var(--light);
-    }
-    
+</section>
+
+<section class="about-section mission-section">
+  <div class="container">
+    <div class="about-grid reverse">
+      <div class="about-image">
+        <img src="images/car-wash.jpg" alt="Car Wash Service" />
+      </div>
+      <div class="about-content">
+        <h2>{content[$currentLang].mission.title}</h2>
+        <p>{content[$currentLang].mission.text}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about-section values-section">
+  <div class="container">
+    <h2 class="section-title">{content[$currentLang].values.title}</h2>
+
+    <div class="values-grid">
+      {#each content[$currentLang].values.items as value, index}
+        <div class="values-card">
+          <span class="values-number">{index + 1}</span>
+          <h3>{value.title}</h3>
+          <p>{value.text}</p>
+        </div>
+      {/each}
+    </div>
+  </div>
+</section>
+
+<section class="about-section offerings-section"> <div class="container">
+      <h2 class="section-title">{content[$currentLang].offerings.mainTitle}</h2>
+
+      <div class="about-grid">
+          <div class="about-content">
+              <h3>{content[$currentLang].offerings.block1.title}</h3>
+              <p>{content[$currentLang].offerings.block1.text}</p>
+              <ul>
+                  {#each content[$currentLang].offerings.block1.listItems as item}
+                      <li>
+                           {#if $currentLang === 'hu'}
+                               {@html item.replace(/\n/g, '<br><br>')}
+                           {:else}
+                               {item}
+                           {/if}
+                      </li>
+                  {/each}
+              </ul>
+          </div>
+          <div class="about-image">
+              <img src="images/auto-service.jpg" alt="Auto Service" />
+          </div>
+      </div>
+
+      <div class="about-grid reverse">
+          <div class="about-image">
+               <img src="images/team-image.jpg" alt="Zima Auto Team" /> </div>
+          <div class="about-content">
+              <h3>{content[$currentLang].offerings.block2.paymentOptionsTitle}</h3>
+              <p>{content[$currentLang].offerings.block2.paymentOptionsText}</p>
+
+              <h3>{content[$currentLang].offerings.block2.pricesTitle}</h3>
+              <p>{content[$currentLang].offerings.block2.pricesText}</p>
+
+               <p>{@html content[$currentLang].offerings.block2.conclusion.replace(/\n/g, '<br><br>')}</p>
+          </div>
+      </div>
+
+  </div>
+</section>
+<section class="about-cta">
+  <div class="container">
+    <a href="#services" class="btn btn-primary">{content[$currentLang].cta}</a>
+  </div>
+</section>
+</div>
+
+<style>
+  /* Keep base styles */
+  .about-hero {
+    background-color: var(--secondary);
+    color: white;
+    padding: 8rem 2rem 5rem;
+    text-align: center;
+  }
+
+  .about-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0.9;
+  }
+
+  .about-container {
+    padding-bottom: 4rem;
+  }
+
+  /* Apply to all sections except hero and cta */
+  .about-section {
+    padding: 5rem 2rem;
+  }
+
+  .about-section:nth-of-type(odd) { /* Apply to odd sections in the container */
+     background-color: white;
+  }
+
+  .about-section:nth-of-type(even) { /* Apply to even sections in the container */
+     background-color: var(--light);
+  }
+  /* Adjust based on actual section order if needed, e.g., .story-section:nth-child(1), .mission-section:nth-child(2) */
+
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-bottom: 4rem; /* Space between grid blocks if multiple in a section */
+  }
+
+   /* Remove margin-bottom for the last grid in a section */
+  .about-section .about-grid:last-child {
+      margin-bottom: 0;
+  }
+
+
+  .about-grid.reverse {
+    direction: rtl;
+  }
+
+  .about-grid.reverse .about-content {
+    direction: ltr; /* Reset text direction */
+  }
+
+  .about-content h2 { /* Styles for main titles within grid content */
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 15px;
+  }
+
+  .about-content h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0; /* Align underline left */
+    width: 50px;
+    height: 3px;
+    background-color: var(--primary);
+  }
+
+  .about-content h3 { /* Styles for sub-titles within grid content */
+     font-size: 1.5rem;
+     margin-top: 1.5rem; /* Space above subheadings */
+     margin-bottom: 1rem;
+     color: var(--text-dark);
+     position: relative; /* For potential future styling */
+  }
+
+   .about-content h3:first-child {
+       margin-top: 0; /* No top margin if it's the first element */
+   }
+
+
+  .about-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    margin-bottom: 1.5rem; /* Space between paragraphs */
+  }
+
+   .about-content ul {
+      list-style: none; /* Remove default bullets */
+      padding: 0;
+      margin: 1.5rem 0;
+      text-align: left;
+      max-width: 100%; /* Allow list to use full width in content block */
+  }
+
+  .about-content li {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-light);
+      margin-bottom: 1rem;
+      padding-left: 1.5rem; /* Space for custom bullet */
+      position: relative;
+  }
+
+  .about-content li::before {
+      content: '•'; /* Custom bullet point */
+      color: var(--primary); /* Primary color bullet */
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+      position: absolute;
+      left: 0;
+      top: 0; /* Align bullet to top of line */
+  }
+
+
+  .about-image {
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    min-height: 300px; /* Ensure minimum height on desktop */
+    display: flex; /* Use flex to center image if needed */
+    align-items: center;
+    justify-content: center;
+  }
+
+  .about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .about-image:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Styles for the Values section title */
+  .section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2.2rem;
+    position: relative;
+    padding-bottom: 15px;
+    display: inline-block; /* Make the underline centered under the text */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%); /* Center the underline */
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary);
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .values-card {
+    background-color: white;
+    padding: 2.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .values-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .values-number {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 3rem;
+    font-weight: 800;
+    color: rgba(0, 186, 229, 0.1);
+    transition: all 0.3s ease;
+    line-height: 1;
+    z-index: 0; /* Ensure it's behind text */
+  }
+
+  .values-card:hover .values-number {
+    color: rgba(0, 186, 229, 0.2);
+    transform: scale(1.2);
+  }
+
+  .values-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    z-index: 1; /* Ensure text is above the number */
+    position: relative;
+  }
+
+  .values-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+
+  /* Styles for the Offerings section (formerly team-section) */
+   .offerings-section .section-title { /* Specific style for the main title in this section */
+       margin-bottom: 4rem; /* More space below the main title */
+   }
+
+
+  /* Remove the old .team-content and .team-image styles */
+  /* .team-content, .team-image, .image-overlay are no longer needed */
+
+  .about-cta {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .about-cta .btn {
+    font-size: 1.1rem;
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+  }
+
+  /* Responsive Styles */
+  @media screen and (max-width: 992px) {
     .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem; /* Adjust spacing */
     }
-    
+
     .about-grid.reverse {
-      direction: rtl;
-    }
-    
-    .about-grid.reverse .about-content {
       direction: ltr;
     }
-    
+
+    .about-grid.reverse .about-content {
+       order: 1;
+       direction: ltr;
+    }
+
+    .about-grid.reverse .about-image {
+       order: 2;
+    }
+
+     .about-content {
+       order: 1;
+     }
+
+     .about-image {
+       order: 2;
+       min-height: 250px;
+     }
+
+     /* Adjust title alignment for mobile */
+     .section-title,
+     .about-content h2 {
+         left: auto;
+         transform: none;
+         text-align: left;
+         margin-left: 0;
+         width: 100%;
+         display: block; /* Allow underline below block text */
+     }
+      .section-title::after,
+      .about-content h2::after {
+         left: 0;
+         transform: none;
+     }
+
+     .offerings-section .section-title {
+         margin-bottom: 3rem; /* Less space on mobile */
+     }
+
+     .about-content ul {
+         text-align: left;
+         max-width: 100%;
+     }
+  }
+
+  @media screen and (max-width: 768px) {
+    .about-hero h1 {
+      font-size: 2.2rem;
+    }
+
+    .about-hero p {
+      font-size: 1rem;
+    }
+
     .about-content h2 {
-      font-size: 2.2rem;
-      margin-bottom: 1.5rem;
-      position: relative;
+      font-size: 1.8rem;
     }
-    
-    .about-content h2::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 0;
-      width: 50px;
-      height: 3px;
-      background-color: rgba(0, 186, 229, 1);
+
+    .about-section {
+      padding: 3rem 1.5rem;
     }
-    
-    .about-content p {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      color: var(--text-light);
-    }
-    
-    .about-image {
-      overflow: hidden;
-      border-radius: 10px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-      height: 100%;
-    }
-    
-    .about-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-    
-    .about-image:hover img {
-      transform: scale(1.05);
-    }
-    
-    .section-title {
-      text-align: center;
-      margin-bottom: 3rem;
-      font-size: 2.2rem;
-      position: relative;
-    }
-    
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background-color: rgba(0, 186, 229, 1);
-    }
-    
-    .values-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-    }
-    
+
     .values-card {
-      background-color: white;
-      padding: 2.5rem 2rem;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
+        padding: 2rem 1.5rem;
     }
-    
-    .values-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    }
-    
-    .values-number {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 3rem;
-      font-weight: 800;
-      color: rgba(0, 186, 229, 0.1);
-      transition: all 0.3s ease;
-    }
-    
-    .values-card:hover .values-number {
-      color: rgba(0, 186, 229, 0.2);
-      transform: scale(1.2);
-    }
-    
-    .values-card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-      color: rgba(0, 186, 229, 1);
-    }
-    
-    .values-card p {
-      color: var(--text-light);
-      line-height: 1.6;
-    }
-    
-    .team-section {
-      position: relative;
-    }
-    
-    .team-content {
-      text-align: center;
-      max-width: 700px;
-      margin: 0 auto 3rem;
-    }
-    
-    .team-content h2 {
-      font-size: 2.2rem;
-      margin-bottom: 1.5rem;
-      position: relative;
-      display: inline-block;
-    }
-    
-    .team-content h2::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 50px;
-      height: 3px;
-      background-color: rgba(0, 186, 229, 1);
-    }
-    
-    .team-content p {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      color: var(--text-light);
-    }
-    
-    .team-image {
-      height: 300px;
-      background-image: url('images/auto-service.jpg');
-      background-size: cover;
-      background-position: center;
-      border-radius: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .image-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        to right,
-        rgba(0, 0, 0, 0.7) 0%,
-        rgba(0, 0, 0, 0.4) 50%,
-        rgba(0, 0, 0, 0.1) 100%
-      );
-    }
-    
-    .about-cta {
-      text-align: center;
-      padding: 4rem 2rem;
-      background-color: var(--secondary);
-    }
-    
-    .about-cta .btn {
-      font-size: 1.1rem;
-      padding: 1rem 2.5rem;
-    }
-    
-    @media screen and (max-width: 992px) {
-      .about-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+
+     .values-card h3 {
+         font-size: 1.2rem;
+     }
+
+     .values-card p {
+         font-size: 1rem;
+     }
+
+     .about-content h3 {
+          font-size: 1.3rem;
       }
-      
-      .about-grid.reverse {
-        direction: ltr;
+
+      .about-content p,
+      .about-content li {
+          font-size: 1rem;
       }
-      
-      .about-content {
-        order: 1;
-      }
-      
-      .about-image {
-        order: 2;
-      }
-    }
-    
-    @media screen and (max-width: 768px) {
-      .about-hero h1 {
-        font-size: 2.2rem;
-      }
-      
-      .about-hero p {
-        font-size: 1rem;
-      }
-      
-      .about-content h2 {
-        font-size: 1.8rem;
-      }
-      
-      .about-section {
-        padding: 3rem 1.5rem;
-      }
-      
-      .team-image {
-        height: 200px;
-      }
-    }
-  </style>  
+  }
+
+   @media screen and (max-width: 480px) {
+       .about-hero h1 {
+          font-size: 1.8rem;
+       }
+        .section-title,
+        .about-content h2 {
+            font-size: 1.5rem;
+             padding-bottom: 10px; /* Less space for underline */
+        }
+         .section-title::after,
+         .about-content h2::after {
+              width: 40px; /* Shorter underline */
+         }
+        .values-card {
+            padding: 1.5rem 1rem;
+        }
+         .values-card h3 {
+             font-size: 1.1rem;
+         }
+          .about-content h3 {
+             font-size: 1.2rem;
+         }
+         .about-image {
+             min-height: 200px;
+         }
+          .about-grid {
+              gap: 1.5rem; /* Smaller gap on very small screens */
+              margin-bottom: 2rem; /* Adjust spacing */
+          }
+           .about-section {
+              padding: 2rem 1rem; /* Smaller padding for sections */
+           }
+   }
+</style>

@@ -140,7 +140,7 @@
           </button>
 
           <h2 class="form-title">
-             {content[$currentLang].bookingForm[selectedService].title}
+             {content[$currentLang].bookingForm[selectedService]?.title}
           </h2>
         </div>
 
@@ -151,18 +151,17 @@
 
           {#if isSubmitting}
             <p class="submitting-message">Processing booking, please wait...</p>
-            {:else if selectedService === 'airportParking'}
+          {:else if selectedService === 'airportParking'}
             <AirportParkingForm
               {content}
               currentLang={$currentLang}
               on:bookingComplete={handleBookingComplete}
             />
           {:else if selectedService === 'carWash'}
-            {content}
+            <CarWashForm  {content}
               currentLang={$currentLang}
               on:bookingComplete={handleBookingComplete}
-            />
-          {:else if selectedService === 'autoService'}
+            /> {:else if selectedService === 'autoService'}
             <AutoServiceForm
               {content}
               currentLang={$currentLang}
