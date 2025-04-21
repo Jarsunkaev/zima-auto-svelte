@@ -1,5 +1,5 @@
 <script>
-  import { onMount, createEventDispatcher } from 'svelte';
+  import { onMount, createEventDispatcher, beforeUpdate, afterUpdate } from 'svelte';
   import { currentLang } from '../lib/i18n'; // Assuming this store provides 'hu' or 'en'
 
   // Component props
@@ -13,12 +13,12 @@
   export let calculateDays; // Function passed from parent to calculate duration
   export let content; // Object with localized strings
 
-  // Initialize event dispatcher
+  // Initialize event dispatcher - important for sending price data back to parent
   const dispatch = createEventDispatcher();
 
-  // --- Pricing Data (Keep this updated based on your services page) ---
+  // --- Pricing Data (Matching the pricing from the Services page) ---
 
-  // Parking price tiers (Assuming these are TOTAL prices for the duration)
+  // Parking price tiers (TOTAL prices for the duration, not daily rates)
   const parkingPrices = [
     // { days: N, normal: TOTAL_NORMAL_PRICE, discount: TOTAL_DISCOUNT_PRICE }
     { days: 1, normal: 7500, discount: 5500 },
@@ -71,10 +71,22 @@
   let totalPrice = 0;
   let hasValidDates = false; // To control error message visibility
 
-  // --- Core Calculation Logic ---
+  // Function to dispatch updated prices to parent component
+  function dispatchPriceUpdate() {
+    dispatch('priceUpdated', {
+      parkingDays: currentDays,
+      parkingTotal: parkingTotal,
+      carWashStandard: carWashStandardPrice,
+      carWashDiscount: carWashDiscountAmount,
+      carWashDiscounted: carWashDiscountedPrice,
+      totalPrice: totalPrice,
+      hasValidDates: hasValidDates,
+      isValidDuration: currentDays > 0
+    });
+  }
 
-  // Recalculate everything whenever relevant form data changes
-  $: {
+  // --- Core Calculation Logic ---
+  function calculatePrices() {
     // Defensive check: Ensure calculateDays is a function before calling
     if (typeof calculateDays === 'function') {
       currentDays = calculateDays();
@@ -92,14 +104,13 @@
     } else {
       let priceTier;
       // Find the price tier for the calculated number of days
-      // The array index is days - 1 because arrays are 0-indexed
       if (currentDays <= parkingPrices.length) {
         priceTier = parkingPrices[currentDays - 1];
       } else {
         // If duration exceeds max defined days, use the price for the last defined tier
         priceTier = parkingPrices[parkingPrices.length - 1];
       }
-      // Use the discount price for that duration (assuming prices are total, not per day)
+      // Use the discount price for that duration (these are total prices, not per day)
       parkingTotal = priceTier ? priceTier.discount : 0;
     }
 
@@ -121,20 +132,21 @@
     // --- Calculate Total Price ---
     totalPrice = parkingTotal + carWashDiscountedPrice;
 
-    // --- Dispatch Event with Updated Prices ---
-    // This allows parent components to access the detailed breakdown
-    dispatch('priceUpdated', {
-      parkingDays: currentDays,
-      parkingTotal: parkingTotal,
-      carWashStandard: carWashStandardPrice,
-      carWashDiscount: carWashDiscountAmount,
-      carWashDiscounted: carWashDiscountedPrice,
-      totalPrice: totalPrice,
-      hasValidDates: hasValidDates, // Pass validity status
-      isValidDuration: currentDays > 0 // Pass duration validity
-    });
+    // Dispatch the calculated prices to the parent component
+    dispatchPriceUpdate();
+  }
 
-  } // End of reactive block $:
+  // Recalculate when form data changes
+  $: {
+    if (formData) {
+      calculatePrices();
+    }
+  }
+
+  // Also calculate on component mount
+  onMount(() => {
+    calculatePrices();
+  });
 
   // --- Formatting Function ---
   function formatCurrency(amount) {
@@ -165,6 +177,10 @@
     }
   }
 
+  // Make sure we update prices after any UI update
+  afterUpdate(() => {
+    dispatchPriceUpdate();
+  });
 </script>
 
 <div class="price-summary">

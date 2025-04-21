@@ -7,8 +7,116 @@ export const content = {
       subtitle: 'Foglaljon időpontot szolgáltatásainkra gyorsan és egyszerűen',
       serviceSelection: {
         title: 'VÁLASSZON SZOLGÁLTATÁST',
-        description: 'Válassza ki a kívánt szolgáltatást az alábbi opciók közül',
-      en: {
+        description: 'Válassza ki a kívánt szolgáltatást az alábbi opciók közül'
+      },
+      services: {
+        airportParking: {
+          title: 'REPTÉRI PARKOLÁS',
+          description: 'Biztonságos parkolás a repülőtér közelében, 24/7 felügyelettel'
+        },
+        carWash: {
+          title: 'AUTÓMOSÓ',
+          description: 'Professzionális autómosó szolgáltatások'
+        },
+        autoService: {
+          title: 'AUTÓSZERVIZ',
+          description: 'Teljes körű autószerviz és karbantartás'
+        },
+        tireService: {
+          title: 'GUMISZERVIZ',
+          description: 'Gumiabroncs csere, javítás és tárolás'
+        }
+      },
+      bookingForm: {
+        airportParking: {
+          title: 'REPTÉRI PARKOLÁS FOGLALÁS',
+          dateRange: 'Parkolási időszak',
+          startDate: 'Érkezési dátum',
+          startTime: 'Érkezési idő',
+          endDate: 'Távozási dátum',
+          endTime: 'Távozási idő',
+          licensePlate: 'Rendszám',
+          licensePlateRequired: 'A rendszám megadása kötelező',
+          totalPrice: 'Teljes összeg',
+          days: 'nap',
+          passengers: 'Utasok száma',
+          passengersRequired: 'Az utasok számának megadása kötelező',
+          addCarWash: 'Szeretne kedvezményes autómosást a parkolással?',
+          carWashOptions: {
+            title: 'Autómosó csomag',
+            none: 'Nem kérek',
+            smartInteriorExterior: 'SMART - Belső és Külső (8900 Ft)',
+            premiumInteriorExterior: 'PRÉMIUM - Belső és Külső (12000 Ft)'
+          },
+          parkingTotal: 'Parkolás díj',
+          carWashStandard: 'Autómosó díj (alap)',
+          carWashDiscount: 'Autómosó kedvezmény (20%)',
+          carWashDiscounted: 'Autómosó díj (kedvezményes)'
+        },
+        carWash: {
+          title: 'AUTÓMOSÓ IDŐPONTFOGLALÁS',
+          date: 'Válasszon dátumot',
+          time: 'Válasszon időpontot'
+        },
+        autoService: {
+          title: 'AUTÓSZERVIZ IDŐPONTFOGLALÁS',
+          date: 'Válasszon dátumot',
+          time: 'Válasszon időpontot',
+          serviceType: 'Szerviz típusa',
+          serviceOptions: {
+            maintenance: 'Általános karbantartás',
+            repair: 'Javítás',
+            diagnostic: 'Diagnosztika',
+            other: 'Egyéb'
+          },
+          description: 'Probléma leírása (opcionális)'
+        },
+        tireService: {
+          title: 'GUMISZERVIZ IDŐPONTFOGLALÁS',
+          date: 'Válasszon dátumot',
+          time: 'Válasszon időpontot',
+          serviceType: 'Szolgáltatás típusa',
+          serviceOptions: {
+            change: 'Gumiabroncs csere',
+            repair: 'Javítás',
+            balancing: 'Kerékkiegyensúlyozás',
+            storage: 'Gumitárolás'
+          }
+        },
+        personalInfo: {
+          title: 'SZEMÉLYES ADATOK',
+          firstName: 'Keresztnév',
+          firstNameRequired: 'Keresztnév megadása kötelező',
+          lastName: 'Vezetéknév',
+          lastNameRequired: 'Vezetéknév megadása kötelező',
+          email: 'Email cím',
+          emailInvalid: 'Érvénytelen email cím',
+          phone: 'Telefonszám',
+          phoneRequired: 'Telefonszám megadása kötelező',
+          phoneInvalid: 'Érvénytelen telefonszám'
+        },
+        submit: 'FOGLALÁS MEGERŐSÍTÉSE',
+        processing: 'Feldolgozás...',
+        timeSlots: {
+          morning: 'Délelőtt',
+          afternoon: 'Délután'
+        },
+        selectTimeSlot: 'Válasszon időpontot'
+      },
+      confirmation: {
+        title: 'FOGLALÁS MEGERŐSÍTVE',
+        subtitle: 'Köszönjük a foglalását!',
+        details: 'Foglalás részletei',
+        service: 'Szolgáltatás',
+        date: 'Dátum',
+        time: 'Időpont',
+        name: 'Név',
+        contactInfo: 'Elérhetőség',
+        emailSent: 'A foglalás részleteit elküldtük az email címére.',
+        return: 'Vissza a főoldalra'
+      }
+    },
+    en: {
       title: 'BOOKING',
       subtitle: 'Book our services quickly and easily',
       serviceSelection: {
@@ -122,112 +230,4 @@ export const content = {
         return: 'Return to homepage'
       }
     }
-  },
-      services: {
-        airportParking: {
-          title: 'REPTÉRI PARKOLÁS',
-          description: 'Biztonságos parkolás a repülőtér közelében, 24/7 felügyelettel'
-        },
-        carWash: {
-          title: 'AUTÓMOSÓ',
-          description: 'Professzionális autómosó szolgáltatások'
-        },
-        autoService: {
-          title: 'AUTÓSZERVIZ',
-          description: 'Teljes körű autószerviz és karbantartás'
-        },
-        tireService: {
-          title: 'GUMISZERVIZ',
-          description: 'Gumiabroncs csere, javítás és tárolás'
-        }
-      },
-      bookingForm: {
-        airportParking: {
-          title: 'REPTÉRI PARKOLÁS FOGLALÁS',
-          dateRange: 'Parkolási időszak',
-          startDate: 'Érkezési dátum',
-          startTime: 'Érkezési idő',
-          endDate: 'Távozási dátum',
-          endTime: 'Távozási idő',
-          licensePlate: 'Rendszám',
-          licensePlateRequired: 'A rendszám megadása kötelező',
-          totalPrice: 'Teljes összeg',
-          days: 'nap',
-          passengers: 'Utasok száma',
-          passengersRequired: 'Az utasok számának megadása kötelező',
-          addCarWash: 'Szeretne kedvezményes autómosást a parkolással?',
-          carWashOptions: {
-            title: 'Autómosó csomag',
-            none: 'Nem kérek',
-            smartInteriorExterior: 'SMART - Belső és Külső (8900 Ft)',
-            premiumInteriorExterior: 'PRÉMIUM - Belső és Külső (12000 Ft)'
-          },
-          parkingTotal: 'Parkolás díj',
-          carWashStandard: 'Autómosó díj (alap)',
-          carWashDiscount: 'Autómosó kedvezmény (20%)',
-          carWashDiscounted: 'Autómosó díj (kedvezményes)'
-        },
-        carWash: {
-          title: 'AUTÓMOSÓ IDŐPONTFOGLALÁS',
-          date: 'Válasszon dátumot',
-          time: 'Válasszon időpontot'
-        },
-        autoService: {
-          title: 'AUTÓSZERVIZ IDŐPONTFOGLALÁS',
-          date: 'Válasszon dátumot',
-          time: 'Válasszon időpontot',
-          serviceType: 'Szerviz típusa',
-          serviceOptions: {
-            maintenance: 'Általános karbantartás',
-            repair: 'Javítás',
-            diagnostic: 'Diagnosztika',
-            other: 'Egyéb'
-          },
-          description: 'Probléma leírása (opcionális)'
-        },
-        tireService: {
-          title: 'GUMISZERVIZ IDŐPONTFOGLALÁS',
-          date: 'Válasszon dátumot',
-          time: 'Válasszon időpontot',
-          serviceType: 'Szolgáltatás típusa',
-          serviceOptions: {
-            change: 'Gumiabroncs csere',
-            repair: 'Javítás',
-            balancing: 'Kerékkiegyensúlyozás',
-            storage: 'Gumitárolás'
-          }
-        },
-        personalInfo: {
-          title: 'SZEMÉLYES ADATOK',
-          firstName: 'Keresztnév',
-          firstNameRequired: 'Keresztnév megadása kötelező',
-          lastName: 'Vezetéknév',
-          lastNameRequired: 'Vezetéknév megadása kötelező',
-          email: 'Email cím',
-          emailInvalid: 'Érvénytelen email cím',
-          phone: 'Telefonszám',
-          phoneRequired: 'Telefonszám megadása kötelező',
-          phoneInvalid: 'Érvénytelen telefonszám'
-        },
-        submit: 'FOGLALÁS MEGERŐSÍTÉSE',
-        processing: 'Feldolgozás...',
-        timeSlots: {
-          morning: 'Délelőtt',
-          afternoon: 'Délután'
-        },
-        selectTimeSlot: 'Válasszon időpontot'
-      },
-      confirmation: {
-        title: 'FOGLALÁS MEGERŐSÍTVE',
-        subtitle: 'Köszönjük a foglalását!',
-        details: 'Foglalás részletei',
-        service: 'Szolgáltatás',
-        date: 'Dátum',
-        time: 'Időpont',
-        name: 'Név',
-        contactInfo: 'Elérhetőség',
-        emailSent: 'A foglalás részleteit elküldtük az email címére.',
-        return: 'Vissza a főoldalra'
-      }
-    }
-    };
+};

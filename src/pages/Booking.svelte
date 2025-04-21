@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import { currentLang } from '../lib/i18n';
-  
+
   // Import component parts
   import ServiceSelection from '../components/ServiceSelection.svelte';
   import AirportParkingForm from '../components/AirportParkingForm.svelte';
@@ -10,20 +10,27 @@
   import TireServiceForm from '../components/TireServiceForm.svelte';
   import BookingConfirmation from '../components/BookingConfirmation.svelte';
 
-  // Import translations
-  import { content } from '../lib/booking-content.js';
+  // Import translations - KEEPING YOUR ORIGINAL IMPORT
+  // NOTE: Ensure this path is correct and booking-content.js exists or is handled
+  import { content } from '../lib/i18n/booking-content';
 
   // State variables
   let currentStep = 1;
   let selectedService = null;
   let showConfirmation = false;
   let bookingDetails = {};
-  
+  let isSubmitting = false; // <-- Added for submission state
+  let submitError = null; // <-- Added for submission error message
+
+  // Define the backend API URL (use an environment variable in your Svelte frontend build for production)
+  // For development, use the URL your Node.js backend server is running on
+  const backendApiUrl = 'http://localhost:3001/api/send-booking-emails'; // <-- Your separate Node.js backend URL
+
   // Handle service selection
   function selectService(service) {
     selectedService = service;
     currentStep = 2;
-    
+
     // Scroll to the form section
     setTimeout(() => {
       const bookingFormSection = document.querySelector('.booking-form-section');
@@ -35,10 +42,13 @@
       }
     }, 50);
   }
-  
+
   // Go back to service selection
   function goBack() {
     currentStep = 1;
+    selectedService = null; // Reset selected service when going back
+    submitError = null; // <-- Clear error on back
+    isSubmitting = false; // <-- Clear submitting state
     // Scroll to service selection
     setTimeout(() => {
       const serviceSelectionSection = document.querySelector('.service-selection-section');
@@ -50,18 +60,56 @@
       }
     }, 50);
   }
-  
-  // Handle form submission result
-  function handleBookingComplete(event) {
-    bookingDetails = event.detail;
-    showConfirmation = true;
+
+  // Handle form submission result - MODIFIED TO INCLUDE BACKEND FETCH
+  async function handleBookingComplete(event) { // <-- Made function async
+    // event.detail should contain the form data from the completed step
+    // Assume event.detail has all the necessary booking data for the backend
+    const finalBookingData = event.detail;
+
+    isSubmitting = true; // <-- Indicate submission started
+    submitError = null; // <-- Clear previous errors
+    showConfirmation = false; // Hide confirmation while submitting
+
+    try {
+      // Send data to the Node.js backend server
+      const response = await fetch(backendApiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(finalBookingData)
+      });
+
+      const result = await response.json(); // Get the JSON response from backend
+
+      if (response.ok) { // Check for HTTP status 2xx
+        console.log('Booking process successful:', result);
+        bookingDetails = finalBookingData; // Use the data sent for confirmation display
+        showConfirmation = true; // <-- Show the success confirmation screen AFTER backend success
+      } else {
+        // Handle backend errors (status code not 2xx)
+        console.error('Booking process failed on backend:', result.message);
+        submitError = result.message || 'An error occurred during booking processing.'; // <-- Set error message
+        // Don't show confirmation, error message will be displayed
+      }
+
+    } catch (error) {
+      console.error('Error submitting booking request:', error);
+      submitError = 'An error occurred while connecting to the server.'; // <-- Set generic error for network issues etc.
+      // Don't show confirmation, error message will be displayed
+    } finally {
+      isSubmitting = false; // <-- Submission finished (success or failure)
+    }
   }
-  
+
   // Reset booking to start
   function resetBooking() {
     selectedService = null;
     currentStep = 1;
     showConfirmation = false;
+    submitError = null; // <-- Clear error state on reset
+    isSubmitting = false; // <-- Clear submitting state on reset
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
@@ -75,16 +123,16 @@
 
 {#if !showConfirmation}
   {#if currentStep === 1}
-    <ServiceSelection 
-      {content} 
-      currentLang={$currentLang} 
-      onSelectService={selectService} 
+    <ServiceSelection
+      {content}
+      currentLang={$currentLang}
+      onSelectService={selectService}
     />
   {:else if currentStep === 2}
     <section class="booking-form-section">
       <div class="container">
         <div class="booking-header">
-          <button class="back-button" on:click={goBack}>
+          <button class="back-button" on:click={goBack} disabled={isSubmitting}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
@@ -92,34 +140,39 @@
           </button>
 
           <h2 class="form-title">
-            {content[$currentLang].bookingForm[selectedService].title}
+             {content[$currentLang].bookingForm[selectedService].title}
           </h2>
         </div>
 
         <div class="booking-form-container">
-          {#if selectedService === 'airportParking'}
-            <AirportParkingForm 
-              {content} 
-              currentLang={$currentLang} 
-              on:bookingComplete={handleBookingComplete} 
+          {#if submitError}
+            <p class="error-message">{submitError}</p>
+          {/if}
+
+          {#if isSubmitting}
+            <p class="submitting-message">Processing booking, please wait...</p>
+            {:else if selectedService === 'airportParking'}
+            <AirportParkingForm
+              {content}
+              currentLang={$currentLang}
+              on:bookingComplete={handleBookingComplete}
             />
           {:else if selectedService === 'carWash'}
-            <CarWashForm 
-              {content} 
-              currentLang={$currentLang} 
-              on:bookingComplete={handleBookingComplete} 
+            {content}
+              currentLang={$currentLang}
+              on:bookingComplete={handleBookingComplete}
             />
           {:else if selectedService === 'autoService'}
-            <AutoServiceForm 
-              {content} 
-              currentLang={$currentLang} 
-              on:bookingComplete={handleBookingComplete} 
+            <AutoServiceForm
+              {content}
+              currentLang={$currentLang}
+              on:bookingComplete={handleBookingComplete}
             />
           {:else if selectedService === 'tireService'}
-            <TireServiceForm 
-              {content} 
-              currentLang={$currentLang} 
-              on:bookingComplete={handleBookingComplete} 
+            <TireServiceForm
+              {content}
+              currentLang={$currentLang}
+              on:bookingComplete={handleBookingComplete}
             />
           {/if}
         </div>
@@ -127,15 +180,44 @@
     </section>
   {/if}
 {:else}
-  <BookingConfirmation 
-    bookingDetails={bookingDetails} 
-    {content} 
-    currentLang={$currentLang} 
-    resetBooking={resetBooking} 
+  <BookingConfirmation
+    bookingDetails={bookingDetails}
+    {content}
+    currentLang={$currentLang}
+    resetBooking={resetBooking}
   />
 {/if}
 
 <style>
+  /* Add basic styles for error/submitting messages */
+  .error-message {
+      color: #dc3545; /* Red color */
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+  }
+   .submitting-message {
+      color: #007bff; /* Blue color */
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+  }
+
+  /* Disable button when submitting */
+  .back-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+  }
+
+   /* Restore hover/focus styles for non-disabled state */
+   .back-button:hover:not(:disabled),
+   .back-button:focus:not(:disabled) {
+     color: var(--primary);
+     transform: translateX(-5px);
+     outline: none;
+   }
+
+
   /* Booking Hero Section */
   .booking-hero {
     background-color: var(--secondary);
@@ -182,12 +264,6 @@
     padding: 0.5rem 0;
   }
 
-  .back-button:hover,
-  .back-button:focus {
-    color: var(--primary);
-    transform: translateX(-5px);
-    outline: none;
-  }
 
   .form-title {
     margin-left: 2rem;

@@ -1,5 +1,7 @@
-// src/lib/i18n/hu.js
 export default {
+  common: { // Added common section
+    back: "Vissza"
+  },
   nav: {
     home: "FŐOLDAL",
     booking: "FOGLALÁS",
@@ -14,7 +16,16 @@ export default {
   },
   booking: {
     title: "FOGLALJON HELYET",
-    button: "Reptéri Parkolás Foglalása"
+    button: "Reptéri Parkolás Foglalása",
+    // --- New Booking Page Content ---
+    content: {
+      sectionTitle: "Reptéri Parkolás Foglalás Részletei",
+      paragraph1: "Üdvözöljük online foglalási rendszerünkben. Kérjük, adja meg az alábbi szükséges információkat, hogy lefoglalhassa parkolóhelyét a Zima Auto reptér melletti létesítményében.",
+      paragraph2: "Telephelyünk csak percekre található a repülőtértől, biztonságos és kényelmes parkolási megoldást kínálva utazásához.",
+      paragraph3: "Kérésének elküldése után visszaigazoló e-mailt fog kapni a foglalás minden részletével, beleértve az útvonaltervet és a bejelentkezési eljárásokat.",
+      note: "Ha bármilyen különleges kérése van vagy segítségre van szüksége, kérjük, lépjen kapcsolatba velünk közvetlenül."
+    }
+    // --- End New Content ---
   },
   services: {
     title: "SZOLGÁLTATÁSOK",
@@ -27,7 +38,7 @@ export default {
       description: "Ajándékozza meg járművét egy fürdőnappal professzionális autómosó szolgáltatásainkkal, amelyek célja, hogy autója csillogóan tisztán és fiatalon maradjon."
     },
     tire: {
-      title: "GUMISZERIVZ",
+      title: "GUMISZERVIZ", // Fixed typo from previous hu.js 'GUMISZERIVZ'
       description: "Szakértő technikusaink készen állnak az abroncsokkal kapcsolatos bármilyen probléma azonnali megoldására, és biztonságosan visszatérni az útra."
     },
     service: {
