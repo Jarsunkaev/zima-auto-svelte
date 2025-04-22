@@ -127,16 +127,16 @@
         </div>
       </div>
       
-      <!-- Time Slot Selector Component -->
+      <!-- Replace the existing TimeSlotSelector component with this -->
       <TimeSlotSelector 
         selectedTime={formData.bookingTime} 
         content={content} 
         currentLang={currentLang} 
         errorMessage={formErrors.bookingTime}
         formType="carWash"
+        date={formData.bookingDate}
         on:timeSelected={handleTimeSelected}
       />
-    </div>
     
     <!-- Personal Info Form Component -->
     <PersonalInfoForm 

@@ -155,17 +155,19 @@
       </div>
     </div>
   
+    <!-- Replace the existing TimeSlotSelector component with this -->
     <div class="time-slot-container" class:error={errors.time}>
-      <TimeSlotSelector
+        <TimeSlotSelector
         selectedTime={formData.time}
         {content}
         {currentLang}
         formType="tireService"
+        date={formData.date}
         on:timeSelected={handleTimeSelected}
-      />
-      {#if errors.time}
+        />
+        {#if errors.time}
         <p class="error-message">{errors.time}</p>
-      {/if}
+        {/if}
     </div>
   
     <div class="form-section">

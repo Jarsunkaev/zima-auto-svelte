@@ -153,18 +153,20 @@
       </div>
     </div>
   
-    <div class="time-slot-container" class:error={errors.time}>
-      <TimeSlotSelector
-        selectedTime={formData.time}
-        {content}
-        {currentLang}
-        formType="autoService"
-        on:timeSelected={handleTimeSelected}
-      />
-      {#if errors.time}
-        <p class="error-message">{errors.time}</p>
-      {/if}
-    </div>
+    <!-- Replace the existing TimeSlotSelector component with this -->
+        <div class="time-slot-container" class:error={errors.time}>
+            <TimeSlotSelector
+            selectedTime={formData.time}
+            {content}
+            {currentLang}
+            formType="autoService"
+            date={formData.date}
+            on:timeSelected={handleTimeSelected}
+            />
+            {#if errors.time}
+            <p class="error-message">{errors.time}</p>
+            {/if}
+        </div>
   
     <div class="form-section">
       <h3>{content[currentLang].bookingForm.personalInfo.title}</h3>
