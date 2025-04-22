@@ -37,19 +37,19 @@
         items: [
           {
             title: 'Kényelem',
-            text: 'Spóroljon meg időt és energiát, egy helyen elérve minden autóápolási szolgáltatást.'
+            text: 'Minden autóápolási szolgáltatás egy helyen, időt és energiát megtakarítva.'
           },
           {
             title: 'Szakértelem',
-            text: 'Használja ki széleskörű iparági tapasztalatunkat és szakértelmünket, hogy járműve számára a legjobb szolgáltatást biztosíthassuk.'
+            text: 'Több mint 10 év tapasztalat és szakértelem a járműve legjobb ellátásához.'
           },
           {
             title: 'Minőség',
-            text: 'Minden tevékenységünkben ragaszkodunk a legmagasabb minőségi és szakmai szabványokhoz, ezzel is biztosítva ügyfeleink teljes elégedettségét.'
+            text: 'A legmagasabb minőségi és szakmai szabványok betartása minden szolgáltatásunknál.'
           },
           {
             title: 'Nyugalom',
-            text: 'A Zima Autó Kft. kiváló elhelyezkedése, széleskörű szolgáltatási kínálata, biztonságos parkoló létesítménye, ingyenes repülőtéri transzfere, a parkolóhelyek bőséges volta, a rugalmas fizetési lehetőségek és versenyképes áraink biztosítják, hogy megbízhasson a Zima Autó Kft-ben, hogy járműve mindvégig a legjobb kezekben lesz, miközben Ön a legfontosabb dolgaival van elfoglalva.'
+            text: 'Biztonságos parkoló, ingyenes repülőtéri transzfer és versenyképes árak.'
           }
         ]
       },
@@ -94,19 +94,19 @@
         items: [
           {
             title: 'Convenience',
-            text: 'Save time and effort by accessing all your car care services in one convenient location.'
+            text: 'All car care services in one place, saving you time and effort.'
           },
           {
             title: 'Expertise',
-            text: 'Benefit from our extensive industry experience and technical know-how to ensure top-notch service for your vehicle.'
+            text: 'Over 10 years of experience and expertise in vehicle care.'
           },
           {
             title: 'Quality',
-            text: 'We adhere to the highest standards of quality and professionalism in everything we do, ensuring your complete satisfaction.'
+            text: 'Adherence to the highest quality and professional standards.'
           },
           {
             title: 'Peace of Mind',
-            text: 'With our prime location near the Budapest Airport at Vecsés, comprehensive range of services, secure parking facility, complimentary airport transfers, ample parking space, flexible payment options, and competitive prices, you can trust Zima Auto Kft to take care of your vehicle while you focus on what matters most.'
+            text: 'Secure parking, free airport transfers, and competitive prices.'
           }
         ]
       },
@@ -221,7 +221,7 @@
   <div class="container">
     <div class="about-grid reverse">
       <div class="about-image">
-        <img src="images/car-wash.jpg" alt="Car Wash Service" />
+        <img src="images/map.avif" alt="Car Wash Service" />
       </div>
       <div class="about-content">
         <h2>{content[$currentLang].mission.title}</h2>
@@ -234,6 +234,18 @@
 <section class="about-section values-section">
   <div class="container">
     <h2 class="section-title">{content[$currentLang].values.title}</h2>
+
+    <div class="video-container">
+      <div class="video-wrapper">
+        <iframe 
+          src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
+          title="Why Choose Zima Auto"
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
 
     <div class="values-grid">
       {#each content[$currentLang].values.items as value, index}
@@ -267,13 +279,11 @@
               </ul>
           </div>
           <div class="about-image">
-              <img src="images/auto-service.jpg" alt="Auto Service" />
+              <img src="images/workshop2.jpg" alt="Auto Service" />
           </div>
       </div>
 
-      <div class="about-grid reverse">
-          <div class="about-image">
-               <img src="images/team-image.jpg" alt="Zima Auto Team" /> </div>
+      <div class="about-grid reverse">      
           <div class="about-content">
               <h3>{content[$currentLang].offerings.block2.paymentOptionsTitle}</h3>
               <p>{content[$currentLang].offerings.block2.paymentOptionsText}</p>
@@ -348,9 +358,7 @@
   }
 
 
-  .about-grid.reverse {
-    direction: rtl;
-  }
+  
 
   .about-grid.reverse .about-content {
     direction: ltr; /* Reset text direction */
@@ -428,10 +436,12 @@
     border-radius: 10px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     height: 100%;
-    min-height: 300px; /* Ensure minimum height on desktop */
-    display: flex; /* Use flex to center image if needed */
+    min-height: 300px;
+    display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
   }
 
   .about-image img {
@@ -478,17 +488,19 @@
     background-color: white;
     padding: 2.5rem 2rem;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+    border: 1px solid rgba(0, 186, 229, 0.1);
   }
 
   .values-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 186, 229, 0.3);
   }
 
   .values-number {
@@ -497,14 +509,14 @@
     right: 10px;
     font-size: 3rem;
     font-weight: 800;
-    color: rgba(0, 186, 229, 0.1);
+    color: rgba(0, 186, 229, 0.15);
     transition: all 0.3s ease;
     line-height: 1;
-    z-index: 0; /* Ensure it's behind text */
+    z-index: 0;
   }
 
   .values-card:hover .values-number {
-    color: rgba(0, 186, 229, 0.2);
+    color: rgba(0, 186, 229, 0.25);
     transform: scale(1.2);
   }
 
@@ -512,14 +524,18 @@
     font-size: 1.3rem;
     margin-bottom: 1rem;
     color: var(--primary);
-    z-index: 1; /* Ensure text is above the number */
+    z-index: 1;
     position: relative;
+    font-weight: 600;
   }
 
   .values-card p {
-    color: var(--text-light);
+    color: var(--text);
     line-height: 1.6;
     flex-grow: 1;
+    font-size: 1.05rem;
+    z-index: 1;
+    position: relative;
   }
 
   /* Styles for the Offerings section (formerly team-section) */
@@ -651,7 +667,7 @@
               width: 40px; /* Shorter underline */
          }
         .values-card {
-            padding: 1.5rem 1rem;
+            padding: 1.5rem 1.2rem;
         }
          .values-card h3 {
              font-size: 1.1rem;
@@ -668,6 +684,102 @@
           }
            .about-section {
               padding: 2rem 1rem; /* Smaller padding for sections */
+              margin-bottom: 4rem;
            }
    }
+
+  /* Video Container Styles */
+  .video-container {
+    margin: 3rem auto;
+    max-width: 800px;
+  }
+
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  /* Adjust values grid margin when video is present */
+  .values-grid {
+    margin-top: 3rem;
+  }
+
+  /* Responsive Styles for Video */
+  @media screen and (max-width: 992px) {
+    .video-container {
+      margin: 2rem auto;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .video-container {
+      margin: 1.5rem auto;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .video-container {
+      margin: 1rem auto;
+    }
+  }
+
+  /* Specific style for the workshop image */
+  .offerings-section .about-image {
+    max-width: 500px;
+    min-height: 250px;
+  }
+
+  .offerings-section .about-image img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Adjust text alignment in the offerings section */
+  .offerings-section .about-content {
+    text-align: left;
+  }
+
+  .offerings-section .about-content h3 {
+    text-align: left;
+    margin-left: 0;
+  }
+
+  .offerings-section .about-content p {
+    text-align: left;
+  }
+
+  /* Responsive adjustments */
+  @media screen and (max-width: 992px) {
+    .offerings-section .about-image {
+      max-width: 450px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .offerings-section .about-image {
+      max-width: 400px;
+      min-height: 200px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .offerings-section .about-image {
+      max-width: 350px;
+      min-height: 180px;
+    }
+  }
 </style>

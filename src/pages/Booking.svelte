@@ -19,17 +19,19 @@
   let selectedService = null;
   let showConfirmation = false;
   let bookingDetails = {};
-  let isSubmitting = false; // <-- Added for submission state
-  let submitError = null; // <-- Added for submission error message
+  let isSubmitting = false;
+  let submitError = null;
+  let submitSuccess = false;
 
-  // Define the backend API URL (use an environment variable in your Svelte frontend build for production)
-  // For development, use the URL your Node.js backend server is running on
-  const backendApiUrl = 'http://localhost:3001/api/send-booking-emails'; // <-- Your separate Node.js backend URL
+  // Define the backend API URL
+  const backendApiUrl = 'http://localhost:3001/api/send-booking-emails';
 
   // Handle service selection
   function selectService(service) {
     selectedService = service;
     currentStep = 2;
+    submitError = null;
+    submitSuccess = false;
 
     // Scroll to the form section
     setTimeout(() => {
@@ -61,45 +63,45 @@
     }, 50);
   }
 
-  // Handle form submission result - MODIFIED TO INCLUDE BACKEND FETCH
-  async function handleBookingComplete(event) { // <-- Made function async
-    // event.detail should contain the form data from the completed step
-    // Assume event.detail has all the necessary booking data for the backend
+  // Handle form submission result
+  async function handleBookingComplete(event) {
     const finalBookingData = event.detail;
-
-    isSubmitting = true; // <-- Indicate submission started
-    submitError = null; // <-- Clear previous errors
-    showConfirmation = false; // Hide confirmation while submitting
+    isSubmitting = true;
+    submitError = null;
+    submitSuccess = false;
+    showConfirmation = false;
 
     try {
-      // Send data to the Node.js backend server
+      // Add admin email to the booking data
+      const bookingDataWithAdmin = {
+        ...finalBookingData,
+        adminEmail: 'jarsunkaev@gmail.com'
+      };
+
       const response = await fetch(backendApiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(finalBookingData)
+        body: JSON.stringify(bookingDataWithAdmin)
       });
 
-      const result = await response.json(); // Get the JSON response from backend
+      const result = await response.json();
 
-      if (response.ok) { // Check for HTTP status 2xx
+      if (response.ok) {
         console.log('Booking process successful:', result);
-        bookingDetails = finalBookingData; // Use the data sent for confirmation display
-        showConfirmation = true; // <-- Show the success confirmation screen AFTER backend success
+        bookingDetails = finalBookingData;
+        showConfirmation = true;
+        submitSuccess = true;
       } else {
-        // Handle backend errors (status code not 2xx)
         console.error('Booking process failed on backend:', result.message);
-        submitError = result.message || 'An error occurred during booking processing.'; // <-- Set error message
-        // Don't show confirmation, error message will be displayed
+        submitError = result.message || 'An error occurred during booking processing.';
       }
-
     } catch (error) {
       console.error('Error submitting booking request:', error);
-      submitError = 'An error occurred while connecting to the server.'; // <-- Set generic error for network issues etc.
-      // Don't show confirmation, error message will be displayed
+      submitError = 'An error occurred while connecting to the server.';
     } finally {
-      isSubmitting = false; // <-- Submission finished (success or failure)
+      isSubmitting = false;
     }
   }
 
@@ -108,8 +110,9 @@
     selectedService = null;
     currentStep = 1;
     showConfirmation = false;
-    submitError = null; // <-- Clear error state on reset
-    isSubmitting = false; // <-- Clear submitting state on reset
+    submitError = null;
+    submitSuccess = false;
+    isSubmitting = false;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
@@ -188,18 +191,26 @@
 {/if}
 
 <style>
-  /* Add basic styles for error/submitting messages */
-  .error-message {
-      color: #dc3545; /* Red color */
-      text-align: center;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
+  /* Add styles for success message */
+  .success-message {
+    color: #28a745;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
   }
-   .submitting-message {
-      color: #007bff; /* Blue color */
-      text-align: center;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
+
+  .error-message {
+    color: #dc3545;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+  }
+
+  .submitting-message {
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
   }
 
   /* Disable button when submitting */
