@@ -83,10 +83,14 @@
         days: formData.days || null,
         licensePlate: formData.licensePlate || '',
         carWashPackage: formData.carWashPackage || 'none',
+        // Include price breakdown for airport parking
+        priceBreakdown: formData.priceBreakdown || null,
+        totalPrice: formData.totalPrice || null,
         // For auto/tire service
         serviceType: formData.serviceType || '',
         carModel: formData.carModel || '',
         notes: formData.notes || '',
+        tireCount: formData.tireCount || null,
         // Always include admin email
         adminEmail: 'jarsunkaev@gmail.com'
       };
