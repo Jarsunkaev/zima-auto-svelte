@@ -10,8 +10,7 @@
   import TireServiceForm from '../components/TireServiceForm.svelte';
   import BookingConfirmation from '../components/BookingConfirmation.svelte';
 
-  // Import translations - KEEPING YOUR ORIGINAL IMPORT
-  // NOTE: Ensure this path is correct and booking-content.js exists or is handled
+  // Import translations 
   import { content } from '../lib/i18n/booking-content';
 
   // State variables
@@ -65,41 +64,63 @@
 
   // Handle form submission result
   async function handleBookingComplete(event) {
-    const finalBookingData = event.detail;
+    const formData = event.detail;
     isSubmitting = true;
     submitError = null;
     submitSuccess = false;
     showConfirmation = false;
 
     try {
-      // Add admin email to the booking data
-      const bookingDataWithAdmin = {
-        ...finalBookingData,
+      // Format data for the email backend
+      const emailData = {
+        service: formData.service,
+        customerName: formData.name,
+        customerEmail: formData.contact.email,
+        customerPhone: formData.contact.phone,
+        date: formData.date,
+        time: formData.time || '',
+        // For airport parking
+        days: formData.days || null,
+        licensePlate: formData.licensePlate || '',
+        carWashPackage: formData.carWashPackage || 'none',
+        // For auto/tire service
+        serviceType: formData.serviceType || '',
+        carModel: formData.carModel || '',
+        notes: formData.notes || '',
+        // Always include admin email
         adminEmail: 'jarsunkaev@gmail.com'
       };
 
+      console.log('Sending booking data to backend:', emailData);
+
+      // Send data to your backend
       const response = await fetch(backendApiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(bookingDataWithAdmin)
+        body: JSON.stringify(emailData)
       });
 
+      // Parse the JSON response
       const result = await response.json();
 
       if (response.ok) {
         console.log('Booking process successful:', result);
-        bookingDetails = finalBookingData;
+        bookingDetails = formData; // Store original form data for display
         showConfirmation = true;
         submitSuccess = true;
       } else {
         console.error('Booking process failed on backend:', result.message);
-        submitError = result.message || 'An error occurred during booking processing.';
+        submitError = result.message || ($currentLang === 'hu' 
+          ? 'Hiba történt a foglalás feldolgozása során.'
+          : 'An error occurred during booking processing.');
       }
     } catch (error) {
       console.error('Error submitting booking request:', error);
-      submitError = 'An error occurred while connecting to the server.';
+      submitError = $currentLang === 'hu'
+        ? 'Hiba történt a szerverhez való kapcsolódás során.'
+        : 'An error occurred while connecting to the server.';
     } finally {
       isSubmitting = false;
     }
@@ -143,7 +164,7 @@
           </button>
 
           <h2 class="form-title">
-             {content[$currentLang].bookingForm[selectedService]?.title}
+             {content[$currentLang].bookingForm[selectedService]?.title || ''}
           </h2>
         </div>
 
@@ -153,7 +174,7 @@
           {/if}
 
           {#if isSubmitting}
-            <p class="submitting-message">Processing booking, please wait...</p>
+            <p class="submitting-message">{$currentLang === 'hu' ? 'Foglalás feldolgozása, kérjük várjon...' : 'Processing booking, please wait...'}</p>
           {:else if selectedService === 'airportParking'}
             <AirportParkingForm
               {content}
@@ -161,10 +182,12 @@
               on:bookingComplete={handleBookingComplete}
             />
           {:else if selectedService === 'carWash'}
-            <CarWashForm  {content}
+            <CarWashForm
+              {content}
               currentLang={$currentLang}
               on:bookingComplete={handleBookingComplete}
-            /> {:else if selectedService === 'autoService'}
+            />
+          {:else if selectedService === 'autoService'}
             <AutoServiceForm
               {content}
               currentLang={$currentLang}
@@ -292,6 +315,16 @@
   }
 
   /* Responsive Styles */
+  @media screen and (max-width: 992px) {
+    .booking-hero h1 {
+      font-size: 2.5rem;
+    }
+
+    .booking-hero p {
+      font-size: 1.1rem;
+    }
+  }
+
   @media screen and (max-width: 768px) {
     .booking-hero h1 {
       font-size: 2.2rem;
