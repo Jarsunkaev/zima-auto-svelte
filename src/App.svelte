@@ -36,6 +36,12 @@
 	
 	// Check for URL hash and navigate accordingly
 	onMount(() => {
+	  // Add Google Fonts link to document head
+      const fontLink = document.createElement('link');
+      fontLink.rel = 'stylesheet';
+      fontLink.href = 'https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap';
+      document.head.appendChild(fontLink);
+      
 	  // Small delay to ensure smooth initial page load
 	  setTimeout(() => {
 	    pageLoading = false;
@@ -119,7 +125,7 @@
     --gray: #cccccc;
     --dark-gray: #888888;
     --transition: all 0.3s ease;
-    --font-family: 'Inter', sans-serif;
+    --font-family: 'Raleway', sans-serif;
   }
   
   :global(*) {
