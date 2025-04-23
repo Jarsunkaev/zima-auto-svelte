@@ -3,6 +3,8 @@
   import { currentLang } from '$lib/i18n';
   import CookieConsent from '$lib/components/CookieConsent.svelte';
   import DiscountPopup from '$lib/components/DiscountPopup.svelte';
+  import Header from '$lib/components/Header.svelte';
+  import Footer from '$lib/components/Footer.svelte';
 
   // Update locale when currentLang changes
   $: if (currentLang) {

@@ -221,30 +221,6 @@
     transform: rotate(90deg);
   }
 
-  .discount-badge {
-    position: absolute;
-    bottom: -20px;
-    right: 30px;
-    background: var(--primary, #00bae5);
-    color: white;
-    padding: 0.7rem 0;
-    font-weight: 800;
-    font-size: 1.2rem;
-    width: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-    transform: rotate(-3deg);
-  }
-
-  .discount-badge span {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  }
-
   .offer-note {
     font-style: italic;
     margin-bottom: 1.5rem;
@@ -284,11 +260,6 @@
 
     p {
       font-size: 1rem;
-    }
-
-    .discount-badge {
-      font-size: 1.2rem;
-      padding: 0.4rem 1.2rem 0.4rem 0.8rem;
     }
   }
 
