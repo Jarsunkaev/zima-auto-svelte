@@ -8,6 +8,7 @@
 	import Services from './pages/Services.svelte';
 	import Contact from './pages/Contact.svelte';
 	import Booking from './pages/Booking.svelte';
+	import Privacy from './pages/Privacy.svelte';
 	import DiscountPopup from './components/DiscountPopup.svelte';
 	import CookieConsent from './components/CookieConsent.svelte';
   
@@ -50,7 +51,7 @@
 	  }, 300);
 	  
 	  const hash = window.location.hash.slice(1);
-	  if (hash && ['home', 'about', 'services', 'contact', 'booking'].includes(hash)) {
+	  if (hash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(hash)) {
 		currentPage = hash;
 	  } else {
 	    // Default to home if no valid hash
@@ -65,7 +66,7 @@
 	  // Listen for hash changes
 	  window.addEventListener('hashchange', () => {
 		const newHash = window.location.hash.slice(1);
-		if (newHash && ['home', 'about', 'services', 'contact', 'booking'].includes(newHash) && newHash !== currentPage) {
+		if (newHash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(newHash) && newHash !== currentPage) {
 		  navigate(newHash);
 		}
 	  });
@@ -103,6 +104,8 @@
       <Contact />
     {:else if currentPage === 'booking'}
       <Booking />
+    {:else if currentPage === 'privacy'}
+      <Privacy />
     {:else}
       <!-- Fallback if no page matches -->
       <div class="error-container">

@@ -1,3 +1,5 @@
+<svelte:options tag={null} />
+
 <script>
   import { onMount } from 'svelte';
   import { currentLang } from '../lib/i18n';

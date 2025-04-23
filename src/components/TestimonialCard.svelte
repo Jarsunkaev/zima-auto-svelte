@@ -1,3 +1,5 @@
+<svelte:options tag={null} />
+
 <script>
   export let name;
   export let location;

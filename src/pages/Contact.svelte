@@ -355,6 +355,28 @@
 </section>
 
 <style>
+  /* Remove unused selectors */
+  .info-content p {
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .info-content p:first-child {
+    margin-top: 0;
+  }
+
+  @media (max-width: 768px) {
+    .info-content p {
+      margin-bottom: 2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .map-section { 
+      height: 300px; 
+    }
+  }
+
   /* Keep existing styles */
   .contact-hero {
     background-color: var(--secondary);
@@ -425,15 +447,6 @@
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
     color: var(--text);
-  }
-
-  .info-content p {
-    color: var(--text);
-    margin-bottom: 1rem;
-  }
-
-  .info-content p:first-child {
-    margin-top: 0;
   }
 
   .contact-form-container {

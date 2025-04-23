@@ -1,3 +1,5 @@
+<svelte:options tag={null} />
+
 <script>
   import { createEventDispatcher } from 'svelte';
   import PersonalInfoForm from './PersonalInfoForm.svelte';

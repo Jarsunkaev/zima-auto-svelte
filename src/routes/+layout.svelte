@@ -1,29 +1,20 @@
 <script>
   import { page } from '$app/stores';
   import { currentLang } from '$lib/i18n';
-  import { addMessages, init, locale } from 'svelte-i18n';
-  import en from '$lib/locales/en.js';
-  import ru from '$lib/locales/ru.js';
   import CookieConsent from '$lib/components/CookieConsent.svelte';
   import DiscountPopup from '$lib/components/DiscountPopup.svelte';
 
-  // Initialize i18n
-  addMessages('en', en);
-  addMessages('ru', ru);
-  init({
-    fallbackLocale: 'en',
-    initialLocale: currentLang
-  });
-
   // Update locale when currentLang changes
   $: if (currentLang) {
-    locale.set(currentLang);
+    // Store the language preference if needed
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('lang', $currentLang);
+    }
   }
 
   // Handle language switch
   function switchLanguage(lang) {
-    currentLang = lang;
-    localStorage.setItem('lang', lang);
+    currentLang.set(lang);
   }
 </script>
 
@@ -45,10 +36,10 @@
     EN
   </button>
   <button 
-    class:active={$currentLang === 'ru'} 
-    on:click={() => switchLanguage('ru')}
+    class:active={$currentLang === 'hu'} 
+    on:click={() => switchLanguage('hu')}
   >
-    RU
+    HU
   </button>
 </div>
 
@@ -85,4 +76,4 @@
     color: white;
     border-color: #333;
   }
-</style> 
+</style>
