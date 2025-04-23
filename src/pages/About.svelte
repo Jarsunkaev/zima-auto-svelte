@@ -248,11 +248,10 @@
     </div>
 
     <div class="values-grid">
-      {#each content[$currentLang].values.items as value, index}
+      {#each content[$currentLang].values.items as item}
         <div class="values-card">
-          <span class="values-number">{index + 1}</span>
-          <h3>{value.title}</h3>
-          <p>{value.text}</p>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
         </div>
       {/each}
     </div>
@@ -480,62 +479,39 @@
 
   .values-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
+    margin-top: 3rem;
   }
 
   .values-card {
-    background-color: white;
-    padding: 2.5rem 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(0, 186, 229, 0.1);
+    z-index: 1;
   }
 
   .values-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    border-color: rgba(0, 186, 229, 0.3);
-  }
-
-  .values-number {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 3rem;
-    font-weight: 800;
-    color: rgba(0, 186, 229, 0.15);
-    transition: all 0.3s ease;
-    line-height: 1;
-    z-index: 0;
-  }
-
-  .values-card:hover .values-number {
-    color: rgba(0, 186, 229, 0.25);
-    transform: scale(1.2);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
   }
 
   .values-card h3 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
     color: var(--primary);
-    z-index: 1;
-    position: relative;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
     font-weight: 600;
   }
 
   .values-card p {
     color: var(--text);
+    font-size: 1rem;
     line-height: 1.6;
-    flex-grow: 1;
-    font-size: 1.05rem;
-    z-index: 1;
-    position: relative;
+    margin: 0;
   }
 
   /* Styles for the Offerings section (formerly team-section) */

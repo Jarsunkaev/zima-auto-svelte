@@ -8,6 +8,8 @@
 	import Services from './pages/Services.svelte';
 	import Contact from './pages/Contact.svelte';
 	import Booking from './pages/Booking.svelte';
+	import DiscountPopup from './components/DiscountPopup.svelte';
+	import CookieConsent from './components/CookieConsent.svelte';
   
 	// Page routing
 	let currentPage = 'home';
@@ -111,6 +113,8 @@
   </main>
 
   <Footer {navigate} />
+  <CookieConsent />
+  <DiscountPopup />
 </div>
 
 <style>

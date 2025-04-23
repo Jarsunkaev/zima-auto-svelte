@@ -1,4 +1,20 @@
 export default {
+  cookieConsent: {
+    title: "Cookie Settings",
+    message: "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking 'Accept', you consent to our use of cookies.",
+    accept: "Accept",
+    decline: "Decline",
+    categories: {
+      necessary: "Necessary Cookies",
+      necessaryDesc: "These cookies are required for the website to function and cannot be switched off. They are usually only set in response to actions made by you.",
+      analytics: "Analytics Cookies",
+      analyticsDesc: "These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously.",
+      marketing: "Marketing Cookies",
+      marketingDesc: "These cookies are used to track visitors across websites to display relevant advertisements.",
+      preferences: "Preference Cookies",
+      preferencesDesc: "These cookies allow the website to remember choices you make and provide enhanced, more personal features."
+    }
+  },
   common: { // Added common section
     back: "Back"
   },

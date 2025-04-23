@@ -2,6 +2,13 @@ export default {
   common: { // Added common section
     back: "Vissza"
   },
+  cookieConsent: {
+    title: "Cookie-k használata",
+    message: "Weboldalunk cookie-kat használ a felhasználói élmény javítása érdekében. A weboldal használatával elfogadja a cookie-k használatát.",
+    accept: "Elfogadom",
+    decline: "Elutasítom",
+    learnMore: "További információ"
+  },
   nav: {
     home: "FŐOLDAL",
     booking: "FOGLALÁS",

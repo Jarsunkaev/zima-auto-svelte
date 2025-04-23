@@ -1,13 +1,33 @@
 <script>
   import { currentLang, t } from '../lib/i18n';
+  import { onMount } from 'svelte';
   
   export let navigate;
   
   let lang;
+  let showBackToTop = false;
   
   // Subscribe to language changes
   currentLang.subscribe(value => {
     lang = value;
+  });
+
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
+  onMount(() => {
+    const handleScroll = () => {
+      showBackToTop = window.scrollY > 300;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   });
 </script>
 
@@ -89,8 +109,22 @@
   <div class="footer-bottom">
     <div class="container">
       <p>{t('footer.copyright', $currentLang)}</p>
+      <a href="/privacy" class="privacy-link">
+        {$currentLang === 'hu' ? 'Adatvédelmi irányelvek' : 'Privacy Policy'}
+      </a>
     </div>
   </div>
+
+  <button 
+    class="back-to-top" 
+    class:visible={showBackToTop}
+    on:click={scrollToTop}
+    aria-label={$currentLang === 'hu' ? 'Vissza a tetejére' : 'Back to top'}
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
 </footer>
 
 <style>
@@ -233,10 +267,28 @@
     text-align: center;
   }
   
+  .footer-bottom .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  
   .footer-bottom p {
     margin: 0;
     font-size: 0.9rem;
     color: #666;
+  }
+  
+  .privacy-link {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+  }
+  
+  .privacy-link:hover {
+    color: var(--primary);
   }
   
   @media screen and (max-width: 992px) {
@@ -262,6 +314,59 @@
     
     .footer-top {
       padding: 40px 20px;
+    }
+    
+    .footer-bottom .container {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+
+  .back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .back-to-top:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .back-to-top:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 186, 229, 0.3);
+  }
+
+  @media screen and (max-width: 768px) {
+    .back-to-top {
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
     }
   }
 </style>

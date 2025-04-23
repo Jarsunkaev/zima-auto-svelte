@@ -590,9 +590,7 @@
       }
 
     /* Maintenance Services Styles (Black Bubble Style) */
-    #maintenance {
-        /* Background color handled by .service-section:nth-child(even) */
-    }
+ 
 
     /* Title and description centering handled by .centered-content */
 

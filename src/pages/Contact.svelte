@@ -428,22 +428,13 @@
   }
 
   .info-content p {
-    color: var(--text-light);
-    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 1rem;
   }
-   /* Style for strong tags within info-content p for service names */
-  .info-content p strong {
-       color: var(--text);
-       font-weight: 600;
-       line-height: 1.4; /* Adjust line height for bold titles */
-       display: block; /* Make strong tags behave like blocks for better spacing with <br> */
-       margin-bottom: 0.2rem; /* Space below the service title */
-       margin-top: 0.8rem; /* Space above the service title (except the first one) */
-  }
-   .info-content p strong:first-child {
-       margin-top: 0; /* No top margin for the very first strong tag */
-   }
 
+  .info-content p:first-child {
+    margin-top: 0;
+  }
 
   .contact-form-container {
     background-color: white;
@@ -614,7 +605,7 @@
             font-size: 1rem;
         }
          .info-content p {
-            font-size: 0.95rem;
+            margin-bottom: 2rem;
          }
          .contact-form-container h2 {
              font-size: 1.5rem;
@@ -634,12 +625,6 @@
           }
            .contact-info {
               margin-bottom: 2rem; /* Adjust mobile margin for this breakpoint */
-           }
-          .info-content p strong { /* Adjust spacing for strong tags on smaller screens */
-               margin-top: 0.6rem;
-          }
-           .info-content p strong:first-child {
-               margin-top: 0;
            }
   }
 
@@ -665,7 +650,7 @@
              margin-bottom: 0.3rem;
          }
           .info-content p {
-              font-size: 0.9rem; /* Smaller font */
+              margin-bottom: 2rem;
           }
            label, input, textarea, .contact-form button {
                font-size: 0.9rem; /* Smaller form font */
@@ -683,10 +668,8 @@
        .contact-section {
           padding: 2rem 1rem;
        }
-        .map-section { height: 300px; }
-
-       .info-content p strong { /* Adjust spacing for strong tags on very small screens */
-           margin-top: 0.5rem;
-       }
+        .map-section { 
+          height: 300px; 
+        }
    }
 </style>
