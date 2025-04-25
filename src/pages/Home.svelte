@@ -353,7 +353,7 @@
     background: linear-gradient(
       to right,
       rgba(0, 0, 0, 0.8) 0%,
-      rgba(0, 0, 0, 0.6) 50%,
+      rgba(0, 0, 0, 0.3) 50%,
       rgba(0, 0, 0, 0.4) 100%
     );
     z-index: 1;
