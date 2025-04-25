@@ -1,6 +1,8 @@
+<svelte:options tag={null} />
+
 <script>
   import { onMount } from 'svelte';
-  import { currentLang, t } from '../lib/i18n'; // Assuming t is not used, but keeping import
+  import { currentLang, t } from '../lib/i18n';
   import { gsap } from 'gsap';
   // Ensure ScrollTrigger is installed (npm install gsap scrolltrigger)
   // and imported if you want the map animation to trigger on scroll.
@@ -11,6 +13,8 @@
 
 
   let lang;
+  // showDirectionsPopup and related functions are removed
+  // as we are now directly linking to Google Maps directions
 
   // Subscribe to language changes
   currentLang.subscribe(value => {
@@ -96,136 +100,110 @@
   let isSubmitting = false;
   let isSuccess = false;
   let errorMessage = '';
+  let formErrors = {}; // Added formErrors object for client-side validation
 
-  // Update the handleSubmit function in src/pages/Contact.svelte
-// Replace the existing handleSubmit function with this one
+  // Function to validate form before submission
+  function validateForm() {
+    let isValid = true;
+    formErrors = {}; // Reset errors
 
-// Update the handleSubmit function in src/pages/Contact.svelte
-// Replace the existing handleSubmit function with this one
-
-async function handleSubmit() {
-  // Simple validation
-  if (!formData.name.trim() || !formData.email.trim() || !formData.subject.trim() || !formData.message.trim()) {
-    errorMessage = $currentLang === 'hu' 
-      ? 'Kérjük töltse ki az összes kötelező mezőt'
-      : 'Please fill in all required fields';
-    return;
-  }
-  
-  // Validate email format
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-    errorMessage = $currentLang === 'hu' 
-      ? 'Érvénytelen email cím formátum' 
-      : 'Invalid email format';
-    return;
-  }
-  
-  isSubmitting = true;
-  errorMessage = ''; // Clear previous errors
-  
-  try {
-    // Create contact data object to send to backend
-    const contactData = {
-      // Match similar structure to booking data for consistency
-      service: 'contactForm',
-      customerName: formData.name,
-      customerEmail: formData.email,
-      customerPhone: formData.phone || '',
-      subject: formData.subject || 'Contact Form Inquiry',
-      message: formData.message,
-      // Include admin email for backend
-      adminEmail: 'jarsunkaev@gmail.com'
-    };
-    
-    console.log('Sending contact form data to backend:', contactData);
-    
-    // Send data to your backend API endpoint
-    const response = await fetch('http://localhost:3001/api/send-contact-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(contactData)
-    });
-    
-    // Parse the JSON response from the backend
-    const result = await response.json();
-    
-    if (response.ok) {
-      // Backend reported success
-      console.log('Contact form submitted successfully:', result);
-      isSuccess = true;
-      errorMessage = ''; // Clear any previous error
-      
-      // Reset form after successful submission
-      formData = {
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
-      };
-      
-      // Hide success message after a few seconds
-      setTimeout(() => {
-        isSuccess = false;
-      }, 5000);
-    } else {
-      // Backend reported an error
-      console.error('Backend reported failure:', response.status, result.message);
-      errorMessage = result.message || ($currentLang === 'hu'
-        ? 'Hiba történt az üzenet küldése során. Kérjük, próbálja újra később.'
-        : 'An error occurred while sending your message. Please try again later.');
-      isSuccess = false;
+    if (!formData.name.trim()) {
+      formErrors.name = $currentLang === 'hu' ? 'Kérjük adja meg a nevét' : 'Please enter your name';
+      isValid = false;
     }
-  } catch (error) {
-    // Network or other error occurred
-    console.error('Error submitting contact form:', error);
-    errorMessage = $currentLang === 'hu'
-      ? 'Hiba történt a szerverhez való kapcsolódás során. Kérjük, próbálja újra később.'
-      : 'An error occurred while connecting to the server. Please try again later.';
-    isSuccess = false;
-  } finally {
-    isSubmitting = false;
-  }
-}
 
-// Add a validation function before the handleSubmit function
-function validateForm() {
-  let isValid = true;
-  
-  // Reset errors
-  formErrors = {};
-  
-  // Validate name
-  if (!formData.name.trim()) {
-    formErrors.name = $currentLang === 'hu' ? 'Kérjük adja meg a nevét' : 'Please enter your name';
-    isValid = false;
+    if (!formData.email.trim()) {
+      formErrors.email = $currentLang === 'hu' ? 'Kérjük adja meg email címét' : 'Please enter your email address';
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      formErrors.email = $currentLang === 'hu' ? 'Érvénytelen email cím' : 'Invalid email address';
+      isValid = false;
+    }
+
+    if (!formData.subject.trim()) {
+      formErrors.subject = $currentLang === 'hu' ? 'Kérjük adja meg a tárgyat' : 'Please enter a subject';
+      isValid = false;
+    }
+
+    if (!formData.message.trim()) {
+      formErrors.message = $currentLang === 'hu' ? 'Kérjük írja meg üzenetét' : 'Please enter your message';
+      isValid = false;
+    }
+
+    return isValid;
   }
-  
-  // Validate email
-  if (!formData.email.trim()) {
-    formErrors.email = $currentLang === 'hu' ? 'Kérjük adja meg email címét' : 'Please enter your email address';
-    isValid = false;
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-    formErrors.email = $currentLang === 'hu' ? 'Érvénytelen email cím' : 'Invalid email address';
-    isValid = false;
+
+  async function handleSubmit() {
+    if (!validateForm()) {
+      errorMessage = $currentLang === 'hu'
+        ? 'Kérjük javítsa a hibákat az űrlapon.'
+        : 'Please correct the errors in the form.';
+      isSuccess = false; // Ensure success message is hidden
+      return;
+    }
+
+    isSubmitting = true;
+    errorMessage = ''; // Clear previous errors
+
+    try {
+      const contactData = {
+        service: 'contactForm',
+        customerName: formData.name,
+        customerEmail: formData.email,
+        customerPhone: formData.phone || '',
+        subject: formData.subject || 'Contact Form Inquiry',
+        message: formData.message,
+        adminEmail: 'jarsunkaev@gmail.com' // Ensure this is the correct recipient
+      };
+
+      console.log('Sending contact form data to backend:', contactData);
+
+      const response = await fetch('http://localhost:3001/api/send-contact-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(contactData)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log('Contact form submitted successfully:', result);
+        isSuccess = true;
+        errorMessage = ''; // Clear any previous error
+
+        // Reset form after successful submission
+        formData = {
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: ''
+        };
+        formErrors = {}; // Also clear form errors on success
+
+        // Hide success message after a few seconds
+        setTimeout(() => {
+          isSuccess = false;
+        }, 5000);
+      } else {
+        console.error('Backend reported failure:', response.status, result.message);
+        errorMessage = result.message || ($currentLang === 'hu'
+          ? 'Hiba történt az üzenet küldése során. Kérjük, próbálja újra később.'
+          : 'An error occurred while sending your message. Please try again later.');
+        isSuccess = false;
+      }
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      errorMessage = $currentLang === 'hu'
+        ? 'Hiba történt a szerverhez való kapcsolódás során. Kérjük, próbálja újra később.'
+        : 'An error occurred while connecting to the server. Please try again later.';
+      isSuccess = false;
+    } finally {
+      isSubmitting = false;
+    }
   }
-  
-  // Validate subject
-  if (!formData.subject.trim()) {
-    formErrors.subject = $currentLang === 'hu' ? 'Kérjük adja meg a tárgyat' : 'Please enter a subject';
-    isValid = false;
-  }
-  
-  // Validate message
-  if (!formData.message.trim()) {
-    formErrors.message = $currentLang === 'hu' ? 'Kérjük írja meg üzenetét' : 'Please enter your message';
-    isValid = false;
-  }
-  
-  return isValid;
-}
 
   onMount(() => {
     // Animate info cards - removed opacity
@@ -260,6 +238,15 @@ function validateForm() {
           // }
       });
   });
+
+  // Function to open Google Maps directions to Zima Auto
+  // This function is now directly called by the button on the contact page
+  function openGoogleMapsDirections() {
+    // Updated URL based on user feedback
+    window.open('https://www.google.com/maps/place/Zima+Auto+Airport+Parking+-+Aut%C3%B3szerv%C3%ADz+-+Gumiszerv%C3%ADz+-+K%C3%A9zi+aut%C3%B3mos%C3%B3/@47.4099403,19.2301139,17z/data=!3m1!4b1!4m6!3m5!1s0x4741c1ece824d30f:0x632898beef8d5983!8m2!3d47.4099403!4d19.2326888!16s%2Fg%2F11vyx0730g?entry=ttu&g_ep=EgoyMDI1MDQyMy4wIKXMDSoASAFQAw%3D%3D', '_blank');
+  }
+
+  // Removed functions for popup (toggleDirectionsPopup, closeDirectionsPopup, openGoogleMaps, openWaze)
 </script>
 
 <section class="contact-hero">
@@ -336,7 +323,7 @@ function validateForm() {
            <p class="error-message" style="text-align: center; margin-top: 1rem;">{errorMessage}</p>
         {/if}
       {:else}
-        {#if errorMessage}
+        {#if errorMessage && !formErrors.name && !formErrors.email && !formErrors.subject && !formErrors.message}
            <p class="error-message" style="text-align: center; margin-bottom: 1.5rem;">{errorMessage}</p>
         {/if}
         <form class="contact-form" on:submit|preventDefault={handleSubmit}>
@@ -347,7 +334,11 @@ function validateForm() {
               id="name"
               bind:value={formData.name}
               required
+              aria-invalid={formErrors.name ? 'true' : 'false'}
             />
+            {#if formErrors.name}
+              <p class="error-message">{formErrors.name}</p>
+            {/if}
           </div>
 
           <div class="form-row">
@@ -358,7 +349,11 @@ function validateForm() {
                 id="email"
                 bind:value={formData.email}
                 required
+                 aria-invalid={formErrors.email ? 'true' : 'false'}
               />
+               {#if formErrors.email}
+                <p class="error-message">{formErrors.email}</p>
+              {/if}
             </div>
 
             <div class="form-group">
@@ -368,7 +363,7 @@ function validateForm() {
                 id="phone"
                 bind:value={formData.phone}
               />
-            </div>
+              </div>
           </div>
 
           <div class="form-group">
@@ -378,7 +373,11 @@ function validateForm() {
               id="subject"
               bind:value={formData.subject}
               required
+               aria-invalid={formErrors.subject ? 'true' : 'false'}
             />
+             {#if formErrors.subject}
+              <p class="error-message">{formErrors.subject}</p>
+            {/if}
           </div>
 
           <div class="form-group">
@@ -388,7 +387,11 @@ function validateForm() {
               rows="5"
               bind:value={formData.message}
               required
+               aria-invalid={formErrors.message ? 'true' : 'false'}
             ></textarea>
+             {#if formErrors.message}
+              <p class="error-message">{formErrors.message}</p>
+            {/if}
           </div>
 
           <button
@@ -400,7 +403,7 @@ function validateForm() {
           </button>
         </form>
       {/if}
-       {#if errorMessage && !isSuccess}
+       {#if errorMessage && !isSuccess && (formErrors.name || formErrors.email || formErrors.subject || formErrors.message)}
            <p class="error-message" style="text-align: center; margin-top: 1.5rem;">{errorMessage}</p>
         {/if}
     </div>
@@ -408,19 +411,41 @@ function validateForm() {
 </section>
 
 <section class="map-section">
-  <iframe
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d... (your map embed code here) ...!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x... (coordinates/place ID)!2sYour%20Place%20Name!5e0!3m2!1sen!2sus!4v..."
-    width="100%"
-    height="450"
-    style="border:0;"
-    allowfullscreen=""
-    loading="lazy"
-    referrerpolicy="no-referrer-when-downgrade"
-    title="Zima Auto location">
-  </iframe>
+  <div class="map-container">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2700.102580768995!2d19.230113876877105!3d47.40994027117247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c1ece824d30f%3A0x632898beef8d5983!2sZima%20Auto%20Airport%20Parking%20-%20Aut%C3%B3szerv%C3%ADz%20-%20Gumiszerv%C3%ADz%20-%20K%C3%A9zi%20aut%C3%B3mos%C3%B3!5e0!3m2!1sen!2shu!4v1745609320883!5m2!1sen!2shu"
+      width="100%"
+      height="450"
+      style="border:0;"
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Zima Auto location">
+    </iframe>
+    <button
+      class="directions-link"
+      on:click={openGoogleMapsDirections}
+    >
+      {$currentLang === 'hu' ? 'Útvonaltervezés' : 'Get Directions'}
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18l6-6-6 6"/>
+      </svg>
+    </button>
+  </div>
 </section>
 
 <style>
+  /* Added styles for form error messages */
+  .form-group .error-message {
+    color: #dc3545; /* Red color for errors */
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
+
+  input.aria-invalid-true, textarea.aria-invalid-true {
+      border-color: #dc3545;
+  }
+
   /* Remove unused selectors */
   .info-content p {
     color: var(--text);
@@ -438,8 +463,8 @@ function validateForm() {
   }
 
   @media (max-width: 480px) {
-    .map-section { 
-      height: 300px; 
+    .map-section {
+      height: 300px;
     }
   }
 
@@ -620,135 +645,43 @@ function validateForm() {
   .map-section {
     height: 450px;
     overflow: hidden;
+    position: relative;
+  }
+
+  .map-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
   }
 
   .map-section iframe {
-      display: block;
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 
-
-  /* Responsive Styles */
-  @media screen and (max-width: 992px) {
-    .contact-grid {
-      grid-template-columns: 1fr;
-      gap: 3rem; /* Space between the info block and the form block */
-    }
-     /* Explicit margin bottom for the info block when stacked */
-    .contact-info {
-       margin-bottom: 3rem; /* Match the grid gap for clear separation */
-    }
-
-     .contact-form-container h2 {
-         left: 50%;
-         transform: translateX(-50%);
-         text-align: center;
-     }
-      .contact-form-container h2::after {
-         left: 50%;
-         transform: translateX(-50%);
-     }
+  .directions-link {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #111111;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
   }
 
-  @media screen and (max-width: 768px) {
-    .contact-hero h1 {
-      font-size: 2.2rem;
-    }
-
-    .contact-hero p {
-      font-size: 1rem;
-    }
-
-    .form-row {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .contact-form-container {
-      padding: 1.5rem;
-    }
-
-     .contact-section {
-         padding: 3rem 1.5rem;
-     }
-      .contact-grid {
-          gap: 2rem;
-      }
-      .info-card {
-          padding: 1rem;
-      }
-       .icon {
-           min-width: 40px;
-           height: 40px;
-       }
-        .info-content h3 {
-            font-size: 1rem;
-        }
-         .info-content p {
-            margin-bottom: 2rem;
-         }
-         .contact-form-container h2 {
-             font-size: 1.5rem;
-             padding-bottom: 10px;
-         }
-         .contact-form-container h2::after {
-             width: 40px;
-         }
-         label, input, textarea, .contact-form button {
-             font-size: 0.95rem;
-         }
-          .success-message p {
-             font-size: 1.1rem;
-          }
-          .map-section {
-               height: 350px;
-          }
-           .contact-info {
-              margin-bottom: 2rem; /* Adjust mobile margin for this breakpoint */
-           }
+  .directions-link:hover {
+    background-color: #222222;
   }
 
-   @media screen and (max-width: 480px) {
-       .contact-hero h1 {
-           font-size: 1.8rem;
-       }
-       .contact-form-container h2 {
-           font-size: 1.3rem;
-       }
-       /* Info Cards - keep icon next to text, but adjust padding/gap */
-       .info-card {
-           padding: 1rem; /* Smaller padding */
-           gap: 1rem; /* Smaller gap */
-           align-items: flex-start; /* Keep icon and text aligned to top */
-       }
-        .icon {
-            min-width: 40px; /* Smaller icon */
-            height: 40px;
-        }
-         .info-content h3 {
-             font-size: 0.95rem; /* Smaller font */
-             margin-bottom: 0.3rem;
-         }
-          .info-content p {
-              margin-bottom: 2rem;
-          }
-           label, input, textarea, .contact-form button {
-               font-size: 0.9rem; /* Smaller form font */
-           }
-            .success-message p {
-                font-size: 1rem; /* Smaller success message */
-            }
-
-       .contact-grid {
-          gap: 3rem;
-       }
-       .contact-info {
-          margin-bottom: 1.5rem; /* Match grid gap */
-       }
-       .contact-section {
-          padding: 2rem 1rem;
-       }
-        .map-section { 
-          height: 300px; 
-        }
-   }
+  /* Removed styles for directions-popup and navigation-buttons */
 </style>

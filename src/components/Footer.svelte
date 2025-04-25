@@ -3,12 +3,14 @@
 <script>
   import { currentLang, t } from '../lib/i18n';
   import { onMount } from 'svelte';
-  
+
   export let navigate;
-  
+
   let lang;
   let showBackToTop = false;
-  
+  // showDirectionsPopup and related functions are removed
+  // as we are now directly linking to Google Maps
+
   // Subscribe to language changes
   currentLang.subscribe(value => {
     lang = value;
@@ -19,6 +21,12 @@
       top: 0,
       behavior: 'smooth'
     });
+  }
+
+  // Function to open Google Maps directions to Zima Auto
+  function openGoogleMapsDirections() {
+    // Updated URL based on user feedback
+    window.open('https://www.google.com/maps/place/Zima+Auto+Airport+Parking+-+Aut%C3%B3szerv%C3%ADz+-+Gumiszerv%C3%ADz+-+K%C3%A9zi+aut%C3%B3mos%C3%B3/@47.4099403,19.2301139,17z/data=!3m1!4b1!4m6!3m5!1s0x4741c1ece824d30f:0x632898beef8d5983!8m2!3d47.4099403!4d19.2326888!16s%2Fg%2F11vyx0730g?entry=ttu&g_ep=EgoyMDI1MDQyMy4wIKXMDSoASAFQAw%3D%3D', '_blank');
   }
 
   onMount(() => {
@@ -60,7 +68,7 @@
             </a>
           </div>
         </div>
-        
+
         <div class="footer-links">
           <h3>{t('footer.links', $currentLang)}</h3>
           <ul>
@@ -91,23 +99,34 @@
             </li>
           </ul>
         </div>
-        
+
         <div class="footer-map">
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2696.498750227303!2d19.25289!3d47.43039!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDfCsDI1JzQ5LjQiTiAxOcKwMTUnMTAuNCJF!5e0!3m2!1sen!2shu!4v1555555555555!5m2!1sen!2shu" 
-            width="100%" 
-            height="100%" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Zima Auto location">
-          </iframe>
+          <div class="map-container">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2700.102580768995!2d19.230113876877105!3d47.40994027117247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c1ece824d30f%3A0x632898beef8d5983!2sZima%20Auto%20Airport%20Parking%20-%20Aut%C3%B3szerv%C3%ADz%20-%20Gumiszerv%C3%ADz%20-%20K%C3%A9zi%20aut%C3%B3mos%C3%B3!5e0!3m2!1sen!2shu!4v1745609320883!5m2!1sen!2shu"
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Zima Auto location">
+            </iframe>
+            <button
+              class="directions-link"
+              on:click={openGoogleMapsDirections}
+            >
+              {$currentLang === 'hu' ? 'Útvonaltervezés' : 'Get Directions'}
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  
+
   <div class="footer-bottom">
     <div class="container">
       <p>{t('footer.copyright', $currentLang)}</p>
@@ -117,8 +136,8 @@
     </div>
   </div>
 
-  <button 
-    class="back-to-top" 
+  <button
+    class="back-to-top"
     class:visible={showBackToTop}
     on:click={scrollToTop}
     aria-label={$currentLang === 'hu' ? 'Vissza a tetejére' : 'Back to top'}
@@ -134,25 +153,25 @@
     background-color: #111111;
     color: #f5f5f5;
   }
-  
+
   .footer-top {
     padding: 60px 0;
   }
-  
+
   .footer-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 40px;
   }
-  
+
   .footer-logo {
     margin-bottom: 25px;
   }
-  
+
   .footer-logo img {
     height: 45px;
   }
-  
+
   .contact-info h3 {
     margin-bottom: 20px;
     font-size: 1.1rem;
@@ -160,7 +179,7 @@
     display: inline-block;
     color: white;
   }
-  
+
   .contact-info h3::after {
     content: '';
     position: absolute;
@@ -170,20 +189,20 @@
     height: 2px;
     background-color: #00bae5;
   }
-  
+
   .contact-info p {
     margin-bottom: 10px;
     font-size: 0.95rem;
     color: #aaa;
     line-height: 1.6;
   }
-  
+
   .social-links {
     display: flex;
     gap: 15px;
     margin-top: 25px;
   }
-  
+
   .social-links a {
     display: flex;
     align-items: center;
@@ -195,13 +214,13 @@
     color: #aaa;
     transition: all 0.3s ease;
   }
-  
+
   .social-links a:hover {
     background-color: #00bae5;
     color: white;
     transform: translateY(-3px);
   }
-  
+
   .footer-links h3 {
     margin-bottom: 20px;
     font-size: 1.1rem;
@@ -209,7 +228,7 @@
     display: inline-block;
     color: white;
   }
-  
+
   .footer-links h3::after {
     content: '';
     position: absolute;
@@ -219,17 +238,17 @@
     height: 2px;
     background-color: #00bae5;
   }
-  
+
   .footer-links ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
-  
+
   .footer-links li {
     margin-bottom: 12px;
   }
-  
+
   .footer-links a {
     color: #aaa;
     transition: all 0.3s ease;
@@ -237,87 +256,88 @@
     position: relative;
     padding-left: 15px;
   }
-  
+
   .footer-links a::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 50% !important;
     transform: translateY(-50%);
     width: 6px;
     height: 6px;
     background-color: #00bae5;
     border-radius: 50%;
   }
-  
+
   .footer-links a:hover {
     color: white;
     padding-left: 20px;
   }
-  
+
   .footer-map {
+    position: relative;
     height: 100%;
     min-height: 250px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   }
-  
+
   .footer-bottom {
     background-color: #0a0a0a;
     padding: 20px 0;
     text-align: center;
   }
-  
+
   .footer-bottom .container {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 20px;
   }
-  
+
   .footer-bottom p {
     margin: 0;
     font-size: 0.9rem;
     color: #666;
   }
-  
+
   .privacy-link {
     color: #666;
     text-decoration: none;
     font-size: 0.9rem;
     transition: color 0.3s ease;
   }
-  
+
   .privacy-link:hover {
     color: var(--primary);
   }
-  
+
   @media screen and (max-width: 992px) {
     .footer-grid {
       grid-template-columns: 1fr 1fr;
     }
-    
+
     .footer-map {
       grid-column: span 2;
     }
   }
-  
+
   @media screen and (max-width: 768px) {
     .footer-grid {
       grid-template-columns: 1fr;
       gap: 30px;
     }
-    
+
     .footer-map {
       grid-column: span 1;
       min-height: 200px;
     }
-    
+
     .footer-top {
       padding: 40px 20px;
     }
-    
+
     .footer-bottom .container {
       flex-direction: column;
       gap: 10px;
@@ -371,4 +391,43 @@
       height: 40px;
     }
   }
+
+  .map-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+  }
+
+  .map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .directions-link {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #111111;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+  }
+
+  .directions-link:hover {
+    background-color: #222222;
+  }
+
+  /* Removed styles for directions-popup and navigation-buttons */
 </style>
