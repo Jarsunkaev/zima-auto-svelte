@@ -97,53 +97,67 @@
   let isSuccess = false;
   let errorMessage = '';
 
-  function handleSubmit() {
-    isSubmitting = true;
-    errorMessage = ''; // Clear previous errors on new submission
+  // Update the handleSubmit function in src/pages/Contact.svelte
+// Replace the existing handleSubmit function with this one
 
-    // --- REPLACE WITH YOUR ACTUAL BACKEND FETCH CALL ---
-    /*
-    const backendApiUrl = 'YOUR_BACKEND_API_ENDPOINT'; // e.g., '/api/send-contact-email'
+// Update the handleSubmit function in src/pages/Contact.svelte
+// Replace the existing handleSubmit function with this one
 
-    fetch(backendApiUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(async response => {
-        isSubmitting = false;
-        if (!response.ok) {
-            const errorData = await response.json();
-            errorMessage = errorData.message || 'An error occurred while sending your message.';
-            isSuccess = false;
-        } else {
-            isSuccess = true;
-            errorMessage = ''; // Clear error on success
-            // Reset form
-            formData = {
-                name: '', email: '', phone: '', subject: '', message: ''
-            };
-            // Hide success message after a delay
-            setTimeout(() => { isSuccess = false; }, 5000);
-        }
-    })
-    .catch(error => {
-        isSubmitting = false;
-        errorMessage = 'Network error or server unreachable.';
-        isSuccess = false;
-        console.error('Contact form submission error:', error);
+async function handleSubmit() {
+  // Simple validation
+  if (!formData.name.trim() || !formData.email.trim() || !formData.subject.trim() || !formData.message.trim()) {
+    errorMessage = $currentLang === 'hu' 
+      ? 'Kérjük töltse ki az összes kötelező mezőt'
+      : 'Please fill in all required fields';
+    return;
+  }
+  
+  // Validate email format
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    errorMessage = $currentLang === 'hu' 
+      ? 'Érvénytelen email cím formátum' 
+      : 'Invalid email format';
+    return;
+  }
+  
+  isSubmitting = true;
+  errorMessage = ''; // Clear previous errors
+  
+  try {
+    // Create contact data object to send to backend
+    const contactData = {
+      // Match similar structure to booking data for consistency
+      service: 'contactForm',
+      customerName: formData.name,
+      customerEmail: formData.email,
+      customerPhone: formData.phone || '',
+      subject: formData.subject || 'Contact Form Inquiry',
+      message: formData.message,
+      // Include admin email for backend
+      adminEmail: 'jarsunkaev@gmail.com'
+    };
+    
+    console.log('Sending contact form data to backend:', contactData);
+    
+    // Send data to your backend API endpoint
+    const response = await fetch('http://localhost:3001/api/send-contact-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(contactData)
     });
-    */
-
-    // --- SIMULATED SUBMISSION (Remove in production) ---
-    setTimeout(() => {
-      isSubmitting = false;
-      isSuccess = true; // Simulate success
-      errorMessage = ''; // Clear any simulated error
-
-      // Reset form after simulated submission
+    
+    // Parse the JSON response from the backend
+    const result = await response.json();
+    
+    if (response.ok) {
+      // Backend reported success
+      console.log('Contact form submitted successfully:', result);
+      isSuccess = true;
+      errorMessage = ''; // Clear any previous error
+      
+      // Reset form after successful submission
       formData = {
         name: '',
         email: '',
@@ -151,15 +165,67 @@
         subject: '',
         message: ''
       };
-
+      
       // Hide success message after a few seconds
-       setTimeout(() => {
-           isSuccess = false;
-       }, 5000); // Hide success message after 5 seconds
-
-    }, 1500); // Simulate network delay
-    // --- END SIMULATED SUBMISSION ---
+      setTimeout(() => {
+        isSuccess = false;
+      }, 5000);
+    } else {
+      // Backend reported an error
+      console.error('Backend reported failure:', response.status, result.message);
+      errorMessage = result.message || ($currentLang === 'hu'
+        ? 'Hiba történt az üzenet küldése során. Kérjük, próbálja újra később.'
+        : 'An error occurred while sending your message. Please try again later.');
+      isSuccess = false;
+    }
+  } catch (error) {
+    // Network or other error occurred
+    console.error('Error submitting contact form:', error);
+    errorMessage = $currentLang === 'hu'
+      ? 'Hiba történt a szerverhez való kapcsolódás során. Kérjük, próbálja újra később.'
+      : 'An error occurred while connecting to the server. Please try again later.';
+    isSuccess = false;
+  } finally {
+    isSubmitting = false;
   }
+}
+
+// Add a validation function before the handleSubmit function
+function validateForm() {
+  let isValid = true;
+  
+  // Reset errors
+  formErrors = {};
+  
+  // Validate name
+  if (!formData.name.trim()) {
+    formErrors.name = $currentLang === 'hu' ? 'Kérjük adja meg a nevét' : 'Please enter your name';
+    isValid = false;
+  }
+  
+  // Validate email
+  if (!formData.email.trim()) {
+    formErrors.email = $currentLang === 'hu' ? 'Kérjük adja meg email címét' : 'Please enter your email address';
+    isValid = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    formErrors.email = $currentLang === 'hu' ? 'Érvénytelen email cím' : 'Invalid email address';
+    isValid = false;
+  }
+  
+  // Validate subject
+  if (!formData.subject.trim()) {
+    formErrors.subject = $currentLang === 'hu' ? 'Kérjük adja meg a tárgyat' : 'Please enter a subject';
+    isValid = false;
+  }
+  
+  // Validate message
+  if (!formData.message.trim()) {
+    formErrors.message = $currentLang === 'hu' ? 'Kérjük írja meg üzenetét' : 'Please enter your message';
+    isValid = false;
+  }
+  
+  return isValid;
+}
 
   onMount(() => {
     // Animate info cards - removed opacity

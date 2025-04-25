@@ -3,6 +3,7 @@
 <script>
   import { onMount } from 'svelte';
   import { currentLang } from '../lib/i18n';
+  import LoadingSpinner from '../components/LoadingSpinner.svelte';
 
   // Import component parts
   import ServiceSelection from '../components/ServiceSelection.svelte';
@@ -211,7 +212,12 @@
           {#if submitError}
             <p class="error-message">{submitError}</p>
           {:else if isSubmitting}
-            <p class="submitting-message">{$currentLang === 'hu' ? 'Foglalás feldolgozása, kérjük várjon...' : 'Processing booking, please wait...'}</p>
+            <div class="submitting-overlay">
+              <LoadingSpinner size="2rem" color="var(--primary)" />
+              <p class="submitting-message">
+                {$currentLang === 'hu' ? 'Foglalás feldolgozása, kérjük várjon...' : 'Processing booking, please wait...'}
+              </p>
+            </div>
           {/if}
 
           {#if selectedService === 'airportParking'}
@@ -262,11 +268,25 @@
     font-weight: 600;
   }
 
+  .submitting-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
   .submitting-message {
-    color: #007bff; /* Blue */
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: var(--text);
     text-align: center;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
   }
 
   /* Disable button when submitting */

@@ -1,6 +1,8 @@
 <svelte:options tag={null} />
 
 <script>
+    import { createEventDispatcher } from 'svelte';
+    import LoadingSpinner from './LoadingSpinner.svelte';
     // Component props
     export let formData = {
       firstName: '',
@@ -18,6 +20,7 @@
     
     export let content = {};
     export let currentLang = 'hu';
+    export let isSubmitting = false;
 </script>
   
 <div class="form-section">
@@ -78,7 +81,7 @@
     </div>
   </div>
 </div>
-  
+
 <style>
   .form-section {
     margin-bottom: 2.5rem;

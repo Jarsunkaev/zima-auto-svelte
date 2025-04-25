@@ -2,6 +2,7 @@
     import { createEventDispatcher } from 'svelte';
     import PersonalInfoForm from './PersonalInfoForm.svelte';
     import TimeSlotSelector from './TimeSlotSelector.svelte';
+    import LoadingSpinner from './LoadingSpinner.svelte';
     
     // Component props
     export let content = {};
@@ -144,13 +145,17 @@
       bind:formErrors={formErrors}
       content={content}
       currentLang={currentLang}
+      {isSubmitting}
     />
     
     <div class="form-submit">
-      <button type="submit" class="btn btn-primary" disabled={isSubmitting}>
-        {isSubmitting 
-          ? content[currentLang].bookingForm.processing 
-          : content[currentLang].bookingForm.submit}
+      <button type="submit" class="submit-button" disabled={isSubmitting}>
+        {#if isSubmitting}
+          <LoadingSpinner size="1rem" color="white" />
+          <span>{content[currentLang].bookingForm.processing}</span>
+        {:else}
+          {content[currentLang].bookingForm.submit}
+        {/if}
       </button>
     </div>
   </form>
@@ -204,10 +209,28 @@
       margin-top: 2rem;
     }
     
-    .form-submit button {
+    .submit-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       padding: 1rem 2.5rem;
       font-size: 1rem;
       font-weight: 600;
       min-width: 200px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    
+    .submit-button:hover:not(:disabled) {
+      background-color: var(--primary-dark);
+    }
+    
+    .submit-button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
   </style>

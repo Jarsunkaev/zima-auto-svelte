@@ -4,6 +4,7 @@
     import { createEventDispatcher } from 'svelte';
     import PersonalInfoForm from './PersonalInfoForm.svelte';
     import TimeSlotSelector from './TimeSlotSelector.svelte';
+    import LoadingSpinner from './LoadingSpinner.svelte';
   
     const dispatch = createEventDispatcher();
   
@@ -172,57 +173,13 @@
   
     <div class="form-section">
       <h3>{content[currentLang].bookingForm.personalInfo.title}</h3>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="lastName">{content[currentLang].bookingForm.personalInfo.lastName}</label>
-          <input
-            type="text"
-            id="lastName"
-            bind:value={formData.lastName}
-          />
-          {#if errors.lastName}
-            <p class="error-message">{errors.lastName}</p>
-          {/if}
-        </div>
-  
-        <div class="form-group">
-          <label for="firstName">{content[currentLang].bookingForm.personalInfo.firstName}</label>
-          <input
-            type="text"
-            id="firstName"
-            bind:value={formData.firstName}
-          />
-          {#if errors.firstName}
-            <p class="error-message">{errors.firstName}</p>
-          {/if}
-        </div>
-      </div>
-  
-      <div class="form-row">
-        <div class="form-group">
-          <label for="email">{content[currentLang].bookingForm.personalInfo.email}</label>
-          <input
-            type="email"
-            id="email"
-            bind:value={formData.email}
-          />
-          {#if errors.email}
-            <p class="error-message">{errors.email}</p>
-          {/if}
-        </div>
-  
-        <div class="form-group">
-          <label for="phone">{content[currentLang].bookingForm.personalInfo.phone}</label>
-          <input
-            type="tel"
-            id="phone"
-            bind:value={formData.phone}
-          />
-          {#if errors.phone}
-            <p class="error-message">{errors.phone}</p>
-          {/if}
-        </div>
-      </div>
+      <PersonalInfoForm 
+        bind:formData={formData}
+        bind:formErrors={errors}
+        content={content}
+        currentLang={currentLang}
+        {isSubmitting}
+      />
     </div>
   
     <div class="form-section">
@@ -259,10 +216,17 @@
     </div>
   
     <div class="form-actions">
-      <button type="submit" disabled={isSubmitting} class="btn btn-primary">
-        {isSubmitting
-          ? (currentLang === 'hu' ? 'Feldolgozás...' : 'Processing...')
-          : content[currentLang].bookingForm.submit}
+      <button
+        type="submit"
+        class="submit-button"
+        disabled={isSubmitting}
+      >
+        {#if isSubmitting}
+          <LoadingSpinner size="1rem" color="white" />
+          <span>Processing...</span>
+        {:else}
+          Submit Request
+        {/if}
       </button>
     </div>
   </form>
@@ -378,7 +342,7 @@
       text-align: center;
     }
   
-    .btn-primary {
+    .submit-button {
       background-color: var(--primary);
       color: white;
       border: none;
@@ -387,13 +351,16 @@
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
   
-    .btn-primary:hover:not(:disabled) {
+    .submit-button:hover:not(:disabled) {
       background-color: var(--primary-dark);
     }
   
-    .btn-primary:disabled {
+    .submit-button:disabled {
       opacity: 0.7;
       cursor: not-allowed;
     }
