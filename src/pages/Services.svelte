@@ -13,62 +13,73 @@
     lang = value;
   });
 
+  // --- Data Structures ---
   const parkingPrices = [
-    { days: 1, normal: '7500 Ft', discount: '5500 Ft' },
-    { days: 2, normal: '8200 Ft', discount: '6200 Ft' },
-    { days: 3, normal: '9000 Ft', discount: '7000 Ft' },
-    { days: 4, normal: '9800 Ft', discount: '8000 Ft' },
-    { days: 5, normal: '10500 Ft', discount: '8600 Ft' },
-    { days: 6, normal: '11200 Ft', discount: '9500 Ft' },
-    { days: 7, normal: '12500 Ft', discount: '10500 Ft' },
-    { days: 8, normal: '14000 Ft', discount: '11000 Ft' },
-    { days: 9, normal: '15500 Ft', discount: '11500 Ft' },
-    { days: 10, normal: '16000 Ft', discount: '12000 Ft' },
-    { days: 11, normal: '17000 Ft', discount: '12400 Ft' },
-    { days: 12, normal: '17600 Ft', discount: '12900 Ft' },
-    { days: 13, normal: '18000 Ft', discount: '13500 Ft' },
-    { days: 14, normal: '18500 Ft', discount: '13900 Ft' },
-    { days: 15, normal: '19000 Ft', discount: '14300 Ft' },
-    { days: 16, normal: '19500 Ft', discount: '14700 Ft' },
-    { days: 17, normal: '20000 Ft', discount: '15000 Ft' },
-    { days: 18, normal: '20500 Ft', discount: '15400 Ft' },
-    { days: 19, normal: '21000 Ft', discount: '15800 Ft' },
-    { days: 20, normal: '21500 Ft', discount: '16200 Ft' },
-    { days: 21, normal: '22000 Ft', discount: '16600 Ft' },
-    { days: 22, normal: '22500 Ft', discount: '17000 Ft' },
-    { days: 23, normal: '23000 Ft', discount: '17400 Ft' },
-    { days: 24, normal: '23500 Ft', discount: '17800 Ft' },
-    { days: 25, normal: '24000 Ft', discount: '18200 Ft' },
-    { days: 26, normal: '24500 Ft', discount: '18600 Ft' },
-    { days: 27, normal: '25000 Ft', discount: '19000 Ft' },
-    { days: 28, normal: '25500 Ft', discount: '19500 Ft' },
-    { days: 29, normal: '26000 Ft', discount: '19500 Ft' },
-    { days: 30, normal: '26000 Ft', discount: '19500 Ft' }
+    { days: 1, normal: '7500 Ft', discount: '5500 Ft' }, { days: 2, normal: '8200 Ft', discount: '6200 Ft' },
+    { days: 3, normal: '9000 Ft', discount: '7000 Ft' }, { days: 4, normal: '9800 Ft', discount: '8000 Ft' },
+    { days: 5, normal: '10500 Ft', discount: '8600 Ft' }, { days: 6, normal: '11200 Ft', discount: '9500 Ft' },
+    { days: 7, normal: '12500 Ft', discount: '10500 Ft' }, { days: 8, normal: '14000 Ft', discount: '11000 Ft' },
+    { days: 9, normal: '15500 Ft', discount: '11500 Ft' }, { days: 10, normal: '16000 Ft', discount: '12000 Ft' },
+    { days: 11, normal: '17000 Ft', discount: '12400 Ft' }, { days: 12, normal: '17600 Ft', discount: '12900 Ft' },
+    { days: 13, normal: '18000 Ft', discount: '13500 Ft' }, { days: 14, normal: '18500 Ft', discount: '13900 Ft' },
+    { days: 15, normal: '19000 Ft', discount: '14300 Ft' }, { days: 16, normal: '19500 Ft', discount: '14700 Ft' },
+    { days: 17, normal: '20000 Ft', discount: '15000 Ft' }, { days: 18, normal: '20500 Ft', discount: '15400 Ft' },
+    { days: 19, normal: '21000 Ft', discount: '15800 Ft' }, { days: 20, normal: '21500 Ft', discount: '16200 Ft' },
+    { days: 21, normal: '22000 Ft', discount: '16600 Ft' }, { days: 22, normal: '22500 Ft', discount: '17000 Ft' },
+    { days: 23, normal: '23000 Ft', discount: '17400 Ft' }, { days: 24, normal: '23500 Ft', discount: '17800 Ft' },
+    { days: 25, normal: '24000 Ft', discount: '18200 Ft' }, { days: 26, normal: '24500 Ft', discount: '18600 Ft' },
+    { days: 27, normal: '25000 Ft', discount: '19000 Ft' }, { days: 28, normal: '25500 Ft', discount: '19500 Ft' },
+    { days: 29, normal: '26000 Ft', discount: '19500 Ft' }, { days: 30, normal: '26000 Ft', discount: '19500 Ft' }
   ];
 
   const carWashPrices = {
     smart: [
-        { type: 'Személyautó', 'Exterior & Interior': '8900 Ft', 'Exterior': '5900 Ft', 'Interior': '4900 Ft' },
-        { type: 'SUV/Kisbusz', 'Exterior & Interior': '10500 Ft', 'Exterior': '5900 Ft', 'Interior': '4900 Ft' }
+        { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '8900 Ft', 'Exterior': '5900 Ft', 'Interior': '4900 Ft' },
+        { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '10500 Ft', 'Exterior': '5900 Ft', 'Interior': '4900 Ft' }
     ],
     premium: [
-        { type: 'Személyautó', 'Exterior & Interior': '11900 Ft', 'Exterior': '6900 Ft', 'Interior': '5600 Ft' },
-        { type: 'SUV/Kisbusz', 'Exterior & Interior': '13500 Ft', 'Exterior': '6900 Ft', 'Interior': '5600 Ft' }
+        { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '11900 Ft', 'Exterior': '6900 Ft', 'Interior': '5600 Ft' },
+        { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '13500 Ft', 'Exterior': '6900 Ft', 'Interior': '5600 Ft' }
     ]
   };
 
-    // Maintenance services data
-    const maintenanceServices = [
-        { name: { hu: 'Autóvizsgálat', en: 'Car Inspection' } },
-        { name: { hu: 'Fékjavítás', en: 'Brake Repair' } },
-        { name: { hu: 'Futómű javítások', en: 'Chassis Repairs' } },
-        { name: { hu: 'Kuplung javítás, kuplungcsere', en: 'Clutch Repair, Replacement' } },
-        { name: { hu: 'Olajcsere, szűrők és váltó olajcsere', en: 'Oil Change, Filters, and Gearbox Oil Change' } },
-        { name: { hu: 'Vezérműszíj csere', en: 'Timing Belt Replacement' } },
-        { name: { hu: 'Váltó felújítás', en: 'Gearbox Overhaul' } },
-        { name: { hu: 'Motorjavítás, felújítás', en: 'Engine Repair, Overhaul' } }
-    ];
+  // REFACTORED Tire Service Prices
+  const tireServicePrices = {
+      // Main service: Wheel fitting, tire fitting, alignment per 4 tires
+      fullServicePer4Tires: [
+          { size: '16"', price: '16000 Ft' },
+          { size: '17"', price: '17000 Ft' },
+          { size: '18"', price: '19000 Ft' },
+          { size: '19"', price: '21000 Ft' },
+          { size: '20"', price: '22000 Ft' },
+          { size: '21"', price: '25000 Ft' }
+      ],
+      // Other services
+      patching: { // Defekt javítás
+          name: { hu: 'Defekt javítás', en: 'Tire Patching' },
+          pricePerTyre: '2000 Ft',
+          note: { hu: '/ gumi + szerelés', en: '/ tire + mounting' }
+      },
+      wheelMountingOnly: { // Kerék le-fel szerelés (4 pcs)
+          name: { hu: 'Kerék le-fel szerelés', en: 'Wheel Mounting Only' },
+          pricePer4pcs: '5000 Ft',
+          note: { hu: '/ 4 darab', en: '/ 4 pcs' }
+      },
+      alloyWheelMountingAlignment: { // Kerék le-fel szerelés és centrírozás könnyűfém felnin (4 pcs)
+          name: { hu: 'Kerék le-fel szerelés és centrírozás (könnyűfém felni)', en: 'Alloy Wheel Mounting & Alignment' },
+          pricePer4pcs: '12000 Ft',
+          note: { hu: '/ 4 darab', en: '/ 4 pcs' }
+        }
+  };
 
+
+  const maintenanceServices = [
+      { name: { hu: 'Autóvizsgálat', en: 'Car Inspection' } }, { name: { hu: 'Fékjavítás', en: 'Brake Repair' } },
+      { name: { hu: 'Futómű javítások', en: 'Chassis Repairs' } }, { name: { hu: 'Kuplung javítás, kuplungcsere', en: 'Clutch Repair, Replacement' } },
+      { name: { hu: 'Olajcsere, szűrők és váltó olajcsere', en: 'Oil Change, Filters, and Gearbox Oil Change' } },
+      { name: { hu: 'Vezérműszíj csere', en: 'Timing Belt Replacement' } }, { name: { hu: 'Váltó felújítás', en: 'Gearbox Overhaul' } },
+      { name: { hu: 'Motorjavítás, felújítás', en: 'Engine Repair, Overhaul' } }
+  ];
 
   onMount(() => {
     // Animate service sections
@@ -132,7 +143,7 @@
             </tr>
           </thead>
           <tbody>
-            {#each parkingPrices as price}
+            {#each parkingPrices as price (price.days)}
               <tr>
                 <td class="day-col">{price.days}</td>
                 <td class="normal-price-col">{price.normal}</td>
@@ -185,9 +196,9 @@
                       </tr>
                   </thead>
                   <tbody>
-                      {#each carWashPrices.smart as price}
+                      {#each carWashPrices.smart as price (price.type[$currentLang])}
                           <tr>
-                              <td>{price.type}</td>
+                              <td>{price.type[$currentLang]}</td>
                               <td>{price['Exterior & Interior']}</td>
                               <td>{price.Exterior}</td>
                               <td>{price.Interior}</td>
@@ -209,10 +220,9 @@
                       </tr>
                   </thead>
                   <tbody>
-
-                      {#each carWashPrices.premium as price}
+                      {#each carWashPrices.premium as price (price.type[$currentLang])}
                           <tr>
-                              <td>{price.type}</td>
+                              <td>{price.type[$currentLang]}</td>
                               <td>{price['Exterior & Interior']}</td>
                               <td>{price.Exterior}</td>
                               <td>{price.Interior}</td>
@@ -252,31 +262,61 @@
         </div>
       </div>
 
+      <h3 class="tire-main-service-title">
+          {$currentLang === 'hu' ? 'Kerék le-fel szerelés, Gumiabroncs átszerelés és Centrízorás' : 'Wheel & Tire Fitting, Alignment'}
+      </h3>
       <div class="pricing-table-container scrollable-table tire-table-container">
-        <table class="pricing-table tire-table">
+        <table class="pricing-table tire-service-main-table">
           <thead>
             <tr>
-              <th>16"</th>
-              <th>17"</th>
-              <th>18"</th>
-              <th>19"</th>
-              <th>20"</th>
-              <th>21"</th>
+              <th>{$currentLang === 'hu' ? 'Méret' : 'Size'}</th>
+              <th>{$currentLang === 'hu' ? 'Ár / 4 abroncs' : 'Price / 4 tires'}</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>16 000 Ft<br><span class="per-set">{$currentLang === 'hu' ? '/ 4 kerék' : '/ 4 tires'}</span></td>
-              <td>17 000 Ft<br><span class="per-set">{$currentLang === 'hu' ? '/ 4 kerék' : '/ 4 tires'}</span></td>
-              <td>19 000 Ft<br><span class="per-set">{$currentLang === 'hu' ? '/ 4 kerék' : '/ 4 tires'}</span></td>
-              <td>21 000 Ft<br><span class="per-set">{$currentLang === 'hu' ? '/ 4 kerék' : '/ 4 tires'}</span></td>
-              <td>22 000 Ft<br><span class="per-set">{$currentLang === 'hu' ? '/ 4 kerék' : '/ 4 tires'}</span></td>
-              <td>25 000 Ft<br><span class="per-set">{$currentLang === 'hu' ? '/ 4 kerék' : '/ 4 tires'}</span></td>
-            </tr>
+            {#each tireServicePrices.fullServicePer4Tires as item (item.size)}
+              <tr>
+                <td>{item.size}</td>
+                <td>{item.price}</td>
+              </tr>
+            {/each}
           </tbody>
         </table>
       </div>
-    </div>
+
+      <div class="tire-services-grid">
+          {#if tireServicePrices.patching}
+           <div class="tire-service-block">
+             <h3>{tireServicePrices.patching.name[$currentLang]}</h3>
+             <div class="service-price">
+                 {tireServicePrices.patching.pricePerTyre}
+                 <span class="per-set">{tireServicePrices.patching.note[$currentLang]}</span>
+             </div>
+           </div>
+          {/if}
+
+          {#if tireServicePrices.wheelMountingOnly}
+           <div class="tire-service-block">
+             <h3>{tireServicePrices.wheelMountingOnly.name[$currentLang]}</h3>
+             <div class="service-price">
+                 {tireServicePrices.wheelMountingOnly.pricePer4pcs}
+                 <span class="per-set">{tireServicePrices.wheelMountingOnly.note[$currentLang]}</span>
+             </div>
+           </div>
+          {/if}
+
+          {#if tireServicePrices.alloyWheelMountingAlignment}
+           <div class="tire-service-block">
+             <h3>{tireServicePrices.alloyWheelMountingAlignment.name[$currentLang]}</h3>
+             <div class="service-price">
+                 {tireServicePrices.alloyWheelMountingAlignment.pricePer4pcs}
+                  <span class="per-set">{tireServicePrices.alloyWheelMountingAlignment.note[$currentLang]}</span>
+             </div>
+           </div>
+          {/if}
+       </div>
+
+       </div>
   </section>
 
   <section class="service-section" id="maintenance">
@@ -291,7 +331,7 @@
       </div>
 
       <div class="maintenance-bubbles-container">
-        {#each maintenanceServices as service}
+        {#each maintenanceServices as service (service.name.hu)}
           <div class="maintenance-bubble">
               {service.name[$currentLang]}
           </div>
@@ -307,7 +347,9 @@
     </div>
   </section>
 
-</div><style>
+</div>
+
+<style>
   :root {
     /* Define your color variables here if they are not in a global file */
     --primary: #00baff; /* Example primary color */
@@ -318,10 +360,6 @@
     --light: #f4f4f4; /* Example light background color */
     --teal-dark: #00796b; /* Darker teal for SMART title */
     --teal-light: #4db6ac; /* Lighter teal for PREMIUM title */
-    /* Removed unused purple variables */
-    /* --purple-dark: #4a148c; */
-    /* --purple-light: #7b1fa2; */
-    /* --purple-accent: #9c27b0; */
   }
 
   .services-hero {
@@ -406,7 +444,7 @@
 
     /* Mobile adjustment for centering underline on all titles */
     @media (max-width: 992px) {
-        .services-container section .service-content h2::after {
+        .services-container section:not(#maintenance) .service-content h2::after {
              left: 50%;
              transform: translateX(-50%);
          }
@@ -496,7 +534,7 @@
   .pricing-table {
     width: 100%; /* Ensure table tries to take full width of container */
     border-collapse: collapse;
-    /* min-width will be handled by column widths */
+    /* min-width handled via CSS or column content */
   }
 
   .pricing-table th {
@@ -513,6 +551,7 @@
     text-align: center;
     border-bottom: 1px solid #eee;
     white-space: nowrap; /* Prevent cell text from wrapping by default */
+     vertical-align: middle;
   }
 
    .pricing-table tbody tr:last-child td {
@@ -543,7 +582,7 @@
     }
 
 
-  /* Per set text for tire prices */
+  /* Per set/note text style */
   .per-set {
     display: block;
     font-size: 0.8rem;
@@ -591,12 +630,60 @@
           color: white;
       }
 
+    /* Tire Service Styles */
+    .tire-main-service-title {
+        text-align: center;
+        font-size: 1.5rem;
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    /* Ensure the tire service main table has reasonable column widths */
+    .tire-service-main-table th:first-child,
+    .tire-service-main-table td:first-child {
+        width: 40%; /* Give Size column reasonable width */
+    }
+    .tire-service-main-table th:last-child,
+    .tire-service-main-table td:last-child {
+        width: 60%; /* Give Price column remaining width */
+    }
+
+
+    .tire-services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+
+    .tire-service-block {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); /* Slightly more pronounced shadow */
+      text-align: center;
+      border: 1px solid #eee;
+    }
+
+     .tire-service-block h3 {
+         font-size: 1.1rem;
+         font-weight: 600;
+         margin-bottom: 0.8rem;
+         color: var(--text);
+     }
+
+    .service-price {
+      font-size: 1.2rem; /* Slightly larger price */
+      font-weight: 600; /* Bolder price */
+      color: var(--primary); /* Use primary color for price */
+      margin-top: 0.5rem;
+    }
+
+    /* Removed tire-repair-section and tire-repair-table styles */
+
     /* Maintenance Services Styles (Black Bubble Style) */
- 
-
-    /* Title and description centering handled by .centered-content */
-
-
     .maintenance-bubbles-container {
         display: flex;
         flex-wrap: wrap; /* Allow bubbles to wrap to the next line */
@@ -616,17 +703,13 @@
         text-align: center;
         white-space: nowrap; /* Prevent text from wrapping inside the bubble */
         transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-        cursor: pointer; /* Indicate it's interactive (even without a link) */
+        cursor: default; /* Change cursor since they are not links now */
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
         flex-shrink: 0; /* Prevent bubbles from shrinking */
     }
 
-    /* Hover effects for black bubbles */
-    .maintenance-bubble:hover {
-        background-color: var(--secondary); /* Darker grey on hover */
-        transform: translateY(-4px); /* Slight lift on hover */
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Stronger shadow on hover */
-    }
+    /* Removed hover effect if they are not meant to be clicked */
+    /* .maintenance-bubble:hover { ... } */
 
 
     /* Button Styles */
@@ -674,194 +757,136 @@
       direction: ltr;
     }
 
-    .service-grid .service-content {
-      order: 1;
-    }
-
-    .service-grid .service-image {
-      order: 2;
-    }
-
-    .service-grid.reverse .service-content {
-      order: 1;
-    }
-
-    .service-grid.reverse .service-image {
-      order: 2;
-    }
+    .service-grid .service-content { order: 1; }
+    .service-grid .service-image { order: 2; }
+    .service-grid.reverse .service-content { order: 1; }
+    .service-grid.reverse .service-image { order: 2; }
 
     .service-image {
       max-width: 500px;
       margin: 0 auto;
     }
 
-      /* Adjust padding for smaller screens */
-      .pricing-table th,
-      .pricing-table td {
-          padding: 0.6rem 0.4rem;
-      }
+    /* Adjust padding for smaller screens */
+    .pricing-table th,
+    .pricing-table td {
+        padding: 0.7rem 0.5rem; /* Adjust padding */
+        white-space: normal; /* Allow text wrapping */
+    }
 
-        .pricing-table th {
-            white-space: normal; /* Allow header text to wrap if necessary */
-        }
+    /* Parking table specific mobile adjustments */
+    .parking-table th,
+    .parking-table td {
+        min-width: 90px; /* Slightly wider */
+    }
+    .parking-table .day-col {
+        min-width: 60px;
+    }
 
-       .pricing-table td {
-           white-space: normal; /* Allow cell text to wrap if necessary */
-       }
+    /* Car wash table specific mobile adjustments */
+    .car-wash-table th,
+    .car-wash-table td {
+        min-width: 90px;
+    }
+    .car-wash-table th:first-child,
+    .car-wash-table td:first-child {
+        min-width: 110px; /* Adjust car type column */
+        white-space: nowrap; /* Keep car type from wrapping if possible */
+    }
 
-         /* Parking table specific mobile adjustments */
-         .parking-table th,
-         .parking-table td {
-             min-width: 100px; /* Ensure minimum width for parking table columns */
-         }
+    /* Tire service table mobile adjustments */
+     .tire-service-main-table th,
+     .tire-service-main-table td {
+         min-width: 100px; /* Ensure reasonable min width */
+     }
 
-         .parking-table .day-col {
-             min-width: 60px; /* Smaller min-width for day column */
-         }
-
-         /* Car wash table specific mobile adjustments */
-         .car-wash-table th,
-         .car-wash-table td {
-             min-width: 80px; /* Ensure minimum width for car wash columns */
-         }
-
-         .car-wash-table th:first-child,
-         .car-wash-table td:first-child {
-             min-width: 120px; /* Slightly larger min-width for car type column */
-         }
-
-        /* Tire table specific mobile adjustments */
-         .tire-table th,
-         .tire-table td {
-             min-width: 70px; /* Ensure minimum width for tire size columns */
-         }
 
     /* Maintenance bubbles mobile adjustments */
     .maintenance-bubble {
         font-size: 1rem;
         padding: 0.7rem 1.2rem;
+        white-space: normal; /* Allow wrapping on mobile */
+        text-align: center;
     }
     .maintenance-bubbles-container {
-        gap: 0.8rem; /* Reduce gap on smaller screens */
+        gap: 0.8rem;
     }
-
-    /* Center underline on mobile */
-    /* This rule is now redundant due to the general rule above */
-    /* .services-container section .service-content h2::after { ... } */
-
-
   }
 
   @media (max-width: 768px) {
-    .services-hero h1 {
-      font-size: 2rem;
-    }
-
-    .services-hero p {
-      font-size: 1rem;
-    }
-
-    .service-section {
-      padding: 3rem 1rem;
-    }
-
-    .service-content h2 {
-      font-size: 1.8rem;
-    }
+    .services-hero h1 { font-size: 2rem; }
+    .services-hero p { font-size: 1rem; }
+    .service-section { padding: 3rem 1rem; }
+    .service-content h2 { font-size: 1.8rem; }
 
     /* Make tables more compact on mobile */
     .pricing-table th,
     .pricing-table td {
-      padding: 0.5rem 0.3rem;
+      padding: 0.6rem 0.4rem;
       font-size: 0.9rem;
     }
 
-    /* Container adjustments */
     .pricing-table-container {
       margin-top: 1.5rem;
-      border-radius: 8px; /* Slightly smaller border-radius on smaller screens */
+      border-radius: 8px;
     }
 
-     .car-wash-tables {
-        margin-top: 2rem; /* Adjust margin top for car wash tables block on mobile */
-    }
-
-    .car-wash-title {
-        font-size: 1.3rem;
-        margin-top: 1.5rem;
-        margin-bottom: 0.8rem;
-    }
-
-     .premium-title {
-         margin-top: 2.5rem; /* Space between the two car wash tables on mobile */
-     }
-
+     .car-wash-tables { margin-top: 2rem; }
+     .car-wash-title { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+     .premium-title { margin-top: 2.5rem; }
 
     .btn {
       width: 100%;
       text-align: center;
+      padding: 1rem 1.5rem; /* Make button larger */
+      font-size: 1rem;
     }
 
-      /* Adjust min-widths for smaller mobile screens */
-      .parking-table th,
-      .parking-table td {
-          min-width: 80px;
-      }
-       .parking-table .day-col {
-           min-width: 50px;
-       }
+    /* Adjust min-widths for smaller mobile screens */
+    .parking-table th,
+    .parking-table td { min-width: 75px; font-size: 0.85rem;}
+    .parking-table .day-col { min-width: 45px;}
 
+    .car-wash-table th,
+    .car-wash-table td { min-width: 70px; font-size: 0.85rem;}
+    .car-wash-table th:first-child,
+    .car-wash-table td:first-child { min-width: 90px;}
 
-      .car-wash-table th,
-      .car-wash-table td {
-          min-width: 60px;
-      }
+    .tire-service-main-table th,
+    .tire-service-main-table td {
+        min-width: 80px; /* Adjust tire table */
+        font-size: 0.85rem;
+    }
 
-      .car-wash-table th:first-child,
-      .car-wash-table td:first-child {
-          min-width: 90px;
-      }
+    .tire-services-grid {
+      grid-template-columns: 1fr; /* Stack blocks */
+      gap: 1rem;
+    }
 
-       .tire-table th,
-       .tire-table td {
-           min-width: 50px;
-       }
-
-     /* Maintenance bubbles smaller mobile adjustments */
-     .maintenance-bubble {
-         font-size: 0.9rem;
-         padding: 0.6rem 1rem;
-     }
-      .maintenance-bubbles-container {
-         gap: 0.6rem; /* Further reduce gap */
-     }
-
-     #maintenance .service-content h2 {
-         font-size: 1.5rem; /* Adjust heading size */
-     }
-      #maintenance .service-description {
-         font-size: 1rem; /* Adjust description size */
-     }
+    /* Maintenance bubbles smaller mobile adjustments */
+    .maintenance-bubble { font-size: 0.9rem; padding: 0.6rem 1rem; }
+    .maintenance-bubbles-container { gap: 0.6rem; }
+    #maintenance .service-content h2 { font-size: 1.5rem; }
+    #maintenance .service-description { font-size: 1rem; }
   }
 
-   /* Style the scrollbar */
-    .scrollable-table::-webkit-scrollbar {
-        height: 8px;
-        width: 8px; /* Added for vertical scrollbar */
-    }
+  /* Style the scrollbar */
+  .scrollable-table::-webkit-scrollbar {
+      height: 8px;
+      width: 8px; /* Added for vertical scrollbar */
+  }
 
-    .scrollable-table::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
+  .scrollable-table::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+  }
 
-    .scrollable-table::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 10px;
-    }
+  .scrollable-table::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 10px;
+  }
 
-    .scrollable-table::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
-
+  .scrollable-table::-webkit-scrollbar-thumb:hover {
+      background: #555;
+  }
 </style>
