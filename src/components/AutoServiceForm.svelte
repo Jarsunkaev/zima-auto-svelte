@@ -21,7 +21,8 @@
       phone: '',
       carModel: '',
       licensePlate: '',
-      notes: ''
+      notes: '',
+      acceptPrivacy: false
     };
   
     let errors = {};
@@ -172,7 +173,6 @@
         </div>
   
     <div class="form-section">
-      <h3>{content[currentLang].bookingForm.personalInfo.title}</h3>
       <PersonalInfoForm 
         bind:formData={formData}
         bind:formErrors={errors}
@@ -216,6 +216,27 @@
       </div>
     </div>
   
+    <div class="form-section">
+      <div class="form-group privacy-checkbox">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            bind:checked={formData.acceptPrivacy}
+            required
+          />
+          <span>
+            {currentLang === 'hu' ? 'Elfogadom az ' : 'I accept the '}
+            <a href="#privacy" class="privacy-link">
+              {currentLang === 'hu' ? 'Adatvédelmi irányelveket' : 'Privacy Policy'}
+            </a>
+          </span>
+        </label>
+        {#if errors.acceptPrivacy}
+          <p class="error-message">{errors.acceptPrivacy}</p>
+        {/if}
+      </div>
+    </div>
+  
     <div class="form-actions">
       <button
         type="submit"
@@ -224,9 +245,9 @@
       >
         {#if isSubmitting}
           <LoadingSpinner size="1rem" color="white" />
-          <span>Processing...</span>
+          <span>{currentLang === 'hu' ? 'Feldolgozás...' : 'Processing...'}</span>
         {:else}
-          Submit Request
+          {content[currentLang].bookingForm.submit}
         {/if}
       </button>
     </div>
@@ -252,12 +273,7 @@
       color: var(--text);
     }
   
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
+
   
     .service-types {
       display: grid;
@@ -301,8 +317,7 @@
   
     input[type="date"],
     input[type="text"],
-    input[type="email"],
-    input[type="tel"],
+
     textarea {
       width: 100%;
       padding: 0.8rem;
@@ -338,12 +353,44 @@
       min-height: 100px;
     }
   
+    .privacy-checkbox {
+      margin-top: 1rem;
+    }
+  
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+  
+    .checkbox-label input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+  
+    .privacy-link {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+  
+    .privacy-link:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+  
     .form-actions {
       margin-top: 2rem;
       text-align: center;
     }
   
     .submit-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
       background-color: var(--primary);
       color: white;
       border: none;
@@ -352,9 +399,9 @@
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
     }
   
     .submit-button:hover:not(:disabled) {
@@ -367,10 +414,7 @@
     }
   
     @media screen and (max-width: 768px) {
-      .form-row {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
+
   
       .service-types {
         grid-template-columns: 1fr;

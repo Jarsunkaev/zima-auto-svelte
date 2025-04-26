@@ -20,8 +20,9 @@
     
     export let content = {};
     export let currentLang = 'hu';
-    export let isSubmitting = false;
+    export const isSubmitting = false;
 </script>
+
   
 <div class="form-section">
   <h3>{content[currentLang].bookingForm.personalInfo.title}</h3>

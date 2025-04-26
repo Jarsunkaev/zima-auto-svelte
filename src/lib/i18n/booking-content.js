@@ -110,7 +110,10 @@ export const content = {
         emailInvalid: 'Érvénytelen email cím',
         phone: 'Telefonszám',
         phoneRequired: 'Telefonszám megadása kötelező',
-        phoneInvalid: 'Érvénytelen telefonszám'
+        phoneInvalid: 'Érvénytelen telefonszám',
+        privacyPolicy: 'Elfogadom az Adatvédelmi irányelveket',
+        privacyPolicyRequired: 'Az Adatvédelmi irányelvek elfogadása kötelező',
+        privacyPolicyLink: 'Adatvédelmi irányelvek'
       },
       submit: 'FOGLALÁS MEGERŐSÍTÉSE',
       processing: 'Feldolgozás...',
@@ -241,7 +244,10 @@ export const content = {
         emailInvalid: 'Invalid email address',
         phone: 'Phone number',
         phoneRequired: 'Phone number is required',
-        phoneInvalid: 'Invalid phone number'
+        phoneInvalid: 'Invalid phone number',
+        privacyPolicy: 'I accept the Privacy Policy',
+        privacyPolicyRequired: 'You must accept the Privacy Policy',
+        privacyPolicyLink: 'Privacy Policy'
       },
       submit: 'CONFIRM BOOKING',
       processing: 'Processing...',
