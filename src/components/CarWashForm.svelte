@@ -174,7 +174,7 @@
           />
           <span>
             {currentLang === 'hu' ? 'Elfogadom az ' : 'I accept the '}
-            <a href="#privacy" class="privacy-link" on:click|preventDefault={() => navigate('privacy')}>
+            <a href="#privacy" class="privacy-link">
               {currentLang === 'hu' ? 'Adatvédelmi irányelveket' : 'Privacy Policy'}
             </a>
           </span>
