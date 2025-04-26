@@ -1,5 +1,5 @@
 import App from './App.svelte';
-
+import 'flag-icons/css/flag-icons.min.css';
 // Create the app instance
 const app = new App({
   target: document.body
