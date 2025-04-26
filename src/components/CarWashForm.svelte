@@ -26,7 +26,9 @@
       firstName: '',
       lastName: '',
       email: '',
-      phone: ''
+      phone: '',
+      notes: '',
+      acceptPrivacy: false
     };
     
     // Form validation
@@ -35,7 +37,8 @@
       firstName: '',
       lastName: '',
       email: '',
-      phone: ''
+      phone: '',
+      acceptPrivacy: ''
     };
     
     let isSubmitting = false;
@@ -101,7 +104,8 @@
             phone: formData.phone
           },
           date: formData.bookingDate,
-          time: formData.bookingTime
+          time: formData.bookingTime,
+          notes: formData.notes
         };
         
         isSubmitting = false;
@@ -114,6 +118,7 @@
   
   <form class="booking-form" on:submit|preventDefault={handleSubmit}>
     <div class="form-section">
+      <h3>{content[currentLang].bookingForm.carWash.dateTime}</h3>
       <div class="form-row">
         <div class="form-group">
           <label for="bookingDate">{content[currentLang].bookingForm.carWash.date}</label>
@@ -128,7 +133,6 @@
         </div>
       </div>
       
-      <!-- Replace the existing TimeSlotSelector component with this -->
       <TimeSlotSelector 
         selectedTime={formData.bookingTime} 
         content={content} 
@@ -138,8 +142,8 @@
         date={formData.bookingDate}
         on:timeSelected={handleTimeSelected}
       />
+    </div>
     
-    <!-- Personal Info Form Component -->
     <PersonalInfoForm 
       bind:formData={formData}
       bind:formErrors={formErrors}
@@ -148,11 +152,44 @@
       {isSubmitting}
     />
     
-    <div class="form-submit">
+    <div class="form-section">
+      <h3>{content[currentLang].bookingForm.carWash.notes || 'Additional Notes'}</h3>
+      <div class="form-group">
+        <textarea
+          id="notes"
+          bind:value={formData.notes}
+          rows="4"
+          placeholder={currentLang === 'hu' ? 'További megjegyzések (opcionális)' : 'Additional notes (optional)'}
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-group privacy-checkbox">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            bind:checked={formData.acceptPrivacy}
+            required
+          />
+          <span>
+            {currentLang === 'hu' ? 'Elfogadom az ' : 'I accept the '}
+            <a href="#privacy" class="privacy-link" on:click|preventDefault={() => navigate('privacy')}>
+              {currentLang === 'hu' ? 'Adatvédelmi irányelveket' : 'Privacy Policy'}
+            </a>
+          </span>
+        </label>
+        {#if formErrors.acceptPrivacy}
+          <p class="error-message">{formErrors.acceptPrivacy}</p>
+        {/if}
+      </div>
+    </div>
+
+    <div class="form-actions">
       <button type="submit" class="submit-button" disabled={isSubmitting}>
         {#if isSubmitting}
           <LoadingSpinner size="1rem" color="white" />
-          <span>{content[currentLang].bookingForm.processing}</span>
+          <span>{currentLang === 'hu' ? 'Feldolgozás...' : 'Processing...'}</span>
         {:else}
           {content[currentLang].bookingForm.submit}
         {/if}
@@ -162,67 +199,122 @@
   
   <style>
     .booking-form {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
       width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
     }
     
     .form-section {
-      margin-bottom: 2.5rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      width: 100%;
+    }
+    
+    .form-section h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--text);
     }
     
     .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
       margin-bottom: 1.5rem;
     }
     
     .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .form-group:last-child {
+      margin-bottom: 0;
     }
     
     label {
-      font-size: 0.95rem;
+      display: block;
       margin-bottom: 0.5rem;
       color: var(--text);
       font-weight: 500;
     }
     
-    input {
-      padding: 0.8rem 1rem;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-      font-family: inherit;
+    input, textarea {
       width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
     }
     
-    input:focus {
+    input:focus, textarea:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(0, 186, 229, 0.2);
       outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 186, 229, 0.2);
     }
     
-    .form-submit {
-      text-align: center;
+    .error-message {
+      color: #dc3545;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    
+    .privacy-checkbox {
+      margin-top: 1rem;
+    }
+    
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    
+    .checkbox-label input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+    
+    .privacy-link {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .privacy-link:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+    
+    .form-actions {
       margin-top: 2rem;
+      text-align: center;
+      width: 100%;
+      display: flex;
+      justify-content: center;
     }
     
     .submit-button {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.5rem;
-      padding: 1rem 2.5rem;
-      font-size: 1rem;
-      font-weight: 600;
-      min-width: 200px;
       background-color: var(--primary);
       color: white;
       border: none;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      width: 100%;
+      max-width: 300px;
     }
     
     .submit-button:hover:not(:disabled) {
@@ -232,5 +324,27 @@
     .submit-button:disabled {
       opacity: 0.7;
       cursor: not-allowed;
+    }
+    
+    @media screen and (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .form-section {
+        padding: 1.25rem;
+      }
+      
+      .submit-button {
+        width: 100%;
+        max-width: none;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .form-section {
+        padding: 1rem;
+      }
     }
   </style>
