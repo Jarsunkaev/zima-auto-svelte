@@ -339,7 +339,7 @@
       </div>
 
       <div class="centered-button-container">
-            <a href="/contact" class="btn btn-primary maintenance-contact-btn">
+            <a href="/#contact" class="btn btn-primary maintenance-contact-btn">
               {$currentLang === 'hu' ? 'Kérj árajánlatot' : 'Request a Quote'}
           </a>
       </div>

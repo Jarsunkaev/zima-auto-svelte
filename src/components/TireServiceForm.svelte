@@ -201,15 +201,19 @@
           type="text"
           id="licensePlate"
           bind:value={formData.licensePlate}
-          placeholder={content[currentLang].bookingForm.tireService.licensePlatePlaceholder || 'e.g. ABC-123'}
+          placeholder={currentLang === 'hu' ? 'Adja meg rendszámát' : 'Enter your license plate'}
         />
       </div>
       <div class="form-group">
         <label for="tireCount">{content[currentLang].bookingForm.tireService.tireCount || 'Number of Tires'}</label>
-        <select id="tireCount" bind:value={formData.tireCount}>
-          <option value="2">2</option>
-          <option value="4">4</option>
-        </select>
+        <input
+          type="number"
+          id="tireCount"
+          bind:value={formData.tireCount}
+          min="1"
+          max="8"
+          placeholder={currentLang === 'hu' ? 'Adja meg a gumik számát' : 'Enter number of tires'}
+        />
       </div>
     </div>
   
@@ -217,9 +221,10 @@
       <h3>{content[currentLang].bookingForm.tireService.notes || 'Additional Notes'}</h3>
       <div class="form-group">
         <textarea
+          id="notes"
           bind:value={formData.notes}
-          placeholder={content[currentLang].bookingForm.tireService.notesPlaceholder || 'Any special requests or additional information'}
           rows="4"
+          placeholder={currentLang === 'hu' ? 'További megjegyzések (opcionális)' : 'Additional notes (optional)'}
         ></textarea>
       </div>
     </div>

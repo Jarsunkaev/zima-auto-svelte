@@ -34,6 +34,7 @@
         id="lastName"
         bind:value={formData.lastName}
         required
+        placeholder={currentLang === 'hu' ? 'Adja meg vezetéknevét' : 'Enter your last name'}
       />
       {#if formErrors.lastName}
         <p class="error-message">{formErrors.lastName}</p>
@@ -47,6 +48,7 @@
         id="firstName"
         bind:value={formData.firstName}
         required
+        placeholder={currentLang === 'hu' ? 'Adja meg keresztnevét' : 'Enter your first name'}
       />
       {#if formErrors.firstName}
         <p class="error-message">{formErrors.firstName}</p>
@@ -61,6 +63,7 @@
         type="email"
         id="email"
         bind:value={formData.email}
+        placeholder={currentLang === 'hu' ? 'Adja meg email címét' : 'Enter your email address'}
       />
       {#if formErrors.email}
         <p class="error-message">{formErrors.email}</p>
@@ -74,6 +77,7 @@
         id="phone"
         bind:value={formData.phone}
         required
+        placeholder={currentLang === 'hu' ? 'Adja meg telefonszámát' : 'Enter your phone number'}
       />
       {#if formErrors.phone}
         <p class="error-message">{formErrors.phone}</p>

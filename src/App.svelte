@@ -50,13 +50,14 @@
 	    pageLoading = false;
 	  }, 300);
 	  
+	  // Handle initial page load
 	  const hash = window.location.hash.slice(1);
 	  if (hash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(hash)) {
 		currentPage = hash;
 	  } else {
-	    // Default to home if no valid hash
-	    currentPage = 'home';
-	    window.history.replaceState(null, null, '#home');
+		// Default to home if no valid hash
+		currentPage = 'home';
+		window.history.replaceState(null, null, '#home');
 	  }
 	  
 	  // ALWAYS default to Hungarian language regardless of browser settings

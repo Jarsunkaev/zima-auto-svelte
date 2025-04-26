@@ -284,6 +284,7 @@
           id="licensePlate"
           bind:value={formData.licensePlate}
           required
+          placeholder={currentLang === 'hu' ? 'Adja meg rendszámát' : 'Enter your license plate'}
         />
         {#if formErrors.licensePlate}
           <p class="error-message">{formErrors.licensePlate}</p>
@@ -299,6 +300,7 @@
           min="1"
           max="20"
           required
+          placeholder={currentLang === 'hu' ? 'Adja meg az utasok számát' : 'Enter number of passengers'}
         />
         {#if formErrors.passengers}
           <p class="error-message">{formErrors.passengers}</p>

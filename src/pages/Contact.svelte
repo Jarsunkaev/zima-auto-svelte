@@ -242,7 +242,7 @@
   // Function to open Google Maps directions to Zima Auto
   // This function is now directly called by the button on the contact page
   function openGoogleMapsDirections() {
-    // Updated URL based on user feedback
+    // Using the specific URL that initiates directions to Zima Auto
     window.open('https://www.google.com/maps/place/Zima+Auto+Airport+Parking+-+Aut%C3%B3szerv%C3%ADz+-+Gumiszerv%C3%ADz+-+K%C3%A9zi+aut%C3%B3mos%C3%B3/@47.4099403,19.2301139,17z/data=!3m1!4b1!4m6!3m5!1s0x4741c1ece824d30f:0x632898beef8d5983!8m2!3d47.4099403!4d19.2326888!16s%2Fg%2F11vyx0730g?entry=ttu&g_ep=EgoyMDI1MDQyMy4wIKXMDSoASAFQAw%3D%3D', '_blank');
   }
 
@@ -280,7 +280,7 @@
         </div>
         <div class="info-content">
           <h3>{content[$currentLang].phone.title}</h3>
-          <p>{content[$currentLang].phone.content}</p>
+          <p><a href="tel:+36705550588" class="contact-link">{content[$currentLang].phone.content}</a></p>
         </div>
       </div>
 
@@ -292,7 +292,7 @@
         </div>
         <div class="info-content">
           <h3>{content[$currentLang].email.title}</h3>
-          <p>{content[$currentLang].email.content}</p>
+          <p><a href="mailto:info@zima-auto.com" class="contact-link">{content[$currentLang].email.content}</a></p>
         </div>
       </div>
 
@@ -334,6 +334,7 @@
               id="name"
               bind:value={formData.name}
               required
+              placeholder={$currentLang === 'hu' ? 'Adja meg a nevét' : 'Enter your name'}
               aria-invalid={formErrors.name ? 'true' : 'false'}
             />
             {#if formErrors.name}
@@ -349,7 +350,8 @@
                 id="email"
                 bind:value={formData.email}
                 required
-                 aria-invalid={formErrors.email ? 'true' : 'false'}
+                placeholder={$currentLang === 'hu' ? 'Adja meg email címét' : 'Enter your email address'}
+                aria-invalid={formErrors.email ? 'true' : 'false'}
               />
                {#if formErrors.email}
                 <p class="error-message">{formErrors.email}</p>
@@ -362,8 +364,9 @@
                 type="tel"
                 id="phone"
                 bind:value={formData.phone}
+                placeholder={$currentLang === 'hu' ? 'Adja meg telefonszámát' : 'Enter your phone number'}
               />
-              </div>
+            </div>
           </div>
 
           <div class="form-group">
@@ -373,7 +376,8 @@
               id="subject"
               bind:value={formData.subject}
               required
-               aria-invalid={formErrors.subject ? 'true' : 'false'}
+              placeholder={$currentLang === 'hu' ? 'Adja meg a tárgyat' : 'Enter the subject'}
+              aria-invalid={formErrors.subject ? 'true' : 'false'}
             />
              {#if formErrors.subject}
               <p class="error-message">{formErrors.subject}</p>
@@ -387,7 +391,8 @@
               rows="5"
               bind:value={formData.message}
               required
-               aria-invalid={formErrors.message ? 'true' : 'false'}
+              placeholder={$currentLang === 'hu' ? 'Írja meg üzenetét' : 'Enter your message'}
+              aria-invalid={formErrors.message ? 'true' : 'false'}
             ></textarea>
              {#if formErrors.message}
               <p class="error-message">{formErrors.message}</p>
@@ -428,7 +433,7 @@
     >
       {$currentLang === 'hu' ? 'Útvonaltervezés' : 'Get Directions'}
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 18l6-6-6 6"/>
+        <path d="M9 18l6-6-6-6"/>
       </svg>
     </button>
   </div>
@@ -442,7 +447,7 @@
     margin-top: 0.25rem;
   }
 
-  input.aria-invalid-true, textarea.aria-invalid-true {
+  input[aria-invalid="true"], textarea[aria-invalid="true"] {
       border-color: #dc3545;
   }
 
@@ -666,13 +671,14 @@
     right: 20px;
     background-color: #111111;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 25px 10px 20px; /* Increased right padding */
     border-radius: 5px;
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 8px;
     font-weight: 500;
+    font-size: 0.9rem; /* Kept font size from original contact page code */
     transition: background-color 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     border: none;
@@ -683,5 +689,155 @@
     background-color: #222222;
   }
 
-  /* Removed styles for directions-popup and navigation-buttons */
+  /* Responsive Styles */
+  @media screen and (max-width: 992px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem; /* Space between the info block and the form block */
+    }
+     /* Explicit margin bottom for the info block when stacked */
+    .contact-info {
+       margin-bottom: 3rem; /* Match the grid gap for clear separation */
+    }
+
+     .contact-form-container h2 {
+         left: 50%;
+         transform: translateX(-50%);
+         text-align: center;
+     }
+      .contact-form-container h2::after {
+         left: 50%;
+         transform: translateX(-50%);
+     }
+  }
+
+  @media screen and (max-width: 768px) {
+    .contact-hero h1 {
+      font-size: 2.2rem;
+    }
+
+    .contact-hero p {
+      font-size: 1rem;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .contact-form-container {
+      padding: 1.5rem;
+    }
+
+     .contact-section {
+         padding: 3rem 1.5rem;
+     }
+      .contact-grid {
+          gap: 2rem;
+      }
+      .info-card {
+          padding: 1rem;
+      }
+       .icon {
+           min-width: 40px;
+           height: 40px;
+       }
+        .info-content h3 {
+            font-size: 1rem;
+        }
+         .info-content p {
+            margin-bottom: 2rem;
+         }
+         .contact-form-container h2 {
+             font-size: 1.5rem;
+             padding-bottom: 10px;
+         }
+         .contact-form-container h2::after {
+             width: 40px;
+         }
+         label, input, textarea, .contact-form button {
+             font-size: 0.95rem;
+         }
+          .success-message p {
+             font-size: 1.1rem;
+          }
+          .map-section {
+               height: 350px;
+          }
+           .contact-info {
+              margin-bottom: 2rem; /* Adjust mobile margin for this breakpoint */
+           }
+
+        /* Adjusted padding for directions link on smaller screens */
+       .directions-link {
+           bottom: 15px; /* Slightly adjust position */
+           right: 15px; /* Slightly adjust position */
+           padding: 8px 20px 8px 16px; /* Increased right padding */
+           font-size: 0.9rem;
+       }
+  }
+
+   @media screen and (max-width: 480px) {
+       .contact-hero h1 {
+           font-size: 1.8rem;
+       }
+       .contact-form-container h2 {
+           font-size: 1.3rem;
+       }
+       /* Info Cards - keep icon next to text, but adjust padding/gap */
+       .info-card {
+           padding: 1rem; /* Smaller padding */
+           gap: 1rem; /* Smaller gap */
+           align-items: flex-start; /* Keep icon and text aligned to top */
+       }
+        .icon {
+            min-width: 40px; /* Smaller icon */
+            height: 40px;
+        }
+         .info-content h3 {
+             font-size: 0.95rem; /* Smaller font */
+             margin-bottom: 0.3rem;
+         }
+          .info-content p {
+              margin-bottom: 2rem;
+          }
+           label, input, textarea, .contact-form button {
+               font-size: 0.9rem; /* Smaller form font */
+           }
+            .success-message p {
+                font-size: 1rem; /* Smaller success message */
+            }
+
+       .contact-grid {
+          gap: 3rem;
+       }
+       .contact-info {
+          margin-bottom: 1.5rem; /* Match grid gap */
+       }
+       .contact-section {
+          padding: 2rem 1rem;
+       }
+        .map-section {
+          height: 300px;
+        }
+        /* Adjusted padding for directions link on very small screens */
+       .directions-link {
+           bottom: 10px;
+           right: 10px;
+           padding: 6px 18px 6px 12px; /* Increased right padding */
+           font-size: 0.8rem;
+       }
+   }
+
+   /* Removed styles for directions-popup and navigation-buttons */
+
+  .contact-link {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .contact-link:hover {
+    color: var(--primary);
+  }
 </style>

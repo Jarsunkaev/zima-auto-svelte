@@ -199,7 +199,7 @@
           type="text"
           id="licensePlate"
           bind:value={formData.licensePlate}
-          placeholder={content[currentLang].bookingForm.autoService.licensePlatePlaceholder || 'e.g. ABC-123'}
+          placeholder={currentLang === 'hu' ? 'Adja meg rendszámát' : 'Enter your license plate'}
         />
       </div>
     </div>
@@ -208,9 +208,10 @@
       <h3>{content[currentLang].bookingForm.autoService.notes || 'Additional Notes'}</h3>
       <div class="form-group">
         <textarea
+          id="notes"
           bind:value={formData.notes}
-          placeholder={content[currentLang].bookingForm.autoService.notesPlaceholder || 'Describe the issue with your vehicle or any special requests'}
           rows="4"
+          placeholder={currentLang === 'hu' ? 'További megjegyzések (opcionális)' : 'Additional notes (optional)'}
         ></textarea>
       </div>
     </div>
