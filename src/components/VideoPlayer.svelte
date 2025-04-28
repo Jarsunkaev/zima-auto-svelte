@@ -1,52 +1,51 @@
 <script>
     import { onMount, onDestroy } from 'svelte';
-    import { fade } from 'svelte/transition';
+    import { fade, scale } from 'svelte/transition';
     
+    // Props
+    export let videoSrc = "/zima_video.mp4";
+    export let thumbnailSrc = "/images/zima-gate.jpg";
+    
+    // State
     let isModalOpen = false;
     let videoRef;
     let modalContentRef;
-    let isMobile = false;
-    
-    // Check if device is mobile
-    function checkMobile() {
-      isMobile = window.innerWidth <= 768;
-    }
     
     function openModal() {
       isModalOpen = true;
-      // Disable body scroll when modal is open
       document.body.style.overflow = 'hidden';
       
-      // Use setTimeout with a slight delay to ensure the DOM is fully updated before attempting to play
+      // Initialize video when modal opens
       setTimeout(() => {
-        if (videoRef && document.body.contains(videoRef)) {
-          videoRef.currentTime = 0; // Start video from the beginning every time
-          const playPromise = videoRef.play();
+        if (videoRef) {
+          videoRef.currentTime = 0;
           
-          // Only handle the promise if it exists (newer browsers)
-          if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              console.error('Video playback failed:', error);
-              // Don't try to restart automatically on mobile as it might cause issues
-              // User can tap the video to start playback manually
-            });
+          try {
+            const playPromise = videoRef.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(error => {
+                console.warn('Autoplay prevented, waiting for user interaction');
+              });
+            }
+          } catch (error) {
+            console.warn('Error attempting to play video:', error);
           }
         }
-      }, 300); // 300ms delay to ensure modal transition has completed
+      }, 300);
     }
     
     function closeModal() {
       isModalOpen = false;
+      
       if (videoRef) {
         videoRef.pause();
-        videoRef.currentTime = 0; // Reset video to start
+        videoRef.currentTime = 0;
       }
-      // Re-enable body scroll
-      document.body.style.overflow = 'auto';
+      
+      document.body.style.overflow = '';
     }
     
     function handleClickOutside(event) {
-      // Check if the click is outside the modal content
       if (modalContentRef && !modalContentRef.contains(event.target)) {
         closeModal();
       }
@@ -58,42 +57,18 @@
       }
     }
     
-    function handleResize() {
-      checkMobile();
-    }
-    
     onMount(() => {
-      // Check if mobile on initial load
-      checkMobile();
-      
-      // Add event listeners for clicking outside and Escape key
-      document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('keydown', handleEscKey);
-      window.addEventListener('resize', handleResize);
-    
-      // Clean up event listeners on component destroy
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-        document.removeEventListener('keydown', handleEscKey);
-        window.removeEventListener('resize', handleResize);
-        // Ensure body scroll is re-enabled if component is destroyed while modal is open
-        document.body.style.overflow = 'auto';
-      };
     });
     
-    // Clean up body overflow style when modal closes via isModalOpen change
-    $: {
-      if (!isModalOpen) {
-        document.body.style.overflow = 'auto';
-      } else {
-        // Ensure it's hidden if modal opens
-        document.body.style.overflow = 'hidden';
-      }
-    }
+    onDestroy(() => {
+      document.removeEventListener('keydown', handleEscKey);
+      document.body.style.overflow = '';
+    });
   </script>
   
-  <div class="video-container">
-    <div
+  <div class="video-thumbnail">
+    <div 
       class="thumbnail-wrapper"
       on:click={openModal}
       on:keydown={(e) => e.key === 'Enter' && openModal()}
@@ -101,198 +76,170 @@
       tabindex="0"
       aria-label="Play video"
     >
-      <div class="thumbnail">
-        <img
-          src="/images/zima-gate.jpg"
-          alt="Zima Auto video thumbnail"
-          class="thumbnail-image"
-        />
-        <div class="play-overlay">
-          <div class="play-button">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
+      <img 
+        src={thumbnailSrc} 
+        alt="Video thumbnail" 
+        class="thumbnail-image"
+        loading="lazy"
+      />
+      
+      <div class="play-overlay">
+        <div class="play-button">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
         </div>
       </div>
     </div>
-  
-    {#if isModalOpen}
-      <div class="modal-overlay" transition:fade={{ duration: 300 }}>
-        <div
-          bind:this={modalContentRef}
-          class="modal-content {isMobile ? 'mobile' : ''}"
-        >
-          <button
-            class="close-button"
-            on:click={closeModal}
-            aria-label="Close video"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </button>
-  
-          <video
-            bind:this={videoRef}
-            class="video-player"
-            controls
-            autoplay
-            loop
-            playsinline
-            muted 
-            preload="auto"
-          >
-            <source src="/zima_video.mp4" type="video/mp4" />
-            <track kind="captions" src="/captions.vtt" srclang="en" label="English" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
-    {/if}
   </div>
   
-  <style>
-    .video-container {
-      position: relative;
-      width: 100%;
-      height: 0;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      overflow: hidden;
-    }
+  {#if isModalOpen}
+    <div 
+      class="modal-overlay" 
+      transition:fade={{ duration: 250 }}
+      on:click={handleClickOutside}
+    >
+      <div 
+        class="modal-content"
+        bind:this={modalContentRef}
+        transition:scale={{ duration: 300, start: 0.9 }}
+        on:click|stopPropagation
+      >
+        <button
+          class="close-button"
+          on:click={closeModal}
+          aria-label="Close video"
+        >
+          <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6L6 18"></path>
+            <path d="M6 6l12 12"></path>
+          </svg>
+        </button>
+        
+        <video
+          bind:this={videoRef}
+          class="video-element"
+          controls
+          preload="metadata"
+          poster={thumbnailSrc}
+          playsinline
+        >
+          <source src={videoSrc} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  {/if}
   
+  <style>
+    .video-thumbnail {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      aspect-ratio: 16 / 9;
+    }
+    
     .thumbnail-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: relative;
       width: 100%;
       height: 100%;
       cursor: pointer;
-      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
     }
-  
-    .thumbnail-wrapper:hover {
-      transform: translateY(-5px) scale(1.01);
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-    }
-  
-    .thumbnail {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-  
+    
     .thumbnail-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
       display: block;
-      transition: transform 0.7s ease;
+      transition: transform 0.5s ease;
     }
     
     .thumbnail-wrapper:hover .thumbnail-image {
       transform: scale(1.05);
     }
-  
+    
     .play-overlay {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2));
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.4s ease;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
+      transition: background 0.3s ease;
     }
-  
+    
     .thumbnail-wrapper:hover .play-overlay {
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
     }
-  
+    
     .play-button {
-      width: 90px;
-      height: 90px;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-  
-    .play-button svg {
-      width: 45px;
-      height: 45px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
       color: var(--primary, #00bae5);
-      margin-left: 5px;
-      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
     }
-  
+    
+    .play-button svg {
+      width: 40px;
+      height: 40px;
+      margin-left: 5px; /* Adjust for the play triangle */
+    }
+    
     .thumbnail-wrapper:hover .play-button {
       transform: scale(1.1);
       background: white;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     }
-  
-    /* Modal Styles */
+    
+    /* Modal styles */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-    }
-  
-    .modal-content {
-      position: relative;
-      width: 85%;
-      max-width: 1200px;
-      height: auto;
-      max-height: 85vh;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #000;
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      /* Ensure the modal is centered both horizontally and vertically */
-      margin: 0 auto;
-    }
-  
-    /* Special class for mobile view */
-    .modal-content.mobile {
       width: 100%;
       height: 100%;
-      max-height: 100%;
-      border-radius: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 30px;
+      box-sizing: border-box;
     }
-  
+    
+    .modal-content {
+      position: relative;
+      width: 90%;
+      max-width: 1000px;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    
     .close-button {
       position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      width: 48px;
-      height: 48px;
-      background: rgba(0, 0, 0, 0.5);
-      border: 2px solid rgba(255, 255, 255, 0.2);
+      top: 15px;
+      right: 15px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid rgba(255, 255, 255, 0.3);
       color: white;
       display: flex;
       align-items: center;
@@ -300,83 +247,45 @@
       cursor: pointer;
       z-index: 10;
       transition: all 0.3s ease;
-      opacity: 0.8;
+      padding: 0;
     }
-  
-    .close-button:hover {
+    
+    .close-button:hover,
+    .close-button:focus {
       background: rgba(0, 0, 0, 0.8);
       border-color: rgba(255, 255, 255, 0.5);
-      opacity: 1;
       transform: scale(1.05);
+      outline: none;
     }
-  
+    
     .close-button svg {
-      width: 24px;
-      height: 24px;
-      stroke-width: 2.5px;
+      width: 22px;
+      height: 22px;
     }
-  
-    .video-player {
-      display: block;
+    
+    .video-element {
       width: 100%;
-      height: auto;
-      max-height: 85vh;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-  
-    /* Mobile styles applied to .modal-content.mobile */
-    .modal-content.mobile .video-player {
       height: 100%;
-      max-height: 100%;
-      width: 100%;
-      border-radius: 0;
-      object-position: center;
+      display: block;
+      object-fit: contain;
     }
-  
-    /* Responsive adjustments */
-    @media screen and (max-width: 1200px) {
-      .play-button {
-        width: 80px;
-        height: 80px;
-      }
-      
-      .play-button svg {
-        width: 38px;
-        height: 38px;
-      }
-    }
-  
-    @media screen and (max-width: 768px) {
-      .video-container {
-        padding-bottom: 65%; /* Slightly taller aspect ratio on tablets */
-      }
-      
-      .modal-content {
-        width: 95%;
-      }
-      
+    
+    /* Responsive styles */
+    @media (max-width: 992px) {
       .play-button {
         width: 70px;
         height: 70px;
       }
       
       .play-button svg {
-        width: 32px;
-        height: 32px;
-      }
-      
-      .close-button {
-        top: 1rem;
-        right: 1rem;
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
       }
     }
-  
-    @media screen and (max-width: 480px) {
-      .video-container {
-        padding-bottom: 75%; /* Even taller aspect ratio on phones */
+    
+    @media (max-width: 768px) {
+      .modal-overlay {
+        padding: 15px;
       }
       
       .play-button {
@@ -385,23 +294,41 @@
       }
       
       .play-button svg {
-        width: 28px;
-        height: 28px;
-        margin-left: 3px;
+        width: 30px;
+        height: 30px;
       }
       
       .close-button {
-        top: 1rem;
-        right: 1rem;
+        top: 10px;
+        right: 10px;
         width: 36px;
         height: 36px;
-        opacity: 0.9;
-        z-index: 2000;
       }
       
       .close-button svg {
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .video-thumbnail {
+        border-radius: 8px;
+      }
+      
+      .play-button {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .play-button svg {
+        width: 25px;
+        height: 25px;
+        margin-left: 3px;
+      }
+      
+      .modal-overlay {
+        padding: 10px;
       }
     }
   </style>

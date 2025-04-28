@@ -3,8 +3,6 @@
   import { currentLang, t } from '../lib/i18n';
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  // Import the VideoPlayer component
   import VideoPlayer from '../components/VideoPlayer.svelte';
 
   // Register ScrollTrigger
@@ -201,7 +199,10 @@
       
       <div class="video-section-wrapper">
         <div class="video-container">
-          <VideoPlayer />
+          <VideoPlayer 
+            videoSrc="/zima_video.mp4" 
+            thumbnailSrc="/images/zima-gate.jpg" 
+          />
         </div>
         <p class="video-caption">{content[$currentLang].values.videoCaption}</p>
       </div>
@@ -434,15 +435,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 auto 3rem;
-    max-width: 800px; /* Wider container for desktop */
+    margin: 3rem auto;
+    max-width: 800px;
+    width: 90%;
   }
 
   .video-container {
     width: 100%;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    border-radius: 12px;
-    overflow: hidden;
     margin-bottom: 1.5rem;
   }
 
@@ -450,8 +449,8 @@
     text-align: center;
     font-size: 1.1rem;
     color: var(--text-light);
-    margin-top: 1rem;
-    max-width: 600px;
+    margin-top: 1.5rem;
+    max-width: 700px;
   }
 
   /* Styles for the Offerings section */
@@ -585,8 +584,8 @@
     }
 
     .video-section-wrapper {
-      margin: 1rem auto 2.5rem;
-      max-width: 100%;
+      margin: 2rem auto;
+      width: 95%;
     }
 
     .video-caption {
@@ -643,7 +642,7 @@
     }
 
     .video-section-wrapper {
-      margin-bottom: 1.5rem;
+      margin: 1.5rem auto;
     }
 
     .video-caption {

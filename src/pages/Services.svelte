@@ -34,11 +34,11 @@
 
   const carWashPrices = {
     smart: [
-        { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '8900 Ft', 'Exterior': '5900 Ft', 'Interior': '4900 Ft' },
-        { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '10500 Ft', 'Exterior': '5900 Ft', 'Interior': '4900 Ft' }
+        { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '8900 Ft', 'Exterior': '5600 Ft', 'Interior': '3800 Ft' },
+        { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '10500 Ft', 'Exterior': '6100 Ft', 'Interior': '4300 Ft' }
     ],
     premium: [
-        { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '11900 Ft', 'Exterior': '6900 Ft', 'Interior': '5600 Ft' },
+        { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '11900 Ft', 'Exterior': '6100 Ft', 'Interior': '4300 Ft' },
         { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '13500 Ft', 'Exterior': '6900 Ft', 'Interior': '5600 Ft' }
     ]
   };
