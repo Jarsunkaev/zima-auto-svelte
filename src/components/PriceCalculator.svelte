@@ -1,7 +1,7 @@
 <script>
   import { onMount, createEventDispatcher, afterUpdate } from 'svelte';
-  // Import the language store (assuming it's correctly set up)
-  import { currentLang } from '../lib/i18n'; // Adjust path if needed
+  // Import the language store
+  import { currentLang } from '../lib/i18n';
 
   // --- Component Props ---
   export let formData = { // Default structure for safety
@@ -12,9 +12,12 @@
     carWashPackage: 'none'
   };
   export let calculateDays; // Function from parent (AirportParkingForm)
-  // Note: The 'content' prop seems unused here as translations are internal.
-  // You could remove it unless used for something else not shown.
-  // export let content = {};
+  export const content = {}; // Receive the content object from parent component
+  // Get the currently selected language from the store, don't use a prop
+  let currentLanguage;
+  currentLang.subscribe(value => {
+    currentLanguage = value;
+  });
 
   // --- Event Dispatcher ---
   const dispatch = createEventDispatcher();
@@ -53,39 +56,6 @@
   let totalPrice = 0;
   let hasValidDates = false; // Tracks if date/time inputs have values
 
-  // --- Internal Translations ---
-  // These match the requested labels
-  const translations = {
-      hu: {
-        durationLabel: 'Időtartam',
-        daysUnit: 'nap',
-        parkingTotalLabel: 'Parkolás díj',
-        carWashStandardLabel: 'Autómosó (alap)',
-        discountLabel: 'Kedvezmény (20%)',
-        carWashDiscountedLabel: 'Autómosó (kedvezményes)',
-        totalLabel: 'Végösszeg',
-        invalidDateError: 'Érvénytelen dátum vagy időtartam. Kérjük, ellenőrizze az érkezési és távozási időpontokat.'
-      },
-      en: {
-        durationLabel: 'Duration',
-        daysUnit: 'days',
-        parkingTotalLabel: 'Parking Total',
-        carWashStandardLabel: 'Car Wash (Standard)',
-        discountLabel: 'Discount (20%)',
-        carWashDiscountedLabel: 'Car Wash (Discounted)',
-        totalLabel: 'Total',
-        invalidDateError: 'Invalid date or duration. Please check arrival and departure dates/times.'
-      }
-  };
-
-  // Make translations reactive
-  $: currentTranslations = translations[$currentLang];
-
-  // --- Helper: Get Localized Text Safely ---
-  function getLocalizedText(keySuffix) {
-    return currentTranslations?.[keySuffix] || keySuffix;
-  }
-
   // --- Dispatch Price Update ---
   function dispatchPriceUpdate() {
     // Ensure all values are numbers before dispatching
@@ -99,7 +69,6 @@
       hasValidDates: hasValidDates,
       isValidDuration: currentDays > 0 // Flag indicating calculated days > 0
     };
-    // console.log('PriceCalculator dispatching:', dataToDispatch); // Optional: for debugging
     dispatch('priceUpdated', dataToDispatch);
   }
 
@@ -142,8 +111,6 @@
 
     // Total Price Calculation
     totalPrice = (parkingTotal || 0) + (carWashDiscountedPrice || 0);
-
-    // No need to dispatch here, the afterUpdate hook handles it.
   }
 
   // --- Reactivity ---
@@ -153,8 +120,6 @@
     if (formData && typeof calculateDays === 'function') {
         calculatePrices();
     }
-    // Also react to language changes to update text immediately
-    $currentLang; // This makes the block reactive to language changes
   }
 
   // --- Lifecycle Hooks ---
@@ -166,7 +131,6 @@
   });
 
   // Use afterUpdate to ensure DOM is potentially updated *before* dispatching new prices.
-  // This is generally safer when the parent might react immediately to the event.
   afterUpdate(() => {
     // The reactive block ($:) already calls calculatePrices.
     // We just need to dispatch the results after Svelte has processed updates.
@@ -177,7 +141,7 @@
   function formatCurrency(amount) {
     const numericAmount = typeof amount === 'number' ? amount : 0;
     // Format based on current language
-    return new Intl.NumberFormat($currentLang === 'hu' ? 'hu-HU' : 'en-US', {
+    return new Intl.NumberFormat(currentLanguage === 'hu' ? 'hu-HU' : 'en-US', {
       style: 'currency',
       currency: 'HUF',
       minimumFractionDigits: 0,
@@ -190,40 +154,42 @@
 <div class="price-summary">
   <div class="price-calculation">
     <p>
-      <span>{currentTranslations?.durationLabel || 'Duration'}:</span>
-      <span>{currentDays} {currentTranslations?.daysUnit || 'days'}</span>
+      <span>{currentLanguage === 'hu' ? 'Időtartam' : 'Duration'}:</span>
+      <span>{currentDays} {currentLanguage === 'hu' ? 'nap' : 'days'}</span>
     </p>
 
     <p>
-      <span>{currentTranslations?.parkingTotalLabel || 'Parking Total'}:</span>
+      <span>{currentLanguage === 'hu' ? 'Parkolás díj' : 'Parking Total'}:</span>
       <span>{formatCurrency(parkingTotal)}</span>
     </p>
 
     {#if formData.carWashPackage !== 'none' && carWashStandardPrice > 0}
       <p class="car-wash-price">
-        <span>{currentTranslations?.carWashStandardLabel || 'Car Wash (Standard)'}:</span>
+        <span>{currentLanguage === 'hu' ? 'Autómosó díj (alap)' : 'Car Wash Fee (Standard)'}:</span>
         <span>{formatCurrency(carWashStandardPrice)}</span>
       </p>
       {#if carWashDiscountAmount > 0}
         <p>
-          <span>{currentTranslations?.discountLabel || 'Discount (20%)'}:</span>
+          <span>{currentLanguage === 'hu' ? 'Autómosó kedvezmény (20%)' : 'Car Wash Discount (20%)'}:</span>
           <span style="color: #e53e3e;">- {formatCurrency(carWashDiscountAmount)}</span>
         </p>
       {/if}
       <p>
-        <span>{currentTranslations?.carWashDiscountedLabel || 'Car Wash (Discounted)'}:</span>
+        <span>{currentLanguage === 'hu' ? 'Autómosó díj (kedvezményes)' : 'Car Wash Fee (Discounted)'}:</span>
         <span>{formatCurrency(carWashDiscountedPrice)}</span>
       </p>
     {/if}
 
     <p class="total-price-line">
-      <span>{currentTranslations?.totalLabel || 'Total'}:</span>
+      <span>{currentLanguage === 'hu' ? 'Végösszeg' : 'Total'}:</span>
       <span class="total-price">{formatCurrency(totalPrice)}</span>
     </p>
 
     {#if hasValidDates && currentDays <= 0}
       <p class="error-message" style="text-align:center; margin-top: 1rem;">
-        {currentTranslations?.invalidDateError || 'Invalid date or duration'}
+        {currentLanguage === 'hu' 
+          ? 'Érvénytelen dátum vagy időtartam. Kérjük, ellenőrizze az érkezési és távozási időpontokat.'
+          : 'Invalid date or duration. Please check arrival and departure dates/times.'}
       </p>
     {/if}
   </div>
