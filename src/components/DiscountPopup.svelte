@@ -89,7 +89,7 @@
       </button>
       
       <div class="popup-text">
-        <h2>{$currentLang === 'hu' ? '20% kedvezmény autómosásra!' : 'Get 20% Off Your Car Wash!'}</h2>
+        <h2>{$currentLang === 'hu' ? '20% Kedvezmény Autómosásra!' : 'Get 20% Off Your Car Wash!'}</h2>
         <p>
           {$currentLang === 'hu' 
             ? 'Parkolj autóddal repülőtéri parkolónkban, és élvezd a 20% kedvezményt az autómosás árából.'

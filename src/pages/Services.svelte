@@ -124,9 +124,9 @@
               <li>{feature}</li>
             {/each}
           </ul>
-          <button class="btn btn-primary">
-            {$currentLang === 'hu' ? 'Foglaljon most' : 'Book now'}
-          </button>
+          <a href="/#booking" class="btn btn-primary">
+            {$currentLang === 'hu' ? 'Foglalás' : 'Book now'}
+          </a>
         </div>
         <div class="service-image">
           <img src="images/parking-lot.jpg" alt="Airport Parking" />
@@ -177,9 +177,9 @@
               <li>{feature}</li>
             {/each}
           </ul>
-          <button class="btn btn-primary">
+          <a href="/#booking" class="btn btn-primary">
             {$currentLang === 'hu' ? 'Részletek' : 'View details'}
-          </button>
+          </a>
         </div>
       </div>
 
@@ -253,9 +253,9 @@
               <li>{feature}</li>
             {/each}
           </ul>
-          <button class="btn btn-primary">
+          <a href="/#booking" class="btn btn-primary">
             {$currentLang === 'hu' ? 'További információ' : 'More information'}
-          </button>
+          </a>
         </div>
         <div class="service-image">
           <img src="images/merc-tyre.jpg" alt="Tire Service" />

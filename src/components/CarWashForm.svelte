@@ -118,31 +118,35 @@
   
   <form class="booking-form" on:submit|preventDefault={handleSubmit}>
     <div class="form-section">
-      <h3>{content[currentLang].bookingForm.carWash.dateTime}</h3>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="bookingDate">{content[currentLang].bookingForm.carWash.date}</label>
-          <input
-            type="date"
-            id="bookingDate"
-            bind:value={formData.bookingDate}
-            min={formatDate(today)}
-            max={formatDate(maxDate)}
-            required
-          />
-        </div>
+      <h3>{content[currentLang].bookingForm.carWash.dateTime || (currentLang === 'hu' ? 'Időpont kiválasztása' : 'Select Date & Time')}</h3>
+      <div class="date-time-selector">
+        <label for="booking-date">
+          {content[currentLang].bookingForm.carWash.date || (currentLang === 'hu' ? 'Dátum' : 'Date')}
+        </label>
+        <input
+          id="booking-date"
+          type="date"
+          bind:value={formData.bookingDate}
+          min={formatDate(today)}
+          max={formatDate(maxDate)}
+          required
+          class:error={formErrors.bookingDate}
+        />
+        {#if formErrors.bookingDate}
+          <p class="error-message">{formErrors.bookingDate}</p>
+        {/if}
       </div>
-      
-      <TimeSlotSelector 
-        selectedTime={formData.bookingTime} 
-        content={content} 
-        currentLang={currentLang} 
-        errorMessage={formErrors.bookingTime}
-        formType="carWash"
-        date={formData.bookingDate}
-        on:timeSelected={handleTimeSelected}
-      />
     </div>
+    
+    <TimeSlotSelector 
+      selectedTime={formData.bookingTime} 
+      content={content} 
+      currentLang={currentLang} 
+      errorMessage={formErrors.bookingTime}
+      formType="carWash"
+      date={formData.bookingDate}
+      on:timeSelected={handleTimeSelected}
+    />
     
     <PersonalInfoForm 
       bind:formData={formData}
@@ -153,7 +157,7 @@
     />
     
     <div class="form-section">
-      <h3>{content[currentLang].bookingForm.carWash.notes || 'Additional Notes'}</h3>
+      <h3>{content[currentLang].bookingForm.carWash.notes || (currentLang === 'hu' ? 'További megjegyzések' : 'Additional Notes')}</h3>
       <div class="form-group">
         <textarea
           id="notes"

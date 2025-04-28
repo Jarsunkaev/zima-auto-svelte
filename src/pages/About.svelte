@@ -1,16 +1,14 @@
-<svelte:options tag={null} />
-
 <script>
   import { onMount } from 'svelte';
   import { currentLang, t } from '../lib/i18n';
   import { gsap } from 'gsap';
-  // Ensure ScrollTrigger is installed (npm install gsap scrolltrigger)
-  // and imported if you want the values animation to trigger on scroll.
-  // If you don't want scroll-triggered animation, you can remove these lines
-  // and the scrollTrigger property from the gsap.from call.
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  gsap.registerPlugin(ScrollTrigger);
 
+  // Import the VideoPlayer component
+  import VideoPlayer from '../components/VideoPlayer.svelte';
+
+  // Register ScrollTrigger
+  gsap.registerPlugin(ScrollTrigger);
 
   let lang;
 
@@ -26,34 +24,17 @@
       subtitle: 'A Zima Autó Kft-nél új értelmet kap a kényelem és a kiválóság az autóápolási szolgáltatások terén. Több mint egy évtizedes tapasztalattal és szakértelemmel, büszkén kínáljuk az egyik legkiterjedtebb autószolgáltatási kínálatot, amely az Ön járművének minden igényét kielégíti egy helyen.',
       story: {
         title: 'Tapasztalat, amiben megbízhat',
-        text: 'Több mint 10 év tapasztalattal szolgálva ügyfeleinket, tökéletesítettük képességeinket és finomítottuk folyamatainkat annak érdekében, hogy a legmagasabb színvonalú szolgáltatást és ügyfél-elégedettséget biztosítsuk. Járműve csak a legjobbat érdemli, és pontosan ezt nyújtjuk a Zima Autó Kft-nél.'
+        text: 'Több mint 10 év tapasztalattal szolgálva ügyfeleinket, tökéletesítettük képességeinket és finomítottuk folyamatainkat annak érdekében, hogy a legmagasabb színvonalú szolgáltatást és ügyfél-elégedettséget biztosítsunk. Járműve csak a legjobbat érdemli, és pontosan ezt nyújtjuk a Zima Autó Kft-nél.'
       },
       // Repurposed 'mission' section for location
       mission: {
         title: 'Kiváló elhelyezkedés',
-        text: 'Stratégiai helyen, mindössze 5 kilométerre és 5 percre a Budapest Liszt Ferenc Nemzetközi Repülőtértől, Vecsésen, létesítményünk páratlan elérhetőséget és kényelmet biztosít. Búcsút mondhat a városban szétszórva lévő szolgáltatók keresési nehézségeinek. A Zima Autó Kft-vel gyorsan és hatékonyan kezelheti minden autójával kapcsolatos igényét, időt és energiát megtakarítva ezzel.'
+        text: 'Stratégiai helyen, mindössze 5 kilométerre és 5 percre a Budapest Liszt Ferenc Nemzetközi Repülőterétől, Vecsésen, létesítményünk páratlan elérhetőséget és kényelmet biztosít. Búcsút mondhat a városban szétszórva lévő szolgáltatók keresési nehézségeinek. A Zima Autó Kft-vel gyorsan és hatékonyan kezelheti minden autójával kapcsolatos igényét, időt és energiát megtakarítva ezzel.'
       },
       // Repurposed 'values' section for 'Why Choose Us?'
       values: {
         title: 'Miért válasszon minket?',
-        items: [
-          {
-            title: 'Kényelem',
-            text: 'Minden autóápolási szolgáltatás egy helyen, időt és energiát megtakarítva.'
-          },
-          {
-            title: 'Szakértelem',
-            text: 'Több mint 10 év tapasztalat és szakértelem a járműve legjobb ellátásához.'
-          },
-          {
-            title: 'Minőség',
-            text: 'A legmagasabb minőségi és szakmai szabványok betartása minden szolgáltatásunknál.'
-          },
-          {
-            title: 'Nyugalom',
-            text: 'Biztonságos parkoló, ingyenes repülőtéri transzfer és versenyképes árak.'
-          }
-        ]
+        videoCaption: 'Tekintse meg videónkat és ismerje meg szolgáltatásainkat!'
       },
       // New structure for services, pricing, and conclusion - split for grid layout
       offerings: {
@@ -93,24 +74,7 @@
       // Repurposed 'values' section for 'Why Choose Us?'
       values: {
         title: 'Why Choose Us?',
-        items: [
-          {
-            title: 'Convenience',
-            text: 'All car care services in one place, saving you time and effort.'
-          },
-          {
-            title: 'Expertise',
-            text: 'Over 10 years of experience and expertise in vehicle care.'
-          },
-          {
-            title: 'Quality',
-            text: 'Adherence to the highest quality and professional standards.'
-          },
-          {
-            title: 'Peace of Mind',
-            text: 'Secure parking, free airport transfers, and competitive prices.'
-          }
-        ]
+        videoCaption: 'Watch our video to learn more about our services!'
       },
        // New structure for services, pricing, and conclusion - split for grid layout
       offerings: {
@@ -152,44 +116,42 @@
       }
     });
 
-    // Enhanced animation for values cards - one by one fade in with subtle scale
-    gsap.from('.values-card', {
-      y: 50,
-      scale: 0.9,
-      duration: 0.7,
-      stagger: 0.2, // This creates the one-by-one effect
-      ease: 'back.out(1.4)',
+    // Animate the video section
+    gsap.from('.video-section-wrapper', {
+      y: 40,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power2.out',
       scrollTrigger: {
-        trigger: '.values-section', // Trigger when the values section comes into view
-        start: 'top 70%', // Adjust trigger point as needed
-        // markers: true, // Uncomment for debugging trigger points
+        trigger: '.values-section',
+        start: 'top 70%',
       }
     });
 
     // Animate the two new content blocks in the offerings section grid
-    // This selects the .about-content divs specifically within the .team-section
-     gsap.from('.team-section .about-content', {
+    gsap.from('.offerings-section .about-content', {
       y: 50,
       opacity: 0,
       duration: 0.8,
       stagger: 0.3, // Stagger animation between the two blocks
       ease: 'power2.out',
-       scrollTrigger: {
-        trigger: '.team-section', // Trigger when the offerings section comes into view
+      scrollTrigger: {
+        trigger: '.offerings-section', // Trigger when the offerings section comes into view
         start: 'top 80%', // Adjust trigger point
         // markers: true, // Uncomment for debugging
       }
     });
-     // Animate the images in the two new grid blocks
-     gsap.from('.team-section .about-image', {
+     
+    // Animate the images in the two new grid blocks
+    gsap.from('.offerings-section .about-image', {
       y: 50,
       opacity: 0,
       duration: 0.8,
-       delay: 0.15, // Slightly delay image animation
+      delay: 0.15, // Slightly delay image animation
       stagger: 0.3, // Stagger animation between the two images
       ease: 'power2.out',
-       scrollTrigger: {
-        trigger: '.team-section', // Trigger when the offerings section comes into view
+      scrollTrigger: {
+        trigger: '.offerings-section', // Trigger when the offerings section comes into view
         start: 'top 80%', // Adjust trigger point
         // markers: true, // Uncomment for debugging
       }
@@ -198,111 +160,101 @@
 </script>
 
 <section class="about-hero">
-<div class="container">
-  <h1>{content[$currentLang].title}</h1>
-  <p>{content[$currentLang].subtitle}</p>
-</div>
+  <div class="container">
+    <h1>{content[$currentLang].title}</h1>
+    <p>{content[$currentLang].subtitle}</p>
+  </div>
 </section>
 
 <div class="about-container">
-<section class="about-section story-section">
-  <div class="container">
-    <div class="about-grid">
-      <div class="about-content">
-        <h2>{content[$currentLang].story.title}</h2>
-        <p>{content[$currentLang].story.text}</p>
-      </div>
-      <div class="about-image">
-        <img src="images/parking-lot.jpg" alt="Zima Auto parking lot" />
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="about-section mission-section">
-  <div class="container">
-    <div class="about-grid reverse">
-      <div class="about-image">
-        <img src="images/map.avif" alt="Car Wash Service" />
-      </div>
-      <div class="about-content">
-        <h2>{content[$currentLang].mission.title}</h2>
-        <p>{content[$currentLang].mission.text}</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="about-section values-section">
-  <div class="container">
-    <h2 class="section-title">{content[$currentLang].values.title}</h2>
-
-    <div class="video-container">
-      <div class="video-wrapper">
-        <iframe 
-          src="https://www.youtube.com/embed/YOUR_VIDEO_ID" 
-          title="Why Choose Zima Auto"
-          frameborder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-
-    <div class="values-grid">
-      {#each content[$currentLang].values.items as item}
-        <div class="values-card">
-          <h3>{item.title}</h3>
-          <p>{item.text}</p>
+  <section class="about-section story-section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-content">
+          <h2>{content[$currentLang].story.title}</h2>
+          <p>{content[$currentLang].story.text}</p>
         </div>
-      {/each}
+        <div class="about-image">
+          <img src="images/parking-lot.jpg" alt="Zima Auto parking lot" />
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="about-section offerings-section"> <div class="container">
+  <section class="about-section mission-section">
+    <div class="container">
+      <div class="about-grid reverse">
+        <div class="about-image">
+          <img src="images/map.avif" alt="Car Wash Service" />
+        </div>
+        <div class="about-content">
+          <h2>{content[$currentLang].mission.title}</h2>
+          <p>{content[$currentLang].mission.text}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section values-section">
+    <div class="container">
+      <h2 class="section-title">{content[$currentLang].values.title}</h2>
+      
+      <div class="video-section-wrapper">
+        <div class="video-container">
+          <VideoPlayer />
+        </div>
+        <p class="video-caption">{content[$currentLang].values.videoCaption}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section offerings-section">
+    <div class="container">
       <h2 class="section-title">{content[$currentLang].offerings.mainTitle}</h2>
 
       <div class="about-grid">
-          <div class="about-content">
-              <h3>{content[$currentLang].offerings.block1.title}</h3>
-              <p>{content[$currentLang].offerings.block1.text}</p>
-              <ul>
-                  {#each content[$currentLang].offerings.block1.listItems as item}
-                      <li>
-                           {#if $currentLang === 'hu'}
-                               {@html item.replace(/\n/g, '<br><br>')}
-                           {:else}
-                               {item}
-                           {/if}
-                      </li>
-                  {/each}
-              </ul>
-          </div>
-          <div class="about-image">
-              <img src="images/workshop2.jpg" alt="Auto Service" />
-          </div>
+        <div class="about-content">
+          <h3>{content[$currentLang].offerings.block1.title}</h3>
+          <p>{content[$currentLang].offerings.block1.text}</p>
+          <ul>
+            {#each content[$currentLang].offerings.block1.listItems as item}
+              <li>
+                {#if $currentLang === 'hu'}
+                  {@html item.replace(/\n/g, '<br><br>')}
+                {:else}
+                  {item}
+                {/if}
+              </li>
+            {/each}
+          </ul>
+        </div>
+        <div class="about-image">
+          <img src="images/workshop2.jpg" alt="Auto Service" />
+        </div>
       </div>
 
-      <div class="about-grid reverse">      
-          <div class="about-content">
-              <h3>{content[$currentLang].offerings.block2.paymentOptionsTitle}</h3>
-              <p>{content[$currentLang].offerings.block2.paymentOptionsText}</p>
+      <div class="about-grid reverse">
+        <div class="about-image">
+          <img src="images/car-wash.jpg" alt="Car Wash" />
+        </div>
+        <div class="about-content">
+          <h3>{content[$currentLang].offerings.block2.paymentOptionsTitle}</h3>
+          <p>{content[$currentLang].offerings.block2.paymentOptionsText}</p>
 
-              <h3>{content[$currentLang].offerings.block2.pricesTitle}</h3>
-              <p>{content[$currentLang].offerings.block2.pricesText}</p>
+          <h3>{content[$currentLang].offerings.block2.pricesTitle}</h3>
+          <p>{content[$currentLang].offerings.block2.pricesText}</p>
 
-               <p>{@html content[$currentLang].offerings.block2.conclusion.replace(/\n/g, '<br><br>')}</p>
-          </div>
+          <p>{@html content[$currentLang].offerings.block2.conclusion.replace(/\n/g, '<br><br>')}</p>
+        </div>
       </div>
+    </div>
+  </section>
 
-  </div>
-</section>
-<section class="about-cta">
-  <div class="container">
-    <a href="#services" class="btn btn-primary">{content[$currentLang].cta}</a>
-  </div>
-</section>
+  <section class="about-cta">
+    <div class="container">
+      <a href="#services" class="btn btn-primary">{content[$currentLang].cta}</a>
+    </div>
+  </section>
 </div>
 
 <style>
@@ -342,8 +294,6 @@
   .about-section:nth-of-type(even) { /* Apply to even sections in the container */
      background-color: var(--light);
   }
-  /* Adjust based on actual section order if needed, e.g., .story-section:nth-child(1), .mission-section:nth-child(2) */
-
 
   .about-grid {
     display: grid;
@@ -353,16 +303,18 @@
     margin-bottom: 4rem; /* Space between grid blocks if multiple in a section */
   }
 
-   /* Remove margin-bottom for the last grid in a section */
+  /* Remove margin-bottom for the last grid in a section */
   .about-section .about-grid:last-child {
-      margin-bottom: 0;
+    margin-bottom: 0;
   }
 
+  .about-grid.reverse {
+    direction: rtl;
+  }
 
-  
-
-  .about-grid.reverse .about-content {
-    direction: ltr; /* Reset text direction */
+  .about-grid.reverse .about-content,
+  .about-grid.reverse .about-image {
+    direction: ltr; /* Reset text and image direction */
   }
 
   .about-content h2 { /* Styles for main titles within grid content */
@@ -383,17 +335,16 @@
   }
 
   .about-content h3 { /* Styles for sub-titles within grid content */
-     font-size: 1.5rem;
-     margin-top: 1.5rem; /* Space above subheadings */
-     margin-bottom: 1rem;
-     color: var(--text-dark);
-     position: relative; /* For potential future styling */
+    font-size: 1.5rem;
+    margin-top: 1.5rem; /* Space above subheadings */
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+    position: relative; /* For potential future styling */
   }
 
-   .about-content h3:first-child {
-       margin-top: 0; /* No top margin if it's the first element */
-   }
-
+  .about-content h3:first-child {
+    margin-top: 0; /* No top margin if it's the first element */
+  }
 
   .about-content p {
     font-size: 1.1rem;
@@ -402,35 +353,34 @@
     margin-bottom: 1.5rem; /* Space between paragraphs */
   }
 
-   .about-content ul {
-      list-style: none; /* Remove default bullets */
-      padding: 0;
-      margin: 1.5rem 0;
-      text-align: left;
-      max-width: 100%; /* Allow list to use full width in content block */
+  .about-content ul {
+    list-style: none; /* Remove default bullets */
+    padding: 0;
+    margin: 1.5rem 0;
+    text-align: left;
+    max-width: 100%; /* Allow list to use full width in content block */
   }
 
   .about-content li {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      color: var(--text-light);
-      margin-bottom: 1rem;
-      padding-left: 1.5rem; /* Space for custom bullet */
-      position: relative;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    padding-left: 1.5rem; /* Space for custom bullet */
+    position: relative;
   }
 
   .about-content li::before {
-      content: '•'; /* Custom bullet point */
-      color: var(--primary); /* Primary color bullet */
-      font-weight: bold;
-      display: inline-block;
-      width: 1em;
-      margin-left: -1em;
-      position: absolute;
-      left: 0;
-      top: 0; /* Align bullet to top of line */
+    content: '•'; /* Custom bullet point */
+    color: var(--primary); /* Primary color bullet */
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+    position: absolute;
+    left: 0;
+    top: 0; /* Align bullet to top of line */
   }
-
 
   .about-image {
     overflow: hidden;
@@ -479,51 +429,35 @@
     background-color: var(--primary);
   }
 
-  .values-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    margin-top: 3rem;
+  /* Video section wrapper + container styles */
+  .video-section-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto 3rem;
+    max-width: 800px; /* Wider container for desktop */
   }
 
-  .values-card {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2rem;
+  .video-container {
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index: 1;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
   }
 
-  .values-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  .video-caption {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-top: 1rem;
+    max-width: 600px;
   }
 
-  .values-card h3 {
-    color: var(--primary);
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
+  /* Styles for the Offerings section */
+  .offerings-section .section-title { 
+    margin-bottom: 4rem; /* More space below the main title */
   }
-
-  .values-card p {
-    color: var(--text);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  /* Styles for the Offerings section (formerly team-section) */
-   .offerings-section .section-title { /* Specific style for the main title in this section */
-       margin-bottom: 4rem; /* More space below the main title */
-   }
-
-
-  /* Remove the old .team-content and .team-image styles */
-  /* .team-content, .team-image, .image-overlay are no longer needed */
 
   .about-cta {
     text-align: center;
@@ -538,10 +472,14 @@
 
   /* Responsive Styles */
   @media screen and (max-width: 992px) {
+    .about-hero {
+      padding: 6rem 1.5rem 4rem;
+    }
+
     .about-grid {
       grid-template-columns: 1fr;
       gap: 2rem;
-      margin-bottom: 3rem; /* Adjust spacing */
+      margin-bottom: 3rem;
     }
 
     .about-grid.reverse {
@@ -549,50 +487,74 @@
     }
 
     .about-grid.reverse .about-content {
-       order: 1;
-       direction: ltr;
+      order: 1;
     }
 
     .about-grid.reverse .about-image {
-       order: 2;
+      order: 2;
     }
 
-     .about-content {
-       order: 1;
-     }
+    .about-content {
+      order: 1;
+    }
 
-     .about-image {
-       order: 2;
-       min-height: 250px;
-     }
+    .about-image {
+      order: 2;
+      min-height: 250px;
+      max-width: 100%;
+    }
 
-     /* Adjust title alignment for mobile */
-     .section-title,
-     .about-content h2 {
-         left: auto;
-         transform: none;
-         text-align: left;
-         margin-left: 0;
-         width: 100%;
-         display: block; /* Allow underline below block text */
-     }
-      .section-title::after,
-      .about-content h2::after {
-         left: 0;
-         transform: none;
-     }
+    .section-title,
+    .about-content h2 {
+      left: auto;
+      transform: none;
+      text-align: left;
+      margin-left: 0;
+      width: 100%;
+      display: block;
+    }
 
-     .offerings-section .section-title {
-         margin-bottom: 3rem; /* Less space on mobile */
-     }
+    .section-title::after,
+    .about-content h2::after {
+      left: 0;
+      transform: none;
+    }
 
-     .about-content ul {
-         text-align: left;
-         max-width: 100%;
-     }
+    .values-section .section-title {
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .values-section .section-title::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .offerings-section .section-title {
+      margin-bottom: 3rem;
+    }
+
+    .about-content ul {
+      text-align: left;
+      max-width: 100%;
+    }
+
+    /* Video Section Responsive Adjustment */
+    .video-section-wrapper {
+      max-width: 90%;
+    }
+
+    .video-caption {
+      font-size: 1rem;
+    }
   }
 
   @media screen and (max-width: 768px) {
+    .about-hero {
+      padding: 7rem 1.5rem 3rem;
+    }
+
     .about-hero h1 {
       font-size: 2.2rem;
     }
@@ -609,112 +571,88 @@
       padding: 3rem 1.5rem;
     }
 
-    .values-card {
-        padding: 2rem 1.5rem;
+    .about-content h3 {
+      font-size: 1.3rem;
     }
 
-     .values-card h3 {
-         font-size: 1.2rem;
-     }
-
-     .values-card p {
-         font-size: 1rem;
-     }
-
-     .about-content h3 {
-          font-size: 1.3rem;
-      }
-
-      .about-content p,
-      .about-content li {
-          font-size: 1rem;
-      }
-  }
-
-   @media screen and (max-width: 480px) {
-       .about-hero h1 {
-          font-size: 1.8rem;
-       }
-        .section-title,
-        .about-content h2 {
-            font-size: 1.5rem;
-             padding-bottom: 10px; /* Less space for underline */
-        }
-         .section-title::after,
-         .about-content h2::after {
-              width: 40px; /* Shorter underline */
-         }
-        .values-card {
-            padding: 1.5rem 1.2rem;
-        }
-         .values-card h3 {
-             font-size: 1.1rem;
-         }
-          .about-content h3 {
-             font-size: 1.2rem;
-         }
-         .about-image {
-             min-height: 200px;
-         }
-          .about-grid {
-              gap: 1.5rem; /* Smaller gap on very small screens */
-              margin-bottom: 2rem; /* Adjust spacing */
-          }
-           .about-section {
-              padding: 2rem 1rem; /* Smaller padding for sections */
-              margin-bottom: 4rem;
-           }
-   }
-
-  /* Video Container Styles */
-  .video-container {
-    margin: 3rem auto;
-    max-width: 800px;
-  }
-
-  .video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-    height: 0;
-    overflow: hidden;
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  }
-
-  .video-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-
-  /* Adjust values grid margin when video is present */
-  .values-grid {
-    margin-top: 3rem;
-  }
-
-  /* Responsive Styles for Video */
-  @media screen and (max-width: 992px) {
-    .video-container {
-      margin: 2rem auto;
+    .about-content p,
+    .about-content li {
+      font-size: 1rem;
     }
-  }
 
-  @media screen and (max-width: 768px) {
-    .video-container {
-      margin: 1.5rem auto;
+    .about-image {
+      min-height: 200px;
+    }
+
+    .video-section-wrapper {
+      margin: 1rem auto 2.5rem;
+      max-width: 100%;
+    }
+
+    .video-caption {
+      font-size: 0.95rem;
+      margin-top: 0.8rem;
     }
   }
 
   @media screen and (max-width: 480px) {
-    .video-container {
-      margin: 1rem auto;
+    .about-hero {
+      padding: 6.5rem 1rem 2.5rem;
+    }
+
+    .about-hero h1 {
+      font-size: 1.8rem;
+    }
+
+    .section-title,
+    .about-content h2 {
+      font-size: 1.5rem;
+      padding-bottom: 10px;
+    }
+
+    .section-title::after,
+    .about-content h2::after {
+      width: 40px;
+    }
+
+    .about-content h3 {
+      font-size: 1.2rem;
+    }
+
+    .about-image {
+      min-height: 180px;
+    }
+
+    .about-grid {
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .about-section {
+      padding: 2rem 1rem;
+    }
+
+    .about-cta {
+      padding: 2rem 1rem;
+    }
+
+    .about-cta .btn {
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .video-section-wrapper {
+      margin-bottom: 1.5rem;
+    }
+
+    .video-caption {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
     }
   }
 
-  /* Specific style for the workshop image */
+  /* Specific style for the offerings section images */
   .offerings-section .about-image {
     max-width: 500px;
     min-height: 250px;
@@ -740,7 +678,7 @@
     text-align: left;
   }
 
-  /* Responsive adjustments */
+  /* Responsive adjustments for offerings section */
   @media screen and (max-width: 992px) {
     .offerings-section .about-image {
       max-width: 450px;
