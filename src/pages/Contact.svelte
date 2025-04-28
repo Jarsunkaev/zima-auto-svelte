@@ -158,7 +158,7 @@
 
       console.log('Sending contact form data to backend:', contactData);
 
-      const response = await fetch('http://localhost:3001/api/send-contact-email', {
+      const response = await fetch('https://zima-auto-backend.fly.dev/api/send-contact-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

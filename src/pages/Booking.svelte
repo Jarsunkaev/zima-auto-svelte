@@ -27,7 +27,7 @@
 
   // Define the backend API URL
   // Ensure this matches your backend server address and port
-  const backendApiUrl = 'http://localhost:3001/api/send-booking-emails';
+  const backendApiUrl = 'https://zima-auto-backend.fly.dev/api/send-booking-emails';
 
   // Handle service selection (Step 1 -> Step 2)
   function selectService(service) {

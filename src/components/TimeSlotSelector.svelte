@@ -134,7 +134,7 @@
       const serviceMap = { carWash: 'carWash', autoService: 'autoService', tireService: 'tireService' };
       const service = serviceMap[formType] || formType;
       console.log(`Workspaceing unavailable slots for: ${service} on ${date}`);
-      const apiUrl = `http://localhost:3001/api/available-slots?date=${date}&service=${service}`; // Replace with your actual URL
+      const apiUrl = `https://zima-auto-backend.fly.dev/api/available-slots?date=${date}&service=${service}`;
       console.log('API URL:', apiUrl);
       const response = await fetch(apiUrl);
 

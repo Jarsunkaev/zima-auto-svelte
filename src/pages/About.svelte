@@ -201,7 +201,7 @@
         <div class="video-container">
           <VideoPlayer 
             videoSrc="/zima_video.mp4" 
-            thumbnailSrc="/images/zima-gate.jpg" 
+            thumbnailSrc="/images/zima-gate.JPG" 
           />
         </div>
         <p class="video-caption">{content[$currentLang].values.videoCaption}</p>

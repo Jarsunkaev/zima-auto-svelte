@@ -4,7 +4,7 @@
     
     // Props
     export let videoSrc = "/zima_video.mp4";
-    export let thumbnailSrc = "/images/zima-gate.jpg";
+    export let thumbnailSrc = "/images/zima-gate.JPG";
     
     // State
     let isModalOpen = false;
