@@ -19,10 +19,14 @@ const { getGoogleCalendarClient, addEventToCalendar, checkTimeSlotAvailability }
 // --- Middleware ---
 // Set up CORS - In production, replace with your actual Svelte frontend URL
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*', // Default to all origins in development
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: process.env.FRONTEND_URL || 'https://zima-auto-frontend.fly.dev',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
+
+// Handle OPTIONS preflight requests
+app.options('*', cors());
 
 app.use(express.json()); // Parse JSON request bodies
 

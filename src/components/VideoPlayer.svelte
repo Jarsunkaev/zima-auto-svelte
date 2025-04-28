@@ -98,12 +98,16 @@
       class="modal-overlay" 
       transition:fade={{ duration: 250 }}
       on:click={handleClickOutside}
+      on:keydown={handleClickOutside}
+      role="presentation"
     >
       <div 
         class="modal-content"
         bind:this={modalContentRef}
         transition:scale={{ duration: 300, start: 0.9 }}
         on:click|stopPropagation
+        on:keydown|stopPropagation
+        role="dialog"
       >
         <button
           class="close-button"
@@ -125,6 +129,7 @@
           playsinline
         >
           <source src={videoSrc} type="video/mp4" />
+          <track kind="captions" src="" label="English" srclang="en" />
           Your browser does not support the video tag.
         </video>
       </div>

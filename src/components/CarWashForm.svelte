@@ -225,13 +225,7 @@
       color: var(--text);
     }
     
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    
+  
     .form-group {
       margin-bottom: 1rem;
     }
@@ -331,10 +325,6 @@
     }
     
     @media screen and (max-width: 768px) {
-      .form-row {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
       
       .form-section {
         padding: 1.25rem;

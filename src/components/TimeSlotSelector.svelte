@@ -136,7 +136,13 @@
       console.log(`Workspaceing unavailable slots for: ${service} on ${date}`);
       const apiUrl = `https://zima-auto-backend.fly.dev/api/available-slots?date=${date}&service=${service}`;
       console.log('API URL:', apiUrl);
-      const response = await fetch(apiUrl);
+      const response = await fetch(apiUrl, {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
 
       if (!response.ok) {
         console.error('API response not OK:', response.status, response.statusText);

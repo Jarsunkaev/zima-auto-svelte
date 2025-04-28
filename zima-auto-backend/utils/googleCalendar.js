@@ -185,7 +185,7 @@ async function addEventToCalendar(calendar, service, date, time, customerName, b
       if (!startDate || !startTime || !endDate || !endTime) {
         const errorMessage = 'Airport parking booking is missing required start/end date/time fields in bookingData.';
         console.error(errorMessage, { startDate, startTime, endDate, endTime });
-        throw new Error(errorMessage); // Throw error to indicate failure
+        throw new Error(errorMessage);
       }
 
       // Parse dates and times
@@ -195,191 +195,71 @@ async function addEventToCalendar(calendar, service, date, time, customerName, b
       const [endYear, endMonth, endDay] = endDate.split('-').map(Number);
       const [endHour, endMinute] = endTime.split(':').map(Number);
 
-      // Create start and end time objects (using UTC for consistency, will be displayed in calendar's timezone)
-      // Note: Month is 0-indexed in Date constructor
-      const eventStart = new Date(Date.UTC(startYear, startMonth - 1, startDay, startHour, startMinute));
-      const eventEnd = new Date(Date.UTC(endYear, endMonth - 1, endDay, endHour, endMinute));
+      // Create start and end time objects with Budapest timezone (UTC+2)
+      const eventStart = new Date(startYear, startMonth - 1, startDay, startHour, startMinute);
+      const eventEnd = new Date(endYear, endMonth - 1, endDay, endHour, endMinute);
 
-       // Basic validation: ensure end time is after start time
-       if (eventEnd <= eventStart) {
-           const errorMessage = 'Airport parking end time must be after start time.';
-           console.error(errorMessage, { eventStart, eventEnd });
-           throw new Error(errorMessage);
-       }
+      // Format dates in ISO string with timezone offset
+      const startDateTime = eventStart.toISOString();
+      const endDateTime = eventEnd.toISOString();
 
-      console.log(`Airport Parking Event Time Range (UTC): ${eventStart.toISOString()} to ${eventEnd.toISOString()}`);
-
-      // Create description with all relevant details
-      let description = `Service: ${formatServiceName(service, 'en')} / ${formatServiceName(service, 'hu')}\n`;
-      description += `Customer: ${customerName}\n`;
-      description += `Email: ${bookingData.customerEmail || bookingData.contact?.email || 'Not provided'}\n`;
-      description += `Phone: ${bookingData.customerPhone || bookingData.contact?.phone || 'Not provided'}\n\n`;
-      description += `Duration: ${bookingData.days} days\n`;
-
-      if (bookingData.licensePlate) description += `License Plate: ${bookingData.licensePlate}\n`;
-      if (bookingData.passengers) description += `Passengers: ${bookingData.passengers}\n`;
-      if (bookingData.carWashPackage && bookingData.carWashPackage !== 'none') {
-        description += `Car Wash Package: ${bookingData.carWashPackage}\n`;
-        // Include price breakdown details if available
-        if (bookingData.priceBreakdown) {
-             description += `  Parking Total: ${bookingData.priceBreakdown.parkingTotal} HUF\n`;
-             description += `  Car Wash Standard: ${bookingData.priceBreakdown.carWashStandard} HUF\n`;
-             if (bookingData.priceBreakdown.carWashDiscount) description += `  Car Wash Discount: ${bookingData.priceBreakdown.carWashDiscount} HUF\n`;
-             if (bookingData.priceBreakdown.carWashDiscounted) description += `  Car Wash Discounted: ${bookingData.priceBreakdown.carWashDiscounted} HUF\n`;
-        }
-      } else if (bookingData.priceBreakdown && bookingData.priceBreakdown.parkingTotal) {
-           // Include parking total if no car wash package
-            description += `  Parking Total: ${bookingData.priceBreakdown.parkingTotal} HUF\n`;
-      }
-
-      if (bookingData.totalPrice) {
-        description += `Total Price: ${bookingData.totalPrice} HUF\n`;
-      }
-       if (bookingData.notes) description += `Notes: ${bookingData.notes}\n`;
-
-
-      // Create airport parking event resource
       event = {
-        summary: `${formatServiceName(service)} - ${customerName}`,
-        description,
+        summary: `${formatServiceName(service, 'hu')} - ${customerName}`,
+        description: `Parkolás: ${startDate} ${startTime} - ${endDate} ${endTime}\nÜgyfél: ${customerName}\nEmail: ${bookingData.contact?.email || 'N/A'}\nTelefon: ${bookingData.contact?.phone || 'N/A'}\nRendszám: ${bookingData.licensePlate || 'N/A'}\nAutó típus: ${bookingData.carModel || 'N/A'}`,
         start: {
-          dateTime: eventStart.toISOString(),
-          timeZone: 'Europe/Budapest', // Ensure timezone is correct for display
+          dateTime: startDateTime,
+          timeZone: 'Europe/Budapest'
         },
         end: {
-          dateTime: eventEnd.toISOString(),
-          timeZone: 'Europe/Budapest', // Ensure timezone is correct for display
+          dateTime: endDateTime,
+          timeZone: 'Europe/Budapest'
         },
-        // Add event color based on service type
-        colorId: getServiceColorId(service),
-        // Metadata
-        extendedProperties: {
-          private: {
-            service,
-            customerEmail: bookingData.customerEmail || bookingData.contact?.email || '',
-            customerPhone: bookingData.customerPhone || bookingData.contact?.phone || '',
-            bookingReference: `ZIMA-${Date.now().toString(36).toUpperCase()}` // Simple unique reference
-          }
-        }
+        colorId: getServiceColorId(service)
       };
-      console.log('Airport Parking Event Object:', JSON.stringify(event, null, 2));
-
-
-    }
-    // Handle all other services (car wash, auto service, tire service) - use date and time fields
-    else {
-      console.log(`Creating regular service calendar event for ${service}`);
+    } else {
+      // Handle other services (car wash, auto service, tire service)
+      console.log('Creating service calendar event');
 
       // Parse date and time
       const [year, month, day] = date.split('-').map(Number);
       const [hour, minute] = time.split(':').map(Number);
 
-      // *** MODIFICATION START: Create event start time in the specified timezone (Europe/Budapest) ***
-      // Using Date constructor with components is generally safer than parsing strings without timezone
-      // Note: Month is 0-indexed in Date constructor (month - 1)
-      // Note: This creates a Date object representing the local time in Europe/Budapest
-      // We then convert it to ISOString for the API, explicitly setting the timezone in the resource.
-      const eventStart = new Date(year, month - 1, day, hour, minute, 0); // Year, Month (0-11), Day, Hour, Minute, Second
-      // *** MODIFICATION END: Create event start time in the specified timezone (Europe/Budapest) ***
+      // Create event time with Budapest timezone (UTC+2)
+      const eventTime = new Date(year, month - 1, day, hour, minute);
 
+      // Format date in ISO string with timezone offset
+      const eventDateTime = eventTime.toISOString();
 
-      // *** MODIFICATION START: Set specific durations based on service type ***
-      const durationMinutes =
-        service === 'carWash' ? 30 :      // Car wash is 30 minutes
-        service === 'autoService' ? 60 :   // Auto service is 60 minutes (1 hour)
-        service === 'tireService' ? 60 :   // Tire service is 60 minutes (1 hour)
-        30; // Default duration if service not matched
-      // *** MODIFICATION END: Set specific durations based on service type ***
+      // Calculate end time (1 hour duration for services)
+      const endTime = new Date(eventTime);
+      endTime.setHours(endTime.getHours() + 1);
+      const endDateTime = endTime.toISOString();
 
-
-      // Calculate event end time
-      const eventEnd = new Date(eventStart.getTime() + durationMinutes * 60000);
-
-      console.log(`Regular Service Event Time Range (UTC): ${eventStart.toISOString()} to ${eventEnd.toISOString()}`);
-      // >>> Add these log lines for debugging <<<
-      console.log(`Event Start Date object value (Local Time): ${eventStart.toString()}`);
-      console.log(`Event End Date object value (Local Time): ${eventEnd.toString()}`);
-
-
-      // Create description
-      let description = `Service: ${formatServiceName(service, 'en')} / ${formatServiceName(service, 'hu')}\n`;
-      description += `Customer: ${customerName}\n`;
-      description += `Email: ${bookingData.customerEmail || bookingData.contact?.email || 'Not provided'}\n`;
-      description += `Phone: ${bookingData.customerPhone || bookingData.contact?.phone || 'Not provided'}\n\n`;
-
-      // Add service-specific details from bookingData
-      switch (service) {
-        case 'autoService':
-          if (bookingData.serviceType) description += `Service Type: ${bookingData.serviceType}\n`;
-          if (bookingData.carModel) description += `Car Model: ${bookingData.carModel}\n`;
-          if (bookingData.licensePlate) description += `License Plate: ${bookingData.licensePlate}\n`;
-          if (bookingData.notes) description += `Notes: ${bookingData.notes}\n`;
-          break;
-
-        case 'tireService':
-          if (bookingData.serviceType) description += `Service Type: ${bookingData.serviceType}\n`;
-          if (bookingData.carModel) description += `Car Model: ${bookingData.carModel}\n`;
-          if (bookingData.licensePlate) description += `License Plate: ${bookingData.licensePlate}\n`;
-          if (bookingData.tireCount !== null && bookingData.tireCount !== undefined) description += `Number of Tires: ${bookingData.tireCount}\n`;
-          if (bookingData.notes) description += `Notes: ${bookingData.notes}\n`;
-          break;
-
-        case 'carWash':
-          // Note: Car wash details like package might be in bookingData if not specifically handled in description before
-          if (bookingData.carModel) description += `Car Model: ${bookingData.carModel}\n`;
-          if (bookingData.licensePlate) description += `License Plate: ${bookingData.licensePlate}\n`;
-          // If car wash package is sent directly in bookingData for carWash service
-          if (bookingData.carWashPackage && bookingData.carWashPackage !== 'none') description += `Car Wash Package: ${bookingData.carWashPackage}\n`;
-          if (bookingData.notes) description += `Notes: ${bookingData.notes}\n`;
-          break;
-          // Add cases for other services if needed
-      }
-       if (bookingData.totalPrice) {
-        description += `Total Price: ${bookingData.totalPrice} HUF\n`;
-      }
-
-
-      // Create regular service event resource
       event = {
-        summary: `${formatServiceName(service)} - ${customerName}`,
-        description,
+        summary: `${formatServiceName(service, 'hu')} - ${customerName}`,
+        description: `Időpont: ${date} ${time}\nÜgyfél: ${customerName}\nEmail: ${bookingData.contact?.email || 'N/A'}\nTelefon: ${bookingData.contact?.phone || 'N/A'}\nRendszám: ${bookingData.licensePlate || 'N/A'}\nAutó típus: ${bookingData.carModel || 'N/A'}\nMegjegyzés: ${bookingData.notes || 'N/A'}`,
         start: {
-          dateTime: eventStart.toISOString(), // Send ISO string
-          timeZone: 'Europe/Budapest', // Explicitly set timezone
+          dateTime: eventDateTime,
+          timeZone: 'Europe/Budapest'
         },
         end: {
-          dateTime: eventEnd.toISOString(), // Send ISO string
-          timeZone: 'Europe/Budapest', // Explicitly set timezone
+          dateTime: endDateTime,
+          timeZone: 'Europe/Budapest'
         },
-        // Add event color based on service type
-        colorId: getServiceColorId(service),
-        // Metadata
-        extendedProperties: {
-          private: {
-            service, // Store the service type here for filtering
-            customerEmail: bookingData.customerEmail || bookingData.contact?.email || '',
-            customerPhone: bookingData.customerPhone || bookingData.contact?.phone || '',
-             bookingReference: `ZIMA-${Date.now().toString(36).toUpperCase()}`
-          }
-        }
+        colorId: getServiceColorId(service)
       };
-      // >>> Add this log line for debugging <<<
-       console.log('Event object sent to Google Calendar:', JSON.stringify(event, null, 2));
     }
 
-     // *** Common part for both service types: Inserting the event ***
-     console.log(`Inserting event into calendar ${calendarId}...`);
-     const response = await calendar.events.insert({
-        calendarId,
-        resource: event,
-      });
+    // Add the event to the calendar
+    const response = await calendar.events.insert({
+      calendarId,
+      resource: event
+    });
 
-     console.log(`Successfully added event: ${response.data.id}`);
-     return response.data.id; // Return the created event ID
-
+    console.log('Event added to calendar:', response.data);
+    return response.data.id;
   } catch (error) {
-    console.error('Error adding event to Google Calendar:', error);
-    // Re-throw the error so the calling function knows it failed
+    console.error('Error adding event to calendar:', error);
     throw error;
   }
 }
