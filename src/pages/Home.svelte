@@ -94,18 +94,7 @@
 
   onMount(() => {
     // Setup parallax effect for hero section
-    ScrollTrigger.create({
-      trigger: ".hero",
-      start: "top top",
-      end: "bottom top",
-      scrub: true,
-      onUpdate: (self) => {
-        gsap.to(".hero-background", {
-          y: self.progress * 200,
-          ease: "none"
-        });
-      }
-    });
+    
 
     // Setup animations with ScrollTrigger
 

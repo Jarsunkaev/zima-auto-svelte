@@ -1,5 +1,3 @@
-
-
 <script>
   import { onMount } from 'svelte';
   import { currentLang } from '../lib/i18n';
@@ -32,16 +30,76 @@
     { days: 29, normal: '26000 Ft', discount: '19500 Ft' }, { days: 30, normal: '26000 Ft', discount: '19500 Ft' }
   ];
 
-  const carWashPrices = {
-    smart: [
-        { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '8900 Ft', 'Exterior': '5600 Ft', 'Interior': '3800 Ft' },
-        { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '10500 Ft', 'Exterior': '6100 Ft', 'Interior': '4300 Ft' }
-    ],
-    premium: [
-        { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '11900 Ft', 'Exterior': '6100 Ft', 'Interior': '4300 Ft' },
-        { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '13500 Ft', 'Exterior': '6900 Ft', 'Interior': '5600 Ft' }
-    ]
+   const carWashData = {
+      smart: {
+          name: { hu: 'SMART', en: 'SMART' },
+          inclusions: {
+              exterior: {
+                  name: { hu: 'Külső', en: 'Exterior' },
+                  items: [
+                      { hu: 'Hideg vizes öblítés', en: 'Cold water rinse' },
+                      { hu: 'Magasnyomású öblítés', en: 'High-pressure rinse' },
+                      { hu: 'Habos mosás', en: 'Foam wash' },
+                      { hu: 'Kézi szivacsos mosás', en: 'Hand sponge wash' },
+                      { hu: 'Felni tisztítás', en: 'Wheel cleaning' },
+                      { hu: 'Kézi mikroszálas szárazra törlés', en: 'Hand microfiber drying' },
+                      { hu: 'Falctisztítás', en: 'Door jamb cleaning' }
+                  ]
+              },
+              interior: {
+                  name: { hu: 'Belső', en: 'Interior' },
+                  items: [
+                      { hu: 'Szemétszedés', en: 'Trash removal' },
+                      { hu: 'Gyors porszívózás', en: 'Quick vacuuming' },
+                      { hu: 'Csomagtartó takarítás', en: 'Trunk cleaning' },
+                      { hu: 'Lábnyomtisztítás', en: 'Footprint cleaning' },
+                      { hu: 'Portörlés', en: 'Dusting' }
+                  ]
+              }
+          },
+          prices: [
+              { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '8900 Ft', 'Exterior': '5600 Ft', 'Interior': '3800 Ft' },
+              { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '10500 Ft', 'Exterior': '6100 Ft', 'Interior': '4300 Ft' }
+          ]
+      },
+      premium: {
+          name: { hu: 'PREMIUM', en: 'PREMIUM' },
+           inclusions: {
+              exterior: {
+                  name: { hu: 'Külső', en: 'Exterior' },
+                  items: [
+                      { hu: 'Hideg vizes öblítés', en: 'Cold water rinse' },
+                      { hu: 'Magasnyomású öblítés', en: 'High-pressure rinse' },
+                      { hu: 'Előmosás, bogároldás', en: 'Pre-wash, bug removal' },
+                      { hu: 'Aktív habos mosás', en: 'Active foam wash' },
+                      { hu: 'Kézi szivacsos mosás', en: 'Hand sponge wash' },
+                      { hu: 'Kézi felni tisztítás', en: 'Hand wheel cleaning' },
+                      { hu: 'Kézi mikroszálas szárazra törlés', en: 'Hand microfiber drying' },
+                      { hu: 'Levegős szárazra fújás', en: 'Air drying' },
+                      { hu: 'Gumiápolás', en: 'Tire dressing' }
+                  ]
+              },
+              interior: {
+                  name: { hu: 'Belső', en: 'Interior' },
+                  items: [
+                      { hu: 'Szemétszedés', en: 'Trash removal' },
+                      { hu: 'Teljes porszívózás', en: 'Full vacuuming' },
+                      { hu: 'Csomagtartó tisztítás', en: 'Trunk cleaning' },
+                      { hu: 'Lábtér tisztítás', en: 'Footwell cleaning' },
+                      { hu: 'Portörlés', en: 'Dusting' },
+                       { hu: 'Ablaktisztítás', en: 'Window cleaning' },
+                       { hu: 'Műanyag tisztítás és ápolás', en: 'Plastic cleaning and conditioning' }
+                  ]
+              }
+          }
+          ,
+          prices: [
+              { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '11900 Ft', 'Exterior': '6100 Ft', 'Interior': '4300 Ft' },
+              { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '13500 Ft', 'Exterior': '6900 Ft', 'Interior': '5600 Ft' }
+          ]
+      }
   };
+
 
   // REFACTORED Tire Service Prices
   const tireServicePrices = {
@@ -118,7 +176,7 @@
           </p>
           <ul class="feature-list">
             {#each ($currentLang === 'hu'
-              ? ['Biztonságos, kamerával megfigyelt terület', '24/7 személyzet a helyszínen', 'Kedvező árak hosszabb tartózkodásra is', 'Ingyenes transzfer a repülőtérre és vissza', 'Előfoglalási lehetőség']
+              ? ['Biztonságos, kamerával megfigyelt területt', '24/7 személyzet a helyszínen', 'Kedvező árak hosszabb tartózkodásra is', 'Ingyenes transzfer a repülőtérre és vissza', 'Előfoglalási lehetőség']
               : ['Secure, camera-monitored area', '24/7 staff on site', 'Favorable rates for longer stays', 'Free transfer to and from the airport', 'Pre-booking option']
             ) as feature}
               <li>{feature}</li>
@@ -157,6 +215,18 @@
   </section>
 
   <section class="service-section" id="carwash">
+    <div class="animated-background">
+        {#each Array(20) as _, i}
+            <div class="bubble" style="
+                --size: {Math.random() * 5 + 1}rem;
+                --left: {Math.random() * 100}%;
+                --animation-duration: {Math.random() * 10 + 5}s;
+                --animation-delay: {Math.random() * 5}s;
+                --opacity: {Math.random() * 0.4 + 0.1}; /* Vary opacity */
+            "></div>
+        {/each}
+    </div>
+
     <div class="container">
       <div class="service-grid reverse">
         <div class="service-image">
@@ -184,7 +254,25 @@
       </div>
 
       <div class="car-wash-tables">
-          <h3 class="car-wash-title smart-title">{$currentLang === 'hu' ? 'SMART Csomag Árak' : 'SMART Package Prices'}</h3>
+          <h3 class="car-wash-title smart-title">{$currentLang === 'hu' ? 'SMART Csomag' : 'SMART Package'}</h3>
+          <div class="package-inclusions-container">
+              <div class="inclusion-card frosted-card">
+                  <h4 class="inclusion-section-title">{$currentLang === 'hu' ? 'Külső' : 'Exterior'}</h4>
+                  <ul class="inclusion-pills smart-pills">
+                       {#each carWashData.smart.inclusions.exterior.items as item}
+                           <li>{item[$currentLang]}</li>
+                       {/each}
+                  </ul>
+              </div>
+               <div class="inclusion-card frosted-card">
+                  <h4 class="inclusion-section-title">{$currentLang === 'hu' ? 'Belső' : 'Interior'}</h4>
+                  <ul class="inclusion-pills smart-pills">
+                       {#each carWashData.smart.inclusions.interior.items as item}
+                           <li>{item[$currentLang]}</li>
+                       {/each}
+                  </ul>
+              </div>
+           </div>
           <div class="pricing-table-container scrollable-table car-wash-table-container">
               <table class="pricing-table car-wash-table smart-table">
                    <thead>
@@ -196,7 +284,7 @@
                       </tr>
                   </thead>
                   <tbody>
-                      {#each carWashPrices.smart as price (price.type[$currentLang])}
+                      {#each carWashData.smart.prices as price (price.type[$currentLang])}
                           <tr>
                               <td>{price.type[$currentLang]}</td>
                               <td>{price['Exterior & Interior']}</td>
@@ -208,7 +296,25 @@
               </table>
           </div>
 
-          <h3 class="car-wash-title premium-title">{$currentLang === 'hu' ? 'PREMIUM Csomag Árak' : 'PREMIUM Package Prices'}</h3>
+          <h3 class="car-wash-title premium-title">{$currentLang === 'hu' ? 'PREMIUM Csomag' : 'PREMIUM Package'}</h3>
+          <div class="package-inclusions-container">
+              <div class="inclusion-card frosted-card">
+                  <h4 class="inclusion-section-title">{$currentLang === 'hu' ? 'Külső' : 'Exterior'}</h4>
+                  <ul class="inclusion-pills premium-pills">
+                       {#each carWashData.premium.inclusions.exterior.items as item}
+                           <li>{item[$currentLang]}</li>
+                       {/each}
+                  </ul>
+              </div>
+               <div class="inclusion-card frosted-card">
+                  <h4 class="inclusion-section-title">{$currentLang === 'hu' ? 'Belső' : 'Interior'}</h4>
+                  <ul class="inclusion-pills premium-pills">
+                       {#each carWashData.premium.inclusions.interior.items as item}
+                           <li>{item[$currentLang]}</li>
+                       {/each}
+                  </ul>
+              </div>
+          </div>
            <div class="pricing-table-container scrollable-table car-wash-table-container">
               <table class="pricing-table car-wash-table premium-table">
                    <thead>
@@ -220,7 +326,7 @@
                       </tr>
                   </thead>
                   <tbody>
-                      {#each carWashPrices.premium as price (price.type[$currentLang])}
+                      {#each carWashData.premium.prices as price (price.type[$currentLang])}
                           <tr>
                               <td>{price.type[$currentLang]}</td>
                               <td>{price['Exterior & Interior']}</td>
@@ -233,7 +339,7 @@
           </div>
       </div>
     </div>
-  </section>
+  </section>  
 
   <section class="service-section" id="tire">
     <div class="container">
@@ -358,8 +464,14 @@
     --text: #1a1a1a; /* Example text color */
     --text-light: #555; /* Example light text color */
     --light: #f4f4f4; /* Example light background color */
-    --teal-dark: #00796b; /* Darker teal for SMART title */
-    --teal-light: #4db6ac; /* Lighter teal for PREMIUM title */
+    --teal-dark: #00796b; /* Darker teal for SMART title and pills */
+    --teal-light: #4db6ac; /* Lighter teal - maybe for borders or accents */
+    --dark-purple: #4b0082; /* Dark purple for PREMIUM title */
+    --lavender: #e6e6fa; /* Lavender for PREMIUM pills background */
+    --premium-pill-border: #b3a3c8; /* Slightly darker lavender border */
+    --frosted-background: rgba(255, 255, 255, 0.3); /* Increased transparency for more frosting */
+    --frosted-border: rgba(255, 255, 255, 0.5); /* Increased border visibility */
+    --bubble-color: rgba(0, 186, 229, 0.2); /* Semi-transparent primary color for bubbles */
   }
 
   .services-hero {
@@ -383,6 +495,8 @@
 
   .service-section {
     padding: 5rem 2rem;
+    position: relative; /* Needed for absolute positioning of animated background */
+    overflow: hidden; /* Hide overflowing bubbles */
   }
 
   /* Alternating background colors for sections */
@@ -399,6 +513,8 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 1rem; /* Add some horizontal padding */
+      position: relative; /* Ensure content is above the animated background */
+      z-index: 1; /* Ensure content has a higher z-index */
   }
 
   .service-grid {
@@ -599,19 +715,85 @@
     .car-wash-title {
         font-size: 1.5rem;
         margin-top: 2rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem; /* Space below title before inclusions */
         text-align: center;
         font-weight: 600;
     }
 
     .smart-title {
-        color: var(--teal-dark);
+        color: var(--teal-dark); /* SMART title color */
+         margin-top: 0; /* No extra margin on the first title */
     }
 
     .premium-title {
-        color: var(--teal-light);
-         margin-top: 3rem; /* More space between the two car wash tables */
+        color: var(--dark-purple); /* PREMIUM title color */
+         margin-top: 3rem; /* More space between the two car wash blocks */
     }
+
+    .package-inclusions-container {
+        display: flex;
+        gap: 1.5rem; /* Space between inclusion sections */
+        margin-bottom: 2rem; /* Space below inclusions before the table */
+        flex-wrap: wrap; /* Allow wrapping */
+        justify-content: center; /* Center inclusion sections when wrapped */
+    }
+
+    /* Styles for the new frosted card wrapping the inclusion section */
+    .inclusion-card.frosted-card {
+        flex: 1; /* Allow cards to grow/shrink */
+        min-width: 280px; /* Minimum width */
+        max-width: 400px; /* Max width for readability */
+        background-color: var(--frosted-background); /* Semi-transparent background */
+        border: 1px solid var(--frosted-border); /* Semi-transparent border */
+        border-radius: 12px; /* Rounded corners */
+        padding: 1.5rem;
+        backdrop-filter: blur(12px); /* Increased blur for "very frosted" effect */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        text-align: center;
+        display: flex; /* Use flex to arrange title and pills */
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+    .inclusion-section-title {
+         font-size: 1.1rem;
+         font-weight: 600;
+         margin-bottom: 1rem;
+         color: var(--text); /* Adjust color for readability */
+     }
+
+     .inclusion-pills {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap; /* Allow pills to wrap */
+        justify-content: center; /* Center pills within the section */
+        gap: 0.6rem; /* Space between pills */
+     }
+
+      .inclusion-pills li {
+          font-size: 0.9rem;
+          padding: 0.4rem 0.9rem; /* Padding around pill text */
+          border-radius: 20px; /* Pill shape */
+          white-space: nowrap; /* Prevent wrapping within a pill */
+           border: 1px solid transparent; /* Default transparent border */
+      }
+
+      /* Specific styles for SMART pills */
+      .smart-pills li {
+          color: white; /* White text for better contrast on dark background */
+          background-color: var(--teal-dark); /* SMART pill background color */
+           border-color: var(--teal-dark); /* Border matching background */
+      }
+
+       /* Specific styles for PREMIUM pills */
+      .premium-pills li {
+          color: var(--text); /* Dark text for better contrast on light background */
+          background-color: var(--lavender); /* PREMIUM pill background color */
+           border-color: var(--premium-pill-border); /* Slightly darker lavender border */
+      }
 
 
      /* Car wash table general styles */
@@ -746,6 +928,45 @@
     }
 
 
+   /* Animated Background Styles */
+   .animated-background {
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       overflow: hidden;
+       z-index: 0; /* Ensure it's behind content */
+   }
+
+   .bubble {
+       position: absolute;
+       bottom: -100px; /* Start below the section */
+       width: var(--size);
+       height: var(--size);
+       left: var(--left);
+       background-color: var(--bubble-color);
+       border-radius: 50%;
+       animation: float 10s infinite ease-in-out var(--animation-delay);
+       opacity: var(--opacity); /* Use the varying opacity */
+   }
+
+   @keyframes float {
+       0% {
+           transform: translateY(0) scale(1);
+           opacity: var(--opacity);
+       }
+       50% {
+           transform: translateY(-50vh) scale(1.1); /* Float up */
+           opacity: calc(var(--opacity) + 0.2); /* Slightly more opaque in the middle */
+       }
+       100% {
+           transform: translateY(-100vh) scale(1); /* Float off the top */
+           opacity: 0; /* Fade out */
+       }
+   }
+
+
   /* Mobile Responsive */
   @media (max-width: 992px) {
     .service-grid {
@@ -794,6 +1015,35 @@
         white-space: nowrap; /* Keep car type from wrapping if possible */
     }
 
+     /* Inclusion sections responsive adjustments */
+     .package-inclusions-container {
+         flex-direction: column; /* Stack sections vertically on mobile */
+         align-items: center; /* Center stacked sections */
+     }
+      .inclusion-section { /* Keep this for structure inside the card */
+         width: 100%; /* Take full width of the card */
+         min-width: auto; /* Remove min-width constraint */
+         max-width: none; /* Remove max-width constraint */
+         padding: 0; /* Remove padding, handled by card */
+      }
+
+       .inclusion-card.frosted-card { /* Mobile adjustments for the card itself */
+           width: 100%; /* Full width minus padding */
+           max-width: 400px; /* Keep a reasonable max-width */
+           padding: 1.2rem; /* Adjust padding */
+       }
+
+
+      .inclusion-section-title {
+          font-size: 1rem; /* Adjust title size */
+      }
+
+      .inclusion-pills li {
+          font-size: 0.85rem; /* Adjust pill font size */
+          padding: 0.3rem 0.7rem; /* Adjust pill padding */
+      }
+
+
     /* Tire service table mobile adjustments */
      .tire-service-main-table th,
      .tire-service-main-table td {
@@ -835,6 +1085,25 @@
      .car-wash-title { font-size: 1.3rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
      .premium-title { margin-top: 2.5rem; }
 
+
+     /* Smaller mobile inclusion card adjustments */
+      .inclusion-card.frosted-card {
+         min-width: 240px; /* Even smaller min width */
+         padding: 1rem; /* More compact padding */
+      }
+
+       .inclusion-section-title {
+           font-size: 1rem;
+           margin-bottom: 0.8rem;
+       }
+
+       .inclusion-pills li {
+           font-size: 0.8rem; /* Even smaller pill text */
+           padding: 0.25rem 0.6rem; /* More compact pill padding */
+           white-space: normal; /* Allow wrapping on very small screens */
+       }
+
+
     .btn {
       width: 100%;
       text-align: center;
@@ -851,6 +1120,7 @@
     .car-wash-table td { min-width: 70px; font-size: 0.85rem;}
     .car-wash-table th:first-child,
     .car-wash-table td:first-child { min-width: 90px;}
+
 
     .tire-service-main-table th,
     .tire-service-main-table td {
