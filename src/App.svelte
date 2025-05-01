@@ -16,6 +16,12 @@
 	let currentPage = 'home';
 	let pageLoading = true;
 	let pageTransition = false;
+	let lang = 'hu'; // Local state for current language
+	
+	// Subscribe to language changes
+	currentLang.subscribe(value => {
+		lang = value;
+	});
 	
 	function navigate(page) {
 	  if (page === currentPage) return;
@@ -92,21 +98,21 @@
     <div class="spinner"></div>
   </div>
 
-  <Header {navigate} {currentPage} />
+  <Header {navigate} {currentPage} {lang} />
 
   <main>
     {#if currentPage === 'home'}
-      <Home {navigate} />
+      <Home {navigate} {lang} />
     {:else if currentPage === 'about'}
-      <About />
+      <About {lang} />
     {:else if currentPage === 'services'}
-      <Services />
+      <Services {lang} />
     {:else if currentPage === 'contact'}
-      <Contact />
+      <Contact {lang} />
     {:else if currentPage === 'booking'}
-      <Booking />
+      <Booking {lang} />
     {:else if currentPage === 'privacy'}
-      <Privacy />
+      <Privacy {lang} />
     {:else}
       <!-- Fallback if no page matches -->
       <div class="error-container">
@@ -116,9 +122,9 @@
     {/if}
   </main>
 
-  <Footer {navigate} />
-  <CookieConsent />
-  <DiscountPopup />
+  <Footer {navigate} {lang} />
+  <CookieConsent {lang} />
+  <DiscountPopup {lang} />
 </div>
 
 <style>

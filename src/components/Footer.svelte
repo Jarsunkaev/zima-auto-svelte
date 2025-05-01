@@ -1,4 +1,4 @@
-<svelte:options tag={null} />
+
 
 <script>
   import { currentLang, t } from '../lib/i18n';

@@ -12,8 +12,8 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001; // Use port from env or default to 3001
 
-// Import your email utility functions (Corrected Import)
-const { sendBookingConfirmationEmails, sendContactEmails } = require('./utils/email'); // <-- FIX HERE
+// Import your email utility functions
+const { sendBookingConfirmationEmails, sendContactEmails } = require('./utils/email');
 const { getGoogleCalendarClient, addEventToCalendar, checkTimeSlotAvailability } = require('./utils/googleCalendar');
 
 // --- Middleware ---
@@ -58,17 +58,108 @@ function generateTimeSlots(service) {
        slots.push(timeSlot);
   }
 
-
   return slots.sort(); // Sort slots chronologically
 }
 
+// --- Timezone Handling Functions ---
+
+/**
+ * Adjusts a date and time accounting for timezone differences between
+ * user's local time and server/Google Calendar time
+ * 
+ * @param {string} dateStr - The date in YYYY-MM-DD format
+ * @param {string} timeStr - The time in HH:MM format
+ * @returns {Date} - The adjusted Date object
+ */
+function adjustTimeForCalendar(dateStr, timeStr) {
+  if (!dateStr || !timeStr) {
+    console.error('Missing date or time for timezone adjustment', { dateStr, timeStr });
+    return null;
+  }
+
+  try {
+    // Create a date object from the given date and time strings
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    
+    // When creating a Calendar event, Google interprets the times in the
+    // timezone specified in the event, which in our case is 'Europe/Budapest'
+    // We need to ensure the time shown in Google Calendar matches what the user selected
+    
+    // Google Calendar expects times in ISO format with the specified timezone
+    // Using the ISO format ensures Google Calendar interprets it correctly
+    const eventDate = new Date(Date.UTC(year, month - 1, day, hours, minutes));
+    
+    console.log(`Adjusted time for calendar: ${dateStr} ${timeStr} -> ${eventDate.toISOString()}`);
+    return eventDate;
+  } catch (error) {
+    console.error('Error adjusting time for calendar:', error);
+    return null;
+  }
+}
+
+/**
+ * Parses the date range string for airport parking bookings
+ * and returns the adjusted start and end dates/times for Google Calendar
+ * 
+ * @param {string} dateRangeStr - Combined date string from frontend, e.g. "2023-05-01 14:00 - 2023-05-05 16:00"
+ * @returns {Object} - Object containing parsed and adjusted start/end dates and times
+ */
+function parseAirportParkingDateRange(dateRangeStr) {
+  try {
+    if (!dateRangeStr || typeof dateRangeStr !== 'string') {
+      console.error('Invalid date range string:', dateRangeStr);
+      return null;
+    }
+
+    // Split the string by " - " delimiter
+    const parts = dateRangeStr.split(' - ');
+    if (parts.length !== 2) {
+      console.error('Failed to split date range by " - ":', dateRangeStr);
+      return null;
+    }
+
+    // Parse start date and time
+    const [startDateStr, startTimeStr] = parts[0].split(' ');
+    // Parse end date and time
+    const [endDateStr, endTimeStr] = parts[1].split(' ');
+
+    // Validate the parsed parts
+    if (!startDateStr || !startTimeStr || !endDateStr || !endTimeStr) {
+      console.error('Failed to parse date range components:', dateRangeStr);
+      return null;
+    }
+
+    // Adjust dates and times for Google Calendar
+    const startDate = adjustTimeForCalendar(startDateStr, startTimeStr);
+    const endDate = adjustTimeForCalendar(endDateStr, endTimeStr);
+
+    if (!startDate || !endDate) {
+      console.error('Failed to adjust dates for calendar');
+      return null;
+    }
+
+    return {
+      startDate,
+      endDate,
+      // Also include the original parsed strings for reference
+      startDateStr,
+      startTimeStr,
+      endDateStr,
+      endTimeStr
+    };
+  } catch (error) {
+    console.error('Error parsing airport parking date range:', error);
+    return null;
+  }
+}
 
 // --- Routes ---
 
 // API Endpoint to fetch available time slots
 app.get('/api/available-slots', async (req, res) => {
   try {
-    const { date, service } = req.query;
+    const { date, service, tzOffset, tzName } = req.query;
 
     // Validate required parameters
     if (!date || !service) {
@@ -103,6 +194,11 @@ app.get('/api/available-slots', async (req, res) => {
 
     // Get busy slots from Google Calendar - checkTimeSlotAvailability now filters by service
     const busySlots = await checkTimeSlotAvailability(calendar, date, service);
+
+    // Log the timezone information if available (for debugging)
+    if (tzOffset || tzName) {
+      console.log(`Timezone info received - Offset: ${tzOffset}, Name: ${tzName}`);
+    }
 
     // Respond with the busy slots
     res.status(200).json({
@@ -184,6 +280,20 @@ app.post('/api/send-booking-emails', async (req, res) => {
       console.log('Received Date field:', bookingData.date);
       console.log('Received Time field:', bookingData.time); // This will likely be empty for parking
       console.log('======================================');
+    } else {
+      // Log regular service booking details
+      console.log(`======= ${bookingData.service?.toUpperCase()} BOOKING =======`);
+      console.log('Received Date:', bookingData.date);
+      console.log('Received Time:', bookingData.time);
+      console.log('Service Type:', bookingData.serviceType || 'Standard');
+      console.log('======================================');
+    }
+
+    // Log timezone info from request if available
+    if (bookingData.timezone) {
+      console.log('======= TIMEZONE INFO =======');
+      console.log('Timezone data:', JSON.stringify(bookingData.timezone, null, 2));
+      console.log('===========================');
     }
 
     // Validate required fields
@@ -202,62 +312,39 @@ app.post('/api/send-booking-emails', async (req, res) => {
       // Get Google Calendar client
       const calendar = await getGoogleCalendarClient();
 
-      let dateForCalendar, timeForCalendar, endDateForCalendar, endTimeForCalendar;
-
       // Handle airport parking differently than other services
       if (bookingData.service === 'airportParking') {
         console.log('Processing airport parking booking for Google Calendar');
 
-        // *** MODIFICATION START: Parse the combined date string for Airport Parking ***
-        if (bookingData.date && typeof bookingData.date === 'string') {
-            const parts = bookingData.date.split(' - ');
-            if (parts.length === 2) {
-                const [startDateStr, endDateStr] = parts;
-                const [startDatePart, startTimePart] = startDateStr.split(' ');
-                const [endDatePart, endTimePart] = endDateStr.split(' ');
-
-                // Basic validation of parsed parts
-                if (startDatePart && startTimePart && endDatePart && endTimePart &&
-                    /^\d{4}-\d{2}-\d{2}$/.test(startDatePart) && /^\d{2}:\d{2}$/.test(startTimePart) &&
-                    /^\d{4}-\d{2}-\d{2}$/.test(endDatePart) && /^\d{2}:\d{2}$/.test(endTimePart)
-                   ) {
-                    dateForCalendar = startDatePart;
-                    timeForCalendar = startTimePart;
-                    endDateForCalendar = endDatePart;
-                    endTimeForCalendar = endTimePart;
-                    console.log(`Successfully Parsed Dates & Times: Start Date=${dateForCalendar}, Start Time=${timeForCalendar}, End Date=${endDateForCalendar}, End Time=${endTimeForCalendar}`);
-                } else {
-                    console.error('Failed to parse date string components or format is invalid:', bookingData.date);
-                }
-            } else {
-                console.error('Failed to split date string by " - ":', bookingData.date);
-            }
-        } else {
-            console.error('Airport parking booking data.date is missing or not a string');
-        }
-        // *** MODIFICATION END: Parse the combined date string for Airport Parking ***
-
-
-        if (dateForCalendar && timeForCalendar && endDateForCalendar && endTimeForCalendar) {
+        // Parse and adjust the airport parking date range
+        const dateTimeInfo = parseAirportParkingDateRange(bookingData.date);
+        
+        if (dateTimeInfo) {
           // Format customer name
           const customerName = bookingData.customerName || bookingData.name;
 
-          console.log(`Adding airport parking to calendar: ${dateForCalendar} ${timeForCalendar} to ${endDateForCalendar} ${endTimeForCalendar} for ${customerName}`);
+          console.log(`Adding airport parking to calendar from ${dateTimeInfo.startDate.toISOString()} to ${dateTimeInfo.endDate.toISOString()} for ${customerName}`);
 
-          // Add event to Google Calendar, passing parsed dates/times within bookingData
+          // Create a modified version of the booking data with the adjusted times
+          const modifiedBookingData = {
+            ...bookingData,
+            startDate: dateTimeInfo.startDateStr,
+            startTime: dateTimeInfo.startTimeStr,
+            endDate: dateTimeInfo.endDateStr,
+            endTime: dateTimeInfo.endTimeStr,
+            // Add the adjusted dates for Google Calendar
+            calendarStartTime: dateTimeInfo.startDate,
+            calendarEndTime: dateTimeInfo.endDate
+          };
+
+          // Add event to Google Calendar, passing the modified booking data
           const eventId = await addEventToCalendar(
             calendar,
             bookingData.service,
-            dateForCalendar, // Use parsed start date
-            timeForCalendar, // Use parsed start time
+            dateTimeInfo.startDateStr,
+            dateTimeInfo.startTimeStr,
             customerName,
-            { // Pass all original booking data plus the parsed date/time fields expected by addEventToCalendar
-                ...bookingData,
-                startDate: dateForCalendar,
-                startTime: timeForCalendar,
-                endDate: endDateForCalendar,
-                endTime: endTimeForCalendar
-            }
+            modifiedBookingData
           );
 
           console.log(`Successfully added airport parking booking to Google Calendar with event ID: ${eventId}`);
@@ -265,17 +352,13 @@ app.post('/api/send-booking-emails', async (req, res) => {
           // Add the event ID to the booking data for reference
           bookingData.eventId = eventId;
         } else {
-            console.warn('Airport parking booking is missing required date/time fields after parsing - not adding to calendar');
-             // Depending on your frontend, you might want to return an error here
-             // if calendar creation is critical and parsing failed.
+          console.warn('Failed to parse airport parking date range - not adding to calendar');
         }
       }
       // Handle other service bookings (car wash, auto service, tire service)
       else if (bookingData.date && bookingData.time && bookingData.service) {
         console.log(`Processing service booking (${bookingData.service}) for Google Calendar`);
-        // >>> Add this log line to see received date/time for standard services <<<
         console.log(`Received date: ${bookingData.date}, time: ${bookingData.time} for service ${bookingData.service}`);
-
 
         // Check if the exact time slot is available for THIS service only
         const busySlots = await checkTimeSlotAvailability(calendar, bookingData.date, bookingData.service);
@@ -290,59 +373,70 @@ app.post('/api/send-booking-emails', async (req, res) => {
         // Format customer name
         const customerName = bookingData.customerName || bookingData.name;
 
-        // Add event to Google Calendar
-        const eventId = await addEventToCalendar(
-          calendar,
-          bookingData.service,
-          bookingData.date,
-          bookingData.time,
-          customerName,
-          bookingData // Pass all booking data for detailed description
-        );
+        // Adjust the time for Google Calendar
+        const adjustedDateTime = adjustTimeForCalendar(bookingData.date, bookingData.time);
+        
+        if (adjustedDateTime) {
+          // Create a modified version of the booking data with the adjusted time
+          const modifiedBookingData = {
+            ...bookingData,
+            // Keep the original date and time
+            date: bookingData.date,
+            time: bookingData.time,
+            // Add the adjusted date for Google Calendar
+            calendarDateTime: adjustedDateTime
+          };
 
-        console.log(`Added booking to Google Calendar with event ID: ${eventId}`);
+          // Add event to Google Calendar using the modified booking data
+          const eventId = await addEventToCalendar(
+            calendar,
+            bookingData.service,
+            bookingData.date,
+            bookingData.time,
+            customerName,
+            modifiedBookingData
+          );
 
-        // Add the event ID to the booking data for reference
-        bookingData.eventId = eventId;
+          console.log(`Added booking to Google Calendar with event ID: ${eventId}`);
+
+          // Add the event ID to the booking data for reference
+          bookingData.eventId = eventId;
+        } else {
+          console.warn('Failed to adjust time for calendar - using original date/time');
+          
+          // Fallback to using the original date/time if adjustment fails
+          const eventId = await addEventToCalendar(
+            calendar,
+            bookingData.service,
+            bookingData.date,
+            bookingData.time,
+            customerName,
+            bookingData
+          );
+
+          console.log(`Added booking to Google Calendar with event ID (fallback): ${eventId}`);
+          bookingData.eventId = eventId;
+        }
       } else {
         console.warn('Booking is missing date/time or service fields - not adding to calendar', bookingData);
-         // For other services, date, time, and service are essential.
-         // You might want to return an error response here.
       }
     } catch (calendarError) {
       console.error('Error during Google Calendar operation:', calendarError);
-      // Log the full error for debugging
       console.error('Calendar Error Details:', calendarError);
-
-      // Don't necessarily fail the entire booking process if calendar integration fails
-      // unless it's a critical requirement for all booking types.
-      // For now, we log and proceed, but you might adjust this.
-      // Returning a 500 here would stop the email sending if calendar fails:
-      /*
-      return res.status(500).json({
-        success: false,
-        message: 'An error occurred while integrating with the calendar: ' + calendarError.message
-      });
-      */
     }
 
     // Send Emails (this happens regardless of calendar success/failure in this setup)
     try {
-        // Call the correctly imported function
         await sendBookingConfirmationEmails(bookingData);
-         console.log('Booking confirmation emails sent successfully.');
+        console.log('Booking confirmation emails sent successfully.');
     } catch (emailError) {
         console.error('Error sending booking confirmation emails:', emailError);
-        // Decide if email failure should stop the success response
-        // For now, logging the error and continuing to send success response
-        // as calendar might have succeeded.
     }
-
 
     // Respond to Frontend
     res.status(200).json({
       success: true,
-      message: 'Booking processed successfully' // Modify message if calendar/email failed but you still responded success
+      message: 'Booking processed successfully'
     });
 
   } catch (error) {

@@ -1,4 +1,4 @@
-<svelte:options tag={null} />
+
 
 <script>
   export let svgIcon;

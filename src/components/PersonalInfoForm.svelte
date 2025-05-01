@@ -1,5 +1,3 @@
-<svelte:options tag={null} />
-
 <script>
     import { createEventDispatcher } from 'svelte';
     import LoadingSpinner from './LoadingSpinner.svelte';
@@ -168,6 +166,42 @@
     .form-row {
       grid-template-columns: 1fr;
       gap: 1rem;
+    }
+
+    .form-section h3 {
+      font-size: 1.5rem;
+    }
+
+    label {
+      font-size: 1.1rem;
+    }
+
+    input {
+      font-size: 1.1rem;
+      padding: 1rem;
+    }
+
+    .error-message {
+      font-size: 1rem;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .form-section h3 {
+      font-size: 1.4rem;
+    }
+
+    label {
+      font-size: 1rem;
+    }
+
+    input {
+      font-size: 1rem;
+      padding: 0.9rem;
+    }
+
+    .error-message {
+      font-size: 0.95rem;
     }
   }
 </style>

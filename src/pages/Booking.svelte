@@ -1,5 +1,3 @@
-<svelte:options tag={null} />
-
 <script>
   import { onMount } from 'svelte';
   import { currentLang } from '../lib/i18n';
@@ -24,6 +22,12 @@
   let isSubmitting = false; // Indicates if backend submission is in progress
   let submitError = null; // Stores error message from backend submission
   let submitSuccess = false; // Indicates successful backend submission
+  let lang = 'hu'; // Local state for current language
+
+  // Subscribe to language changes
+  currentLang.subscribe(value => {
+    lang = value;
+  });
 
   // Define the backend API URL
   // Ensure this matches your backend server address and port
@@ -137,7 +141,7 @@
         // Backend reported an error (status code not 2xx)
         console.error('Backend booking process reported failure:', response.status, result.message);
         // Display the error message from the backend if available, otherwise a generic one
-        submitError = result.message || ($currentLang === 'hu'
+        submitError = result.message || (lang === 'hu'
           ? 'Hiba történt a foglalás feldolgozása során.'
           : 'An error occurred during booking processing.');
         submitSuccess = false; // Ensure success state is false
@@ -145,7 +149,7 @@
     } catch (error) {
       // An error occurred during the fetch request itself (e.g., network error)
       console.error('Error submitting booking request to backend:', error);
-      submitError = $currentLang === 'hu'
+      submitError = lang === 'hu'
         ? 'Hiba történt a szerverhez való kapcsolódás során.'
         : 'An error occurred while connecting to the server.';
       submitSuccess = false; // Ensure success state is false
@@ -180,8 +184,8 @@
 
 <section class="booking-hero">
   <div class="container">
-    <h1>{content[$currentLang].title}</h1>
-    <p>{content[$currentLang].subtitle}</p>
+    <h1>{content[lang].title}</h1>
+    <p>{content[lang].subtitle}</p>
   </div>
 </section>
 
@@ -189,7 +193,7 @@
   {#if currentStep === 1}
     <ServiceSelection
       {content}
-      currentLang={$currentLang}
+      currentLang={lang}
       onSelectService={selectService}
     />
   {:else if currentStep === 2}
@@ -200,11 +204,11 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-            {$currentLang === 'hu' ? 'Vissza' : 'Back'}
+            {lang === 'hu' ? 'Vissza' : 'Back'}
           </button>
 
           <h2 class="form-title">
-             {content[$currentLang].bookingForm[selectedService]?.title || ''}
+             {content[lang].bookingForm[selectedService]?.title || ''}
           </h2>
         </div>
 
@@ -215,7 +219,7 @@
             <div class="submitting-overlay">
               <LoadingSpinner size="2rem" color="var(--primary)" />
               <p class="submitting-message">
-                {$currentLang === 'hu' ? 'Foglalás feldolgozása, kérjük várjon...' : 'Processing booking, please wait...'}
+                {lang === 'hu' ? 'Foglalás feldolgozása, kérjük várjon...' : 'Processing booking, please wait...'}
               </p>
             </div>
           {/if}
@@ -223,25 +227,25 @@
           {#if selectedService === 'airportParking'}
             <AirportParkingForm
               {content}
-              currentLang={$currentLang}
+              currentLang={lang}
               on:bookingComplete={handleBookingComplete}
             />
           {:else if selectedService === 'carWash'}
             <CarWashForm
               {content}
-              currentLang={$currentLang}
+              currentLang={lang}
               on:bookingComplete={handleBookingComplete}
             />
           {:else if selectedService === 'autoService'}
             <AutoServiceForm
               {content}
-              currentLang={$currentLang}
+              currentLang={lang}
               on:bookingComplete={handleBookingComplete}
             />
           {:else if selectedService === 'tireService'}
             <TireServiceForm
               {content}
-              currentLang={$currentLang}
+              currentLang={lang}
               on:bookingComplete={handleBookingComplete}
             />
           {/if}
@@ -253,7 +257,7 @@
   <BookingConfirmation
     bookingDetails={bookingDetails}
     {content}
-    currentLang={$currentLang}
+    currentLang={lang}
     resetBooking={resetBooking}
   />
 {/if}

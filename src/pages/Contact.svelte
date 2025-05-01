@@ -1,5 +1,3 @@
-<svelte:options tag={null} />
-
 <script>
   import { onMount } from 'svelte';
   import { currentLang, t } from '../lib/i18n';
@@ -713,11 +711,11 @@
 
   @media screen and (max-width: 768px) {
     .contact-hero h1 {
-      font-size: 2.2rem;
+      font-size: 2.5rem;
     }
 
     .contact-hero p {
-      font-size: 1rem;
+      font-size: 1.2rem;
     }
 
     .form-row {
@@ -729,90 +727,100 @@
       padding: 1.5rem;
     }
 
-     .contact-section {
-         padding: 3rem 1.5rem;
-     }
-      .contact-grid {
-          gap: 2rem;
-      }
-      .info-card {
-          padding: 1rem;
-      }
-       .icon {
-           min-width: 40px;
-           height: 40px;
-       }
-        .info-content h3 {
-            font-size: 1rem;
-        }
-         .info-content p {
-            margin-bottom: 2rem;
-         }
-         .contact-form-container h2 {
-             font-size: 1.5rem;
-             padding-bottom: 10px;
-         }
-         .contact-form-container h2::after {
-             width: 40px;
-         }
-         label, input, textarea, .contact-form button {
-             font-size: 0.95rem;
-         }
-          .success-message p {
-             font-size: 1.1rem;
-          }
-          .map-section {
-               height: 350px;
-          }
-           .contact-info {
-              margin-bottom: 2rem; /* Adjust mobile margin for this breakpoint */
-           }
+    .contact-section {
+      padding: 3rem 1.5rem;
+    }
 
-        /* Adjusted padding for directions link on smaller screens */
-       .directions-link {
-           bottom: 15px; /* Slightly adjust position */
-           right: 15px; /* Slightly adjust position */
-           padding: 8px 20px 8px 16px; /* Increased right padding */
-           font-size: 0.9rem;
-       }
+    .contact-grid {
+      gap: 2rem;
+    }
+
+    .info-card {
+      padding: 1rem;
+    }
+
+    .icon {
+      min-width: 40px;
+      height: 40px;
+    }
+
+    .info-content h3 {
+      font-size: 1.2rem;
+    }
+
+    .info-content p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .contact-form-container h2 {
+      font-size: 1.8rem;
+      padding-bottom: 10px;
+    }
+
+    .contact-form-container h2::after {
+      width: 40px;
+    }
+
+    label, input, textarea, .contact-form button {
+      font-size: 1.1rem;
+    }
+
+    .success-message p {
+      font-size: 1.2rem;
+    }
+
+    .map-section {
+      height: 350px;
+    }
+
+    .contact-info {
+      margin-bottom: 2rem;
+    }
+
+    .directions-link {
+      bottom: 15px;
+      right: 15px;
+      padding: 8px 20px 8px 16px;
+      font-size: 1.1rem;
+    }
   }
 
    @media screen and (max-width: 480px) {
        .contact-hero h1 {
-           font-size: 1.8rem;
+           font-size: 2.2rem;
        }
        .contact-form-container h2 {
-           font-size: 1.3rem;
+           font-size: 1.6rem;
        }
-       /* Info Cards - keep icon next to text, but adjust padding/gap */
        .info-card {
-           padding: 1rem; /* Smaller padding */
-           gap: 1rem; /* Smaller gap */
-           align-items: flex-start; /* Keep icon and text aligned to top */
+           padding: 1rem;
+           gap: 1rem;
        }
         .icon {
-            min-width: 40px; /* Smaller icon */
+            min-width: 40px;
             height: 40px;
         }
          .info-content h3 {
-             font-size: 0.95rem; /* Smaller font */
+             font-size: 1.1rem;
              margin-bottom: 0.3rem;
          }
           .info-content p {
               margin-bottom: 2rem;
+              font-size: 1rem;
           }
            label, input, textarea, .contact-form button {
-               font-size: 0.9rem; /* Smaller form font */
+               font-size: 1rem;
            }
             .success-message p {
-                font-size: 1rem; /* Smaller success message */
+                font-size: 1.1rem;
             }
 
        .contact-grid {
           gap: 3rem;
        }
        .contact-info {
-          margin-bottom: 1.5rem; /* Match grid gap */
+          margin-bottom: 1.5rem;
        }
        .contact-section {
           padding: 2rem 1rem;
@@ -820,12 +828,11 @@
         .map-section {
           height: 300px;
         }
-        /* Adjusted padding for directions link on very small screens */
-       .directions-link {
+        .directions-link {
            bottom: 10px;
            right: 10px;
-           padding: 6px 18px 6px 12px; /* Increased right padding */
-           font-size: 0.8rem;
+           padding: 6px 18px 6px 12px;
+           font-size: 1rem;
        }
    }
 

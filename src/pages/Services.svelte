@@ -1,4 +1,4 @@
-<svelte:options tag={null} />
+
 
 <script>
   import { onMount } from 'svelte';
@@ -178,7 +178,7 @@
             {/each}
           </ul>
           <a href="/#booking" class="btn btn-primary">
-            {$currentLang === 'hu' ? 'Részletek' : 'View details'}
+            {$currentLang === 'hu' ? 'Foglalás' : 'Book now'}
           </a>
         </div>
       </div>
@@ -254,7 +254,7 @@
             {/each}
           </ul>
           <a href="/#booking" class="btn btn-primary">
-            {$currentLang === 'hu' ? 'További információ' : 'More information'}
+            {$currentLang === 'hu' ? 'Foglalás' : 'Book now'}
           </a>
         </div>
         <div class="service-image">
