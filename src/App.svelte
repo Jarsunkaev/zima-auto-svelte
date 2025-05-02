@@ -43,37 +43,71 @@
 	  }, 300);
 	}
 	
-	// Check for URL hash and navigate accordingly
-	onMount(() => {
-	  // Show initial page immediately instead of delay
-	  pageLoading = false;
-	  
-	  // Handle initial page load
-	  const hash = window.location.hash.slice(1);
-	  if (hash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(hash)) {
-		currentPage = hash;
-	  } else {
-		// Default to home if no valid hash
-		currentPage = 'home';
-		window.history.replaceState(null, null, '#home');
-	  }
-	  
-	  // ALWAYS default to Hungarian language regardless of browser settings
-	  currentLang.set('hu');
-	  localStorage.setItem('zimaAutoLang', 'hu');
-	  
-	  // Listen for hash changes
-	  window.addEventListener('hashchange', () => {
-		const newHash = window.location.hash.slice(1);
-		if (newHash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(newHash) && newHash !== currentPage) {
-		  navigate(newHash);
-		}
-	  });
-
-      // Debug log the current page to verify routing is working
-      console.log("Initial page:", currentPage);
-	});
-	
+	// Check for URL hash and navigate accordingly  
+onMount(() => {
+  // Show initial page immediately instead of delay
+  pageLoading = false;
+  
+  // ALWAYS default to Hungarian language regardless of browser settings
+  currentLang.set('hu');
+  localStorage.setItem('zimaAutoLang', 'hu');
+  
+  // Handle initial page load with both hash and path support
+  const handleInitialRoute = () => {
+    const hash = window.location.hash.slice(1);
+    const path = window.location.pathname;
+    
+    // Map path to pages
+    const pathToPage = {
+      '/': 'home',
+      '/booking': 'booking',
+      '/about': 'about',
+      '/services': 'services',
+      '/contact': 'contact',
+      '/privacy': 'privacy'
+    };
+    
+    let targetPage = 'home';
+    
+    // Check if we have a hash
+    if (hash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(hash)) {
+      targetPage = hash;
+    } 
+    // Check if we have a path that should be converted to hash
+    else if (pathToPage[path]) {
+      targetPage = pathToPage[path];
+      // Update URL to use hash for consistency
+      window.history.replaceState(null, null, `#${targetPage}`);
+    }
+    
+    currentPage = targetPage;
+    console.log("Initial page:", currentPage);
+  };
+  
+  handleInitialRoute();
+  
+  // Listen for hash changes
+  window.addEventListener('hashchange', () => {
+    const newHash = window.location.hash.slice(1);
+    if (newHash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(newHash) && newHash !== currentPage) {
+      navigate(newHash);
+    }
+  });
+  
+  // Listen for popstate (back/forward browser buttons)
+  window.addEventListener('popstate', () => {
+    const hash = window.location.hash.slice(1);
+    if (hash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(hash)) {
+      currentPage = hash;
+    }
+  });
+  
+  // Clean up event listeners
+  return () => {
+    window.removeEventListener('hashchange', () => {});
+    window.removeEventListener('popstate', () => {});
+  };
+});
 	// Save language preference when it changes
 	currentLang.subscribe(value => {
 	  if (typeof localStorage !== 'undefined' && value) {
