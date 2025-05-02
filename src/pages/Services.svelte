@@ -1069,11 +1069,11 @@
     .service-section { padding: 3rem 1rem; }
     .service-content h2 { font-size: 1.8rem; }
 
-    /* Make tables more compact on mobile */
+    /* Make tables more compact on mobile - increased font sizes as requested */
     .pricing-table th,
     .pricing-table td {
       padding: 0.6rem 0.4rem;
-      font-size: 0.9rem;
+      font-size: 1.1rem; /* Increased from 0.9rem */
     }
 
     .pricing-table-container {
@@ -1111,13 +1111,13 @@
       font-size: 1rem;
     }
 
-    /* Adjust min-widths for smaller mobile screens */
+    /* Adjust min-widths for smaller mobile screens - increased font sizes as requested */
     .parking-table th,
-    .parking-table td { min-width: 75px; font-size: 0.85rem;}
+    .parking-table td { min-width: 75px; font-size: 1rem; } /* Increased from 0.85rem */
     .parking-table .day-col { min-width: 45px;}
 
     .car-wash-table th,
-    .car-wash-table td { min-width: 70px; font-size: 0.85rem;}
+    .car-wash-table td { min-width: 70px; font-size: 1rem; } /* Increased from 0.85rem */
     .car-wash-table th:first-child,
     .car-wash-table td:first-child { min-width: 90px;}
 
@@ -1125,7 +1125,7 @@
     .tire-service-main-table th,
     .tire-service-main-table td {
         min-width: 80px; /* Adjust tire table */
-        font-size: 0.85rem;
+        font-size: 1rem; /* Increased from 0.85rem */
     }
 
     .tire-services-grid {
