@@ -69,6 +69,6 @@ export default {
     email: "Email",
     emailAddress: "info@zima-auto.com",
     links: "Hivatkozások",
-    copyright: "© 2024 zima-auto.com. Minden jog fenntartva."
+    copyright: "© 2025 zima-auto.com. Minden jog fenntartva."
   }
 };

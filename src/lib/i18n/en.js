@@ -78,6 +78,6 @@ export default {
     email: "Email",
     emailAddress: "info@zima-auto.com",
     links: "Links",
-    copyright: "© 2024 zima-auto.com. All rights reserved."
+    copyright: "© 2025 zima-auto.com. All rights reserved."
   }
 };

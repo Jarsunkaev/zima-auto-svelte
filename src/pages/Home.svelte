@@ -351,7 +351,7 @@
     height: 100vh;
     background: linear-gradient(
       to right,
-      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.2) 0%,
       rgba(0, 0, 0, 0.3) 50%,
       rgba(0, 0, 0, 0.4) 100%
     );
