@@ -59,7 +59,13 @@ Object.keys(redirects).forEach(oldPath => {
 // --- Middleware ---
 // Set up CORS - In production, replace with your actual Svelte frontend URL
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://zima-auto-frontend.fly.dev',
+  origin: [
+    'https://zima-auto.com',
+    'https://www.zima-auto.com',
+    'https://zima-auto-frontend.fly.dev',
+    'http://localhost:5173',  // Development
+    'http://localhost:4173'   // Preview
+  ],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
