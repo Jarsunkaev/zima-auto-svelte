@@ -187,7 +187,7 @@
           </a>
         </div>
         <div class="service-image">
-          <img src="images/parking-lot.jpg" alt="Airport Parking" />
+          <img src="images/parking-lot.webp" alt="Airport Parking" />
         </div>
       </div>
 
@@ -230,7 +230,7 @@
     <div class="container">
       <div class="service-grid reverse">
         <div class="service-image">
-          <img src="images/car-wash.jpg" alt="Car Wash" />
+          <img src="images/car-wash.webp" alt="Car Wash" />
         </div>
         <div class="service-content">
           <h2>{$currentLang === 'hu' ? 'KÉZI AUTÓMOSÓ' : 'HAND CAR WASH'}</h2>
@@ -364,7 +364,7 @@
           </a>
         </div>
         <div class="service-image">
-          <img src="images/merc-tyre.jpg" alt="Tire Service" />
+          <img src="images/merc-tyre.webp" alt="Tire Service" />
         </div>
       </div>
 

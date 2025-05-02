@@ -173,7 +173,7 @@
           <p>{content[$currentLang].story.text}</p>
         </div>
         <div class="about-image">
-          <img src="images/parking-lot.jpg" alt="Zima Auto parking lot" />
+          <img src="images/parking-lot.webp" alt="Zima Auto parking lot" />
         </div>
       </div>
     </div>
@@ -201,7 +201,7 @@
         <div class="video-container">
           <VideoPlayer 
             videoSrc="/zima_video.mp4" 
-            thumbnailSrc="/images/zima-gate.JPG" 
+            thumbnailSrc="/images/zima-gate.webp" 
           />
         </div>
         <p class="video-caption">{content[$currentLang].values.videoCaption}</p>
@@ -236,7 +236,7 @@
 
       <div class="about-grid reverse">
         <div class="about-image">
-          <img src="images/car-wash.jpg" alt="Car Wash" />
+          <img src="images/car-wash.webp" alt="Car Wash" />
         </div>
         <div class="about-content">
           <h3>{content[$currentLang].offerings.block2.paymentOptionsTitle}</h3>
