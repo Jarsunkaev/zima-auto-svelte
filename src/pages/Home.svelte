@@ -202,7 +202,7 @@
 
     <div class="booking-container">
       <div class="booking-image">
-        <img src="images/zima-gate.JPG" alt="Airport Parking" />
+        <img src="images/zima-gate.JPG" alt="Airport Parking" loading="lazy" />
       </div>
       <div class="booking-content">
         <p class="booking-description">

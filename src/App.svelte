@@ -45,16 +45,8 @@
 	
 	// Check for URL hash and navigate accordingly
 	onMount(() => {
-	  // Add Google Fonts link to document head
-      const fontLink = document.createElement('link');
-      fontLink.rel = 'stylesheet';
-      fontLink.href = 'https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap';
-      document.head.appendChild(fontLink);
-      
-	  // Small delay to ensure smooth initial page load
-	  setTimeout(() => {
-	    pageLoading = false;
-	  }, 300);
+	  // Show initial page immediately instead of delay
+	  pageLoading = false;
 	  
 	  // Handle initial page load
 	  const hash = window.location.hash.slice(1);
@@ -128,6 +120,8 @@
 </div>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap');
+  
   :global(:root) {
     --primary: rgba(0, 186, 229, 1);
     --primary-dark: rgba(0, 150, 190, 1);

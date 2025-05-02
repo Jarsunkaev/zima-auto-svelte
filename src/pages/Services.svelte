@@ -1020,12 +1020,7 @@
          flex-direction: column; /* Stack sections vertically on mobile */
          align-items: center; /* Center stacked sections */
      }
-      .inclusion-section { /* Keep this for structure inside the card */
-         width: 100%; /* Take full width of the card */
-         min-width: auto; /* Remove min-width constraint */
-         max-width: none; /* Remove max-width constraint */
-         padding: 0; /* Remove padding, handled by card */
-      }
+
 
        .inclusion-card.frosted-card { /* Mobile adjustments for the card itself */
            width: 100%; /* Full width minus padding */
