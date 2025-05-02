@@ -75,7 +75,7 @@ function getCalendarId(service) {
   if (!calendarId) {
     console.error('GOOGLE_CALENDAR_ID environment variable is not set! Falling back to default.');
     // IMPORTANT: Replace with your actual default calendar ID if needed
-    return 'primary'; // Or jarsunkaev@gmail.com if that's intended
+    return 'ahmedhasimov@zima-auto.com'; // Default calendar ID
   }
   // console.log(`Using Calendar ID: ${calendarId} for service ${service}`); // Log less frequently maybe
   return calendarId;

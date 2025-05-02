@@ -282,7 +282,7 @@ async function sendBookingConfirmationEmails(bookingData) {
         throw new Error("Email service not properly configured");
     }
     
-    const adminEmail = bookingData.adminEmail || process.env.ADMIN_EMAIL || 'info@zima-auto.com';
+    const adminEmail = bookingData.adminEmail || process.env.ADMIN_EMAIL || 'ahmedhasimov@zima-auto.com';
     
     // Get bilingual service details
     const serviceDetails = getFormattedBilingualServiceDetails(bookingData);
