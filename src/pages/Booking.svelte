@@ -113,7 +113,7 @@
         tireCount: formData.tireCount || null, // Number of tires for tire service
 
         // Always include admin email (ensure this is correct)
-        adminEmail: 'jarsunkaev@gmail.com'
+        adminEmail: 'info@zima-auto.com'
       };
 
       console.log('Booking.svelte sending data to backend API:', emailData);
