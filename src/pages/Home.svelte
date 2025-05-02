@@ -339,7 +339,7 @@
     background-position: center 20%;
     background-repeat: no-repeat;
     z-index: 0;
-    background-image: url('/images/airport-car.jpg');
+    background-image: url('/images/airport-car.webp');
     will-change: transform;
   }
 

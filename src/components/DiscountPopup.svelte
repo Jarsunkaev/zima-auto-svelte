@@ -91,15 +91,16 @@
         on:click={closePopup}
         aria-label={lang === 'hu' ? 'Bezárás' : 'Close'}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
 
       <div class="popup-text">
+        <div class="discount-badge">20%</div>
         <h2>
-          {lang === 'hu' ? '20% Kedvezmény Autómosásra!' : 'Get 20% Off Your Car Wash!'}
+          {lang === 'hu' ? 'Kedvezmény Autómosásra!' : 'Off Your Car Wash!'}
         </h2>
         <p>
           {lang === 'hu'
@@ -114,7 +115,7 @@
         </div>
 
         <button class="discount-btn" on:click={closePopup}>
-          {lang === 'hu' ? 'BEZÁRÁS' : 'CLOSE'}
+          {lang === 'hu' ? 'MEGÉRTETTEM' : 'GOT IT'}
         </button>
       </div>
     </div>
@@ -122,215 +123,196 @@
 {/if}
 
 <style>
-  /* Variables (assuming these are defined globally or imported) */
-  /*
-  :global(:root) {
-    --primary: rgba(0, 186, 229, 1);
-    --primary-dark: rgba(0, 150, 190, 1);
-    --secondary: #13151a;
-    --text: #333333;
-    --text-light: #666666;
-    --light: #f8f9fa;
-    --white: #ffffff;
-    --gray: #cccccc;
-    --dark-gray: #888888;
-    --transition: all 0.3s ease;
-    --font-family: 'Raleway', sans-serif;
-  }
-  */
-
   .popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7); /* Darker overlay */
+    background-color: rgba(0, 0, 0, 0.75);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1001;
-    padding: 1.5rem; /* Increased padding */
+    z-index: 9998; /* Lower than cookie consent */
+    padding: 1rem;
     animation: fadeIn 0.4s ease-out;
-    overflow-y: auto; /* Allow scrolling if content is too tall */
+    overflow-y: auto;
   }
 
   .popup-content {
     position: relative;
-    background-image: url('/images/car-wash.jpg'); /* Keep background image */
-    background-size: cover;
-    background-position: center;
-    border-radius: 16px; /* Rounded corners */
-    max-width: 600px; /* Max width */
-    width: 100%; /* Full width on smaller screens */
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(19, 21, 26, 0.98));
+    border-radius: 24px;
+    max-width: 600px;
+    width: 100%;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); /* Stronger shadow */
-    display: flex;
-    flex-direction: column; /* Stack content vertically */
-    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    color: white; /* Default text color for content */
-  }
-
-  /* Background overlay with frosted glass effect */
-  .popup-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(13, 13, 30, 0.85); /* More opaque overlay */
-    backdrop-filter: blur(12px); /* Slightly less blur */
-    -webkit-backdrop-filter: blur(12px);
-    z-index: 0;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .popup-text {
+    padding: 3rem 2rem;
+    text-align: center;
     position: relative;
     z-index: 2;
-    padding: 3rem; /* Consistent padding */
-    width: 100%;
-    text-align: center; /* Center align text */
+  }
+
+  .discount-badge {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--primary, #00bae5);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(0, 186, 229, 0.4);
   }
 
   h2 {
     color: white;
-    font-size: 2.5rem; /* Slightly larger title */
-    margin-bottom: 1rem; /* Reduced bottom margin */
-    font-weight: 800; /* Bolder font weight */
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4); /* Softer text shadow */
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
     line-height: 1.2;
   }
 
   p {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.85);
     font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 1.5rem; /* Reduced bottom margin */
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .offer-note {
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.6);
     font-style: italic;
-    margin-bottom: 2rem; /* Increased bottom margin */
-    color: rgba(255, 255, 255, 0.7); /* Slightly less prominent */
-    font-size: 0.95rem; /* Slightly larger font size */
   }
 
   .discount-btn {
-    background-color: var(--primary, rgba(0, 186, 229, 1)); /* Use primary color variable */
-    color: var(--secondary, #13151a); /* Use secondary color variable for text */
+    background-color: var(--primary, #00bae5);
+    color: white;
     border: none;
-    border-radius: 50px; /* Pill shape */
-    padding: 1rem 2.5rem; /* Increased padding */
-    font-size: 1.1rem; /* Slightly larger font size */
-    font-weight: 700; /* Bolder font weight */
+    border-radius: 50px;
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    width: auto; /* Auto width based on content */
-    display: inline-block; /* Allow padding to affect size */
     text-transform: uppercase;
     letter-spacing: 1px;
+    width: auto;
+    display: inline-block;
+    box-shadow: 0 0 20px rgba(0, 186, 229, 0.3);
   }
 
   .discount-btn:hover {
-    background-color: var(--primary-dark, rgba(0, 150, 190, 1)); /* Use primary dark color variable */
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    background-color: var(--primary-dark, #0088cc);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 186, 229, 0.4);
   }
 
   .close-button {
     position: absolute;
-    top: 1.2rem; /* Adjusted position */
-    right: 1.2rem; /* Adjusted position */
-    background: rgba(255, 255, 255, 0.15); /* Slightly more visible background */
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.1);
     border: none;
-    width: 40px; /* Larger button */
-    height: 40px; /* Larger button */
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
     z-index: 3;
     transition: all 0.3s ease;
-    backdrop-filter: blur(8px); /* Add blur to the button background */
-    -webkit-backdrop-filter: blur(8px);
   }
 
   .close-button:hover {
-    background: rgba(255, 255, 255, 0.3); /* More visible on hover */
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
     transform: rotate(90deg);
   }
 
-  /* Animations (kept as they are good) */
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
   }
 
-  @keyframes scaleIn {
+  @keyframes slideUp {
     from {
       opacity: 0;
-      transform: scale(0.95);
+      transform: translateY(30px);
     }
     to {
       opacity: 1;
-      transform: scale(1);
+      transform: translateY(0);
     }
   }
 
-  /* Responsive Adjustments */
+  /* Responsive adjustments */
   @media screen and (max-width: 768px) {
-    .popup-content {
-      width: 95%;
+    .popup-text {
+      padding: 2.5rem 1.5rem;
     }
 
-    .popup-text {
-      padding: 2rem 1.5rem; /* Adjusted padding */
+    .discount-badge {
+      font-size: 3.5rem;
     }
 
     h2 {
-      font-size: 2rem; /* Adjusted font size */
+      font-size: 1.8rem;
     }
 
     p {
-      font-size: 1rem; /* Adjusted font size */
+      font-size: 1rem;
     }
 
     .discount-btn {
-       padding: 0.9rem 2rem; /* Adjusted padding */
-       font-size: 1rem; /* Adjusted font size */
-    }
-
-    .close-button {
-      width: 36px;
-      height: 36px;
-      top: 1rem;
-      right: 1rem;
+      padding: 0.9rem 2rem;
+      font-size: 0.95rem;
     }
   }
 
   @media screen and (max-width: 480px) {
-    .popup-overlay {
-      padding: 1rem; /* Reduced padding */
+    .popup-content {
+      border-radius: 16px;
     }
+
+    .popup-text {
+      padding: 2rem 1rem;
+    }
+
+    .discount-badge {
+      font-size: 3rem;
+    }
+
     h2 {
-      font-size: 1.6rem; /* Adjusted font size */
+      font-size: 1.6rem;
     }
 
     p {
-      font-size: 0.95rem; /* Adjusted font size */
+      font-size: 0.95rem;
     }
 
     .offer-note {
-      font-size: 0.85rem; /* Adjusted font size */
+      font-size: 0.85rem;
     }
 
     .discount-btn {
-      padding: 0.8rem 1.5rem; /* Adjusted padding */
-      font-size: 0.9rem; /* Adjusted font size */
+      padding: 0.8rem 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .close-button {
+      width: 32px;
+      height: 32px;
     }
   }
 </style>

@@ -234,7 +234,7 @@ app.get('/api/available-slots', async (req, res) => {
 
     // Get busy slots from Google Calendar - checkTimeSlotAvailability now filters by service
     // Get busy slots from Google Calendar - checkTimeSlotAvailability now filters by service
-const busySlots = await checkTimeSlotAvailability(calendar, date, service, allSlots); // <--- Pass allSlots here
+    const busySlots = await checkTimeSlotAvailability(calendar, date, service, allSlots); // <--- Pass allSlots here
 
     // Log the timezone information if available (for debugging)
     if (tzOffset || tzName) {
