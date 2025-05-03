@@ -70,14 +70,14 @@ async function getGoogleCalendarClient() {
 }
 
 // Retrieve calendar ID from environment or fallback
+// Retrieve calendar ID from environment or fallback
 function getCalendarId(service) {
   const calendarId = process.env.GOOGLE_CALENDAR_ID;
   if (!calendarId) {
     console.error('GOOGLE_CALENDAR_ID environment variable is not set! Falling back to default.');
-    // IMPORTANT: Replace with your actual default calendar ID if needed
-    return 'ahmedhasimov@zima-auto.com'; // Default calendar ID
+    // UPDATED: Use your shared calendar ID
+    return 'c_8431682552f67d9917a67afd7165d7b14c964a381ced3cd4aa8c84ea9ea1e713@group.calendar.google.com';
   }
-  // console.log(`Using Calendar ID: ${calendarId} for service ${service}`); // Log less frequently maybe
   return calendarId;
 }
 

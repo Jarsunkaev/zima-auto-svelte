@@ -290,7 +290,7 @@ async function sendBookingConfirmationEmails(bookingData) {
     // 1. Send bilingual confirmation to customer
     try {
         await transporter.sendMail({
-            from: `"Zima Auto" <${process.env.SMTP_USER}>`,
+            from: `"Zima Auto" <info@zima-auto.com>`,
             to: bookingData.customerEmail,
             subject: `Zima Auto - Foglalás Visszaigazolása / Booking Confirmation`,
             html: `
@@ -348,8 +348,8 @@ async function sendBookingConfirmationEmails(bookingData) {
     // 2. Send bilingual notification to admin
     try {
         await transporter.sendMail({
-            from: `"Zima Auto Booking System" <${process.env.SMTP_USER}>`,
-            to: adminEmail,
+            from: `"Zima Auto Booking System" <info@zima-auto.com>`,
+            to: 'ahmedhasimov@zima-auto.com',
             subject: `Új Foglalás / New Booking: ${formatServiceName(bookingData.service, 'hu')} / ${formatServiceName(bookingData.service, 'en')}`,
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #f9f9f9;">
@@ -399,7 +399,7 @@ async function sendBookingConfirmationEmails(bookingData) {
             `
         });
         
-        console.log(`Bilingual notification email sent to admin: ${adminEmail}`);
+        console.log(`Bilingual notification email sent to admin: ahmedhasimov@zima-auto.com`);
     } catch (error) {
         console.error("Error sending admin notification email:", error);
         // Continue even if admin email fails, as customer already got confirmation
@@ -427,7 +427,7 @@ async function sendContactEmails(contactData) {
     // 1. Send confirmation to the customer
     try {
         await transporter.sendMail({
-            from: `"Zima Auto" <${process.env.SMTP_USER}>`,
+            from: `"Zima Auto" <info@zima-auto.com>`,
             to: contactData.customerEmail,
             subject: `Zima Auto - Üzenet Visszaigazolása / Message Confirmation`,
             html: `
@@ -487,8 +487,8 @@ async function sendContactEmails(contactData) {
     // 2. Send notification to admin
     try {
         await transporter.sendMail({
-            from: `"Zima Auto Contact Form" <${process.env.SMTP_USER}>`,
-            to: adminEmail,
+            from: `"Zima Auto Contact Form" <info@zima-auto.com>`,
+            to: 'ahmedhasimov@zima-auto.com',
             subject: `Új Kapcsolati Üzenet / New Contact Message: ${contactData.subject}`,
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #f9f9f9;">
@@ -544,7 +544,7 @@ async function sendContactEmails(contactData) {
             `
         });
         
-        console.log(`Notification email sent to admin: ${adminEmail}`);
+        console.log(`Notification email sent to admin: ahmedhasimov@zima-auto.com`);
     } catch (error) {
         console.error("Error sending admin notification email:", error);
         throw error; // Throw error for contact form as it's critical both emails are delivered
