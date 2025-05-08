@@ -1,23 +1,31 @@
 <script>
-  import { Router, Route, navigate } from 'svelte-routing';
-  import { onMount } from 'svelte';
-  import { currentLang } from './lib/i18n';
-  import Header from './components/Header.svelte';
-  import Footer from './components/Footer.svelte';
-  import Home from './pages/Home.svelte';
-  import About from './pages/About.svelte';
-  import Services from './pages/Services.svelte';
-  import Contact from './pages/Contact.svelte';
-  import Booking from './pages/Booking.svelte';
-  import Privacy from './pages/Privacy.svelte';
-  import DiscountPopup from './components/DiscountPopup.svelte';
-  import CookieConsent from './components/CookieConsent.svelte';
-
-  export let url = '';
-  let lang = 'hu';
-
-  currentLang.subscribe(value => {
-    lang = value;
+	import { onMount } from 'svelte';
+	import { currentLang } from './lib/i18n';
+	import Header from './components/Header.svelte';
+	import Footer from './components/Footer.svelte';
+	import Home from './pages/Home.svelte';
+	import About from './pages/About.svelte';
+	import Services from './pages/Services.svelte';
+	import Contact from './pages/Contact.svelte';
+	import Booking from './pages/Booking.svelte';
+	import Privacy from './pages/Privacy.svelte';
+	import DiscountPopup from './components/DiscountPopup.svelte';
+	import CookieConsent from './components/CookieConsent.svelte';
+  
+	// Page routing
+	let currentPage = 'home';
+	let pageLoading = true;
+	let pageTransition = false;
+	let lang = 'hu'; // Local state for current language
+	
+	// Subscribe to language changes
+	currentLang.subscribe(value => {
+		lang = value;
+	});
+	
+	function navigate(page) {
+	  if (page === currentPage) return;
+	  
 	  pageTransition = true;
 	  
 	  // After a brief transition delay, update the page
@@ -43,7 +51,7 @@ onMount(() => {
   // ALWAYS default to Hungarian language regardless of browser settings
   currentLang.set('hu');
   localStorage.setItem('zimaAutoLang', 'hu');
-})
+  
   // Handle initial page load with both hash and path support
   const handleInitialRoute = () => {
     const hash = window.location.hash.slice(1);
@@ -118,20 +126,24 @@ onMount(() => {
 
   <Header {navigate} {currentPage} {lang} />
 
-  <Router {url}>
-	<Router {url}>
-	<Router {url}>
-	<main class="app-container" class:hu={lang === 'hu'} class:en={lang === 'en'}>
-		<Route path="/" component={Home} />
-		<Route path="/about" component={About} />
-		<Route path="/services" component={Services} />
-		<Route path="/contact" component={Contact} />
-		<Route path="/booking" component={Booking} />
-		<Route path="/privacy" component={Privacy} />
-	</main>
-</Router>
-</Router>
-</Router>
+  <main>
+    {#if currentPage === 'home'}
+      <Home {navigate} {lang} />
+    {:else if currentPage === 'about'}
+      <About {lang} />
+    {:else if currentPage === 'services'}
+      <Services {lang} />
+    {:else if currentPage === 'contact'}
+      <Contact {lang} />
+    {:else if currentPage === 'booking'}
+      <Booking {lang} />
+    {:else if currentPage === 'privacy'}
+      <Privacy {lang} />
+    {:else}
+      <!-- Fallback if no page matches -->
+      <div class="error-container">
+        <h1>Page not found</h1>
+        <button on:click={() => navigate('home')}>Go to Home</button>
       </div>
     {/if}
   </main>
