@@ -1,5 +1,4 @@
-
-
+<!-- src/components/Header.svelte -->
 <script>
   import { currentLang, t } from '../lib/i18n';
   import { onMount } from 'svelte';
@@ -113,7 +112,7 @@
     <div class="right-section">
       <div class="language-toggle">
         <button
-          class="language-button {currentLang === 'hu' ? 'active' : ''}"
+          class="language-button {$currentLang === 'hu' ? 'active' : ''}"
           on:click={() => toggleLanguage('hu')}
           aria-label="Magyar nyelv"
         >
@@ -121,7 +120,7 @@
           <span>HU</span>
         </button>
         <button
-          class="language-button {currentLang === 'en' ? 'active' : ''}"
+          class="language-button {$currentLang === 'en' ? 'active' : ''}"
           on:click={() => toggleLanguage('en')}
           aria-label="English language"
         >
@@ -146,6 +145,7 @@
 </header>
 
 <style>
+  /* Styles remain the same as in the original component */
   :global(:root) {
     --primary: rgba(0, 186, 229, 1);
     --primary-dark: rgba(0, 150, 190, 1);

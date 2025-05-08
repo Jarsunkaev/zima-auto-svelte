@@ -1,5 +1,4 @@
-
-
+<!-- src/components/Footer.svelte -->
 <script>
   import { currentLang, t } from '../lib/i18n';
   import { onMount } from 'svelte';
@@ -8,8 +7,6 @@
 
   let lang;
   let showBackToTop = false;
-  // showDirectionsPopup and related functions are removed
-  // as we are now directly linking to Google Maps
 
   // Subscribe to language changes
   currentLang.subscribe(value => {
@@ -130,7 +127,7 @@
   <div class="footer-bottom">
     <div class="container">
       <p>{t('footer.copyright', $currentLang)}</p>
-      <a href="/#privacy" class="privacy-link">
+      <a href="#privacy" on:click|preventDefault={() => navigate('privacy')} class="privacy-link">
         {$currentLang === 'hu' ? 'Adatvédelmi irányelvek' : 'Privacy Policy'}
       </a>
     </div>
@@ -438,6 +435,4 @@
   .contact-link:hover {
     color: var(--primary);
   }
-
-  /* Removed styles for directions-popup and navigation-buttons */
 </style>

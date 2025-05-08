@@ -1,3 +1,4 @@
+// src/App.svelte
 <script>
 	import { onMount } from 'svelte';
 	import { currentLang } from './lib/i18n';
@@ -43,71 +44,64 @@
 	  }, 300);
 	}
 	
-	// Check for URL hash and navigate accordingly  
-onMount(() => {
-  // Show initial page immediately instead of delay
-  pageLoading = false;
-  
-  // ALWAYS default to Hungarian language regardless of browser settings
-  currentLang.set('hu');
-  localStorage.setItem('zimaAutoLang', 'hu');
-  
-  // Handle initial page load with both hash and path support
-  const handleInitialRoute = () => {
-    const hash = window.location.hash.slice(1);
-    const path = window.location.pathname;
+  // Handle initial page load and redirects
+  onMount(() => {
+    // Show initial page immediately instead of delay
+    pageLoading = false;
     
-    // Map path to pages
-    const pathToPage = {
-      '/': 'home',
-      '/booking': 'booking',
-      '/about': 'about',
-      '/services': 'services',
-      '/contact': 'contact',
-      '/privacy': 'privacy'
+    // ALWAYS default to Hungarian language regardless of browser settings
+    currentLang.set('hu');
+    localStorage.setItem('zimaAutoLang', 'hu');
+    
+    // Handle redirects and route determination
+    const handleRouting = () => {
+      // First check if we have a path that needs to be converted to a hash
+      const path = window.location.pathname;
+      
+      // Check if we have a path that needs to be converted to a hash (excluding root path)
+      if (path !== '/' && path !== '') {
+        // Extract the page name from the path (remove leading slash)
+        const pageName = path.substring(1).split('/')[0];
+        
+        // Check if this is a valid page
+        if (['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(pageName)) {
+          // Redirect to the hash-based URL - we came from a server redirect
+          window.location.replace(`/#${pageName}`);
+          return; // Exit early as we're doing a client-side redirect
+        }
+      }
+      
+      // Normal hash-based routing
+      let targetPage = 'home';
+      const hash = window.location.hash.slice(1);
+      
+      if (hash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(hash)) {
+        targetPage = hash;
+      }
+      
+      currentPage = targetPage;
+      console.log("Current page:", currentPage);
     };
     
-    let targetPage = 'home';
+    // Run the routing logic
+    handleRouting();
     
-    // Check if we have a hash
-    if (hash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(hash)) {
-      targetPage = hash;
-    } 
-    // Check if we have a path that should be converted to hash
-    else if (pathToPage[path]) {
-      targetPage = pathToPage[path];
-      // Update URL to use hash for consistency
-      window.history.replaceState(null, null, `#${targetPage}`);
-    }
+    // Listen for hash changes
+    window.addEventListener('hashchange', () => {
+      const newHash = window.location.hash.slice(1);
+      if (newHash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(newHash)) {
+        currentPage = newHash;
+      } else if (!newHash) {
+        currentPage = 'home';
+      }
+    });
     
-    currentPage = targetPage;
-    console.log("Initial page:", currentPage);
-  };
-  
-  handleInitialRoute();
-  
-  // Listen for hash changes
-  window.addEventListener('hashchange', () => {
-    const newHash = window.location.hash.slice(1);
-    if (newHash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(newHash) && newHash !== currentPage) {
-      navigate(newHash);
-    }
+    // Clean up event listeners
+    return () => {
+      window.removeEventListener('hashchange', () => {});
+    };
   });
-  
-  // Listen for popstate (back/forward browser buttons)
-  window.addEventListener('popstate', () => {
-    const hash = window.location.hash.slice(1);
-    if (hash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(hash)) {
-      currentPage = hash;
-    }
-  });
-  
-  // Clean up event listeners
-  return () => {
-    window.removeEventListener('hashchange', () => {});
-    window.removeEventListener('popstate', () => {});
-  };
-});
+
 	// Save language preference when it changes
 	currentLang.subscribe(value => {
 	  if (typeof localStorage !== 'undefined' && value) {
@@ -154,6 +148,7 @@ onMount(() => {
 </div>
 
 <style>
+  /* Existing styles remain the same */
   @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap');
   
   :global(:root) {
