@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
+const proxy = require('express-http-proxy');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -43,16 +44,82 @@ const redirects = {
   '/contact-us': '/contact'
 };
 
-// Update your redirect routes to use the custom domain
+// Update your redirect routes to correctly preserve hash fragments
 Object.keys(redirects).forEach(oldPath => {
   app.get(oldPath, (req, res) => {
-    // Construct the full URL with your custom domain
-    const customDomain = process.env.CUSTOM_DOMAIN || 'https://zima-auto.com';
+    // Get the new path from the redirects object
     const newPath = redirects[oldPath];
-    const redirectUrl = `${customDomain}${newPath}`;
+    const customDomain = process.env.CUSTOM_DOMAIN || 'https://zima-auto.com';
+    const originalHash = req.headers['x-original-hash'] || req.query.hash || '';
     
-    console.log(`301 Redirect: ${oldPath} -> ${redirectUrl}`);
-    res.status(301).redirect(redirectUrl);
+    console.log(`Setting up redirect: ${oldPath} -> ${newPath} (preserving hash: ${originalHash})`);
+    
+    // Send a small HTML page with JavaScript that preserves hash fragments
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Redirecting to Zima Auto...</title>
+        <script>
+          // Redirect to the new URL, preserving the hash
+          (function() {
+            var redirectUrl = '${customDomain}${newPath}';
+            var originalHash = '${originalHash}';
+            
+            if (originalHash) {
+              redirectUrl += (originalHash.startsWith('#') ? originalHash : '#' + originalHash);
+            }
+            
+            window.location.href = redirectUrl;
+            console.log('Redirecting to: ' + redirectUrl);
+          })();
+        </script>
+        <noscript>
+          <meta http-equiv="refresh" content="0;url=${customDomain}${newPath}">
+        </noscript>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: #f8f9fa;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+          }
+          .logo {
+            max-width: 150px;
+            margin-bottom: 20px;
+          }
+          .redirect-message {
+            margin: 20px 0;
+            color: #666;
+          }
+          .redirect-link {
+            color: #00bae5;
+            text-decoration: none;
+          }
+          .redirect-link:hover {
+            text-decoration: underline;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <img src="${customDomain}/images/zima-logo.avif" alt="Zima Auto" class="logo">
+          <h1>Átirányítás / Redirecting...</h1>
+          <p class="redirect-message">Átirányítás a <a href="${customDomain}${newPath}" class="redirect-link">${customDomain}${newPath}</a> oldalra...</p>
+          <p class="redirect-message">Redirecting to <a href="${customDomain}${newPath}" class="redirect-link">${customDomain}${newPath}</a>...</p>
+        </div>
+      </body>
+      </html>
+    `);
   });
 });
 
@@ -202,6 +269,66 @@ function parseAirportParkingDateRange(dateRangeStr) {
 
 // --- Routes ---
 
+// Health check endpoint for fly.io
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+// Test email endpoint
+app.get('/api/test-email', async (req, res) => {
+  const testEmail = req.query.email;
+  
+  if (!testEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(testEmail)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Valid email address is required as a query parameter'
+    });
+  }
+  
+  try {
+    console.log(`Attempting to send test email to: ${testEmail}`);
+    console.log(`SMTP Settings - Host: ${process.env.SMTP_HOST}, Port: ${process.env.SMTP_PORT}, Secure: ${process.env.SMTP_SECURE}`);
+    
+    await transporter.sendMail({
+      from: {
+        name: 'Zima Auto Test',
+        address: 'info@zima-auto.com'
+      },
+      to: testEmail,
+      subject: 'Zima Auto - Email System Test',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee;">
+          <h2 style="color: #00bae5;">Email System Test</h2>
+          <p>This is a test email from the Zima Auto system.</p>
+          <p>If you're receiving this, the email system is working correctly.</p>
+          <p>Test sent at: ${new Date().toISOString()}</p>
+        </div>
+      `
+    });
+    
+    console.log(`Test email sent successfully to ${testEmail}`);
+    
+    res.status(200).json({
+      success: true,
+      message: `Test email sent to ${testEmail}`
+    });
+  } catch (error) {
+    console.error('Test email failed:', error);
+    
+    res.status(500).json({
+      success: false,
+      message: 'Failed to send test email',
+      error: error.message,
+      errorInfo: {
+        code: error.code,
+        command: error.command,
+        responseCode: error.responseCode,
+        response: error.response
+      }
+    });
+  }
+});
+
 // API Endpoint to fetch available time slots
 app.get('/api/available-slots', async (req, res) => {
   try {
@@ -239,8 +366,7 @@ app.get('/api/available-slots', async (req, res) => {
     const allSlots = generateTimeSlots(service);
 
     // Get busy slots from Google Calendar - checkTimeSlotAvailability now filters by service
-    // Get busy slots from Google Calendar - checkTimeSlotAvailability now filters by service
-    const busySlots = await checkTimeSlotAvailability(calendar, date, service, allSlots); // <--- Pass allSlots here
+    const busySlots = await checkTimeSlotAvailability(calendar, date, service, allSlots);
 
     // Log the timezone information if available (for debugging)
     if (tzOffset || tzName) {
@@ -343,8 +469,29 @@ app.post('/api/send-booking-emails', async (req, res) => {
       console.log('===========================');
     }
 
+    // Extract customer email with enhanced logging
+    let customerEmail = null;
+    if (bookingData.customerEmail) {
+      customerEmail = bookingData.customerEmail;
+    } else if (bookingData.contact && bookingData.contact.email) {
+      customerEmail = bookingData.contact.email;
+    } else if (typeof bookingData.email === 'string') {
+      customerEmail = bookingData.email;
+    }
+    
+    // Extended logging for email extraction
+    console.log('==== EMAIL EXTRACTION DEBUG ====');
+    console.log('Final extracted customer email:', customerEmail);
+    console.log('Original data structure:', JSON.stringify({
+        directEmail: bookingData.customerEmail,
+        contactObject: bookingData.contact,
+        contactEmail: bookingData.contact && bookingData.contact.email,
+        emailField: bookingData.email
+    }, null, 2));
+    console.log('===============================');
+
     // Validate required fields
-    if (!bookingData || !bookingData.customerName || !bookingData.customerEmail || !bookingData.service) {
+    if (!bookingData || !bookingData.customerName && !bookingData.name || !customerEmail || !bookingData.service) {
       console.error('Received invalid booking data: Missing core fields', bookingData);
       return res.status(400).json({
         success: false,
@@ -472,12 +619,41 @@ app.post('/api/send-booking-emails', async (req, res) => {
       console.error('Calendar Error Details:', calendarError);
     }
 
+    // Ensure email field is set in the booking data for email sending
+    if (customerEmail && !bookingData.customerEmail) {
+      bookingData.customerEmail = customerEmail;
+    }
+    
+    // Log email settings before sending
+    console.log(`
+    ====== EMAIL CONFIGURATION ======
+    SMTP_HOST: ${process.env.SMTP_HOST}
+    SMTP_PORT: ${process.env.SMTP_PORT}
+    SMTP_SECURE: ${process.env.SMTP_SECURE}
+    Using Authentication Email: ahmedhasimov@zima-auto.com
+    Sending To Customer: ${customerEmail}
+    Sending To Admin: info@zima-auto.com
+    ==============================
+    `);
+
     // Send Emails (this happens regardless of calendar success/failure in this setup)
     try {
         await sendBookingConfirmationEmails(bookingData);
         console.log('Booking confirmation emails sent successfully.');
     } catch (emailError) {
         console.error('Error sending booking confirmation emails:', emailError);
+        console.error('Email Error Details:', {
+          code: emailError.code,
+          command: emailError.command,
+          responseCode: emailError.responseCode,
+          response: emailError.response,
+          stack: emailError.stack
+        });
+        
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to send booking confirmation emails: ' + emailError.message
+        });
     }
 
     // Respond to Frontend
@@ -497,18 +673,40 @@ app.post('/api/send-booking-emails', async (req, res) => {
   }
 });
 
-// --- Serve your frontend build if you want to include it with the backend ---
-// Uncomment these lines if you want to serve your frontend from the same server
-/* 
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+// --- Serve your frontend through proxy ---
+// Proxy requests to your frontend application
+app.use('/', proxy('https://zima-auto-frontend.fly.dev', {
+  proxyReqPathResolver: function (req) {
+    // Keep the original URL path when proxying
+    return req.url;
+  },
+  userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
+    // Log proxied requests for debugging
+    console.log(`Proxying request: ${userReq.method} ${userReq.url} -> frontend`);
+    return proxyResData;
+  }
+}));
 
-// Catch-all for SPA routing - must be LAST
+// Catch-all route for client-side routing
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+  console.log(`Handling route: ${req.url}`);
+  
+  // Redirect legacy paths if needed
+  const redirects = {
+    '/old-path': '/new-path'
+  };
+
+  if (redirects[req.url]) {
+    return res.redirect(redirects[req.url]);
+  }
+
+  // Send index.html for client-side routing
+  res.sendFile(path.join(__dirname, '../zima-auto-frontend/dist/index.html'));
 });
-*/
 
 // --- Start Server ---
 app.listen(port, () => {
   console.log(`Zima Auto Email Backend running on http://localhost:${port}`);
+  console.log(`Proxy configured for frontend at https://zima-auto-frontend.fly.dev`);
+  console.log(`Email configuration: SMTP_HOST=${process.env.SMTP_HOST}, SMTP_PORT=${process.env.SMTP_PORT}, SMTP_SECURE=${process.env.SMTP_SECURE}`);
 });

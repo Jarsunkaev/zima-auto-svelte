@@ -1,20 +1,43 @@
 // zima-auto-backend/utils/email.js
 const nodemailer = require('nodemailer');
 
-// Set up transporter
+// Set up transporter with enhanced debugging
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT),
     secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
     auth: {
-        user: 'ahmedhasimov@zima-auto.com', // Authentication email - UPDATED
+        user: 'ahmedhasimov@zima-auto.com', // Authentication email
         pass: process.env.SMTP_PASS,
     },
+    // Enable debugging
+    debug: true,
+    logger: true,
     // Optional TLS options if needed
     tls: {
         rejectUnauthorized: false
     }
 });
+
+// Enhanced email extraction function
+function extractEmail(bookingData) {
+    const possibleEmailSources = [
+        bookingData.customerEmail,
+        bookingData.contact?.email,
+        bookingData.email,
+        bookingData.contact && bookingData.contact.email
+    ];
+    
+    // Find the first valid email
+    for (const emailSource of possibleEmailSources) {
+        if (typeof emailSource === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailSource.trim())) {
+            return emailSource.trim().toLowerCase();
+        }
+    }
+    
+    console.error('No valid email found in:', JSON.stringify(bookingData, null, 2));
+    return null;
+}
 
 // Format service name for display based on language
 function formatServiceName(serviceId, language = 'en') {
@@ -274,6 +297,11 @@ function getFormattedBilingualServiceDetails(bookingData) {
     };
 }
 
+// Simple validation function to check email format
+function isValidEmail(email) {
+    return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
 // Send emails to both customer and admin
 async function sendBookingConfirmationEmails(bookingData) {
     // Make sure SMTP is configured
@@ -282,19 +310,56 @@ async function sendBookingConfirmationEmails(bookingData) {
         throw new Error("Email service not properly configured");
     }
 
+    // Extract customer email with enhanced function
+    const customerEmail = extractEmail(bookingData);
+    
+    // Log the email extraction for debugging
+    console.log('==== EMAIL EXTRACTION DEBUG ====');
+    console.log('Extracted customer email:', customerEmail);
+    console.log('Original email fields:', {
+        directEmail: bookingData.customerEmail,
+        contactObject: JSON.stringify(bookingData.contact),
+        contactEmail: bookingData.contact && bookingData.contact.email,
+        emailField: bookingData.email
+    });
+    console.log('===============================');
+    
+    if (!customerEmail) {
+        console.error('No customer email found in booking data:', JSON.stringify(bookingData, null, 2));
+        throw new Error('Customer email is required to send confirmation');
+    }
+    
+    // Validate email format
+    if (!isValidEmail(customerEmail)) {
+        console.error('Invalid email format:', customerEmail);
+        throw new Error('Invalid email address format');
+    }
+
     const adminEmail = 'info@zima-auto.com'; // Admin email is info@zima-auto.com
 
     // Get bilingual service details
     const serviceDetails = getFormattedBilingualServiceDetails(bookingData);
 
+    // Log the email attempt before sending
+    console.log(`
+    ====== EMAIL SENDING ATTEMPT ======
+    To: ${customerEmail}
+    From: info@zima-auto.com
+    Subject: Zima Auto - Foglalás Visszaigazolása / Booking Confirmation
+    Process env SMTP_HOST: ${process.env.SMTP_HOST}
+    Process env SMTP_PORT: ${process.env.SMTP_PORT}
+    Process env SMTP_SECURE: ${process.env.SMTP_SECURE}
+    ==============================
+    `);
+
     // 1. Send bilingual confirmation to customer
     try {
-        await transporter.sendMail({
+        const customerMailResult = await transporter.sendMail({
             from: {
                 name: 'Zima Auto',
                 address: 'info@zima-auto.com' // Customer sees info@zima-auto.com as sender
             },
-            to: bookingData.customerEmail,
+            to: customerEmail, // Use the extracted email
             subject: `Zima Auto - Foglalás Visszaigazolása / Booking Confirmation`,
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #f9f9f9;">
@@ -303,7 +368,7 @@ async function sendBookingConfirmationEmails(bookingData) {
                             <h2 style="color: #00bae5;">Foglalás Visszaigazolása</h2>
                         </div>
 
-                        <p style="margin-bottom: 15px;">Tisztelt ${bookingData.customerName},</p>
+                        <p style="margin-bottom: 15px;">Tisztelt ${bookingData.customerName || bookingData.name},</p>
 
                         <p style="margin-bottom: 15px;">Köszönjük a foglalását a Zima Auto-nál. A foglalás a következő adatokkal lett visszaigazolva:</p>
 
@@ -323,7 +388,7 @@ async function sendBookingConfirmationEmails(bookingData) {
                             <h2 style="color: #00bae5;">Booking Confirmation</h2>
                         </div>
 
-                        <p style="margin-bottom: 15px;">Dear ${bookingData.customerName},</p>
+                        <p style="margin-bottom: 15px;">Dear ${bookingData.customerName || bookingData.name},</p>
 
                         <p style="margin-bottom: 15px;">Thank you for booking with Zima Auto. Your reservation has been confirmed with the following details:</p>
 
@@ -339,9 +404,17 @@ async function sendBookingConfirmationEmails(bookingData) {
             `
         });
 
-        console.log(`Bilingual confirmation email sent to customer: ${bookingData.customerEmail}`);
+        console.log(`Bilingual confirmation email sent to customer: ${customerEmail}`);
+        console.log('Email result details:', JSON.stringify(customerMailResult, null, 2));
     } catch (error) {
         console.error("Error sending customer confirmation email:", error);
+        console.error("Error details:", {
+            code: error.code,
+            message: error.message,
+            command: error.command,
+            responseCode: error.responseCode,
+            response: error.response
+        });
         throw error;
     }
 
@@ -353,6 +426,7 @@ async function sendBookingConfirmationEmails(bookingData) {
                 address: 'info@zima-auto.com' // Admin also sees info@zima-auto.com as sender
             },
             to: adminEmail, // Sending to info@zima-auto.com
+            replyTo: customerEmail, // Set reply-to to the customer's email
             subject: `Új Foglalás / New Booking: ${formatServiceName(bookingData.service, 'hu')} / ${formatServiceName(bookingData.service, 'en')}`,
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #f9f9f9;">
@@ -363,9 +437,9 @@ async function sendBookingConfirmationEmails(bookingData) {
 
                         <p style="margin-bottom: 15px;"><strong>Ügyfél adatai:</strong></p>
                         <ul style="margin-bottom: 20px;">
-                            <li><strong>Név:</strong> ${bookingData.customerName}</li>
-                            <li><strong>Email:</strong> ${bookingData.customerEmail}</li>
-                            <li><strong>Telefon:</strong> ${bookingData.customerPhone || 'Nincs megadva'}</li>
+                            <li><strong>Név:</strong> ${bookingData.customerName || bookingData.name}</li>
+                            <li><strong>Email:</strong> ${customerEmail}</li>
+                            <li><strong>Telefon:</strong> ${bookingData.customerPhone || (bookingData.contact && bookingData.contact.phone) || 'Nincs megadva'}</li>
                         </ul>
 
                         <p style="margin-bottom: 15px;"><strong>Foglalás részletei:</strong></p>
@@ -383,9 +457,9 @@ async function sendBookingConfirmationEmails(bookingData) {
 
                         <p style="margin-bottom: 15px;"><strong>Customer Details:</strong></p>
                         <ul style="margin-bottom: 20px;">
-                            <li><strong>Name:</strong> ${bookingData.customerName}</li>
-                            <li><strong>Email:</strong> ${bookingData.customerEmail}</li>
-                            <li><strong>Phone:</strong> ${bookingData.customerPhone || 'Not provided'}</li>
+                            <li><strong>Name:</strong> ${bookingData.customerName || bookingData.name}</li>
+                            <li><strong>Email:</strong> ${customerEmail}</li>
+                            <li><strong>Phone:</strong> ${bookingData.customerPhone || (bookingData.contact && bookingData.contact.phone) || 'Not provided'}</li>
                         </ul>
 
                         <p style="margin-bottom: 15px;"><strong>Booking Details:</strong></p>
@@ -402,6 +476,13 @@ async function sendBookingConfirmationEmails(bookingData) {
         console.log(`Bilingual notification email sent to admin: info@zima-auto.com`); // Log the correct admin email
     } catch (error) {
         console.error("Error sending admin notification email:", error);
+        console.error("Admin email error details:", {
+            code: error.code,
+            message: error.message,
+            command: error.command,
+            responseCode: error.responseCode,
+            response: error.response
+        });
         // Continue even if admin email fails, as customer already got confirmation
     }
 }
@@ -416,9 +497,21 @@ async function sendContactEmails(contactData) {
 
     const adminEmail = 'info@zima-auto.com'; // Admin email is info@zima-auto.com
 
+    // Log the email attempt before sending
+    console.log(`
+    ====== CONTACT EMAIL SENDING ATTEMPT ======
+    To: ${contactData.customerEmail}
+    From: info@zima-auto.com
+    Subject: Zima Auto - Üzenet Visszaigazolása / Message Confirmation
+    Process env SMTP_HOST: ${process.env.SMTP_HOST}
+    Process env SMTP_PORT: ${process.env.SMTP_PORT}
+    Process env SMTP_SECURE: ${process.env.SMTP_SECURE}
+    ==============================
+    `);
+
     // 1. Send confirmation to the customer
     try {
-        await transporter.sendMail({
+        const customerMailResult = await transporter.sendMail({
             from: {
                 name: 'Zima Auto',
                 address: 'info@zima-auto.com' // Customer sees info@zima-auto.com as sender
@@ -471,8 +564,16 @@ async function sendContactEmails(contactData) {
         });
 
         console.log(`Confirmation email sent to customer: ${contactData.customerEmail}`);
+        console.log('Contact email result details:', JSON.stringify(customerMailResult, null, 2));
     } catch (error) {
         console.error("Error sending customer confirmation email:", error);
+        console.error("Contact form email error details:", {
+            code: error.code,
+            message: error.message,
+            command: error.command,
+            responseCode: error.responseCode,
+            response: error.response
+        });
         throw error;
     }
 
@@ -484,6 +585,7 @@ async function sendContactEmails(contactData) {
                 address: 'info@zima-auto.com' // Admin also sees info@zima-auto.com as sender
             },
             to: adminEmail, // Sending to info@zima-auto.com
+            replyTo: contactData.customerEmail, // Set reply-to to the customer's email
             subject: `Új Kapcsolati Üzenet / New Contact Message: ${contactData.subject}`,
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px; background-color: #f9f9f9;">
@@ -539,12 +641,56 @@ async function sendContactEmails(contactData) {
         console.log(`Notification email sent to admin: info@zima-auto.com`); // Log the correct admin email
     } catch (error) {
         console.error("Error sending admin notification email:", error);
+        console.error("Contact admin email error details:", {
+            code: error.code,
+            message: error.message,
+            command: error.command,
+            responseCode: error.responseCode,
+            response: error.response
+        });
         throw error; // Throw error for contact form as it's critical both emails are delivered
     }
+}
+
+// SMTP test function
+async function testEmailConfig(testEmail) {
+  try {
+    console.log(`Testing SMTP configuration by sending email to ${testEmail}`);
+    console.log(`Using SMTP settings - Host: ${process.env.SMTP_HOST}, Port: ${process.env.SMTP_PORT}, Secure: ${process.env.SMTP_SECURE === 'true'}`);
+    
+    const result = await transporter.sendMail({
+      from: {
+        name: 'Zima Auto Test',
+        address: 'info@zima-auto.com'
+      },
+      to: testEmail,
+      subject: 'SMTP Test',
+      text: 'This is a test email to verify SMTP configuration',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee;">
+          <h2 style="color: #00bae5;">SMTP Test Email</h2>
+          <p>This is a test email to verify your SMTP configuration.</p>
+          <p>If you're receiving this, your email system is working correctly!</p>
+          <p>Test sent at: ${new Date().toISOString()}</p>
+        </div>
+      `
+    });
+    
+    console.log('Test email sent successfully', result);
+    return { success: true, result };
+  } catch (error) {
+    console.error('SMTP Test failed:', error);
+    console.error('Error details:', error.message);
+    if (error.response) {
+      console.error('SMTP Response:', error.response);
+    }
+    return { success: false, error };
+  }
 }
 
 // Export the functions
 module.exports = {
     sendBookingConfirmationEmails,
-    sendContactEmails
+    sendContactEmails,
+    testEmailConfig
 };

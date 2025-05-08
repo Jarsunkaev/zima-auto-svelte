@@ -14,6 +14,7 @@
     "date-fns-tz": "^3.2.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-http-proxy": "^2.1.1",
     "googleapis": "^126.0.1",
     "moment-timezone": "^0.5.48",
     "nodemailer": "^6.9.5"
