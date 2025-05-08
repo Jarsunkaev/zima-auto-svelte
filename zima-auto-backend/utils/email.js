@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
     port: parseInt(process.env.SMTP_PORT),
     secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
     auth: {
-        user: 'ahmedhasimov@zima-auto.com', // Authentication email
+        user: process.env.SMTP_USER || 'ahmedhasimov@zima-auto.com', // Use env var if available, fall back to hardcoded
         pass: process.env.SMTP_PASS,
     },
     // Enable debugging
@@ -18,6 +18,16 @@ const transporter = nodemailer.createTransport({
         rejectUnauthorized: false
     }
 });
+
+// IMPORTANT: Verify the transporter connection on startup 
+// This will give early warning if email setup is wrong
+try {
+    transporter.verify()
+        .then(() => console.log('✅ Email transporter verified and ready to send emails'))
+        .catch(err => console.error('❌ Email transporter verification failed:', err));
+} catch (error) {
+    console.error('❌ Error verifying email transporter:', error);
+}
 
 // Enhanced email extraction function
 function extractEmail(bookingData) {
@@ -302,11 +312,33 @@ function isValidEmail(email) {
     return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// Get recipients for admin email (including cc list)
+function getAdminRecipients(bookingData) {
+    // Primary admin email is always info@zima-auto.com
+    const primaryAdmin = 'info@zima-auto.com';
+    
+    // Initialize cc array
+    const ccRecipients = [];
+    
+    // Add adminEmail from booking data if it exists and is different from the primary
+    if (bookingData.adminEmail && 
+        bookingData.adminEmail !== primaryAdmin && 
+        isValidEmail(bookingData.adminEmail)) {
+        ccRecipients.push(bookingData.adminEmail);
+    }
+    
+    // Return both primary and cc recipients
+    return {
+        to: primaryAdmin,
+        cc: ccRecipients.length > 0 ? ccRecipients : undefined
+    };
+}
+
 // Send emails to both customer and admin
 async function sendBookingConfirmationEmails(bookingData) {
     // Make sure SMTP is configured
     if (!process.env.SMTP_PASS) {
-        console.error("Email service not configured: Missing SMTP credentials");
+        console.error("❌ Email service not configured: Missing SMTP credentials");
         throw new Error("Email service not properly configured");
     }
 
@@ -325,17 +357,18 @@ async function sendBookingConfirmationEmails(bookingData) {
     console.log('===============================');
     
     if (!customerEmail) {
-        console.error('No customer email found in booking data:', JSON.stringify(bookingData, null, 2));
+        console.error('❌ No customer email found in booking data:', JSON.stringify(bookingData, null, 2));
         throw new Error('Customer email is required to send confirmation');
     }
     
     // Validate email format
     if (!isValidEmail(customerEmail)) {
-        console.error('Invalid email format:', customerEmail);
+        console.error('❌ Invalid email format:', customerEmail);
         throw new Error('Invalid email address format');
     }
 
-    const adminEmail = 'info@zima-auto.com'; // Admin email is info@zima-auto.com
+    // Get admin recipients (primary and CC)
+    const adminRecipients = getAdminRecipients(bookingData);
 
     // Get bilingual service details
     const serviceDetails = getFormattedBilingualServiceDetails(bookingData);
@@ -343,11 +376,14 @@ async function sendBookingConfirmationEmails(bookingData) {
     // Log the email attempt before sending
     console.log(`
     ====== EMAIL SENDING ATTEMPT ======
-    To: ${customerEmail}
+    To Customer: ${customerEmail}
+    To Admin: ${adminRecipients.to}
+    CC Admin: ${adminRecipients.cc ? adminRecipients.cc.join(', ') : 'None'}
     From: info@zima-auto.com
     Subject: Zima Auto - Foglalás Visszaigazolása / Booking Confirmation
     Process env SMTP_HOST: ${process.env.SMTP_HOST}
     Process env SMTP_PORT: ${process.env.SMTP_PORT}
+    Process env SMTP_USER: ${process.env.SMTP_USER || 'Using fallback user'}
     Process env SMTP_SECURE: ${process.env.SMTP_SECURE}
     ==============================
     `);
@@ -404,10 +440,10 @@ async function sendBookingConfirmationEmails(bookingData) {
             `
         });
 
-        console.log(`Bilingual confirmation email sent to customer: ${customerEmail}`);
+        console.log(`✅ Bilingual confirmation email sent to customer: ${customerEmail}`);
         console.log('Email result details:', JSON.stringify(customerMailResult, null, 2));
     } catch (error) {
-        console.error("Error sending customer confirmation email:", error);
+        console.error("❌ Error sending customer confirmation email:", error);
         console.error("Error details:", {
             code: error.code,
             message: error.message,
@@ -425,7 +461,8 @@ async function sendBookingConfirmationEmails(bookingData) {
                 name: 'Zima Auto Booking System',
                 address: 'info@zima-auto.com' // Admin also sees info@zima-auto.com as sender
             },
-            to: adminEmail, // Sending to info@zima-auto.com
+            to: adminRecipients.to, // Primary admin (info@zima-auto.com)
+            cc: adminRecipients.cc, // CC any additional admin emails
             replyTo: customerEmail, // Set reply-to to the customer's email
             subject: `Új Foglalás / New Booking: ${formatServiceName(bookingData.service, 'hu')} / ${formatServiceName(bookingData.service, 'en')}`,
             html: `
@@ -473,9 +510,12 @@ async function sendBookingConfirmationEmails(bookingData) {
             `
         });
 
-        console.log(`Bilingual notification email sent to admin: info@zima-auto.com`); // Log the correct admin email
+        console.log(`✅ Bilingual notification email sent to admin: ${adminRecipients.to}`);
+        if (adminRecipients.cc) {
+            console.log(`✅ Also CC'd to: ${adminRecipients.cc.join(', ')}`);
+        }
     } catch (error) {
-        console.error("Error sending admin notification email:", error);
+        console.error("❌ Error sending admin notification email:", error);
         console.error("Admin email error details:", {
             code: error.code,
             message: error.message,
@@ -491,20 +531,33 @@ async function sendBookingConfirmationEmails(bookingData) {
 async function sendContactEmails(contactData) {
     // Make sure SMTP is configured
     if (!process.env.SMTP_PASS) {
-        console.error("Email service not configured: Missing SMTP credentials");
+        console.error("❌ Email service not configured: Missing SMTP credentials");
         throw new Error("Email service not properly configured");
     }
 
-    const adminEmail = 'info@zima-auto.com'; // Admin email is info@zima-auto.com
+    // Get admin recipients (primary and CC)
+    const adminRecipients = {
+        to: 'info@zima-auto.com' // Primary admin is always info@zima-auto.com
+    };
+    
+    // Add CC if adminEmail exists and is different from the primary
+    if (contactData.adminEmail && 
+        contactData.adminEmail !== adminRecipients.to && 
+        isValidEmail(contactData.adminEmail)) {
+        adminRecipients.cc = [contactData.adminEmail];
+    }
 
     // Log the email attempt before sending
     console.log(`
     ====== CONTACT EMAIL SENDING ATTEMPT ======
-    To: ${contactData.customerEmail}
+    To Customer: ${contactData.customerEmail}
+    To Admin: ${adminRecipients.to}
+    CC Admin: ${adminRecipients.cc ? adminRecipients.cc.join(', ') : 'None'}
     From: info@zima-auto.com
     Subject: Zima Auto - Üzenet Visszaigazolása / Message Confirmation
     Process env SMTP_HOST: ${process.env.SMTP_HOST}
     Process env SMTP_PORT: ${process.env.SMTP_PORT}
+    Process env SMTP_USER: ${process.env.SMTP_USER || 'Using fallback user'}
     Process env SMTP_SECURE: ${process.env.SMTP_SECURE}
     ==============================
     `);
@@ -563,10 +616,10 @@ async function sendContactEmails(contactData) {
             `
         });
 
-        console.log(`Confirmation email sent to customer: ${contactData.customerEmail}`);
+        console.log(`✅ Confirmation email sent to customer: ${contactData.customerEmail}`);
         console.log('Contact email result details:', JSON.stringify(customerMailResult, null, 2));
     } catch (error) {
-        console.error("Error sending customer confirmation email:", error);
+        console.error("❌ Error sending customer confirmation email:", error);
         console.error("Contact form email error details:", {
             code: error.code,
             message: error.message,
@@ -584,7 +637,8 @@ async function sendContactEmails(contactData) {
                 name: 'Zima Auto Contact Form',
                 address: 'info@zima-auto.com' // Admin also sees info@zima-auto.com as sender
             },
-            to: adminEmail, // Sending to info@zima-auto.com
+            to: adminRecipients.to, // Primary admin (info@zima-auto.com)
+            cc: adminRecipients.cc, // CC any additional admin emails
             replyTo: contactData.customerEmail, // Set reply-to to the customer's email
             subject: `Új Kapcsolati Üzenet / New Contact Message: ${contactData.subject}`,
             html: `
@@ -638,9 +692,12 @@ async function sendContactEmails(contactData) {
             `
         });
 
-        console.log(`Notification email sent to admin: info@zima-auto.com`); // Log the correct admin email
+        console.log(`✅ Notification email sent to admin: ${adminRecipients.to}`);
+        if (adminRecipients.cc) {
+            console.log(`✅ Also CC'd to: ${adminRecipients.cc.join(', ')}`);
+        }
     } catch (error) {
-        console.error("Error sending admin notification email:", error);
+        console.error("❌ Error sending admin notification email:", error);
         console.error("Contact admin email error details:", {
             code: error.code,
             message: error.message,
@@ -652,12 +709,22 @@ async function sendContactEmails(contactData) {
     }
 }
 
-// SMTP test function
+// SMTP test function - ENHANCED with more detailed testing
 async function testEmailConfig(testEmail) {
   try {
     console.log(`Testing SMTP configuration by sending email to ${testEmail}`);
-    console.log(`Using SMTP settings - Host: ${process.env.SMTP_HOST}, Port: ${process.env.SMTP_PORT}, Secure: ${process.env.SMTP_SECURE === 'true'}`);
+    console.log(`Using SMTP settings:
+      - Host: ${process.env.SMTP_HOST}
+      - Port: ${process.env.SMTP_PORT}
+      - Secure: ${process.env.SMTP_SECURE === 'true'}
+      - User: ${process.env.SMTP_USER || 'ahmedhasimov@zima-auto.com'}
+      - Pass: ${process.env.SMTP_PASS ? '[REDACTED]' : 'NOT SET'}`);
     
+    // First verify the transporter connection
+    const verifyResult = await transporter.verify();
+    console.log('Transporter verification result:', verifyResult);
+    
+    // Send the test email
     const result = await transporter.sendMail({
       from: {
         name: 'Zima Auto Test',
@@ -672,19 +739,35 @@ async function testEmailConfig(testEmail) {
           <p>This is a test email to verify your SMTP configuration.</p>
           <p>If you're receiving this, your email system is working correctly!</p>
           <p>Test sent at: ${new Date().toISOString()}</p>
+          <p>SMTP Settings used:</p>
+          <ul>
+            <li>Host: ${process.env.SMTP_HOST}</li>
+            <li>Port: ${process.env.SMTP_PORT}</li>
+            <li>Secure: ${process.env.SMTP_SECURE === 'true'}</li>
+            <li>Username: ${process.env.SMTP_USER || 'ahmedhasimov@zima-auto.com'}</li>
+          </ul>
         </div>
       `
     });
     
-    console.log('Test email sent successfully', result);
+    console.log('✅ Test email sent successfully', result);
     return { success: true, result };
   } catch (error) {
-    console.error('SMTP Test failed:', error);
+    console.error('❌ SMTP Test failed:', error);
     console.error('Error details:', error.message);
     if (error.response) {
       console.error('SMTP Response:', error.response);
     }
-    return { success: false, error };
+    return { 
+      success: false, 
+      error: error.message,
+      details: {
+        code: error.code,
+        command: error.command,
+        responseCode: error.responseCode,
+        response: error.response
+      }
+    };
   }
 }
 

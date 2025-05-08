@@ -16,43 +16,69 @@ const port = process.env.PORT || 3001; // Use port from env or default to 3001
 const { sendBookingConfirmationEmails, sendContactEmails } = require('./utils/email');
 const { getGoogleCalendarClient, addEventToCalendar, checkTimeSlotAvailability } = require('./utils/googleCalendar');
 
-// --- 301 REDIRECTS FOR OLD WIX URLS - ADD THIS FIRST ---
-// Update your redirects object to use the custom domain
+// Update your redirects object to consistently use hash-based routing
 const redirects = {
   // Hungarian URLs
-  '/hu': '/en',  // Redirect /hu to /en since your site defaults to Hungarian
-  '/hu/book-online': '/booking',
-  '/hu/about-us': '/about',
-  '/hu/price-page': '/services',
-  '/hu/services': '/services',
-  '/hu/contact-us': '/contact',
+  '/hu': '/#home',  // Redirect /hu to /#home since your site defaults to Hungarian
+  '/hu/book-online': '/#booking',
+  '/hu/about-us': '/#about',
+  '/hu/price-page': '/#services',
+  '/hu/services': '/#services',
+  '/hu/contact-us': '/#contact',
   
   // English URLs
-  '/en': '/',  // Redirect /en to home since Hungarian is default
-  '/en/book-online': '/booking',
-  '/en/about-us': '/about',
-  '/en/price-page': '/services',
-  '/en/services': '/services',
-  '/en/contact-us': '/contact',
+  '/en': '/#home',  // Redirect /en to /#home since Hungarian is default
+  '/en/book-online': '/#booking',
+  '/en/about-us': '/#about',
+  '/en/price-page': '/#services',
+  '/en/services': '/#services',
+  '/en/contact-us': '/#contact',
   
   // Root redirects
-  '/book-online': '/booking',
-  '/about-us': '/about',
-  '/price-page': '/services',
-  '/services': '/services',
-  '/contact-us': '/contact'
+  '/book-online': '/#booking',
+  '/about-us': '/#about',
+  '/price-page': '/#services',
+  '/services': '/#services',
+  '/contact-us': '/#contact'
 };
 
-// Update your redirect routes to use the custom domain
+// Mapping of valid hash routes
+const validHashRoutes = ['home', 'about', 'services', 'contact', 'booking', 'privacy'];
+
+// Update your redirect routes to use the custom domain and hash-based routing
 Object.keys(redirects).forEach(oldPath => {
   app.get(oldPath, (req, res) => {
     // Construct the full URL with your custom domain
     const customDomain = process.env.CUSTOM_DOMAIN || 'https://zima-auto.com';
     const newPath = redirects[oldPath];
-    const redirectUrl = `${customDomain}/#${newPath}`;
     
-    console.log(`301 Redirect: ${oldPath} -> ${redirectUrl}`);
-    res.status(301).redirect(redirectUrl);
+    // Extract the hash from the new path
+    const hash = newPath.replace('/#', '');
+    
+    // Validate the hash route
+    if (!validHashRoutes.includes(hash)) {
+      console.warn(`Invalid hash route attempted: ${hash}, defaulting to home`);
+      hash = 'home';
+    }
+    
+    const redirectUrl = `${customDomain}/#${hash}`;
+    
+    console.log(`Redirect: ${oldPath} -> ${redirectUrl}`);
+    
+    // Use HTML redirect to ensure hash is preserved
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta http-equiv="refresh" content="0;url=${redirectUrl}">
+        <script>
+          // Ensure hash routing works correctly
+          window.location.href = '${redirectUrl}';
+        </script>
+      </head>
+      <body>Redirecting to ${hash} page...</body>
+      </html>
+    `);
   });
 });
 
@@ -497,16 +523,22 @@ app.post('/api/send-booking-emails', async (req, res) => {
   }
 });
 
-// --- Serve your frontend build if you want to include it with the backend ---
-// Uncomment these lines if you want to serve your frontend from the same server
+// --- Serve frontend from a separate deployment ---
+// Proxy requests to your frontend application
+const proxy = require('express-http-proxy');
 
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
-
-// Catch-all for SPA routing - must be LAST
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
-});
-
+// Proxy all routes to the frontend, preserving the original path
+app.use('/', proxy(process.env.FRONTEND_URL || 'https://zima-auto-frontend.fly.dev', {
+  proxyReqPathResolver: function (req) {
+    // Keep the original URL path when proxying
+    return req.url;
+  },
+  userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
+    // Log proxied requests for debugging
+    console.log(`Proxying request: ${userReq.method} ${userReq.url} -> frontend`);
+    return proxyResData;
+  }
+}));
 
 // --- Start Server ---
 app.listen(port, () => {
