@@ -13,7 +13,8 @@ const app = express();
 const port = process.env.PORT || 3001; // Use port from env or default to 3001
 
 // Import your email utility functions from the email service
-const emailService = require('./utils/emailService');
+const EmailService = require('./utils/emailService');
+const emailService = EmailService.getInstance();
 const { getGoogleCalendarClient, addEventToCalendar, checkTimeSlotAvailability } = require('./utils/googleCalendar');
 
 // Check for email service configuration
@@ -582,6 +583,49 @@ app.use('/', proxy(process.env.FRONTEND_URL || 'https://zima-auto-frontend.fly.d
     return proxyResData;
   }
 }));
+
+// Contact Form Submission Route
+app.post('/contact', express.json(), async (req, res) => {
+  try {
+    const { name, email, message } = req.body;
+
+    // Basic validation
+    if (!name || !email || !message) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide name, email, and message'
+      });
+    }
+
+    // Send contact form emails
+    try {
+      await emailService.sendContactFormEmails({ name, email, message });
+      
+      console.log('Contact form submission processed successfully');
+      
+      res.status(200).json({
+        success: true,
+        message: 'Your message has been sent successfully'
+      });
+    } catch (emailError) {
+      console.error('Error sending contact form emails:', emailError);
+      
+      res.status(500).json({
+        success: false,
+        message: 'Failed to send contact form emails',
+        error: emailError.message
+      });
+    }
+  } catch (error) {
+    console.error('Unexpected error in contact form submission:', error);
+    
+    res.status(500).json({
+      success: false,
+      message: 'An unexpected error occurred',
+      error: error.message
+    });
+  }
+});
 
 // --- Start Server ---
 app.listen(port, '0.0.0.0', () => {

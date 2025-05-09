@@ -16,6 +16,7 @@
     "express": "^4.18.2",
     "express-http-proxy": "^2.1.1",
     "googleapis": "^126.0.1",
+    "handlebars": "^4.7.8",
     "mailgun-js": "^0.22.0",
     "moment-timezone": "^0.5.48",
     "node-mailjet": "^6.0.8",

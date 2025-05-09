@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zima Auto - Gumiszerviz / Tire Service</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        /* Base styles with mobile-first approach */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f9;
+        }
+        
+        .email-container {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #222222, #444444);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .email-logo {
+            margin-bottom: 15px;
+        }
+        
+        .email-logo img {
+            max-height: 50px;
+        }
+        
+        .email-title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .email-subtitle {
+            margin-top: 5px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .email-body {
+            padding: 30px 20px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #222222;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-card {
+            background-color: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 5px solid #444444;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            width: 150px;
+            margin-right: 10px;
+        }
+        
+        .detail-value {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .service-type-badge {
+            display: inline-block;
+            background-color: #444444;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .tire-icon {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .tire-icon svg {
+            width: 80px;
+            height: 80px;
+            fill: #444444;
+        }
+        
+        .tire-count {
+            display: inline-block;
+            background-color: #f0f0f0;
+            border: 2px solid #444444;
+            color: #444444;
+            font-weight: 700;
+            font-size: 18px;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            text-align: center;
+            border-radius: 50%;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        .contact-box {
+            background-color: #e6f2ff;
+            border-radius: 8px;
+            padding: 15px;
+            color: #0056b3;
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .contact-box p {
+            margin: 5px 0;
+            font-weight: 600;
+        }
+        
+        .email-footer {
+            background-color: #f4f7f9;
+            padding: 20px;
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .preparation-tips {
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .preparation-tips h4 {
+            margin-top: 0;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .preparation-tips ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .preparation-tips li {
+            margin-bottom: 5px;
+        }
+        
+        /* Language separator */
+        .language-separator {
+            border: 0;
+            height: 1px;
+            background-color: #ddd;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .language-separator::after {
+            content: 'EN / HU';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            padding: 0 15px;
+            color: #888;
+            font-size: 12px;
+        }
+        
+        /* Responsive adjustments */
+        @media only screen and (max-width: 600px) {
+            .email-body {
+                padding: 20px 15px;
+            }
+            
+            .detail-label,
+            .detail-value {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <div class="email-logo">
+                <img src="https://zima-auto.com/images/zima-logo.avif" alt="Zima Auto Logo" />
+            </div>
+            <h1 class="email-title">Appointment Confirmation</h1>
+            <p class="email-subtitle">Tire Service</p>
+        </div>
+        
+        <div class="email-body">
+            <!-- Hungarian Section -->
+            <div class="section">
+                <p class="greeting">Tisztelt {{customerName}}!</p>
+                
+                <p>Köszönjük, hogy időpontot foglalt gumiszerviz szolgáltatásunkra a Zima Auto-nál. Foglalását visszaigazoljuk.</p>
+                
+                <div class="tire-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path d="M494.916,254.43C494.336,119.185,419.934,7.603,325.521,0.384l-0.008-0.008C322.278,0.128,319.019,0,315.742,0H196.275 C152.226,0,111.872,22.852,80.64,60.646l2.628-0.657l59.46-16.998c2.406-0.674,4.992-0.282,7.074,1.109l20.872,13.901 L191.539,44.1c2.543-1.707,5.811-1.903,8.55-0.538l29.739,14.865c-3.456,4.497-6.801,9.173-10.001,14.089l-22.946-11.469 l-21.478,14.319c-2.867,1.911-6.596,1.911-9.463,0l-22.315-14.882L87.689,76.467L64.87,82.176 c-3.072,4.736-6.007,9.643-8.823,14.703l9.097,7.441l20.19,13.423l20.873-13.909c2.867-1.92,6.596-1.92,9.463,0l20.873,13.901 l20.864-13.901c2.543-1.707,5.811-1.903,8.55-0.538l30.174,15.087c-2.116,5.231-4.105,10.615-5.982,16.094l-27.401-13.696 L141.269,135.1c-2.867,1.911-6.596,1.911-9.464,0l-20.864-13.909L90.069,135.1c-2.867,1.911-6.596,1.911-9.464,0l-25.6-17.067 l-6.972-5.7c-12.066,25.318-20.992,53.896-26.095,84.582l6.784-6.716l24.909-25.506c1.596-1.621,3.78-2.552,6.059-2.56 c2.185,0.068,4.471,0.887,6.084,2.5l19.567,19.558l19.567-19.558c3.328-3.337,8.73-3.337,12.066,0l19.567,19.558l19.567-19.558 c3.328-3.337,8.73-3.337,12.066,0l10.761,10.761c-1.365,6.494-2.594,13.073-3.635,19.78c-0.742-0.393-1.502-0.785-2.125-1.408 l-11.034-11.034L142.575,202.3c-3.337,3.328-8.738,3.328-12.066,0l-19.567-19.567L91.375,202.3 c-3.337,3.328-8.738,3.328-12.066,0L59.81,182.801l-18.978,19.43l-22.34,22.127c-0.247,2.816-0.469,5.641-0.648,8.491 l12.151,7.296l28.058,14.003L79.309,232.9c3.328-3.337,8.73-3.337,12.066,0l19.567,19.558l19.567-19.558 c2.765-2.765,7.066-3.294,10.419-1.289l29.841,17.903c-0.034,2.159-0.094,4.309-0.094,6.485c0,4.531,0.085,9.028,0.23,13.5z"></path>
+                    </svg>
+                </div>
+                
+                <div class="service-type-badge">{{serviceType}}</div>
+                
+                <div class="detail-card">
+                    <h3 class="section-title">Foglalás részletei</h3>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Dátum:</div>
+                        <div class="detail-value">{{date}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Időpont:</div>
+                        <div class="detail-value">{{time}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Autó típusa:</div>
+                        <div class="detail-value">{{carModel}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Rendszám:</div>
+                        <div class="detail-value">{{licensePlate}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Gumiabroncsok száma:</div>
+                        <div class="detail-value">
+                            {{tireCount}}
+                            <span class="tire-count">{{tireCount}}</span>
+                        </div>
+                    </div>
+                    
+                    {{#if notes}}
+                    <div class="detail-item">
+                        <div class="detail-label">További megjegyzések:</div>
+                        <div class="detail-value">{{notes}}</div>
+                    </div>
+                    {{/if}}
+                </div>
+                
+                <div class="preparation-tips">
+                    <h4>Előkészületi tippek:</h4>
+                    <ul>
+                        <li>Kérjük, érkezzen 10-15 perccel a foglalt időpont előtt.</li>
+                        <li>Hozza magával a kerékzár kulcsát, ha járműve záras kerékanyákkal rendelkezik.</li>
+                        <li>Ha saját gumiabroncsokat hoz, kérjük, győződjön meg arról, hogy azok megfelelnek járműve specifikációinak.</li>
+                        <li>Gumitárolási szolgáltatás esetén kérjük, győződjön meg arról, hogy a gumiabroncsok tiszták és megfelelően jeljöltek.</li>
+                        <li>Ha le szeretné mondani vagy módosítani szeretné az időpontot, kérjük, értesítsen minket legalább 24 órával előre.</li>
+                    </ul>
+                </div>
+                
+                <p style="margin-top: 20px;">Gumiszerviz szakértőink gondoskodnak arról, hogy gumiabroncsai megfelelően legyenek felszerelve és kiegyensúlyozva a biztonságos és kényelmes utazás érdekében.</p>
+            </div>
+            
+            <hr class="language-separator">
+            
+            <!-- English Section -->
+            <div class="section">
+                <p class="greeting">Dear {{customerName}},</p>
+                
+                <p>Thank you for scheduling a tire service appointment with Zima Auto. Your booking has been confirmed.</p>
+                
+                <div class="tire-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path d="M494.916,254.43C494.336,119.185,419.934,7.603,325.521,0.384l-0.008-0.008C322.278,0.128,319.019,0,315.742,0H196.275 C152.226,0,111.872,22.852,80.64,60.646l2.628-0.657l59.46-16.998c2.406-0.674,4.992-0.282,7.074,1.109l20.872,13.901 L191.539,44.1c2.543-1.707,5.811-1.903,8.55-0.538l29.739,14.865c-3.456,4.497-6.801,9.173-10.001,14.089l-22.946-11.469 l-21.478,14.319c-2.867,1.911-6.596,1.911-9.463,0l-22.315-14.882L87.689,76.467L64.87,82.176 c-3.072,4.736-6.007,9.643-8.823,14.703l9.097,7.441l20.19,13.423l20.873-13.909c2.867-1.92,6.596-1.92,9.463,0l20.873,13.901 l20.864-13.901c2.543-1.707,5.811-1.903,8.55-0.538l30.174,15.087c-2.116,5.231-4.105,10.615-5.982,16.094l-27.401-13.696 L141.269,135.1c-2.867,1.911-6.596,1.911-9.464,0l-20.864-13.909L90.069,135.1c-2.867,1.911-6.596,1.911-9.464,0l-25.6-17.067 l-6.972-5.7c-12.066,25.318-20.992,53.896-26.095,84.582l6.784-6.716l24.909-25.506c1.596-1.621,3.78-2.552,6.059-2.56 c2.185,0.068,4.471,0.887,6.084,2.5l19.567,19.558l19.567-19.558c3.328-3.337,8.73-3.337,12.066,0l19.567,19.558l19.567-19.558 c3.328-3.337,8.73-3.337,12.066,0l10.761,10.761c-1.365,6.494-2.594,13.073-3.635,19.78c-0.742-0.393-1.502-0.785-2.125-1.408 l-11.034-11.034L142.575,202.3c-3.337,3.328-8.738,3.328-12.066,0l-19.567-19.567L91.375,202.3 c-3.337,3.328-8.738,3.328-12.066,0L59.81,182.801l-18.978,19.43l-22.34,22.127c-0.247,2.816-0.469,5.641-0.648,8.491 l12.151,7.296l28.058,14.003L79.309,232.9c3.328-3.337,8.73-3.337,12.066,0l19.567,19.558l19.567-19.558 c2.765-2.765,7.066-3.294,10.419-1.289l29.841,17.903c-0.034,2.159-0.094,4.309-0.094,6.485c0,4.531,0.085,9.028,0.23,13.5z"></path>
+                    </svg>
+                </div>
+                
+                <div class="service-type-badge">{{serviceType}}</div>
+                
+                <div class="detail-card">
+                    <h3 class="section-title">Appointment Details</h3>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Date:</div>
+                        <div class="detail-value">{{date}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Time:</div>
+                        <div class="detail-value">{{time}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Car Model:</div>
+                        <div class="detail-value">{{carModel}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">License Plate:</div>
+                        <div class="detail-value">{{licensePlate}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Number of Tires:</div>
+                        <div class="detail-value">
+                            {{tireCount}}
+                            <span class="tire-count">{{tireCount}}</span>
+                        </div>
+                    </div>
+                    
+                    {{#if notes}}
+                    <div class="detail-item">
+                        <div class="detail-label">Additional Notes:</div>
+                        <div class="detail-value">{{notes}}</div>
+                    </div>
+                    {{/if}}
+                </div>
+                
+                <div class="preparation-tips">
+                    <h4>Preparation Tips:</h4>
+                    <ul>
+                        <li>Please arrive 10-15 minutes before your scheduled appointment time.</li>
+                        <li>Bring your wheel lock key if your vehicle has locking wheel nuts.</li>
+                        <li>If you're bringing your own tires, please ensure they match your vehicle specifications.</li>
+                        <li>For tire storage services, please ensure your tires are clean and appropriately marked.</li>
+                        <li>If you need to cancel or reschedule, please contact us at least 24 hours in advance.</li>
+                    </ul>
+                </div>
+                
+                <p style="margin-top: 20px;">Our tire specialists will ensure your tires are properly fitted and balanced for a safe and comfortable ride.</p>
+            </div>
+            
+            <hr class="language-separator">
+            
+            <!-- Hungarian Section -->
+            <div class="section">
+                <p class="greeting">Tisztelt {{customerName}}!</p>
+                
+                <p>Köszönjük, hogy időpontot foglalt gumiszerviz szolgáltatásunkra a Zima Auto-nál. Foglalását visszaigazoljuk.</p>
+                
+                <div class="tire-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <path d="M494.916,254.43C494.336,119.185,419.934,7.603,325.521,0.384l-0.008-0.008C322.278,0.128,319.019,0,315.742,0H196.275 C152.226,0,111.872,22.852,80.64,60.646l2.628-0.657l59.46-16.998c2.406-0.674,4.992-0.282,7.074,1.109l20.872,13.901 L191.539,44.1c2.543-1.707,5.811-1.903,8.55-0.538l29.739,14.865c-3.456,4.497-6.801,9.173-10.001,14.089l-22.946-11.469 l-21.478,14.319c-2.867,1.911-6.596,1.911-9.463,0l-22.315-14.882L87.689,76.467L64.87,82.176 c-3.072,4.736-6.007,9.643-8.823,14.703l9.097,7.441l20.19,13.423l20.873-13.909c2.867-1.92,6.596-1.92,9.463,0l20.873,13.901 l20.864-13.901c2.543-1.707,5.811-1.903,8.55-0.538l30.174,15.087c-2.116,5.231-4.105,10.615-5.982,16.094l-27.401-13.696 L141.269,135.1c-2.867,1.911-6.596,1.911-9.464,0l-20.864-13.909L90.069,135.1c-2.867,1.911-6.596,1.911-9.464,0l-25.6-17.067 l-6.972-5.7c-12.066,25.318-20.992,53.896-26.095,84.582l6.784-6.716l24.909-25.506c1.596-1.621,3.78-2.552,6.059-2.56 c2.185,0.068,4.471,0.887,6.084,2.5l19.567,19.558l19.567-19.558c3.328-3.337,8.73-3.337,12.066,0l19.567,19.558l19.567-19.558 c3.328-3.337,8.73-3.337,12.066,0l10.761,10.761c-1.365,6.494-2.594,13.073-3.635,19.78c-0.742-0.393-1.502-0.785-2.125-1.408 l-11.034-11.034L142.575,202.3c-3.337,3.328-8.738,3.328-12.066,0l-19.567-19.567L91.375,202.3 c-3.337,3.328-8.738,3.328-12.066,0L59.81,182.801l-18.978,19.43l-22.34,22.127c-0.247,2.816-0.469,5.641-0.648,8.491 l12.151,7.296l28.058,14.003L79.309,232.9c3.328-3.337,8.73-3.337,12.066,0l19.567,19.558l19.567-19.558 c2.765-2.765,7.066-3.294,10.419-1.289l29.841,17.903c-0.034,2.159-0.094,4.309-0.094,6.485c0,4.531,0.085,9.028,0.23,13.5z"></path>
+                    </svg>
+                </div>
+                
+                <div class="service-type-badge">{{serviceType}}</div>
+                
+                <div class="detail-card">
+                    <h3 class="section-title">Foglalás részletei</h3>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Dátum:</div>
+                        <div class="detail-value">{{date}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Időpont:</div>
+                        <div class="detail-value">{{time}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Autó típusa:</div>
+                        <div class="detail-value">{{carModel}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Rendszám:</div>
+                        <div class="detail-value">{{licensePlate}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Gumiabroncsok száma:</div>
+                        <div class="detail-value">
+                            {{tireCount}}
+                            <span class="tire-count">{{tireCount}}</span>
+                        </div>
+                    </div>
+                    
+                    {{#if notes}}
+                    <div class="detail-item">
+                        <div class="detail-label">További megjegyzések:</div>
+                        <div class="detail-value">{{notes}}</div>
+                    </div>
+                    {{/if}}
+                </div>
+                
+                <div class="preparation-tips">
+                    <h4>Előkészületi tippek:</h4>
+                    <ul>
+                        <li>Kérjük, érkezzen 10-15 perccel a foglalt időpont előtt.</li>
+                        <li>Hozza magával a kerékzár kulcsát, ha járműve záras kerékanyákkal rendelkezik.</li>
+                        <li>Ha saját gumiabroncsokat hoz, kérjük, győződjön meg arról, hogy azok megfelelnek járműve specifikációinak.</li>
+                        <li>Gumitárolási szolgáltatás esetén kérjük, győződjön meg arról, hogy a gumiabroncsok tiszták és megfelelően jelöltek.</li>
+                        <li>Ha le szeretné mondani vagy módosítani szeretné az időpontot, kérjük, értesítsen minket legalább 24 órával előre.</li>
+                    </ul>
+                </div>
+                
+                <p style="margin-top: 20px;">Gumiszerviz szakértőink gondoskodnak arról, hogy gumiabroncsai megfelelően legyenek felszerelve és kiegyensúlyozva a biztonságos és kényelmes utazás érdekében.</p>
+            </div>
+            
+            <div class="contact-box">
+                <p>Contact / Kapcsolat:</p>
+                <p>📞 +36 70 555 0588</p>
+                <p>✉️ info@zima-auto.com</p>
+                <p>📍 Vecsés Széchényi utca 62 mellett, 2220</p>
+            </div>
+        </div>
+        
+        <div class="email-footer">
+            <p>© 2025 Zima Auto. All rights reserved. / Minden jog fenntartva.</p>
+            <p>Best regards / Üdvözlettel, Zima Auto Team / Zima Auto Csapat</p>
+        </div>
+    </div>
+</body>
+</html>
