@@ -12,9 +12,17 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001; // Use port from env or default to 3001
 
-// Import your email utility functions
-const { sendBookingConfirmationEmails, sendContactEmails } = require('./utils/email');
+// Import your email utility functions from the email service
+const emailService = require('./utils/emailService');
 const { getGoogleCalendarClient, addEventToCalendar, checkTimeSlotAvailability } = require('./utils/googleCalendar');
+
+// Check for email service configuration
+if (!process.env.RESEND_API_KEY) {
+    console.error('❌ CRITICAL: Missing Resend API key!');
+    console.error('Email functionality may be limited.');
+}
+
+// Email service is ready
 
 // Update your redirects object to consistently use hash-based routing
 const redirects = {
@@ -56,12 +64,13 @@ Object.keys(redirects).forEach(oldPath => {
     const hash = newPath.replace('/#', '');
     
     // Validate the hash route
+    let validHash = hash;
     if (!validHashRoutes.includes(hash)) {
       console.warn(`Invalid hash route attempted: ${hash}, defaulting to home`);
-      hash = 'home';
+      validHash = 'home';
     }
     
-    const redirectUrl = `${customDomain}/#${hash}`;
+    const redirectUrl = `${customDomain}/#${validHash}`;
     
     console.log(`Redirect: ${oldPath} -> ${redirectUrl}`);
     
@@ -76,7 +85,7 @@ Object.keys(redirects).forEach(oldPath => {
           window.location.href = '${redirectUrl}';
         </script>
       </head>
-      <body>Redirecting to ${hash} page...</body>
+      <body>Redirecting to ${validHash} page...</body>
       </html>
     `);
   });
@@ -228,6 +237,27 @@ function parseAirportParkingDateRange(dateRangeStr) {
 
 // --- Routes ---
 
+// API Endpoint to test Mailjet email service
+app.get('/api/test-email', async (req, res) => {
+  try {
+    console.log('Testing Mailjet connection...');
+    const result = await testMailjetConnection();
+    
+    res.status(200).json({
+      success: true,
+      message: 'Test email sent successfully to info@zima-auto.com',
+      result: result
+    });
+  } catch (error) {
+    console.error('Test email failed:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Test email failed: ' + error.message,
+      error: String(error)
+    });
+  }
+});
+
 // API Endpoint to fetch available time slots
 app.get('/api/available-slots', async (req, res) => {
   try {
@@ -265,8 +295,7 @@ app.get('/api/available-slots', async (req, res) => {
     const allSlots = generateTimeSlots(service);
 
     // Get busy slots from Google Calendar - checkTimeSlotAvailability now filters by service
-    // Get busy slots from Google Calendar - checkTimeSlotAvailability now filters by service
-    const busySlots = await checkTimeSlotAvailability(calendar, date, service, allSlots); // <--- Pass allSlots here
+    const busySlots = await checkTimeSlotAvailability(calendar, date, service, allSlots);
 
     // Log the timezone information if available (for debugging)
     if (tzOffset || tzName) {
@@ -312,7 +341,7 @@ app.post('/api/send-contact-email', async (req, res) => {
 
     // Send emails
     try {
-      // Call the correctly imported function
+      // Call the correctly imported function from mailjet module
       await sendContactEmails(contactData);
       console.log('Contact form emails sent successfully.');
     } catch (emailError) {
@@ -345,6 +374,12 @@ app.post('/api/send-booking-emails', async (req, res) => {
   try {
     const bookingData = req.body;
 
+    // Add detailed logging for booking data
+    console.log('====== EMAIL DEBUGGING ======');
+    console.log('1. Receiving booking data for service:', bookingData.service);
+    console.log('2. Customer email:', bookingData.customerEmail || 
+                (bookingData.contact && bookingData.contact.email) || "MISSING!");
+    
     // Add detailed logging for airport parking
     if (bookingData.service === 'airportParking') {
       console.log('======= AIRPORT PARKING BOOKING =======');
@@ -370,15 +405,13 @@ app.post('/api/send-booking-emails', async (req, res) => {
     }
 
     // Validate required fields
-    if (!bookingData || !bookingData.customerName || !bookingData.customerEmail || !bookingData.service) {
+    if (!bookingData || !bookingData.service) {
       console.error('Received invalid booking data: Missing core fields', bookingData);
       return res.status(400).json({
         success: false,
         message: 'Missing required fields in booking data'
       });
     }
-
-    console.log('Received booking data for service:', bookingData.service);
 
     // Add booking to Google Calendar with special handling for airport parking
     try {
@@ -496,14 +529,24 @@ app.post('/api/send-booking-emails', async (req, res) => {
     } catch (calendarError) {
       console.error('Error during Google Calendar operation:', calendarError);
       console.error('Calendar Error Details:', calendarError);
+      // We continue even if calendar fails - emails are more important
     }
 
     // Send Emails (this happens regardless of calendar success/failure in this setup)
+    console.log("3. Attempting to send emails via Mailjet");
     try {
-        await sendBookingConfirmationEmails(bookingData);
-        console.log('Booking confirmation emails sent successfully.');
+      await emailService.sendBookingConfirmationEmails(bookingData);
+      console.log("4. ✅ Emails sent successfully via Mailjet");
     } catch (emailError) {
-        console.error('Error sending booking confirmation emails:', emailError);
+      console.error("4. ❌ Email sending failed:", emailError);
+      console.error("Detailed email error:", JSON.stringify(emailError, null, 2));
+      
+      // Return the email error to the client for easier debugging
+      return res.status(500).json({
+        success: false,
+        message: 'Email sending failed: ' + emailError.message,
+        emailError: String(emailError)
+      });
     }
 
     // Respond to Frontend
@@ -541,6 +584,16 @@ app.use('/', proxy(process.env.FRONTEND_URL || 'https://zima-auto-frontend.fly.d
 }));
 
 // --- Start Server ---
-app.listen(port, () => {
-  console.log(`Zima Auto Email Backend running on http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Zima Auto Email Backend running on http://0.0.0.0:${port}`);
+  
+  // Log startup information
+  console.log('Server Configuration:');
+  console.log(`- Port: ${port}`);
+  console.log(`- Email Service: Mailjet`);
+  console.log(`- Mailjet API Key Configured: ${!!process.env.MAILJET_API_KEY}`);
+  console.log(`- Google Calendar API Configured: ${!!process.env.GOOGLE_CALENDAR_CREDENTIALS}`);
+  console.log(`- Frontend Proxy URL: ${process.env.FRONTEND_URL || 'https://zima-auto-frontend.fly.dev'}`);
+  console.log(`- Custom Domain: ${process.env.CUSTOM_DOMAIN || 'https://zima-auto.com'}`);
+  console.log('Server is ready to handle requests.');
 });
