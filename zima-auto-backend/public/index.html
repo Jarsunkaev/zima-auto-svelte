@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Zima Auto - Repülőtéri parkolás, Autómosás, Gumiszerviz, Autószerviz | Airport Parking, Car Wash, Tire Service, Car Maintenance">
+  
+  <title>Zima Auto | Reptéri Parkolás, Autómosás, Gumiszerviz, Autószerviz | Airport Parking, Car Wash, Tire Service, Car Maintenance</title>
+  
+  <link rel="icon" type="image/png" href="favicon.ico">
+  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="build/bundle.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Add error handling -->
+  <script>
+    window.addEventListener('error', function(event) {
+      console.error('Script error detected:', event.message);
+    });
+  </script>
+  
+  <!-- External modules -->
+  <script src="https://unpkg.com/svelte-i18n@3.4.0/dist/svelte-i18n.min.js"></script>
+  <script src="https://unpkg.com/@beyonk/gdpr-cookie-consent-banner@6.0.0/dist/bundle.js"></script>
+  
+  <script defer src="build/bundle.js"></script>
+</head>
+
+<body>
+  <noscript>
+    <div style="text-align: center; padding: 2rem; font-family: sans-serif;">
+      <h1>JavaScript szükséges</h1>
+      <p>Kérjük, engedélyezze a JavaScript-et a böngészőjében a Zima Auto oldal megtekintéséhez.</p>
+    </div>
+  </noscript>
+  
+  <!-- Fallback content in case JS fails to load -->
+  <div id="loading-screen" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center;">
+    <img src="images/zima-logo.avif" alt="Zima Auto" style="height: 60px; margin-bottom: 20px;">
+    <h1>Betöltés...</h1>
+    <p>Ha ez a képernyő nem tűnik el, kérjük frissítse az oldalt vagy vegye fel a kapcsolatot.</p>
+    
+    <script>
+      // Hide loading screen once app loads
+      window.onload = function() {
+        document.getElementById('loading-screen').style.display = 'none';
+      };
+    </script>
+  </div>
+</body>
+</html>

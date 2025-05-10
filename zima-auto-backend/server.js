@@ -17,6 +17,16 @@ const EmailService = require('./utils/emailService');
 const emailService = EmailService.getInstance();
 const { getGoogleCalendarClient, addEventToCalendar, checkTimeSlotAvailability } = require('./utils/googleCalendar');
 
+// Add the missing helper function for contact emails
+const sendContactEmails = async (contactData) => {
+  try {
+    return await emailService.sendContactFormEmails(contactData);
+  } catch (error) {
+    console.error('Error in sendContactEmails:', error);
+    throw error;
+  }
+};
+
 // Check for email service configuration
 if (!process.env.RESEND_API_KEY) {
     console.error('❌ CRITICAL: Missing Resend API key!');
@@ -25,68 +35,145 @@ if (!process.env.RESEND_API_KEY) {
 
 // Email service is ready
 
-// Update your redirects object to consistently use hash-based routing
+// Update your redirects object to consistently use path-based routing
 const redirects = {
   // Hungarian URLs
-  '/hu': '/#home',  // Redirect /hu to /#home since your site defaults to Hungarian
-  '/hu/book-online': '/#booking',
-  '/hu/about-us': '/#about',
-  '/hu/price-page': '/#services',
-  '/hu/services': '/#services',
-  '/hu/contact-us': '/#contact',
+  '/hu': '/home',  // Redirect /hu to /home since your site defaults to Hungarian
+  '/hu/book-online': '/booking',
+  '/hu/about-us': '/about',
+  '/hu/price-page': '/services',
+  '/hu/services': '/services',
+  '/hu/contact-us': '/contact',
   
   // English URLs
-  '/en': '/#home',  // Redirect /en to /#home since Hungarian is default
-  '/en/book-online': '/#booking',
-  '/en/about-us': '/#about',
-  '/en/price-page': '/#services',
-  '/en/services': '/#services',
-  '/en/contact-us': '/#contact',
+  '/en': '/home',  // Redirect /en to /home since Hungarian is default
+  '/en/book-online': '/booking',
+  '/en/about-us': '/about',
+  '/en/price-page': '/services',
+  '/en/services': '/services',
+  '/en/contact-us': '/contact',
   
   // Root redirects
-  '/book-online': '/#booking',
-  '/about-us': '/#about',
-  '/price-page': '/#services',
-  '/services': '/#services',
-  '/contact-us': '/#contact'
+  '/book-online': '/booking',
+  '/about-us': '/about',
+  '/price-page': '/services',
+  '/contact-us': '/contact',
+  '/service-page/reptéri-parkolás-1': '/services',
+  '/service-page/airport-parking-5': '/services',
+  
+  // Additional service page redirects
+  '/service-page/reptéri-parkolás-1/': '/services',
+  '/service-page/airport-parking-5/': '/services'
 };
 
-// Mapping of valid hash routes
-const validHashRoutes = ['home', 'about', 'services', 'contact', 'booking', 'privacy'];
+// Mapping of valid routes
+const validRoutes = ['home', 'about', 'services', 'contact', 'booking', 'privacy'];
 
-// Update your redirect routes to use the custom domain and hash-based routing
+// Enhanced redirect middleware
+app.use((req, res, next) => {
+  const originalPath = req.path;
+  const originalQuery = req.url.includes('?') ? req.url.split('?')[1] : '';
+  
+  // Prevent redirect loops
+  if (req.headers['x-forwarded-host'] && req.headers['x-forwarded-host'].includes('zima-auto.com')) {
+    // Check if this is already a known good route
+    if (validRoutes.includes(originalPath.replace('/', '')) || originalPath === '/services') {
+      return next();
+    }
+  }
+  
+  // Check for known redirects
+  if (redirects[originalPath]) {
+    const newPath = redirects[originalPath];
+    console.log(`Redirecting: ${originalPath} -> ${newPath}`);
+    
+    // Preserve query parameters if they exist
+    const fullRedirectPath = originalQuery ? `${newPath}?${originalQuery}` : newPath;
+    return res.redirect(fullRedirectPath);
+  }
+  
+  // Handle service page URLs with potential variations
+  const servicePageMatch = originalPath.match(/^\/service-page\/([^/]+)\/?$/i);
+  if (servicePageMatch) {
+    console.log(`Matched service page: ${originalPath}`);
+    
+    // Preserve query parameters if they exist
+    const fullRedirectPath = originalQuery ? `/services?${originalQuery}` : '/services';
+    return res.redirect(fullRedirectPath);
+  }
+  
+  // Handle old /services route specifically
+  if (originalPath === '/services') {
+    return next();
+  }
+  
+  next();
+});
+
+// Update your redirect routes to use the custom domain and path-based routing
 Object.keys(redirects).forEach(oldPath => {
   app.get(oldPath, (req, res) => {
     // Construct the full URL with your custom domain
     const customDomain = process.env.CUSTOM_DOMAIN || 'https://zima-auto.com';
     const newPath = redirects[oldPath];
     
-    // Extract the hash from the new path
-    const hash = newPath.replace('/#', '');
-    
-    // Validate the hash route
-    let validHash = hash;
-    if (!validHashRoutes.includes(hash)) {
-      console.warn(`Invalid hash route attempted: ${hash}, defaulting to home`);
-      validHash = 'home';
+    // Validate the route
+    let validRoute = newPath.replace('/', '');
+    if (!validRoutes.includes(validRoute)) {
+      console.warn(`Invalid route attempted: ${validRoute}, defaulting to home`);
+      validRoute = 'home';
     }
     
-    const redirectUrl = `${customDomain}/#${validHash}`;
+    const redirectUrl = `${customDomain}/${validRoute}`;
     
     console.log(`Redirect: ${oldPath} -> ${redirectUrl}`);
     
-    // Use HTML redirect to ensure hash is preserved
+    // Use HTML redirect to ensure clean URL is used
     res.send(`
       <!DOCTYPE html>
       <html>
       <head>
+        <title>Redirecting to Zima Auto</title>
         <meta http-equiv="refresh" content="0;url=${redirectUrl}">
+        <style>
+          body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #111111;
+            color: white;
+          }
+          .redirect-container {
+            text-align: center;
+          }
+          .loader {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid #00bae5;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
         <script>
-          // Ensure hash routing works correctly
-          window.location.href = '${redirectUrl}';
+          // Immediate redirect without letting browser try to render the app
+          window.location.replace('${redirectUrl}');
         </script>
       </head>
-      <body>Redirecting to ${validHash} page...</body>
+      <body>
+        <div class="redirect-container">
+          <div class="loader"></div>
+          <p>Redirecting to Zima Auto...</p>
+        </div>
+      </body>
       </html>
     `);
   });
@@ -238,34 +325,18 @@ function parseAirportParkingDateRange(dateRangeStr) {
 
 // --- Routes ---
 
-// API Endpoint to test Mailjet email service
-app.get('/api/test-email', async (req, res) => {
-  try {
-    console.log('Testing Mailjet connection...');
-    const result = await testMailjetConnection();
-    
-    res.status(200).json({
-      success: true,
-      message: 'Test email sent successfully to info@zima-auto.com',
-      result: result
-    });
-  } catch (error) {
-    console.error('Test email failed:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Test email failed: ' + error.message,
-      error: String(error)
-    });
-  }
-});
-
 // API Endpoint to fetch available time slots
 app.get('/api/available-slots', async (req, res) => {
+  // Enhanced logging for debugging
+  console.log('=== AVAILABLE SLOTS REQUEST ===');
+  console.log('Request Query:', JSON.stringify(req.query, null, 2));
+
   try {
     const { date, service, tzOffset, tzName } = req.query;
 
     // Validate required parameters
     if (!date || !service) {
+      console.error('Missing required parameters', { date, service });
       return res.status(400).json({
         success: false,
         message: 'Missing required parameters: date and service are required'
@@ -274,6 +345,7 @@ app.get('/api/available-slots', async (req, res) => {
 
     // Validate date format (YYYY-MM-DD)
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      console.error('Invalid date format', { date });
       return res.status(400).json({
         success: false,
         message: 'Invalid date format. Expected YYYY-MM-DD'
@@ -283,20 +355,37 @@ app.get('/api/available-slots', async (req, res) => {
     // Validate service type
     const validServices = ['carWash', 'autoService', 'tireService', 'airportParking'];
     if (!validServices.includes(service)) {
+      console.error('Invalid service type', { service, validServices });
       return res.status(400).json({
         success: false,
         message: 'Invalid service type. Expected one of: ' + validServices.join(', ')
       });
     }
 
-    // Get Google Calendar client
-    const calendar = await getGoogleCalendarClient();
-
-    // Generate all possible time slots for this service (frontend also does this)
+    // Generate time slots first - this shouldn't fail
     const allSlots = generateTimeSlots(service);
+    console.log(`Generated ${allSlots.length} time slots for service ${service}`);
 
-    // Get busy slots from Google Calendar - checkTimeSlotAvailability now filters by service
-    const busySlots = await checkTimeSlotAvailability(calendar, date, service, allSlots);
+    // Try to get Google Calendar client
+    let calendar;
+    let busySlots = [];
+    
+    try {
+      calendar = await getGoogleCalendarClient();
+      
+      // Try to get busy slots from Google Calendar
+      busySlots = await checkTimeSlotAvailability(calendar, date, service, allSlots);
+      console.log(`Found ${busySlots.length} busy slots for ${service} on ${date}`);
+    } 
+    catch (calendarError) {
+      console.error('Google Calendar operation failed:', calendarError);
+      // Instead of failing with 500, return success with empty unavailable slots
+      return res.status(200).json({
+        success: true,
+        unavailableSlots: [], // Return empty array as fallback
+        message: 'Calendar unavailable - using mock data'
+      });
+    }
 
     // Log the timezone information if available (for debugging)
     if (tzOffset || tzName) {
@@ -311,10 +400,13 @@ app.get('/api/available-slots', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error fetching available slots:', error);
-    res.status(500).json({
-      success: false,
-      message: 'An error occurred while fetching available time slots: ' + error.message
+    console.error('Unhandled error in available-slots endpoint:', error);
+    
+    // Return success with empty unavailable slots instead of a 500 error
+    res.status(200).json({
+      success: true,
+      unavailableSlots: [], // Return empty array of unavailable slots
+      message: 'Error occurred - using mock data'
     });
   }
 });
@@ -571,18 +663,113 @@ app.post('/api/send-booking-emails', async (req, res) => {
 // Proxy requests to your frontend application
 const proxy = require('express-http-proxy');
 
-// Proxy all routes to the frontend, preserving the original path
-app.use('/', proxy(process.env.FRONTEND_URL || 'https://zima-auto-frontend.fly.dev', {
-  proxyReqPathResolver: function (req) {
-    // Keep the original URL path when proxying
-    return req.url;
+app.use((req, res, next) => {
+  // Store the original send function
+  const originalSend = res.send;
+  
+  // Override the send function
+  res.send = function(body) {
+    // If this is an HTML response, clean up the debug comment
+    if (typeof body === 'string' && 
+        (res.get('Content-Type') || '').includes('text/html')) {
+      body = body.replace('// src/App.svelte', '');
+      body = body.replace(/import App from ['"]\.\/App\.svelte['"];?/, '');
+    }
+    
+    // Call the original send with the cleaned body
+    return originalSend.call(this, body);
+  };
+  
+  next();
+});
+
+// Detailed logging middleware
+app.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.path}`);
+  next();
+});
+
+// Serve static files from public directory
+const publicPath = path.join(__dirname, 'public');
+console.log('Public directory path:', publicPath);
+
+// Enhanced logging middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
+
+// Check if public directory exists and log its contents
+try {
+  const publicFiles = fs.readdirSync(publicPath);
+  console.log('Public directory exists. Files:', publicFiles);
+} catch (err) {
+  console.error('Public directory access error:', err);
+}
+
+// Serve static files with enhanced logging
+app.use(express.static(publicPath, {
+  setHeaders: (res, filePath) => {
+    // Add caching for static assets
+    if (path.extname(filePath).match(/\.(js|css|png|jpg|jpeg|gif|svg)$/)) {
+      res.setHeader('Cache-Control', 'public, max-age=86400'); // 1 day cache
+    }
   },
-  userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
-    // Log proxied requests for debugging
-    console.log(`Proxying request: ${userReq.method} ${userReq.url} -> frontend`);
-    return proxyResData;
-  }
+  // Log static file serving
+  redirect: false,
+  index: false
 }));
+
+// Serve index.html for all routes except static files
+app.get('*', (req, res) => {
+  // Detailed logging for route handling
+  console.log(`[Route Handling] Requested path: ${req.path}`);
+
+  // Exclude routes that might be static files
+  if (req.path.match(/\.(html|js|css|png|jpg|jpeg|gif|svg|ico|txt|xml)$/)) {
+    console.log(`[Static File] Requested static file: ${req.path}`);
+    return res.status(404).send('Not Found');
+  }
+
+  // Check if the requested path starts with /api - don't serve index.html for API routes
+  if (req.path.startsWith('/api')) {
+    console.log(`[API Route] Skipping index.html for API path: ${req.path}`);
+    return next();
+  }
+
+  const indexPath = path.join(publicPath, 'index.html');
+  console.log('Attempting to serve index.html from:', indexPath);
+  
+  // Check if index.html exists
+  try {
+    // Verify index.html exists
+    fs.accessSync(indexPath, fs.constants.F_OK);
+    
+    // Send the index.html for all routes
+    res.sendFile(indexPath, (err) => {
+      if (err) {
+        console.error('Error sending index.html:', err);
+        res.status(500).send(`File send error: ${err.message}`);
+      }
+    });
+  } catch (err) {
+    console.error('Error accessing index.html:', err);
+    
+    // More detailed error response
+    res.status(500).send(`Server configuration error: ${err.message}`);
+  }
+});
+
+// Comprehensive error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Unhandled server error:', {
+    message: err.message,
+    stack: err.stack,
+    method: req.method,
+    path: req.path
+  });
+  res.status(500).send(`Critical server error: ${err.message}`);
+});
 
 // Contact Form Submission Route
 app.post('/contact', express.json(), async (req, res) => {

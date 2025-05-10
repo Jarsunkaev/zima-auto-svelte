@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zima-auto.com/sitemap.xml

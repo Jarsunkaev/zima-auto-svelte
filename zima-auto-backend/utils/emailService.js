@@ -53,7 +53,8 @@ class EmailService {
                     const files = fs.readdirSync(templatePath);
                     console.log(`Files in ${templatePath}:`, files);
                     
-                    if (files.includes('airportParking.html')) {
+                    // Check if the directory has any HTML files that could be templates
+                    if (files.some(file => file.endsWith('.html'))) {
                         templatesDir = templatePath;
                         break;
                     }
@@ -70,30 +71,75 @@ class EmailService {
             const availableTemplates = fs.readdirSync(templatesDir);
             console.log('📄 Available templates:', availableTemplates);
 
-            // Verify specific template exists
-            const airportParkingTemplatePath = path.join(templatesDir, 'airportParking.html');
-            if (!fs.existsSync(airportParkingTemplatePath)) {
-                console.error('🔥 Airport Parking template not found:', airportParkingTemplatePath);
-                console.error('Full path contents:', availableTemplates);
-            }
+            // Define required templates and check if they exist
+            const requiredTemplates = [
+                'airportParking.html', 
+                'carWash.html', 
+                'autoService.html', 
+                'tireService.html', 
+                'contactForm.html', 
+                'default.html'
+            ];
             
-            this.templates = {
-                airportParking: fs.readFileSync(path.join(templatesDir, 'airportParking.html'), 'utf8'),
-                carWash: fs.readFileSync(path.join(templatesDir, 'carWash.html'), 'utf8'),
-                autoService: fs.readFileSync(path.join(templatesDir, 'autoService.html'), 'utf8'),
-                tireService: fs.readFileSync(path.join(templatesDir, 'tireService.html'), 'utf8'),
-                contactForm: fs.readFileSync(path.join(templatesDir, 'contactForm.html'), 'utf8'),
-                // Default template as fallback
-                default: fs.readFileSync(path.join(templatesDir, 'default.html'), 'utf8')
+            const missingTemplates = requiredTemplates.filter(template => 
+                !availableTemplates.includes(template)
+            );
+            
+            if (missingTemplates.length > 0) {
+                console.error('🔥 Missing required templates:', missingTemplates);
+                console.error('Available templates:', availableTemplates);
+                // We'll continue and create fallbacks for missing templates
+            }
+
+            // Initialize templates object
+            this.templates = {};
+            
+            // Define template files with their keys
+            const templateFiles = {
+                airportParking: 'airportParking.html',
+                carWash: 'carWash.html',
+                autoService: 'autoService.html',
+                tireService: 'tireService.html',
+                contactForm: 'contactForm.html',
+                default: 'default.html'
             };
+            
+            // Load each template with error handling for individual files
+            for (const [key, filename] of Object.entries(templateFiles)) {
+                try {
+                    const templatePath = path.join(templatesDir, filename);
+                    if (fs.existsSync(templatePath)) {
+                        this.templates[key] = fs.readFileSync(templatePath, 'utf8');
+                        console.log(`✅ Loaded template: ${key}`);
+                    } else {
+                        console.error(`❌ Template file not found: ${filename}`);
+                        
+                        // Create a basic fallback template for missing files
+                        this.templates[key] = this.createFallbackTemplate(key);
+                    }
+                } catch (e) {
+                    console.error(`❌ Error loading template ${filename}:`, e.message);
+                    
+                    // Create a basic fallback template
+                    this.templates[key] = this.createFallbackTemplate(key);
+                }
+            }
             
             // Compile templates with Handlebars
             this.compiledTemplates = {};
             for (const [key, template] of Object.entries(this.templates)) {
-                this.compiledTemplates[key] = Handlebars.compile(template);
+                try {
+                    this.compiledTemplates[key] = Handlebars.compile(template);
+                    console.log(`✅ Compiled template: ${key}`);
+                } catch (e) {
+                    console.error(`❌ Error compiling template ${key}:`, e.message);
+                    
+                    // Create a simple compiled function that returns the template string
+                    this.compiledTemplates[key] = (data) => this.createFallbackTemplate(key, data);
+                }
             }
             
-            console.log('✅ Email templates loaded successfully');
+            console.log('✅ Email templates processed successfully');
         } catch (error) {
             console.error('❌ Error loading email templates:', error);
             console.error('Error details:', {
@@ -102,9 +148,17 @@ class EmailService {
                 __dirname: __dirname,
                 cwd: process.cwd()
             });
+            
             // Initialize with empty templates as fallback
             this.templates = {};
             this.compiledTemplates = {};
+            
+            // Create fallback templates for critical services
+            const services = ['airportParking', 'carWash', 'autoService', 'tireService', 'contactForm', 'default'];
+            for (const service of services) {
+                this.templates[service] = this.createFallbackTemplate(service);
+                this.compiledTemplates[service] = (data) => this.createFallbackTemplate(service, data);
+            }
             
             // Attempt to list all files in potential template directories
             try {
@@ -117,6 +171,56 @@ class EmailService {
                 console.error('Error listing potential template directories:', listError);
             }
         }
+    }
+    
+    // Create a fallback template for missing template files
+    createFallbackTemplate(service, data) {
+        const serviceName = EmailService.formatServiceName(service, 'en');
+        
+        // Basic responsive email template
+        return `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Zima Auto - ${serviceName} Booking Confirmation</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+                    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                    .header { background-color: #00bae5; color: white; padding: 20px; text-align: center; }
+                    .content { padding: 20px; background-color: #f7f7f7; }
+                    .footer { padding: 20px; text-align: center; font-size: 12px; color: #666; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h1>Zima Auto - ${serviceName} Booking Confirmation</h1>
+                    </div>
+                    <div class="content">
+                        <p>Thank you for your booking with Zima Auto.</p>
+                        <p>This is a temporary confirmation email. Our team will contact you shortly with more details.</p>
+                        
+                        <div style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; background-color: #fff;">
+                            <h3>Booking Details:</h3>
+                            <p><strong>Service:</strong> ${serviceName}</p>
+                            ${data?.date ? `<p><strong>Date:</strong> ${data.date}</p>` : ''}
+                            ${data?.time ? `<p><strong>Time:</strong> ${data.time}</p>` : ''}
+                            ${data?.customerName ? `<p><strong>Name:</strong> ${data.customerName}</p>` : ''}
+                        </div>
+                        
+                        <p style="margin-top: 20px;">If you have any questions, please contact us at:</p>
+                        <p><strong>Email:</strong> info@zima-auto.com</p>
+                        <p><strong>Phone:</strong> +36 70 555 0588</p>
+                    </div>
+                    <div class="footer">
+                        &copy; 2025 Zima Auto. All rights reserved.
+                    </div>
+                </div>
+            </body>
+            </html>
+        `;
     }
     
     // Register Handlebars helpers for conditional sections
@@ -171,7 +275,14 @@ class EmailService {
                 'tireService': 'Tire Service'
             }
         };
-        return services[language][serviceId] || serviceId;
+        
+        // Handle the case where the service ID might not be in the mapping
+        if (services[language] && services[language][serviceId]) {
+            return services[language][serviceId];
+        }
+        
+        // Return the service ID as a fallback
+        return serviceId;
     }
     
     // Format service type for display
@@ -352,14 +463,22 @@ class EmailService {
             
             // Select appropriate template based on service type
             const templateKey = bookingData.service || 'default';
-            const compiledTemplate = this.compiledTemplates[templateKey] || this.compiledTemplates.default;
             
+            // Check if compiled template exists, use default or create fallback if not
+            let compiledTemplate = this.compiledTemplates[templateKey];
             if (!compiledTemplate) {
-                throw new Error(`Template not found for service: ${templateKey}`);
+                console.warn(`Warning: Template not found for service: ${templateKey}, using default template`);
+                compiledTemplate = this.compiledTemplates.default || ((data) => this.createFallbackTemplate(templateKey, data));
             }
             
-            // Render the HTML template with data
-            const emailHtml = compiledTemplate(templateData);
+            // Render the HTML template with data, with error handling
+            let emailHtml;
+            try {
+                emailHtml = compiledTemplate(templateData);
+            } catch (templateError) {
+                console.error(`Error rendering template for ${templateKey}:`, templateError);
+                emailHtml = this.createFallbackTemplate(templateKey, templateData);
+            }
             
             // Format a suitable subject line based on service
             const serviceNameEn = EmailService.formatServiceName(bookingData.service, 'en');
@@ -392,7 +511,6 @@ class EmailService {
         }
     }
     
-    // Create HTML for admin notification
     // Send contact form confirmation emails
     async sendContactFormEmails(contactData) {
         const { name, email, message } = contactData;
@@ -410,9 +528,21 @@ class EmailService {
                 message
             };
 
-            // Compile contact form template
-            const compiledTemplate = this.compiledTemplates.contactForm || this.compiledTemplates.default;
-            const emailHtml = compiledTemplate(templateData);
+            // Compile contact form template with fallback handling
+            let compiledTemplate = this.compiledTemplates.contactForm;
+            if (!compiledTemplate) {
+                console.warn('Warning: Contact form template not found, using default template');
+                compiledTemplate = this.compiledTemplates.default || ((data) => this.createFallbackTemplate('contactForm', data));
+            }
+            
+            // Render the HTML template with data, with error handling
+            let emailHtml;
+            try {
+                emailHtml = compiledTemplate(templateData);
+            } catch (templateError) {
+                console.error('Error rendering contact form template:', templateError);
+                emailHtml = this.createFallbackTemplate('contactForm', templateData);
+            }
 
             // Subject line
             const subject = 'Zima Auto - Kapcsolatfelvétel / Contact Form Confirmation';
@@ -606,4 +736,3 @@ class EmailService {
 
 // Export the EmailService class
 module.exports = EmailService;
-

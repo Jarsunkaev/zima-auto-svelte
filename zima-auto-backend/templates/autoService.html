@@ -221,8 +221,6 @@
                 
                 <p>Köszönjük, hogy időpontot foglalt autószerviz szolgáltatásunkra a Zima Auto-nál. Foglalását visszaigazoljuk.</p>
                 
-                <div class="service-type-badge">{{serviceType}}</div>
-                
                 <div class="detail-card">
                     <h3 class="section-title">Foglalás részletei</h3>
                     
@@ -259,7 +257,6 @@
                     <ul>
                         <li>Kérjük, érkezzen 10-15 perccel a foglalt időpont előtt.</li>
                         <li>Gondoskodjon arról, hogy járműve hozzáférhető legyen (távolítsa el a személyes tárgyakat a szervizelendő területekről).</li>
-                        <li>Hozza magával a gépjármű forgalmi engedélyét és szerviz történetét, ha rendelkezésre áll.</li>
                         <li>Ha le szeretné mondani vagy módosítani szeretné az időpontot, kérjük, értesítsen minket legalább 24 órával előre.</li>
                     </ul>
                 </div>
@@ -274,8 +271,6 @@
                 <p class="greeting">Dear {{customerName}},</p>
                 
                 <p>Thank you for scheduling an auto service appointment with Zima Auto. Your booking has been confirmed.</p>
-                
-                <div class="service-type-badge">{{serviceType}}</div>
                 
                 <div class="detail-card">
                     <h3 class="section-title">Appointment Details</h3>
@@ -313,80 +308,12 @@
                     <ul>
                         <li>Please arrive 10-15 minutes before your scheduled appointment time.</li>
                         <li>Ensure that your vehicle is accessible (remove personal items from areas that need service).</li>
-                        <li>Bring your vehicle registration and service history if available.</li>
                         <li>If you need to cancel or reschedule, please contact us at least 24 hours in advance.</li>
                     </ul>
                 </div>
                 
                 <p style="margin-top: 20px;">Our expert team will provide you with a detailed assessment and service plan upon arrival.</p>
             </div>
-            
-            <hr class="language-separator">
-            
-            <!-- Hungarian Section -->
-            <div class="section">
-                <p class="greeting">Tisztelt {{customerName}}!</p>
-                
-                <p>Köszönjük, hogy időpontot foglalt autószerviz szolgáltatásunkra a Zima Auto-nál. Foglalását visszaigazoljuk.</p>
-                
-                <div class="service-type-badge">{{serviceType}}</div>
-                
-                <div class="detail-card">
-                    <h3 class="section-title">Foglalás részletei</h3>
-                    
-                    <div class="detail-item">
-                        <div class="detail-label">Dátum:</div>
-                        <div class="detail-value">{{date}}</div>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <div class="detail-label">Időpont:</div>
-                        <div class="detail-value">{{time}}</div>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <div class="detail-label">Autó típusa:</div>
-                        <div class="detail-value">{{carModel}}</div>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <div class="detail-label">Rendszám:</div>
-                        <div class="detail-value">{{licensePlate}}</div>
-                    </div>
-                    
-                    {{#if notes}}
-                    <div class="detail-item">
-                        <div class="detail-label">További megjegyzések:</div>
-                        <div class="detail-value">{{notes}}</div>
-                    </div>
-                    {{/if}}
-                </div>
-                
-                <div class="preparation-tips">
-                    <h4>Előkészületi tippek:</h4>
-                    <ul>
-                        <li>Kérjük, érkezzen 10-15 perccel a foglalt időpont előtt.</li>
-                        <li>Gondoskodjon arról, hogy járműve hozzáférhető legyen (távolítsa el a személyes tárgyakat a szervizelendő területekről).</li>
-                        <li>Hozza magával a gépjármű forgalmi engedélyét és szerviz történetét, ha rendelkezésre áll.</li>
-                        <li>Ha le szeretné mondani vagy módosítani szeretné az időpontot, kérjük, értesítsen minket legalább 24 órával előre.</li>
-                    </ul>
-                </div>
-                
-                <p style="margin-top: 20px;">Szakértői csapatunk részletes felmérést és szerviztervet biztosít érkezéskor.</p>
-            </div>
-            
-            <div class="contact-box">
-                <p>Contact / Kapcsolat:</p>
-                <p>📞 +36 70 555 0588</p>
-                <p>✉️ info@zima-auto.com</p>
-                <p>📍 Vecsés Széchényi utca 62 mellett, 2220</p>
-            </div>
-        </div>
-        
-        <div class="email-footer">
-            <p>© 2025 Zima Auto. All rights reserved. / Minden jog fenntartva.</p>
-            <p>Best regards / Üdvözlettel, Zima Auto Team / Zima Auto Csapat</p>
-        </div>
     </div>
 </body>
 </html>

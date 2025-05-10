@@ -2,11 +2,18 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Copy only necessary backend files
 COPY package*.json ./
-RUN npm install
+COPY server.js ./
+COPY utils/ ./utils/
+COPY public/ ./public/
+COPY credentials/ ./credentials/
+COPY templates/ ./templates/
 
-COPY . .
+
+# Install only production dependencies
+RUN npm install --production
 
 EXPOSE 3001
 
-CMD ["npm", "start"] 
+CMD ["node", "server.js"] 

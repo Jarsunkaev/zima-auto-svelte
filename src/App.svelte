@@ -1,4 +1,3 @@
-// src/App.svelte
 <script>
 	import { onMount } from 'svelte';
 	import { currentLang } from './lib/i18n';
@@ -34,8 +33,12 @@
 	    currentPage = page;
 	    window.scrollTo(0, 0);
 	    
-	    // Update URL hash
-	    window.history.pushState(null, null, `#${page}`);
+	    // Update URL using HTML5 history API instead of hash
+	    if (page === 'home') {
+	      window.history.pushState(null, null, '/');
+	    } else {
+	      window.history.pushState(null, null, `/${page}`);
+	    }
 	    
 	    // After page loads, remove transition class
 	    setTimeout(() => {
@@ -46,59 +49,64 @@
 	
   // Handle initial page load and redirects
   onMount(() => {
-    // Show initial page immediately instead of delay
+  // Remove the debug comment that appears during redirects
+  if (document.body && document.body.childNodes) {
+    // Check for text nodes that contain the debug comment
+    for (let i = 0; i < document.body.childNodes.length; i++) {
+      const node = document.body.childNodes[i];
+      if (node.nodeType === Node.TEXT_NODE && 
+          (node.textContent.includes('// src/App.svelte') || 
+           node.textContent.includes('import App from'))) {
+        node.textContent = '';
+        console.log('Debug comment removed');
+        break;
+      }
+    }
+  }
+
+    // Show initial page immediately
     pageLoading = false;
     
-    // ALWAYS default to Hungarian language regardless of browser settings
+    // Set language
     currentLang.set('hu');
     localStorage.setItem('zimaAutoLang', 'hu');
     
-    // Handle redirects and route determination
+    // Handle routes - updated for HTML5 history mode
     const handleRouting = () => {
-      // First check if we have a path that needs to be converted to a hash
+      // Get the path from the URL
       const path = window.location.pathname;
       
-      // Check if we have a path that needs to be converted to a hash (excluding root path)
-      if (path !== '/' && path !== '') {
-        // Extract the page name from the path (remove leading slash)
-        const pageName = path.substring(1).split('/')[0];
-        
-        // Check if this is a valid page
-        if (['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(pageName)) {
-          // Redirect to the hash-based URL - we came from a server redirect
-          window.location.replace(`/#${pageName}`);
-          return; // Exit early as we're doing a client-side redirect
-        }
+      // Home page - root path
+      if (path === '/' || path === '') {
+        currentPage = 'home';
+        return;
       }
       
-      // Normal hash-based routing
-      let targetPage = 'home';
-      const hash = window.location.hash.slice(1);
+      // Extract the page name from the path (remove leading slash)
+      const pageName = path.substring(1).split('/')[0];
       
-      if (hash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(hash)) {
-        targetPage = hash;
+      // Check if this is a valid page
+      if (['about', 'services', 'contact', 'booking', 'privacy'].includes(pageName)) {
+        currentPage = pageName;
+      } else {
+        // Not a valid page - go to home or show 404
+        currentPage = 'home';
+        // Optionally redirect to home page
+        window.history.replaceState(null, null, '/');
       }
       
-      currentPage = targetPage;
-      console.log("Current page:", currentPage);
+      console.log('Current page:', currentPage);
     };
     
     // Run the routing logic
     handleRouting();
     
-    // Listen for hash changes
-    window.addEventListener('hashchange', () => {
-      const newHash = window.location.hash.slice(1);
-      if (newHash && ['home', 'about', 'services', 'contact', 'booking', 'privacy'].includes(newHash)) {
-        currentPage = newHash;
-      } else if (!newHash) {
-        currentPage = 'home';
-      }
-    });
+    // Listen for popstate (back/forward browser navigation)
+    window.addEventListener('popstate', handleRouting);
     
     // Clean up event listeners
     return () => {
-      window.removeEventListener('hashchange', () => {});
+      window.removeEventListener('popstate', handleRouting);
     };
   });
 

@@ -3,3 +3,5 @@
 /zima-auto-backend/credentials/service-account.json/
 .DS_Store
 zima-auto-backend/credentials/service-account.json
+.env
+
