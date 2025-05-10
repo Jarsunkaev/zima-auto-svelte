@@ -225,7 +225,7 @@
           />
           <span>
             {currentLang === 'hu' ? 'Elfogadom az ' : 'I accept the '}
-            <a href="#privacy" class="privacy-link">
+            <a href="/privacy" class="privacy-link">
               {currentLang === 'hu' ? 'Adatvédelmi irányelveket' : 'Privacy Policy'}
             </a>
           </span>
@@ -253,7 +253,7 @@
   </form>
   
   <style>
-    .booking-form {
+      .booking-form {
       display: flex;
       flex-direction: column;
       gap: 2rem;

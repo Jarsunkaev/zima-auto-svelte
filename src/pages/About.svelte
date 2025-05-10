@@ -253,7 +253,7 @@
 
   <section class="about-cta">
     <div class="container">
-      <a href="#services" class="btn btn-primary">{content[$currentLang].cta}</a>
+      <a href="/services" class="btn btn-primary">{content[$currentLang].cta}</a>
     </div>
   </section>
 </div>

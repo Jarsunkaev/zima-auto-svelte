@@ -178,7 +178,7 @@
           />
           <span>
             {currentLang === 'hu' ? 'Elfogadom az ' : 'I accept the '}
-            <a href="#privacy" class="privacy-link">
+            <a href="/privacy" class="privacy-link">
               {currentLang === 'hu' ? 'Adatvédelmi irányelveket' : 'Privacy Policy'}
             </a>
           </span>

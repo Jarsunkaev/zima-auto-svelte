@@ -182,7 +182,7 @@
               <li>{feature}</li>
             {/each}
           </ul>
-          <a href="/#booking" class="btn btn-primary">
+          <a href="/booking" class="btn btn-primary">
             {$currentLang === 'hu' ? 'Foglalás' : 'Book now'}
           </a>
         </div>
@@ -247,7 +247,7 @@
               <li>{feature}</li>
             {/each}
           </ul>
-          <a href="/#booking" class="btn btn-primary">
+          <a href="/booking" class="btn btn-primary">
             {$currentLang === 'hu' ? 'Foglalás' : 'Book now'}
           </a>
         </div>
@@ -359,7 +359,7 @@
               <li>{feature}</li>
             {/each}
           </ul>
-          <a href="/#booking" class="btn btn-primary">
+          <a href="/booking" class="btn btn-primary">
             {$currentLang === 'hu' ? 'Foglalás' : 'Book now'}
           </a>
         </div>
@@ -445,7 +445,7 @@
       </div>
 
       <div class="centered-button-container">
-            <a href="/#contact" class="btn btn-primary maintenance-contact-btn">
+            <a href="/contact" class="btn btn-primary maintenance-contact-btn">
               {$currentLang === 'hu' ? 'Kérj árajánlatot' : 'Request a Quote'}
           </a>
       </div>
