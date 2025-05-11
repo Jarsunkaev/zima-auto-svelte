@@ -513,18 +513,18 @@ class EmailService {
     
     // Send contact form confirmation emails
     async sendContactFormEmails(contactData) {
-        const { name, email, message } = contactData;
+        const { customerName, customerEmail, message } = contactData;
 
         // Validate email
-        if (!EmailService.isValidEmail(email)) {
-            throw new Error(`Invalid email address: ${email}`);
+        if (!EmailService.isValidEmail(customerEmail)) {
+            throw new Error(`Invalid email address: ${customerEmail}`);
         }
 
         try {
             // Prepare template data
             const templateData = {
-                customerName: name || 'Kedves Ügyfelünk / Dear Customer',
-                email,
+                customerName: customerName || 'Kedves Ügyfelünk / Dear Customer',
+                email: customerEmail,
                 message
             };
 
@@ -549,7 +549,7 @@ class EmailService {
 
             // Send confirmation to customer
             await this.sendEmail({
-                to: email,
+                to: customerEmail,
                 subject,
                 html: emailHtml
             });
@@ -557,8 +557,8 @@ class EmailService {
             // Send admin notification
             const adminHtml = `
                 <h2>New Contact Form Submission</h2>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Name:</strong> ${customerName}</p>
+                <p><strong>Email:</strong> ${customerEmail}</p>
                 <p><strong>Message:</strong></p>
                 <p>${message}</p>
             `;

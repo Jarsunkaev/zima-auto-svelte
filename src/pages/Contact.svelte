@@ -151,7 +151,7 @@
         customerPhone: formData.phone || '',
         subject: formData.subject || 'Contact Form Inquiry',
         message: formData.message,
-        adminEmail: 'jarsunkaev@gmail.com' // Ensure this is the correct recipient
+        adminEmail: 'ahmedhasimov@zima-auto.com' // Updated admin email
       };
 
       console.log('Sending contact form data to backend:', contactData);

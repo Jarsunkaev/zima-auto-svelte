@@ -559,14 +559,25 @@ app.post('/api/send-booking-emails', async (req, res) => {
         console.log(`Processing service booking (${bookingData.service}) for Google Calendar`);
         console.log(`Received date: ${bookingData.date}, time: ${bookingData.time} for service ${bookingData.service}`);
 
+        // Generate all potential slots for this service
+        const allPotentialSlots = generateTimeSlots(bookingData.service);
+        console.log('Generated time slots:', allPotentialSlots);
+        
         // Check if the exact time slot is available for THIS service only
-        const busySlots = await checkTimeSlotAvailability(calendar, bookingData.date, bookingData.service);
-        if (busySlots.includes(bookingData.time)) {
-          console.warn(`Selected time slot ${bookingData.time} for ${bookingData.service} is no longer available.`);
-          return res.status(409).json({
-            success: false,
-            message: 'The selected time slot is no longer available. Please choose another time slot.'
-          });
+        try {
+            const busySlots = await checkTimeSlotAvailability(calendar, bookingData.date, bookingData.service, allPotentialSlots);
+            console.log('Busy slots:', busySlots);
+            
+            if (busySlots && busySlots.includes(bookingData.time)) {
+                console.warn(`Selected time slot ${bookingData.time} for ${bookingData.service} is no longer available.`);
+                return res.status(409).json({
+                    success: false,
+                    message: 'The selected time slot is no longer available. Please choose another time slot.'
+                });
+            }
+        } catch (availabilityError) {
+            console.error('Error checking time slot availability:', availabilityError);
+            // Continue with booking even if availability check fails
         }
 
         // Format customer name
