@@ -31,11 +31,12 @@
   }
 </script>
 
-<div 
+<button 
   class="service-card {isVisible ? 'visible' : ''} {isHovered ? 'hovered' : ''}" 
   style="transition-delay: {100 * index}ms"
   on:mouseenter={handleMouseEnter}
   on:mouseleave={handleMouseLeave}
+  on:click={ctaAction}
 >
   <div class="service-icon">
     {@html svgIcon}
@@ -47,13 +48,13 @@
   <div class="service-overlay" style="background-image: url('{image}')"></div>
   <div class="gradient-overlay"></div>
   
-  <div class="card-action" on:click={ctaAction} on:keydown={(e) => e.key === 'Enter' && ctaAction()} tabindex="0" role="button">
+  <div class="card-action">
     <span>{ctaText}</span>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </div>
-</div>
+</button>
 
 <style>
   .service-card {
@@ -71,6 +72,10 @@
     transition: all 0.4s ease;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
     z-index: 1;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
   }
   
   .service-card.visible {

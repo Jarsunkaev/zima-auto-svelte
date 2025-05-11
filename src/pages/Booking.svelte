@@ -207,9 +207,6 @@
             {lang === 'hu' ? 'Vissza' : 'Back'}
           </button>
 
-          <h2 class="form-title">
-             {content[lang].bookingForm[selectedService]?.title || ''}
-          </h2>
         </div>
 
         <div class="booking-form-container">
@@ -359,12 +356,7 @@
    }
 
 
-  .form-title {
-    margin-left: 2rem;
-    font-size: 1.8rem;
-    flex-grow: 1;
-    text-align: center;
-  }
+  
 
   .booking-form-container {
     max-width: 800px;
@@ -407,20 +399,11 @@
     .back-button {
       margin-bottom: 1rem;
     }
-
-    .form-title {
-      margin-left: 0;
-      text-align: left;
-      font-size: 1.5rem;
-    }
   }
 
   @media screen and (max-width: 480px) {
     .booking-hero h1 {
       font-size: 1.8rem;
-    }
-    .form-title {
-      font-size: 1.3rem;
     }
     .booking-form-container {
       padding: 1rem;

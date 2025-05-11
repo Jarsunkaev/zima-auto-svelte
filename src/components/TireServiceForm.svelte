@@ -119,6 +119,7 @@
   </script>
   
   <form on:submit|preventDefault={handleSubmit} class="booking-form">
+    <h2 class="form-title">{currentLang === 'hu' ? 'GUMISZERVIZ IDŐPONTFOGLALÁS' : 'TIRE SERVICE BOOKING'}</h2>
     <div class="form-section">
       <h3>{content[currentLang].bookingForm.tireService.serviceType}</h3>
       <div class="service-types">
@@ -257,6 +258,19 @@
   </form>
   
   <style>
+    .form-title {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .form-section h3 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
     .booking-form {
       display: flex;
       flex-direction: column;

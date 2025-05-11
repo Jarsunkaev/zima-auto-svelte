@@ -974,6 +974,15 @@
       gap: 3rem;
     }
 
+    .service-content h2 {
+      text-align: center;
+    }
+
+    .car-wash-title,
+    .tire-service-block h3 {
+        text-align: center;
+    }
+
     .service-grid.reverse {
       direction: ltr;
     }
@@ -1154,4 +1163,5 @@
   .scrollable-table::-webkit-scrollbar-thumb:hover {
       background: #555;
   }
+
 </style>

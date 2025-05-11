@@ -223,6 +223,7 @@
 </script>
 
 <form class="booking-form" on:submit|preventDefault={handleSubmit}>
+  <h2 class="form-title">{currentLang === 'hu' ? 'REPÜLŐTÉRI PARKOLÁS FOGLALÁS' : 'AIRPORT PARKING BOOKING'}</h2>
   <div class="form-section">
     <div class="form-row">
       <h3>{content[currentLang].bookingForm.airportParking.dateRange}</h3>
@@ -349,6 +350,14 @@
 </form>
 
 <style>
+  .form-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
   .booking-form {
     width: 100%;
   }

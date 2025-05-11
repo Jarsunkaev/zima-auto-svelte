@@ -117,6 +117,7 @@
   </script>
   
   <form class="booking-form" on:submit|preventDefault={handleSubmit}>
+    <h2 class="form-title">{currentLang === 'hu' ? 'AUTÓMOSÁS IDŐPONTFOGLALÁS' : 'CAR WASH BOOKING'}</h2>
     <div class="form-section">
       <h3>{content[currentLang].bookingForm.carWash.dateTime || (currentLang === 'hu' ? 'Időpont kiválasztása' : 'Select Date & Time')}</h3>
       <div class="date-time-selector">
@@ -202,6 +203,19 @@
   </form>
   
   <style>
+    .form-title {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .form-section h3 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
     .booking-form {
       display: flex;
       flex-direction: column;
