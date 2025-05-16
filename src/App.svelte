@@ -9,6 +9,7 @@
 	import Contact from './pages/Contact.svelte';
 	import Booking from './pages/Booking.svelte';
 	import Privacy from './pages/Privacy.svelte';
+	import ThankYou from './pages/ThankYou.svelte';  // Using the pages/ThankYou component
 	import DiscountPopup from './components/DiscountPopup.svelte';
 	import CookieConsent from './components/CookieConsent.svelte';
   
@@ -72,31 +73,38 @@
     localStorage.setItem('zimaAutoLang', 'hu');
     
     // Handle routes - updated for HTML5 history mode
-    const handleRouting = () => {
-      // Get the path from the URL
-      const path = window.location.pathname;
-      
-      // Home page - root path
-      if (path === '/' || path === '') {
-        currentPage = 'home';
-        return;
-      }
-      
-      // Extract the page name from the path (remove leading slash)
-      const pageName = path.substring(1).split('/')[0];
-      
-      // Check if this is a valid page
-      if (['about', 'services', 'contact', 'booking', 'privacy'].includes(pageName)) {
-        currentPage = pageName;
-      } else {
-        // Not a valid page - go to home or show 404
-        currentPage = 'home';
-        // Optionally redirect to home page
-        window.history.replaceState(null, null, '/');
-      }
-      
-      console.log('Current page:', currentPage);
-    };
+    // Handle routes - updated for HTML5 history mode
+const handleRouting = () => {
+  // Get the path from the URL
+  const path = window.location.pathname;
+  
+  // Handle thank you page route
+  if (path === '/thankyou') {
+    currentPage = 'thankyou';
+    return;
+  }
+  
+  // Home page - root path
+  if (path === '/' || path === '') {
+    currentPage = 'home';
+    return;
+  }
+  
+  // Extract the page name from the path (remove leading slash)
+  const pageName = path.substring(1).split('/')[0];
+  
+  // Check if this is a valid page
+  if (['about', 'services', 'contact', 'booking', 'privacy', 'thankyou'].includes(pageName)) {
+    currentPage = pageName;
+  } else {
+    // Not a valid page - go to home or show 404
+    currentPage = 'home';
+    // Optionally redirect to home page
+    window.history.replaceState(null, null, '/');
+  }
+  
+  console.log('Current page:', currentPage);
+};
     
     // Run the routing logic
     handleRouting();
@@ -136,11 +144,13 @@
     {:else if currentPage === 'services'}
       <Services {lang} />
     {:else if currentPage === 'contact'}
-      <Contact {lang} />
+      <Contact {navigate} {lang} />
     {:else if currentPage === 'booking'}
       <Booking {lang} />
     {:else if currentPage === 'privacy'}
       <Privacy {lang} />
+    {:else if currentPage === 'thankyou'}
+      <ThankYou {lang} />
     {:else}
       <!-- Fallback if no page matches -->
       <div class="error-container">

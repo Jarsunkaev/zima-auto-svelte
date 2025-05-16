@@ -2,6 +2,9 @@
   import { onMount } from 'svelte';
   import { currentLang, t } from '../lib/i18n';
   import { gsap } from 'gsap';
+  
+  // Add navigate as a prop
+  export let navigate;
   // Ensure ScrollTrigger is installed (npm install gsap scrolltrigger)
   // and imported if you want the map animation to trigger on scroll.
   // If you don't want scroll-triggered map animation, remove these lines
@@ -132,110 +135,72 @@
   }
 
   async function handleSubmit() {
-    if (!validateForm()) {
-      errorMessage = $currentLang === 'hu'
-        ? 'Kérjük javítsa a hibákat az űrlapon.'
-        : 'Please correct the errors in the form.';
-      isSuccess = false; // Ensure success message is hidden
-      return;
-    }
-
-    isSubmitting = true;
-    errorMessage = ''; // Clear previous errors
-
-    try {
-      const contactData = {
-        service: 'contactForm',
-        customerName: formData.name,
-        customerEmail: formData.email,
-        customerPhone: formData.phone || '',
-        subject: formData.subject || 'Contact Form Inquiry',
-        message: formData.message,
-        adminEmail: 'ahmedhasimov@zima-auto.com' // Updated admin email
-      };
-
-      console.log('Sending contact form data to backend:', contactData);
-
-      const response = await fetch('https://zima-auto-backend.fly.dev/api/send-contact-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(contactData)
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        console.log('Contact form submitted successfully:', result);
-        isSuccess = true;
-        errorMessage = ''; // Clear any previous error
-
-        // Reset form after successful submission
-        formData = {
-          name: '',
-          email: '',
-          phone: '',
-          subject: '',
-          message: ''
-        };
-        formErrors = {}; // Also clear form errors on success
-
-        // Hide success message after a few seconds
-        setTimeout(() => {
-          isSuccess = false;
-        }, 5000);
-      } else {
-        console.error('Backend reported failure:', response.status, result.message);
-        errorMessage = result.message || ($currentLang === 'hu'
-          ? 'Hiba történt az üzenet küldése során. Kérjük, próbálja újra később.'
-          : 'An error occurred while sending your message. Please try again later.');
-        isSuccess = false;
-      }
-    } catch (error) {
-      console.error('Error submitting contact form:', error);
-      errorMessage = $currentLang === 'hu'
-        ? 'Hiba történt a szerverhez való kapcsolódás során. Kérjük, próbálja újra később.'
-        : 'An error occurred while connecting to the server. Please try again later.';
-      isSuccess = false;
-    } finally {
-      isSubmitting = false;
-    }
+  if (!validateForm()) {
+    errorMessage = $currentLang === 'hu'
+      ? 'Kérjük javítsa a hibákat az űrlapon.'
+      : 'Please correct the errors in the form.';
+    isSuccess = false; // Ensure success message is hidden
+    return;
   }
 
-  onMount(() => {
-    // Animate info cards - removed opacity
-    gsap.from('.contact-info .info-card', {
-      y: 30,
-      duration: 0.6,
-      stagger: 0.15,
-      delay: 0.2,
-      ease: 'power2.out'
+  isSubmitting = true;
+  errorMessage = ''; // Clear previous errors
+
+  try {
+    const contactData = {
+      service: 'contactForm',
+      customerName: formData.name,
+      customerEmail: formData.email,
+      customerPhone: formData.phone || '',
+      subject: formData.subject || 'Contact Form Inquiry',
+      message: formData.message,
+      adminEmail: 'ahmedhasimov@zima-auto.com' // Updated admin email
+    };
+
+    console.log('Sending contact form data to backend:', contactData);
+
+    const response = await fetch('https://zima-auto-backend.fly.dev/api/send-contact-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(contactData)
     });
 
-    // Animate form container - removed opacity
-    gsap.from('.contact-form-container', {
-      x: 50,
-      duration: 0.8,
-      delay: 0.4,
-      ease: 'power2.out'
-    });
+    const result = await response.json();
 
-     // Basic animation for the map section
-      gsap.from('.map-section', {
-          y: 50,
-          duration: 0.8,
-          delay: 0.6, // Animate after info and form
-          ease: 'power2.out',
-           // Consider ScrollTrigger if the map is below the initial viewport
-           // You need ScrollTrigger imported and registered for this to work
-          // scrollTrigger: {
-          //     trigger: '.map-section',
-          //     start: 'top 80%',
-          //     // markers: true
-          // }
-      });
-  });
+    if (response.ok) {
+      console.log('Contact form submitted successfully:', result);
+      
+      // Reset form after successful submission
+      formData = {
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      };
+      formErrors = {}; // Also clear form errors on success
+
+      // Use navigate function for client-side routing to thank you page
+      navigate('thankyou');
+    } else {
+      console.error('Backend reported failure:', response.status, result.message);
+      errorMessage = result.message || ($currentLang === 'hu'
+        ? 'Hiba történt az üzenet küldése során. Kérjük, próbálja újra később.'
+        : 'An error occurred while sending your message. Please try again later.');
+      isSuccess = false;
+    }
+  } catch (error) {
+    console.error('Error submitting contact form:', error);
+    errorMessage = $currentLang === 'hu'
+      ? 'Hiba történt a szerverhez való kapcsolódás során. Kérjük, próbálja újra később.'
+      : 'An error occurred while connecting to the server. Please try again later.';
+    isSuccess = false;
+  } finally {
+    isSubmitting = false;
+  }
+}
 
   // Function to open Google Maps directions to Zima Auto
   // This function is now directly called by the button on the contact page

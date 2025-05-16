@@ -1,4 +1,11 @@
 export default {
+  thankYou: {
+    title: "Köszönjük!",
+    message: "Az űrlapot sikeresen elküldtük. Köszönjük érdeklődését szolgáltatásaink iránt, és a lehető leghamarabb feldolgozzuk kérését.",
+    contactInfo: "Ha bármilyen kérdése van, forduljon hozzánk bizalommal a 06 70 555 0588 telefonszámon vagy az info@zima-auto.com e-mail címen.",
+    homeButton: "VISSZA A FŐOLDALRA",
+    contactButton: "KAPCSOLAT"
+  },
   common: { // Added common section
     back: "Vissza"
   },

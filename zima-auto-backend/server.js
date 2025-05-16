@@ -731,15 +731,20 @@ app.use(express.static(publicPath, {
   index: false
 }));
 
-// Serve index.html for all routes except static files
-app.get('*', (req, res) => {
-  // Detailed logging for route handling
+// Enhanced catch-all route handler for SPA
+app.get('*', (req, res, next) => {
+  // Enhanced logging for route handling
   console.log(`[Route Handling] Requested path: ${req.path}`);
+
+  // Explicitly handle /thankyou route
+  if (req.path === '/thankyou') {
+    console.log('[Special Route] Handling Thank You page route');
+  }
 
   // Exclude routes that might be static files
   if (req.path.match(/\.(html|js|css|png|jpg|jpeg|gif|svg|ico|txt|xml)$/)) {
     console.log(`[Static File] Requested static file: ${req.path}`);
-    return res.status(404).send('Not Found');
+    return next(); // Let the static middleware handle it
   }
 
   // Check if the requested path starts with /api - don't serve index.html for API routes
@@ -749,37 +754,17 @@ app.get('*', (req, res) => {
   }
 
   const indexPath = path.join(publicPath, 'index.html');
-  console.log('Attempting to serve index.html from:', indexPath);
+  console.log('Serving index.html for path:', req.path);
   
-  // Check if index.html exists
-  try {
-    // Verify index.html exists
-    fs.accessSync(indexPath, fs.constants.F_OK);
-    
-    // Send the index.html for all routes
-    res.sendFile(indexPath, (err) => {
-      if (err) {
-        console.error('Error sending index.html:', err);
-        res.status(500).send(`File send error: ${err.message}`);
-      }
-    });
-  } catch (err) {
-    console.error('Error accessing index.html:', err);
-    
-    // More detailed error response
-    res.status(500).send(`Server configuration error: ${err.message}`);
-  }
-});
-
-// Comprehensive error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Unhandled server error:', {
-    message: err.message,
-    stack: err.stack,
-    method: req.method,
-    path: req.path
+  // Send the index.html for all routes
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error('Error sending index.html:', err);
+      res.status(500).send(`File send error: ${err.message}`);
+    } else {
+      console.log(`Successfully served index.html for: ${req.path}`);
+    }
   });
-  res.status(500).send(`Critical server error: ${err.message}`);
 });
 
 // Contact Form Submission Route

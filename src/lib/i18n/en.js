@@ -1,4 +1,11 @@
 export default {
+  thankYou: {
+    title: "Thank You!",
+    message: "Your form has been successfully submitted. We appreciate your interest in our services and will process your request as soon as possible.",
+    contactInfo: "If you have any questions, feel free to contact us at 06 70 555 0588 or info@zima-auto.com.",
+    homeButton: "BACK TO HOME",
+    contactButton: "CONTACT US"
+  },
   cookieConsent: {
     title: "Cookie Settings",
     message: "We use cookies to enhance your browsing experience, serve personalized content, and analyze our traffic. By clicking 'Accept', you consent to our use of cookies.",
