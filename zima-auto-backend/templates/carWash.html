@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zima Auto - Autómosás / Car Wash</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        /* Base styles with mobile-first approach */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f9;
+        }
+        
+        .email-container {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #00bae5, #0088cc);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .email-logo {
+            margin-bottom: 15px;
+        }
+        
+        .email-logo img {
+            max-height: 50px;
+        }
+        
+        .email-title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        
+        .email-subtitle {
+            margin-top: 5px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .email-body {
+            padding: 30px 20px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #00bae5;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-card {
+            background-color: #f9fafb;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 5px solid #00bae5;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            width: 150px;
+            margin-right: 10px;
+        }
+        
+        .detail-value {
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .contact-box {
+            background-color: #e6f2ff;
+            border-radius: 8px;
+            padding: 15px;
+            color: #0056b3;
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .contact-box p {
+            margin: 5px 0;
+            font-weight: 600;
+        }
+        
+        .email-footer {
+            background-color: #f4f7f9;
+            padding: 20px;
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+        }
+        
+        .car-wash-icon {
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .car-wash-icon svg {
+            width: 80px;
+            height: 80px;
+            fill: #00bae5;
+        }
+        
+        .important-note {
+            background-color: #fff8e6;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .important-note p {
+            margin: 0;
+            font-weight: 500;
+        }
+        
+        /* Language separator */
+        .language-separator {
+            border: none;
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .language-separator::after {
+            content: 'EN / HU';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            padding: 0 15px;
+            color: #888;
+            font-size: 12px;
+        }
+        
+        /* Responsive adjustments */
+        @media only screen and (max-width: 600px) {
+            .email-body {
+                padding: 20px 15px;
+            }
+            
+            .detail-label,
+            .detail-value {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="email-header">
+            <div class="email-logo">
+                <img src="https://zima-auto.com/images/zima-logo.avif" alt="Zima Auto Logo" />
+            </div>
+            <h1 class="email-title">Foglalás visszaigazolás / Booking Confirmation</h1>
+            <p class="email-subtitle">Autómosás / Car Wash</p>
+        </div>
+        
+        <div class="email-body">
+            <!-- Hungarian Section -->
+            <div class="section">
+                <p class="greeting">Tisztelt {{customerName}}!</p>
+                
+                <p>Köszönjük, hogy időpontot foglalt autómosásra a Zima Auto-nál. Foglalását visszaigazoljuk.</p>
+                
+                
+                <div class="detail-card">
+                    <h3 class="section-title">Foglalás részletei</h3>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Dátum:</div>
+                        <div class="detail-value">{{date}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Időpont:</div>
+                        <div class="detail-value">{{time}}</div>
+                    </div>
+                    
+                    {{#if notes}}
+                    <div class="detail-item">
+                        <div class="detail-label">További megjegyzések:</div>
+                        <div class="detail-value">{{notes}}</div>
+                    </div>
+                    {{/if}}
+                </div>
+                
+                <div class="important-note">
+                    <p>Kérjük, érkezzen 5-10 perccel a foglalt időpont előtt. Ha le szeretné mondani vagy módosítani szeretné az időpontot, kérjük, értesítsen minket legalább 2 órával előtte.</p>
+                </div>
+            </div>
+            
+            <hr class="language-separator">
+            
+            <!-- English Section -->
+            <div class="section">
+                <p class="greeting">Dear {{customerName}},</p>
+                
+                <p>Köszönjük, hogy időpontot foglalt autómosásra a Zima Auto-nál. Foglalását visszaigazoljuk.</p>
+                
+                <div class="detail-card">
+                    <h3 class="section-title">Foglalás részletei</h3>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Dátum:</div>
+                        <div class="detail-value">{{date}}</div>
+                    </div>
+                    
+                    <div class="detail-item">
+                        <div class="detail-label">Időpont:</div>
+                        <div class="detail-value">{{time}}</div>
+                    </div>
+                    
+                    {{#if notes}}
+                    <div class="detail-item">
+                        <div class="detail-label">További megjegyzések:</div>
+                        <div class="detail-value">{{notes}}</div>
+                    </div>
+                    {{/if}}
+                </div>
+                
+                <div class="important-note">
+                    <p>Kérjük, érkezzen 5-10 perccel a foglalt időpont előtt. Ha le szeretné mondani vagy módosítani szeretné az időpontot, kérjük, értesítsen minket legalább 2 órával előtte.</p>
+                </div>
+            </div>
+            
+            <div class="contact-box">
+                <p>Contact / Kapcsolat:</p>
+                <p>📞 +36 70 555 0588</p>
+                <p>✉️ info@zima-auto.com</p>
+                <p>📍 Vecsés Széchényi utca 62 mellett, 2220</p>
+            </div>
+        </div>
+        
+        <div class="email-footer">
+            <p>© 2025 Zima Auto. All rights reserved. / Minden jog fenntartva.</p>
+            <p>Best regards / Üdvözlettel, Zima Auto Team / Zima Auto Csapat</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# flyctl launch added from .gitignore
+node_modules
+public/build
+zima-auto-backend/credentials/service-account.json
+**/.DS_Store
+**/zima-auto-backend/credentials/service-account.json
+
+# flyctl launch added from zima-auto-backend/.gitignore
+zima-auto-backend/**/zima-auto-backend/credentials/service-account.json
+zima-auto-backend/node_modules
+fly.toml

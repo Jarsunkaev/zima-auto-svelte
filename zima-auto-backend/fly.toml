@@ -1,0 +1,31 @@
+# fly.toml app configuration file generated for zima-auto-backend on 2025-04-28T12:59:11+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'zima-auto-backend'
+primary_region = 'fra'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 1024
+
+[http_service]
+  internal_port = 3001
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[http_service.domains]]
+  name = "zima-auto.com"
+  zone = "zima-auto.com"
+
+[[http_service.domains]]
+  name = "www.zima-auto.com"
+  zone = "zima-auto.com"
