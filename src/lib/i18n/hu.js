@@ -20,7 +20,11 @@ export default {
     home: "FŐOLDAL",
     booking: "FOGLALÁS",
     about: "RÓLUNK",
+<<<<<<< HEAD
     services: "SZOLGÁLTATÁSOK & ÁRAK",
+=======
+    services: "SZOLGÁLTATÁSOK",
+>>>>>>> origin/main
     contact: "KAPCSOLAT"
   },
   hero: {
