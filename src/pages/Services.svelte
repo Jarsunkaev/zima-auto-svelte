@@ -576,6 +576,7 @@
     -webkit-overflow-scrolling: touch;
     padding: 1rem 0;
     scrollbar-width: none; /* Hide scrollbar for Firefox */
+    scroll-padding: 0 5%; /* Add padding for better centering */
   }
 
   .kebab-carousel::-webkit-scrollbar {
@@ -584,7 +585,7 @@
 
   .kebab-carousel-item {
     flex: 0 0 calc(33.333% - 1rem);
-    scroll-snap-align: start;
+    scroll-snap-align: center;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -657,13 +658,25 @@
     .kebab-carousel {
       gap: 1rem;
       padding: 1rem 0;
+      padding-left: 5%;
+      padding-right: 5%;
+      scroll-padding: 0 5%;
     }
     
     .kebab-carousel-item {
       flex: 0 0 90%;
       height: 250px;
-      margin: 0 5%;
       scroll-snap-align: center;
+      margin: 0;
+      margin-right: 5%;
+    }
+    
+    .kebab-carousel-item:last-child {
+      margin-right: 0;
+    }
+    
+    .kebab-carousel-nav {
+      display: none;
     }
     
     .kebab-carousel-nav {
