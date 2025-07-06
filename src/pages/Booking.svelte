@@ -30,8 +30,9 @@
   });
 
   // Define the backend API URL
-  // Ensure this matches your backend server address and port
-  const backendApiUrl = 'https://zima-auto-backend.fly.dev/api/send-booking-emails';
+  // Using environment variable if available, otherwise default to the base URL
+  const BACKEND_API_URL = import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev';
+  const backendApiUrl = `${BACKEND_API_URL}/api/send-booking-emails`;
 
   // Handle service selection (Step 1 -> Step 2)
   function selectService(service) {
@@ -82,6 +83,14 @@
     const formData = event.detail; // Data dispatched from the child form component
     console.log('Booking.svelte received bookingComplete event with data:', formData);
 
+    // Validate required fields
+    if (!formData.contact?.email && !formData.email) {
+      console.error('Email is required');
+      submitError = 'Email is required';
+      isSubmitting = false;
+      return;
+    }
+
     isSubmitting = true; // Start submission process
     submitError = null; // Clear previous errors
     submitSuccess = false; // Reset success state
@@ -93,62 +102,121 @@
       const emailData = {
         service: formData.service, // Service type (e.g., 'carWash', 'airportParking')
         customerName: formData.name, // Full name
-        // Access email/phone from the nested contact object
-        customerEmail: formData.contact?.email,
-        customerPhone: formData.contact?.phone,
+        // Ensure email is available at root level for backward compatibility
+        email: formData.contact?.email || formData.email,
+        // Access email/phone from the nested contact object or root level
+        customerEmail: formData.contact?.email || formData.email,
+        customerPhone: formData.contact?.phone || formData.phone,
+        // Include phone at root level for compatibility
+        phone: formData.contact?.phone || formData.phone,
         date: formData.date, // Date (YYYY-MM-DD or date range string for parking)
         time: formData.time || '', // Time (HH:MM or empty for parking)
 
+        // Include all date-related fields for better backend processing
+        startDate: formData.startDate || formData.date?.split(' ')[0],
+        endDate: formData.endDate || formData.date?.split(' ')[3],
+        startTime: formData.startTime || formData.time || '12:00',
+        endTime: formData.endTime || formData.time || '12:00',
+
         // Fields specific to Airport Parking (may be undefined for other services)
-        days: formData.days || null,
+        days: formData.days || (formData.service === 'airportParking' ? 1 : null),
         licensePlate: formData.licensePlate || '', // License plate
         carWashPackage: formData.carWashPackage || 'none', // Car wash package for parking
-        priceBreakdown: formData.priceBreakdown || null, // Price details for parking
-        totalPrice: formData.totalPrice || null, // Total price
+        priceBreakdown: formData.priceBreakdown || {}, // Price details for parking
+        totalPrice: formData.totalPrice || 0, // Total price
 
         // Fields specific to Auto/Tire Service (may be undefined for other services)
         serviceType: formData.serviceType || '', // Specific type of auto/tire service
         carModel: formData.carModel || '', // Car model
         notes: formData.notes || '', // Additional notes
-        tireCount: formData.tireCount || null, // Number of tires for tire service
+        tireCount: formData.tireCount || (formData.service === 'tireService' ? 4 : null),
+        passengers: formData.passengers || 1, // Number of passengers
 
-        // Always include admin email (ensure this is correct)
-        adminEmail: 'ahmedhasimov@zima-auto.com'
+        // Always include admin email
+        adminEmail: 'ahmedhasimov@zima-auto.com',
+        
+        // Add timestamps
+        createdAt: new Date().toISOString()
       };
 
-      console.log('Booking.svelte sending data to backend API:', emailData);
+      console.log('Sending booking data to backend API:', emailData);
 
-      // Send data to your backend API endpoint
-      const response = await fetch(backendApiUrl, {
+      // Use the environment variable for the API URL with fallback - ensure no trailing slash
+      let apiUrl = import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev';
+      apiUrl = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl; // Remove trailing slash if present
+      console.log('Using API URL:', apiUrl);
+      
+      // Use the send-booking-emails endpoint directly
+      const endpoint = `${apiUrl}/send-booking-emails`;
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify(emailData)
       });
 
+      // Handle response
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Backend error response:', errorText);
+        throw new Error(`Server responded with status ${response.status}: ${errorText}`);
+      }
+
       // Parse the JSON response from the backend
       const result = await response.json();
+      console.log('Backend response:', result);
 
-      if (response.ok) {
-        // Backend reported success (status code 2xx)
-        console.log('Backend booking process reported successful:', result);
-        bookingDetails = formData; // Store the original form data for the confirmation page
-        submitSuccess = true; // Set success state
-        submitError = null; // Clear any previous error
-        showConfirmation = true; // Show the confirmation page
+      // Handle successful response
+      if (result.success && result.data) {
+        console.log('Booking successful:', result);
+        submitSuccess = true;
+        showConfirmation = true;
+        
+        // Extract data from the response
+        const { data } = result;
+        
+        // Ensure we have all required fields for the confirmation
+        bookingDetails = { 
+          ...emailData,
+          // Use response data first, fallback to form data
+          id: data.id || 'N/A',
+          referenceNumber: data.referenceNumber || data.id || 'N/A',
+          bookingDate: new Date().toLocaleDateString(),
+          bookingTime: new Date().toLocaleTimeString(),
+          // Ensure contact info is properly structured with fallbacks
+          contact: {
+            name: data.contact?.name || emailData.contact?.name || emailData.name || '',
+            email: data.contact?.email || emailData.contact?.email || emailData.email || '',
+            phone: data.contact?.phone || emailData.contact?.phone || emailData.phone || '',
+            ...emailData.contact
+          }
+        };
+        
+        console.log('Booking details prepared:', bookingDetails);
+        
+        // Scroll to the confirmation section for better UX
+        setTimeout(() => {
+          const confirmationSection = document.querySelector('.confirmation-section');
+          if (confirmationSection) {
+            window.scrollTo({
+              top: confirmationSection.offsetTop - 100,
+              behavior: 'smooth'
+            });
+          }
+        }, 100);
       } else {
-        // Backend reported an error (status code not 2xx)
-        console.error('Backend booking process reported failure:', response.status, result.message);
-        // Display the error message from the backend if available, otherwise a generic one
-        submitError = result.message || (lang === 'hu'
-          ? 'Hiba történt a foglalás feldolgozása során.'
-          : 'An error occurred during booking processing.');
-        submitSuccess = false; // Ensure success state is false
+        throw new Error(result.message || 'Unknown error from server');
       }
     } catch (error) {
-      // An error occurred during the fetch request itself (e.g., network error)
-      console.error('Error submitting booking request to backend:', error);
+      console.error('Error submitting booking:', error);
+      
+      // Set error message for display to user
+      submitError = error.message || 'Hiba történt a foglalás során. Kérjük, próbálja újra később.';
+      
+      // Log additional error details for debugging
+      console.error('Error details:', error);
       submitError = lang === 'hu'
         ? 'Hiba történt a szerverhez való kapcsolódás során.'
         : 'An error occurred while connecting to the server.';

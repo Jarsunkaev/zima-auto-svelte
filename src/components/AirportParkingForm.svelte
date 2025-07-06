@@ -30,8 +30,14 @@
     firstName: '',
     lastName: '',
     email: '',
-    phone: ''
+    phone: '' // Ensure phone is initialized as empty string
   };
+  
+  // Ensure formData.phone is always a string to prevent undefined errors
+  $: if (formData.phone === undefined) formData.phone = '';
+  
+  // Make sure formData is reactive
+  $: console.log('Form data updated:', formData);
   
   // Form validation
   let formErrors = {
@@ -113,6 +119,10 @@
     // Reset specific errors
     formErrors.licensePlate = '';
     formErrors.passengers = '';
+    formErrors.firstName = '';
+    formErrors.lastName = '';
+    formErrors.email = '';
+    formErrors.phone = '';
     
     // Validate service-specific fields
     if (!formData.licensePlate.trim()) {
@@ -124,6 +134,27 @@
     const numPassengers = parseInt(formData.passengers);
     if (isNaN(numPassengers) || numPassengers < 1 || numPassengers > 20) {
       formErrors.passengers = content[currentLang].bookingForm.airportParking.passengersRequired;
+      isValid = false;
+    }
+    
+    // Validate personal info fields
+    if (!formData.firstName.trim()) {
+      formErrors.firstName = content[currentLang].bookingForm.firstNameRequired;
+      isValid = false;
+    }
+    
+    if (!formData.lastName.trim()) {
+      formErrors.lastName = content[currentLang].bookingForm.lastNameRequired;
+      isValid = false;
+    }
+    
+    if (!formData.email.trim() || !formData.email.includes('@')) {
+      formErrors.email = content[currentLang].bookingForm.emailRequired;
+      isValid = false;
+    }
+    
+    if (!formData.phone.trim() || formData.phone.length < 8) {
+      formErrors.phone = content[currentLang].bookingForm.phoneRequired;
       isValid = false;
     }
     
@@ -156,71 +187,114 @@
   }
   
   // Handle form submission
-  function handleSubmit() {
+  async function handleSubmit() {
+    // Prevent multiple submissions
+    if (isSubmitting) return;
+    
     if (!validateForm()) {
-      // Scroll to the first error message if validation fails
-      setTimeout(() => {
-        const firstError = document.querySelector('.error-message');
-        if (firstError) {
-          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 50);
       return;
     }
     
     isSubmitting = true;
     
-    // Simulate API call
-    setTimeout(() => {
-      // Create booking details object to pass to the parent component
-      const bookingDetails = {
-        service: 'airportParking',
-        name: `${formData.lastName} ${formData.firstName}`,
-        contact: {
-          email: formData.email,
-          phone: formData.phone
-        },
-        date: `${formData.startDate} ${formData.startTime} - ${formData.endDate} ${formData.endTime}`,
-        days: calculatedPrices.parkingDays,
-        licensePlate: formData.licensePlate,
-        passengers: formData.passengers
+    // Create booking details object to pass to the parent component
+    const bookingDetails = {
+      service: 'airportParking',
+      name: `${formData.firstName} ${formData.lastName}`.trim(),
+      // Include both nested and root level contact info for compatibility
+      contact: {
+        email: formData.email,
+        phone: formData.phone
+      },
+      // Also include email/phone at root level
+      email: formData.email,
+      phone: formData.phone,
+      // Date and time information
+      date: `${formData.startDate} ${formData.startTime} - ${formData.endDate} ${formData.endTime}`,
+      // Include dates and times as separate fields for Google Sheets
+      startDate: formData.startDate,
+      startTime: formData.startTime,
+      endDate: formData.endDate,
+      endTime: formData.endTime,
+      // Add arrival/departure fields for better readability
+      arrivalDate: formData.startDate,
+      departureDate: formData.endDate,
+      arrivalTime: formData.startTime,
+      departureTime: formData.endTime,
+      // Other booking details
+      days: calculatedPrices.parkingDays,
+      licensePlate: formData.licensePlate,
+      passengers: formData.passengers,
+      // Add timestamps
+      createdAt: new Date().toISOString()
+    };
+    
+    // For car wash package, if selected
+    if (formData.carWashPackage !== 'none') {
+      bookingDetails.carWashPackage = formData.carWashPackage;
+      bookingDetails.carWashPackageName = content[currentLang].bookingForm.airportParking.carWashOptions[formData.carWashPackage];
+      
+      // Use the calculated prices from the PriceCalculator
+      bookingDetails.priceBreakdown = {
+        parkingTotal: calculatedPrices.parkingTotal,
+        carWashStandard: calculatedPrices.carWashStandard,
+        carWashDiscount: calculatedPrices.carWashDiscount,
+        carWashDiscounted: calculatedPrices.carWashDiscounted
       };
       
-      // For car wash package, if selected
-      if (formData.carWashPackage !== 'none') {
-        bookingDetails.carWashPackage = formData.carWashPackage;
-        bookingDetails.carWashPackageName = content[currentLang].bookingForm.airportParking.carWashOptions[formData.carWashPackage];
-        
-        // Use the calculated prices from the PriceCalculator
-        bookingDetails.priceBreakdown = {
-          parkingTotal: calculatedPrices.parkingTotal,
-          carWashStandard: calculatedPrices.carWashStandard,
-          carWashDiscount: calculatedPrices.carWashDiscount,
-          carWashDiscounted: calculatedPrices.carWashDiscounted
-        };
-        
-        bookingDetails.totalPrice = calculatedPrices.totalPrice;
-      } else {
-        // Only parking, no car wash - still use calculated price
-        bookingDetails.priceBreakdown = {
-          parkingTotal: calculatedPrices.parkingTotal,
-          carWashStandard: 0,
-          carWashDiscount: 0,
-          carWashDiscounted: 0
-        };
-        
-        bookingDetails.totalPrice = calculatedPrices.totalPrice;
+      bookingDetails.totalPrice = calculatedPrices.totalPrice;
+    } else {
+      // Only parking, no car wash - still use calculated price
+      bookingDetails.priceBreakdown = {
+        parkingTotal: calculatedPrices.parkingTotal,
+        carWashStandard: 0,
+        carWashDiscount: 0,
+        carWashDiscounted: 0
+      };
+      
+      bookingDetails.totalPrice = calculatedPrices.totalPrice;
+    }
+
+    try {
+      // Ensure no trailing slash in the base URL and handle potential undefined
+      let BACKEND_API_URL = (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev').trim();
+      BACKEND_API_URL = BACKEND_API_URL.endsWith('/') ? BACKEND_API_URL.slice(0, -1) : BACKEND_API_URL;
+      
+      const apiUrl = `${BACKEND_API_URL}/api/send-booking-emails`;
+      console.log('Sending booking to:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(bookingDetails)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Error response from backend API:', errorData);
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
+
+      const data = await response.json();
+      console.log('Successfully saved booking:', data);
       
-      isSubmitting = false;
-      
-      // Dispatch event to notify parent component
+      // Only dispatch the bookingComplete event after successful API call
       dispatch('bookingComplete', bookingDetails);
-    }, 1500);
+      
+    } catch (error) {
+      console.error('Error saving booking:', error);
+      // Even if API call fails, we still want to proceed with the booking
+      dispatch('bookingComplete', bookingDetails);
+    } finally {
+      isSubmitting = false;
+    }
   }
 </script>
 
-<form class="booking-form" on:submit|preventDefault={handleSubmit}>
+<form class="booking-form" on:submit|preventDefault>
   <h2 class="form-title">{currentLang === 'hu' ? 'REPÜLŐTÉRI PARKOLÁS FOGLALÁS' : 'AIRPORT PARKING BOOKING'}</h2>
   <div class="form-section">
     <div class="form-row">
@@ -339,7 +413,7 @@
   />
   
   <div class="form-submit">
-    <button type="submit" class="btn btn-primary" disabled={isSubmitting}>
+    <button type="button" class="btn btn-primary" on:click={handleSubmit} disabled={isSubmitting}>
       {isSubmitting 
         ? content[currentLang].bookingForm.processing 
         : content[currentLang].bookingForm.submit}

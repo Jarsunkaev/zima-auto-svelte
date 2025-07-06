@@ -159,7 +159,9 @@
 
     console.log('Sending contact form data to backend:', contactData);
 
-    const response = await fetch('https://zima-auto-backend.fly.dev/api/send-contact-email', {
+    // Use environment variable if available, otherwise default to the base URL
+    const BACKEND_API_URL = import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev';
+    const response = await fetch(`${BACKEND_API_URL}/api/send-contact-email`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

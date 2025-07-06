@@ -2,20 +2,456 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const { google } = require('googleapis');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs').promises;
+const { google } = require('googleapis');
 
 // Load environment variables from .env file
 dotenv.config();
 
+// Initialize email service
+const EmailService = require('./utils/emailService');
+const emailService = EmailService.getInstance();
+
+// --- Google Sheets API integration ---
+let sheets;
+const SHEET_ID = process.env.SHEET_ID || '1WfGOZdb2mSo9AZYIKjdpkQcESzGHk2zzeSuKkv3XadU';
+
+// Initialize Google Sheets client
+async function initializeGoogleSheets() {
+  try {
+    const auth = new google.auth.GoogleAuth({
+      keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS || path.join(__dirname, 'credentials/service-account.json'),
+      scopes: ['https://www.googleapis.com/auth/spreadsheets']
+    });
+
+    const authClient = await auth.getClient();
+    const sheetsClient = google.sheets({ version: 'v4', auth: authClient });
+    console.log('Google Sheets API initialized successfully');
+    return sheetsClient;
+  } catch (error) {
+    console.error('Error initializing Google Sheets API:', error);
+    throw error;
+  }
+}
+
 const app = express();
 const port = process.env.PORT || 3001; // Use port from env or default to 3001
 
-// Import your email utility functions from the email service
-const EmailService = require('./utils/emailService');
-const emailService = EmailService.getInstance();
-const { getGoogleCalendarClient, addEventToCalendar, checkTimeSlotAvailability } = require('./utils/googleCalendar');
+// Initialize server
+async function startServer() {
+  try {
+    // Initialize Google Sheets
+    sheets = await initializeGoogleSheets();
+    console.log('Google Sheets API initialized successfully');
+    
+    // Get port from environment or use default
+    const serverPort = process.env.PORT || port;
+    
+    // Create HTTP server
+    const server = app.listen(serverPort, '0.0.0.0', () => {
+      console.log(`Server running on port ${serverPort}`);
+    });
+
+    // Handle server errors
+    server.on('error', (error) => {
+      if (error.code === 'EADDRINUSE') {
+        console.error(`Port ${serverPort} is already in use. Trying another port...`);
+        // Try another port
+        const newPort = parseInt(serverPort) + 1;
+        server.listen(newPort, '0.0.0.0');
+      } else {
+        console.error('Server error:', error);
+        process.exit(1);
+      }
+    });
+
+    // Handle process termination
+    process.on('SIGTERM', () => {
+      console.log('SIGTERM received. Shutting down gracefully...');
+      server.close(() => {
+        console.log('Server closed');
+        process.exit(0);
+      });
+    });
+
+    return server;
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+}
+
+// Start the server
+startServer().catch(error => {
+  console.error('Failed to start server:', error);
+  process.exit(1);
+});
+
+// Configure CORS with more permissive settings for development
+const allowedOrigins = [
+  'http://localhost:5000',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://www.zima-auto.com',
+  'https://zima-auto.com',
+  'https://zima-auto-frontend.fly.dev',
+  'https://zima-auto-backend.fly.dev',
+  'https://zima-auto-admin.fly.dev'
+];
+
+// CORS middleware with enhanced logging
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const requestMethod = req.method;
+  const requestPath = req.path;
+  
+  console.log(`[${new Date().toISOString()}] ${requestMethod} ${requestPath} from ${origin || 'unknown origin'}`);
+  
+  // In development, allow any origin
+  if (process.env.NODE_ENV !== 'production' || (origin && allowedOrigins.includes(origin))) {
+    res.header('Access-Control-Allow-Origin', origin || '*');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-Forwarded-For');
+    
+    if (requestMethod === 'OPTIONS') {
+      console.log(`Handling preflight request for path: ${requestPath}`);
+      return res.status(200).end();
+    }
+  } else if (origin) {
+    console.warn(`Blocked request from unauthorized origin: ${origin}`);
+  }
+  
+  next();
+});
+
+async function saveAirportParking(bookingData) {
+  try {
+    console.log('Saving airport parking data:', JSON.stringify(bookingData, null, 2));
+    
+    // Extract data with proper fallbacks and validation
+    const { 
+      name = '',
+      firstName = '',
+      lastName = '',
+      contact = bookingData.contact || { email: '', phone: '' },
+      date = bookingData.date || '', 
+      days = bookingData.days || 1, 
+      licensePlate = bookingData.licensePlate || '', 
+      passengers = bookingData.passengers || 1, 
+      carWashPackage = bookingData.carWashPackage || 'none',
+      priceBreakdown = bookingData.priceBreakdown || { totalPrice: '0' },
+      email = (bookingData.contact && bookingData.contact.email) || bookingData.email || 'N/A',
+      phone = (bookingData.contact && bookingData.contact.phone) || bookingData.phone || 'N/A',
+      // Additional fields that might be needed
+      arrivalDate = bookingData.arrivalDate || bookingData.startDate || '',
+      departureDate = bookingData.departureDate || bookingData.endDate || '',
+      arrivalTime = bookingData.arrivalTime || bookingData.startTime || '00:00',
+      departureTime = bookingData.departureTime || bookingData.endTime || '00:00',
+      totalPrice = (bookingData.priceBreakdown && bookingData.priceBreakdown.totalPrice) || bookingData.totalPrice || '0'
+    } = bookingData;
+    
+    // Parse the date range with validation
+    let parsedStartDate = '', parsedStartTime = '00:00', parsedEndDate = '', parsedEndTime = '00:00';
+    
+    if (date) {
+      const [startDateStr, endDateStr] = date.split(' - ');
+      if (startDateStr) {
+        const [datePart, timePart] = startDateStr.split(' ');
+        parsedStartDate = datePart;
+        parsedStartTime = timePart || '00:00';
+      }
+      if (endDateStr) {
+        const [datePart, timePart] = endDateStr.split(' ');
+        parsedEndDate = datePart;
+        parsedEndTime = timePart || '00:00';
+      } else {
+        parsedEndDate = parsedStartDate;
+        parsedEndTime = parsedStartTime;
+      }
+    } else if (arrivalDate && departureDate) {
+      // Use separate date fields if date range string is not provided
+      parsedStartDate = arrivalDate;
+      parsedEndDate = departureDate;
+      parsedStartTime = arrivalTime || '00:00';
+      parsedEndTime = departureTime || '00:00';
+    }
+    
+    // Use the parsed or provided values
+    const startDate = parsedStartDate || arrivalDate;
+    const startTime = parsedStartTime || arrivalTime || '00:00';
+    const endDate = parsedEndDate || departureDate;
+    const endTime = parsedEndTime || departureTime || '00:00';
+    
+    // Combine first and last name with a space in between, handling all possible name fields
+    let fullName = 'Névtelen';
+    try {
+      // Try to get name from various possible fields
+      const possibleNameFields = [
+        name,
+        [firstName, lastName].filter(Boolean).join(' ').trim(),
+        bookingData.contact?.name,
+        bookingData.customerName,
+        bookingData.contact?.firstName ? 
+          [bookingData.contact.lastName, bookingData.contact.firstName].filter(Boolean).join(' ').trim() : 
+          bookingData.contact?.lastName || ''
+      ];
+      
+      // Find the first non-empty name
+      for (const field of possibleNameFields) {
+        if (field && typeof field === 'string' && field.trim()) {
+          fullName = field.trim();
+          break;
+        }
+      }
+      
+      // Ensure we have a valid name
+      if (!fullName || fullName === 'Névtelen') {
+        console.warn('No valid name found in booking data, using default');
+        fullName = 'Névtelen';
+      }
+    } catch (error) {
+      console.error('Error processing name:', error);
+      fullName = 'Névtelen';
+    }
+    
+    // Ensure phone number is properly extracted
+    let phoneNumber = phone || bookingData.contact?.phone || '';
+    // Remove any non-numeric characters from phone number
+    phoneNumber = phoneNumber.replace(/\D/g, '').trim();
+    
+    // Prepare the row data to append to the sheet
+    const rowData = [
+      new Date().toISOString().split('T')[0], // Date of booking
+      fullName,
+      email,
+      phoneNumber,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      `${startDate} ${startTime}`, // Arrival datetime
+      `${endDate} ${endTime}`,     // Departure datetime
+      days,
+      licensePlate,
+      passengers,
+      carWashPackage,
+      priceBreakdown?.totalPrice || totalPrice,
+      'Függőben' // Status
+    ];
+    
+    // Log the incoming data for debugging
+    console.log('Processed booking data:', {
+      fullName,
+      email,
+      phone,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      days,
+      licensePlate,
+      passengers,
+      totalPrice: priceBreakdown?.totalPrice || totalPrice,
+      arrivalDate: startDate,
+      arrivalTime: startTime,
+      departureDate: endDate,
+      departureTime: endTime
+    });
+    
+    // Get the last row to determine the next ID
+    const sheetResponse = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: 'Sheet1!A2:A', // Only get the ID column to find the max ID
+    });
+    
+    const rows = sheetResponse.data.values || [];
+    // Find the maximum ID in the first column (ID column)
+    let nextId = 1;
+    if (rows.length > 0) {
+      const ids = rows.map(row => {
+        const id = parseInt(row[0]);
+        return !isNaN(id) ? id : 0;
+      });
+      nextId = Math.max(...ids, 0) + 1;
+    }
+    
+    // Format dates with time for display in the sheet
+    const formattedStartDate = startDate && startTime ? `${startDate} ${startTime}` : '';
+    const formattedEndDate = endDate && endTime ? `${endDate} ${endTime}` : '';
+    
+    // Ensure we have valid values for all required fields
+    const sheetData = {
+      id: nextId,
+      name: fullName,
+      licensePlate: licensePlate || 'N/A',
+      arrival: formattedStartDate,
+      departure: formattedEndDate,
+      days: parseInt(days) || 1,
+      passengers: parseInt(passengers) || 1,
+      totalPrice: priceBreakdown?.totalPrice || totalPrice || '0',
+      email: email || 'N/A',
+      phone: phoneNumber || 'N/A',
+      createdAt: new Date().toISOString(),
+      status: 'NEM FIZETETT',
+      carWashPackage: carWashPackage || 'none'
+    };
+    
+    // Log the data being saved to the sheet
+    console.log('Saving to Google Sheets:', JSON.stringify(sheetData, null, 2));
+    
+    // Format the data for the Google Sheet (array of arrays)
+    const values = [
+      [
+        sheetData.id,                   // ID (auto-incremented)
+        sheetData.name,                 // NÉV (combined last and first name)
+        sheetData.licensePlate,         // RENDSZÁM
+        sheetData.arrival,              // ÉRKEZÉS (date + time)
+        sheetData.departure,            // TÁVOZÁS (date + time)
+        sheetData.days,                 // HÁNY NAP
+        sheetData.passengers,           // HÁNY FŐ
+        sheetData.totalPrice,           // ÖSSZEG
+        sheetData.email,                // EMAIL
+        sheetData.phone,                // TELEFON
+        sheetData.createdAt,            // CREATED_AT
+        sheetData.status,               // ÁLLAPOT
+        sheetData.carWashPackage        // MOSÁS CSOMAG
+      ]
+    ];
+    
+    console.log('Formatted values for Google Sheet:', JSON.stringify(values, null, 2));
+
+    // Append the new booking to the Google Sheet
+    const response = await sheets.spreadsheets.values.append({
+      spreadsheetId: SHEET_ID,
+      range: 'Sheet1',
+      valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
+      resource: {
+        values: values
+      }
+    });
+
+    console.log('Booking saved to Google Sheets:', response.data);
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.error('Error saving booking to Google Sheets:', error);
+    throw error;
+  }
+}
+
+
+async function updateBookingStatus(bookingId, newStatus) {
+  // Read all rows
+  const getRes = await sheets.spreadsheets.values.get({
+    spreadsheetId: SHEET_ID,
+    range: 'Sheet1', // Change if your sheet name is different
+  });
+  const rows = getRes.data.values;
+  const headers = rows[0];
+  const idCol = headers.indexOf('ID');
+  const statusCol = headers.indexOf('ÁLLAPOT');
+  let found = false;
+  for (let i = 1; i < rows.length; i++) {
+    if (String(rows[i][idCol]) === String(bookingId)) {
+      // Update the status cell
+      const range = `Sheet1!${String.fromCharCode(65 + statusCol)}${i + 1}`;
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SHEET_ID,
+        range,
+        valueInputOption: 'RAW',
+        requestBody: { values: [[newStatus]] },
+      });
+      found = true;
+      break;
+    }
+  }
+  return found;
+}
+
+app.use(express.json());
+
+// Forward /bookings to /send-booking-emails for backward compatibility
+app.post('/api/bookings', async (req, res) => {
+  console.log('Forwarding /api/bookings to /api/send-booking-emails');
+  // Simply forward the request to the existing endpoint
+  req.url = '/api/send-booking-emails';
+  req._parsedUrl.pathname = '/api/send-booking-emails';
+  req.originalUrl = '/api/send-booking-emails';
+  app.handle(req, res);
+});
+
+// Get all bookings from Google Sheet
+app.get('/api/bookings', async (req, res) => {
+  console.log('Fetching bookings from Google Sheets...');
+  try {
+    if (!sheets) {
+      throw new Error('Google Sheets client not initialized');
+    }
+    
+    console.log('Using Spreadsheet ID:', SHEET_ID);
+    
+    const getRes = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: 'Sheet1',
+    }).catch(err => {
+      console.error('Google Sheets API Error:', err.message);
+      if (err.response) {
+        console.error('Response data:', err.response.data);
+        console.error('Response status:', err.response.status);
+        console.error('Response headers:', err.response.headers);
+      }
+      throw err;
+    });
+    
+    console.log('Successfully fetched data from Google Sheets');
+    const rows = getRes.data.values;
+    
+    if (!rows || rows.length === 0) {
+      console.log('No data found in the sheet');
+      return res.json({ bookings: [] });
+    }
+    
+    const headers = rows[0];
+    console.log('Sheet headers:', headers);
+    
+    const bookings = rows.slice(1).map((row, index) => {
+      const obj = {};
+      row.forEach((value, i) => {
+        obj[headers[i]] = value;
+      });
+      return obj;
+    });
+    
+    console.log(`Found ${bookings.length} bookings`);
+    res.json({ bookings });
+    
+  } catch (e) {
+    console.error('Error in /bookings endpoint:', e);
+    res.status(500).json({ 
+      error: 'Failed to fetch bookings',
+      details: e.message,
+      stack: process.env.NODE_ENV === 'development' ? e.stack : undefined
+    });
+  }
+});
+
+// Update booking status
+app.post('/api/update-status', async (req, res) => {
+  const { id, status } = req.body;
+  if (!id || !status) return res.status(400).json({ error: 'Missing id or status' });
+  try {
+    const success = await updateBookingStatus(id, status);
+    if (success) {
+      res.json({ success: true });
+    } else {
+      res.status(404).json({ error: 'Booking not found' });
+    }
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 // Add the missing helper function for contact emails
 const sendContactEmails = async (contactData) => {
@@ -180,22 +616,16 @@ Object.keys(redirects).forEach(oldPath => {
 });
 
 // --- Middleware ---
-// Set up CORS - In production, replace with your actual Svelte frontend URL
-app.use(cors({
-  origin: [
-    'https://zima-auto.com',
-    'https://www.zima-auto.com',
-    'https://zima-auto-frontend.fly.dev',
-    'http://localhost:5173',  // Development
-    'http://localhost:4173'   // Preview
-  ],
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-}));
+// CORS is handled at the top of the file
 
 // Handle OPTIONS preflight requests
-app.options('*', cors());
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.status(200).end();
+});
 
 app.use(express.json()); // Parse JSON request bodies
 
@@ -429,23 +859,6 @@ app.post('/api/send-contact-email', async (req, res) => {
         message: 'Missing required fields in contact data'
       });
     }
-
-    console.log('Processing contact form submission');
-
-    // Send emails
-    try {
-      // Call the correctly imported function from mailjet module
-      await sendContactEmails(contactData);
-      console.log('Contact form emails sent successfully.');
-    } catch (emailError) {
-      console.error('Error sending contact form emails:', emailError);
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to send contact form emails: ' + emailError.message
-      });
-    }
-
-    // Respond to Frontend
     res.status(200).json({
       success: true,
       message: 'Contact form processed successfully'
@@ -463,11 +876,53 @@ app.post('/api/send-contact-email', async (req, res) => {
 });
 
 // API Endpoint to handle booking data, sending emails, and adding to calendar
+// Handle booking form submissions and send confirmation emails
 app.post('/api/send-booking-emails', async (req, res) => {
+  console.log('Received booking request:', JSON.stringify(req.body, null, 2));
   try {
     const bookingData = req.body;
-
-    // Add detailed logging for booking data
+    
+    // Ensure consistent response structure
+    const formatResponse = (success, data = {}, message = '') => ({
+      success,
+      data: {
+        ...data,
+        // Ensure contact info is always present
+        contact: {
+          name: data.contact?.name || data.name || '',
+          email: data.contact?.email || data.email || '',
+          phone: data.contact?.phone || data.phone || '',
+          ...data.contact
+        },
+        // Add timestamp
+        timestamp: new Date().toISOString(),
+        // Generate a reference number if not provided
+        referenceNumber: data.referenceNumber || `ZIMA-${Date.now()}`
+      },
+      message: message || (success ? 'Booking processed successfully' : 'Booking processing failed')
+    });
+    
+    // Process the booking data
+    let result;
+    
+    try {
+      // Save the booking data to Google Sheets
+      const savedData = await saveAirportParking(bookingData);
+      
+      // Format successful response
+      result = formatResponse(true, {
+        ...savedData,
+        id: savedData.id || `booking-${Date.now()}`
+      });
+      
+      console.log('Booking processed successfully:', result);
+      return res.status(200).json(result);
+      
+    } catch (error) {
+      console.error('Error processing booking:', error);
+      result = formatResponse(false, bookingData, error.message || 'Failed to process booking');
+      return res.status(500).json(result);
+    }
     console.log('====== EMAIL DEBUGGING ======');
     console.log('1. Receiving booking data for service:', bookingData.service);
     console.log('2. Customer email:', bookingData.customerEmail || 
@@ -510,6 +965,29 @@ app.post('/api/send-booking-emails', async (req, res) => {
     try {
       // Get Google Calendar client
       const calendar = await getGoogleCalendarClient();
+      
+      // Prepare email data
+      const emailData = {
+        ...bookingData,
+        customerEmail: bookingData.customerEmail || (bookingData.contact && bookingData.contact.email) || bookingData.email,
+        customerName: bookingData.customerName || bookingData.name || 'Customer',
+        customerPhone: bookingData.customerPhone || (bookingData.contact && bookingData.contact.phone) || bookingData.phone || '',
+        service: bookingData.service || 'airportParking',
+        date: bookingData.date || new Date().toISOString(),
+        time: bookingData.time || '',
+        totalPrice: bookingData.totalPrice || 0,
+        priceBreakdown: bookingData.priceBreakdown || {}
+      };
+
+      // Send confirmation email
+      try {
+        console.log('Attempting to send confirmation email to:', emailData.customerEmail);
+        await emailService.sendBookingConfirmationEmails(emailData);
+        console.log('Confirmation email sent successfully');
+      } catch (emailError) {
+        console.error('Failed to send confirmation email:', emailError);
+        // Don't fail the request if email fails
+      }
 
       // Handle airport parking differently than other services
       if (bookingData.service === 'airportParking') {
@@ -632,25 +1110,181 @@ app.post('/api/send-booking-emails', async (req, res) => {
       }
     } catch (calendarError) {
       console.error('Error during Google Calendar operation:', calendarError);
-      console.error('Calendar Error Details:', calendarError);
-      // We continue even if calendar fails - emails are more important
+      // Continue with the booking even if calendar fails - saving to Sheets is more critical
     }
 
-    // Send Emails (this happens regardless of calendar success/failure in this setup)
-    console.log("3. Attempting to send emails via Mailjet");
+    // Save to Google Sheets for airport parking bookings
+    if (bookingData.service === 'airportParking') {
+      try {
+        await saveAirportParking(bookingData);
+        console.log('Airport parking booking saved to Google Sheets');
+      } catch (sheetError) {
+        console.error('Error saving to Google Sheets:', sheetError);
+        // Continue with the booking even if Google Sheets save fails
+      }
+    }
+
+    // Add booking to Google Calendar with special handling for airport parking
     try {
-      await emailService.sendBookingConfirmationEmails(bookingData);
-      console.log("4. ✅ Emails sent successfully via Mailjet");
-    } catch (emailError) {
-      console.error("4. ❌ Email sending failed:", emailError);
-      console.error("Detailed email error:", JSON.stringify(emailError, null, 2));
-      
-      // Return the email error to the client for easier debugging
-      return res.status(500).json({
-        success: false,
-        message: 'Email sending failed: ' + emailError.message,
-        emailError: String(emailError)
-      });
+// Get Google Calendar client
+const calendar = await getGoogleCalendarClient();
+  
+// Prepare email data
+const emailData = {
+...bookingData,
+customerEmail: bookingData.customerEmail || (bookingData.contact && bookingData.contact.email) || bookingData.email,
+customerName: bookingData.customerName || bookingData.name || 'Customer',
+customerPhone: bookingData.customerPhone || (bookingData.contact && bookingData.contact.phone) || bookingData.phone || '',
+service: bookingData.service || 'airportParking',
+date: bookingData.date || new Date().toISOString(),
+time: bookingData.time || '',
+totalPrice: bookingData.totalPrice || 0,
+priceBreakdown: bookingData.priceBreakdown || {}
+};
+
+// Send confirmation email
+try {
+console.log('Attempting to send confirmation email to:', emailData.customerEmail);
+await emailService.sendBookingConfirmationEmails(emailData);
+console.log('Confirmation email sent successfully');
+} catch (emailError) {
+console.error('Failed to send confirmation email:', emailError);
+// Don't fail the request if email fails
+}
+
+// Handle airport parking differently than other services
+if (bookingData.service === 'airportParking') {
+console.log('Processing airport parking booking for Google Calendar');
+
+// Parse and adjust the airport parking date range
+const dateTimeInfo = parseAirportParkingDateRange(bookingData.date);
+  
+if (dateTimeInfo) {
+// Format customer name
+const customerName = bookingData.customerName || bookingData.name;
+
+console.log(`Adding airport parking to calendar from ${dateTimeInfo.startDate.toISOString()} to ${dateTimeInfo.endDate.toISOString()} for ${customerName}`);
+
+// Create a modified version of the booking data with the adjusted times
+const modifiedBookingData = {
+...bookingData,
+startDate: dateTimeInfo.startDateStr,
+startTime: dateTimeInfo.startTimeStr,
+endDate: dateTimeInfo.endDateStr,
+endTime: dateTimeInfo.endTimeStr,
+// Add the adjusted dates for Google Calendar
+calendarStartTime: dateTimeInfo.startDate,
+calendarEndTime: dateTimeInfo.endDate
+};
+
+// Add event to Google Calendar, passing the modified booking data
+const eventId = await addEventToCalendar(
+calendar,
+bookingData.service,
+dateTimeInfo.startDateStr,
+dateTimeInfo.startTimeStr,
+customerName,
+modifiedBookingData
+);
+
+console.log(`Successfully added airport parking booking to Google Calendar with event ID: ${eventId}`);
+
+// Add the event ID to the booking data for reference
+bookingData.eventId = eventId;
+} else {
+console.warn('Failed to parse airport parking date range - not adding to calendar');
+}
+}
+// Handle other service bookings (car wash, auto service, tire service)
+else if (bookingData.date && bookingData.time && bookingData.service) {
+console.log(`Processing service booking (${bookingData.service}) for Google Calendar`);
+console.log(`Received date: ${bookingData.date}, time: ${bookingData.time} for service ${bookingData.service}`);
+
+// Generate all potential slots for this service
+const allPotentialSlots = generateTimeSlots(bookingData.service);
+console.log('Generated time slots:', allPotentialSlots);
+  
+// Check if the exact time slot is available for THIS service only
+try {
+const busySlots = await checkTimeSlotAvailability(calendar, bookingData.date, bookingData.service, allPotentialSlots);
+console.log('Busy slots:', busySlots);
+  
+if (busySlots && busySlots.includes(bookingData.time)) {
+console.warn(`Selected time slot ${bookingData.time} for ${bookingData.service} is no longer available.`);
+return res.status(409).json({
+success: false,
+message: 'The selected time slot is no longer available. Please choose another time slot.'
+});
+}
+} catch (availabilityError) {
+console.error('Error checking time slot availability:', availabilityError);
+// Continue with booking even if availability check fails
+}
+
+// Format customer name
+const customerName = bookingData.customerName || bookingData.name;
+
+// Adjust the time for Google Calendar
+const adjustedDateTime = adjustTimeForCalendar(bookingData.date, bookingData.time);
+  
+if (adjustedDateTime) {
+// Create a modified version of the booking data with the adjusted time
+const modifiedBookingData = {
+...bookingData,
+// Keep the original date and time
+date: bookingData.date,
+time: bookingData.time,
+// Add the adjusted date for Google Calendar
+calendarDateTime: adjustedDateTime
+};
+
+// Add event to Google Calendar using the modified booking data
+const eventId = await addEventToCalendar(
+calendar,
+bookingData.service,
+bookingData.date,
+bookingData.time,
+customerName,
+modifiedBookingData
+);
+
+console.log(`Added booking to Google Calendar with event ID: ${eventId}`);
+
+// Add the event ID to the booking data for reference
+bookingData.eventId = eventId;
+} else {
+console.warn('Failed to adjust time for calendar - using original date/time');
+  
+// Fallback to using the original date/time if adjustment fails
+const eventId = await addEventToCalendar(
+calendar,
+bookingData.service,
+bookingData.date,
+bookingData.time,
+customerName,
+bookingData
+);
+
+console.log(`Added booking to Google Calendar with event ID (fallback): ${eventId}`);
+bookingData.eventId = eventId;
+}
+} else {
+console.warn('Booking is missing date/time or service fields - not adding to calendar', bookingData);
+}
+} catch (calendarError) {
+console.error('Error during Google Calendar operation:', calendarError);
+// Continue with the booking even if calendar fails - saving to Sheets is more critical
+}
+
+    // Save to Google Sheets for airport parking bookings
+    if (bookingData.service === 'airportParking') {
+      try {
+        await saveAirportParking(bookingData);
+        console.log('Airport parking booking saved to Google Sheets');
+      } catch (sheetError) {
+        console.error('Error saving to Google Sheets:', sheetError);
+        // Continue with the booking even if Google Sheets save fails
+      }
     }
 
     // Respond to Frontend
@@ -658,10 +1292,9 @@ app.post('/api/send-booking-emails', async (req, res) => {
       success: true,
       message: 'Booking processed successfully'
     });
-
   } catch (error) {
     console.error('Error processing booking request:', error);
-
+    
     // Return a general internal server error response for unhandled errors
     res.status(500).json({
       success: false,

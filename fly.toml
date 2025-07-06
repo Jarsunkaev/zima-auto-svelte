@@ -1,13 +1,16 @@
-# fly.toml app configuration file generated for zima-auto-frontend on 2025-04-28T12:59:39+02:00
+# fly.toml app configuration file for zima-auto-frontend
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
 
 app = 'zima-auto-frontend'
 primary_region = 'fra'
 
 [build]
   dockerfile = 'Dockerfile'
+
+[env]
+  VITE_BACKEND_API_URL = "https://zima-auto-backend.fly.dev"
+  VITE_GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIMQqmeWhQOs_XaOdBWq-qjLq0pE9FXC1cgQOdi_1_Tx0XnQl3caOLsobkU6NtVuWI/exec"  # Add your Google Apps Script URL here
 
 [http_service]
   internal_port = 3000
@@ -16,6 +19,10 @@ primary_region = 'fra'
   auto_start_machines = true
   min_machines_running = 0
   processes = ['app']
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 25
+    soft_limit = 20
 
 [[vm]]
   cpu_kind = 'shared'

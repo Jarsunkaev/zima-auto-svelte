@@ -1,7 +1,5 @@
-# fly.toml app configuration file generated for zima-auto-backend on 2025-04-28T12:59:11+02:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
+# Backend configuration for zima-auto
+# See: https://fly.io/docs/reference/configuration/
 
 app = 'zima-auto-backend'
 primary_region = 'fra'
@@ -9,6 +7,16 @@ primary_region = 'fra'
 [build]
   dockerfile = 'Dockerfile'
 
+[deploy]
+  strategy = 'bluegreen'
+  max_unavailable = 0.2
+
+[env]
+  NODE_ENV = 'production'
+  PORT = '3001'
+  # Add other required environment variables here
+  # GOOGLE_APPLICATION_CREDENTIALS = '/app/credentials.json'
+  # RESEND_API_KEY = 'your-resend-api-key'
 
 [[vm]]
   cpu_kind = 'shared'
@@ -21,7 +29,13 @@ primary_region = 'fra'
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 1
+  
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 25
+    soft_limit = 20
 
+# Custom domains
 [[http_service.domains]]
   name = "zima-auto.com"
   zone = "zima-auto.com"
@@ -29,3 +43,17 @@ primary_region = 'fra'
 [[http_service.domains]]
   name = "www.zima-auto.com"
   zone = "zima-auto.com"
+
+# Health checks
+[[http_service.checks]]
+  interval = "30s"
+  timeout = "5s"
+  method = "GET"
+  path = "/health"
+  protocol = "http"
+  tls_skip_verify = false
+
+  # Must be 2xx at least 75% of the time
+  threshold_percent = 75
+  grace_period = "5s"
+  restart_limit = 0

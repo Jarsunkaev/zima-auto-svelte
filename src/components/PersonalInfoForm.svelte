@@ -1,6 +1,7 @@
 <script>
     import { createEventDispatcher } from 'svelte';
     import LoadingSpinner from './LoadingSpinner.svelte';
+    
     // Component props
     export let formData = {
       firstName: '',
@@ -19,6 +20,31 @@
     export let content = {};
     export let currentLang = 'hu';
     export const isSubmitting = false;
+    
+    // Ensure formData has all required fields initialized
+    $: formData = {
+      firstName: formData?.firstName || '',
+      lastName: formData?.lastName || '',
+      email: formData?.email || '',
+      phone: formData?.phone || '',
+      ...formData // Spread any additional properties
+    };
+    
+    // Handle input changes
+    function handleInput(field, value) {
+      formData = {
+        ...formData,
+        [field]: value || ''
+      };
+      
+      // Clear error when user types
+      if (formErrors && formErrors[field]) {
+        formErrors = {
+          ...formErrors,
+          [field]: ''
+        };
+      }
+    }
 </script>
 
   
@@ -31,7 +57,8 @@
       <input
         type="text"
         id="lastName"
-        bind:value={formData.lastName}
+        value={formData.lastName}
+        on:input={(e) => handleInput('lastName', e.target.value)}
         required
         placeholder={currentLang === 'hu' ? 'Adja meg vezetéknevét' : 'Enter your last name'}
       />
@@ -45,7 +72,8 @@
       <input
         type="text"
         id="firstName"
-        bind:value={formData.firstName}
+        value={formData.firstName}
+        on:input={(e) => handleInput('firstName', e.target.value)}
         required
         placeholder={currentLang === 'hu' ? 'Adja meg keresztnevét' : 'Enter your first name'}
       />
@@ -61,7 +89,8 @@
       <input
         type="email"
         id="email"
-        bind:value={formData.email}
+        value={formData.email}
+        on:input={(e) => handleInput('email', e.target.value)}
         placeholder={currentLang === 'hu' ? 'Adja meg email címét' : 'Enter your email address'}
       />
       {#if formErrors.email}
@@ -74,7 +103,8 @@
       <input
         type="tel"
         id="phone"
-        bind:value={formData.phone}
+        value={formData.phone}
+        on:input={(e) => handleInput('phone', e.target.value)}
         required
         placeholder={currentLang === 'hu' ? 'Adja meg telefonszámát' : 'Enter your phone number'}
       />

@@ -1,4 +1,9 @@
+import dotenv from 'dotenv';
+dotenv.config();
+console.log('BUILD ENV:', process.env.VITE_GOOGLE_APPS_SCRIPT_URL);
+
 import { spawn } from 'child_process';
+import replace from '@rollup/plugin-replace';
 import svelte from 'rollup-plugin-svelte';
 import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
@@ -43,6 +48,13 @@ export default {
 		}
 	},
 	plugins: [
+		replace({
+			preventAssignment: true,
+			'process.env.VITE_GOOGLE_APPS_SCRIPT_URL': JSON.stringify(process.env.VITE_GOOGLE_APPS_SCRIPT_URL || ''),
+			'import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL': JSON.stringify(process.env.VITE_GOOGLE_APPS_SCRIPT_URL || ''),
+			'process.env.VITE_BACKEND_API_URL': JSON.stringify(process.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev/api'),
+			'import.meta.env.VITE_BACKEND_API_URL': JSON.stringify(process.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev/api')
+		}),
 		svelte({
 			compilerOptions: {
 				// enable run-time checks when not in production
