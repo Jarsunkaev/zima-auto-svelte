@@ -1,9 +1,17 @@
-// Google Apps Script for Zima Auto Airport Parking
-// This script should be deployed as a web app
+/**
+ * Google Apps Script for Zima Auto Order Form Generation
+ * 
+ * Setup Instructions:
+ * 1. Go to https://script.google.com/
+ * 2. Create a new project
+ * 3. Replace the default code with this script
+ * 4. Deploy as a web app
+ * 5. Set access to "Anyone, even anonymous"
+ * 6. Copy the web app URL and add it to your environment variables as VITE_GOOGLE_APPS_SCRIPT_URL
+ */
 
-// Replace with your actual Google Sheet ID
-const SPREADSHEET_ID = '1WfGOZdb2mSo9AZYIKjdpkQcESzGHk2zzeSuKkv3XadU';
-const SHEET_NAME = 'Sheet1'; // Change if you used a different sheet name
+// Configuration - Update these with your actual IDs
+const TEMPLATE_DOC_ID = '1LbBcibpTR1OY_HZpK5yISg1MOTpAKhqXCi1k2RlUsZc';
 
 // Define allowed origins
 const ALLOWED_ORIGINS = [
@@ -14,346 +22,253 @@ const ALLOWED_ORIGINS = [
   'https://zima-auto-frontend.fly.dev'
 ];
 
-// Main entry points
 function doGet(e) {
-  return handleRequest(e);
+  return ContentService.createTextOutput(JSON.stringify({
+    success: true,
+    message: 'Zima Auto Order Form Generator is running'
+  })).setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(e) {
-  return handleRequest(e);
-}
-
-// Handle all incoming requests
-function handleRequest(e = {}) {
   try {
-    // Ensure e is an object
-    if (!e || typeof e !== 'object') {
-      e = {};
+    console.log('doPost called with:', e);
+    console.log('postData:', e?.postData);
+    
+    if (!e || !e.postData) {
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: 'No post data received'
+      })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    // Handle CORS preflight request
-    if (e && e.parameter && e.parameter.requestMethod === 'OPTIONS') {
-      // For preflight requests, just return an empty response with 204 status
-      // CORS headers will be set by the Google Apps Script web app configuration
-      return ContentService.createTextOutput('')
-        .setMimeType(ContentService.MimeType.TEXT)
-        .setContent('');
+    const data = JSON.parse(e.postData.contents);
+    console.log('Parsed data:', data);
+    
+    if (data.action === 'createOrderForm') {
+      return createOrderForm(data.booking);
+    } else {
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: 'Invalid action'
+      })).setMimeType(ContentService.MimeType.JSON);
     }
-
-    // Get the request origin
-    const requestOrigin = getRequestOrigin(e);
-    
-    // Parse the request data
-    let requestData = {};
-    let action = '';
-    
-    // Check for POST data
-    if (e.postData && e.postData.contents) {
-      try {
-        requestData = JSON.parse(e.postData.contents);
-        action = requestData.action || '';
-      } catch (error) {
-        console.error('Error parsing POST data:', error);
-        return createErrorResponse('Invalid request data', 400);
-      }
-    } 
-    // Check for GET parameters
-    else if (e.parameter) {
-      requestData = { ...e.parameter };
-      action = e.parameter.action || '';
-    }
-    
-    // If no action is specified, return a simple success response for the root URL
-    if (!action) {
-      return createCorsResponse({
-        status: 'success',
-        message: 'Zima Auto API is running',
-        timestamp: new Date().toISOString()
-      });
-    }
-    
-    // Log the action and request data for debugging
-    console.log('Action:', action);
-    console.log('Request data:', JSON.stringify(requestData, null, 2));
-    
-    // Process the request based on the action
-    let result;
-    
-    switch (action) {
-      case 'createBooking':
-        const bookingData = requestData.booking || {};
-        result = createBooking({ ...bookingData, _request: e });
-        break;
-      case 'getBookings':
-        result = getBookings(e);
-        break;
-      case 'updateStatus':
-        const postData = e.postData ? requestData : e.parameter;
-        result = updateStatus(postData.id, postData.status, e);
-        break;
-      default:
-        return createErrorResponse('Invalid action specified', 400);
-    }
-
-    // Return the response with CORS headers
-    return createCorsResponse(result);
-    
   } catch (error) {
-    console.error('Error handling request:', error);
-    return createErrorResponse(error.message || 'An error occurred while processing your request');
+    console.error('Error in doPost:', error);
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false,
+      error: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
   }
 }
 
-// Get the request origin from various possible locations
-function getRequestOrigin(e) {
-  if (!e) return '';
-  
-  // Try to get from __req parameter
-  if (e.parameter && e.parameter.__req) {
-    try {
-      const reqData = JSON.parse(e.parameter.__req);
-      if (reqData.headers && reqData.headers.origin) {
-        return reqData.headers.origin;
-      }
-    } catch (error) {
-      console.error('Error parsing __req parameter:', error);
-    }
-  }
-  
-  // Try to get from referer header
-  if (e.parameter && e.parameter.referer) {
-    try {
-      const refererUrl = new URL(e.parameter.referer);
-      return refererUrl.origin;
-    } catch (error) {
-      console.error('Error parsing referer:', error);
-    }
-  }
-  
-  // Try to get from postData
-  if (e.postData && e.postData.contents) {
-    try {
-      const postData = JSON.parse(e.postData.contents);
-      if (postData.origin) return postData.origin;
-      if (postData.headers && postData.headers.origin) return postData.headers.origin;
-    } catch (error) {
-      console.error('Error parsing postData contents:', error);
-    }
-  }
-  
-  return '';
-}
-
-// Create a CORS-enabled response
-function createCorsResponse(data) {
-  const response = ContentService.createTextOutput(JSON.stringify(data));
-  
-  // In Google Apps Script, we set the MIME type directly
-  response.setMimeType(ContentService.MimeType.JSON);
-  
-  // For Google Apps Script web apps, CORS headers are set in the deployment configuration
-  // No need to set them here as they're handled at the deployment level
-  
-  return response;
-}
-
-// Create an error response
-function createErrorResponse(message, statusCode = 500) {
-  console.error('Error:', message);
-  return createCorsResponse({
-    status: 'error',
-    message: message,
-    code: statusCode
-  });
-}
-
-// Get all bookings from the Google Sheet
-function getBookings(e) {
+function createOrderForm(booking) {
   try {
-    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    const sheet = ss.getSheetByName(SHEET_NAME);
+    console.log('createOrderForm called with booking:', booking);
+    console.log('Booking type:', typeof booking);
+    console.log('Booking keys:', Object.keys(booking || {}));
     
-    if (!sheet || sheet.getLastRow() < 2) {
-      return { status: 'success', data: [], _request: e };
+    if (!booking) {
+      console.error('No booking data provided');
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: 'No booking data provided'
+      })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    const data = sheet.getDataRange().getValues();
-    const headers = [
-      'id', 'name', 'licensePlate', 'arrival', 'departure', 'days', 
-      'passengers', 'amount', 'email', 'phone', 'createdAt', 'status'
-    ];
+    // Validate required fields
+    const requiredFields = ['name', 'licensePlate', 'arrival', 'departure', 'days', 'total', 'email', 'phone', 'currentDate'];
+    const missingFields = requiredFields.filter(field => !booking[field]);
     
-    const bookings = [];
-    
-    // Start from index 1 to skip headers
-    for (let i = 1; i < data.length; i++) {
-      const row = data[i];
-      const booking = {};
-      
-      // Map each cell to its corresponding header
-      for (let j = 0; j < headers.length; j++) {
-        if (j < row.length) {
-          booking[headers[j]] = row[j];
-        } else {
-          booking[headers[j]] = ''; // Default empty string for missing columns
-        }
-      }
-      
-      // Add the row number as an ID if ID column is empty
-      if (!booking.id) {
-        booking.id = `row-${i + 1}`;
-      }
-      
-      // Ensure all required fields are present
-      if (booking.name || booking.email) { // Only include rows with at least a name or email
-        bookings.push(booking);
-      }
+    if (missingFields.length > 0) {
+      console.error('Missing required fields:', missingFields);
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: 'Missing required fields: ' + missingFields.join(', ')
+      })).setMimeType(ContentService.MimeType.JSON);
     }
     
-    console.log('Retrieved bookings:', JSON.stringify(bookings, null, 2));
+    console.log('All required fields present, proceeding with document creation...');
     
-    return { 
-      status: 'success',
-      data: bookings,
-      _request: e // Include the original request for CORS handling
+    // Create a copy of the template document
+    let templateFile;
+    try {
+      templateFile = DriveApp.getFileById(TEMPLATE_DOC_ID);
+      console.log('Template file accessed successfully:', templateFile.getName());
+    } catch (templateError) {
+      console.error('Failed to access template file:', templateError.message);
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: 'Template document not found or not accessible. Please check the TEMPLATE_DOC_ID configuration.'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // Get the target folder
+    let targetFolder;
+    try {
+      targetFolder = DriveApp.getFolderById('1IH5hrnZHeu8c3jzZyy3ORlm-WQ7ztOor');
+      console.log('Target folder accessed successfully:', targetFolder.getName());
+    } catch (folderError) {
+      console.error('Failed to access target folder:', folderError.message);
+      return ContentService.createTextOutput(JSON.stringify({
+        success: false,
+        error: 'Target folder not found or not accessible. Please check the folder ID.'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    console.log('Creating copy of template...');
+    const newDoc = templateFile.makeCopy();
+    const newDocId = newDoc.getId();
+    console.log('Template copy created with ID:', newDocId);
+    
+    // Rename the copied document with a descriptive name
+    console.log('Renaming document...');
+    newDoc.setName(`Megrendelőlap Airport Parking - ${booking.name} - ${booking.currentDate}`);
+    console.log('Document renamed successfully');
+    
+    // Move the document to the target folder
+    console.log('Moving document to target folder...');
+    targetFolder.addFile(newDoc);
+    DriveApp.getRootFolder().removeFile(newDoc);
+    console.log('Document moved to target folder successfully');
+    
+    // Open the new document for editing
+    console.log('Opening document for editing...');
+    const newDocFile = DocumentApp.openById(newDocId);
+    console.log('Document opened successfully');
+    const body = newDocFile.getBody();
+    console.log('Document body accessed');
+    
+    console.log('Template opened, creating replacements...');
+    
+    const replacements = {
+      '{{NÉV}}': booking.name || '',
+      '{{RENDSZÁM}}': booking.licensePlate || '',
+      '{{ÁTADÁS_IDŐPONTJA}}': booking.arrival || '',
+      '{{FELVÉTEL_IDŐPONTJA}}': booking.departure || '',
+      '{{PARKOLÁS_IDŐTARTAMA}}': `${booking.days || ''} nap`,
+      '{{TOTAL_PRICE}}': `${booking.total || ''} Ft`,
+      '{{ELÉRHETŐSÉG}}': `${booking.email || ''} / ${booking.phone || ''}`,
+      '{{EMAIL}}': booking.email || '',
+      '{{PHONE}}': booking.phone || '',
+      '{{CURRENT_DATE}}': booking.currentDate || '',
+      // Also support English placeholders for backward compatibility
+      '{{CUSTOMER_NAME}}': booking.name || '',
+      '{{LICENSE_PLATE}}': booking.licensePlate || '',
+      '{{ARRIVAL_DATE}}': booking.arrival || '',
+      '{{DEPARTURE_DATE}}': booking.departure || '',
+      '{{DAYS}}': `${booking.days || ''} nap`,
+      '{{TOTAL_AMOUNT}}': `${booking.total || ''} Ft`,
+      '{{CUSTOMER_EMAIL}}': booking.email || '',
+      '{{CUSTOMER_PHONE}}': booking.phone || ''
     };
     
+    console.log('Replacements object:', replacements);
+    
+    // Perform replacements
+    console.log('Starting text replacements...');
+    for (const [placeholder, value] of Object.entries(replacements)) {
+      console.log(`Replacing ${placeholder} with ${value}`);
+      body.replaceText(placeholder, value);
+    }
+    console.log('All text replacements completed');
+    
+    // Save the document
+    console.log('Saving and closing document...');
+    newDocFile.saveAndClose();
+    console.log('Document saved and closed successfully');
+    
+    console.log('Document saved successfully');
+    
+    // Document saved in target folder
+    console.log('Document saved in target folder');
+    
+    // Create PDF version
+    let pdfFile;
+    try {
+      console.log('Creating PDF from document...');
+      const pdfBlob = newDoc.getAs('application/pdf');
+      console.log('PDF blob created, size:', pdfBlob.getBytes().length);
+      
+      pdfFile = DriveApp.createFile(pdfBlob);
+      pdfFile.setName(`Megrendelőlap Airport Parking - ${booking.name} - ${booking.currentDate}.pdf`);
+      
+      // Make the PDF publicly accessible
+      pdfFile.setSharing(DriveApp.Access.ANYONE, DriveApp.Permission.VIEW);
+      
+      // Move the PDF to the target folder
+      console.log('Moving PDF to target folder...');
+      targetFolder.addFile(pdfFile);
+      DriveApp.getRootFolder().removeFile(pdfFile);
+      console.log('PDF moved to target folder successfully');
+      
+      console.log('PDF created successfully:', pdfFile.getName(), 'ID:', pdfFile.getId());
+    } catch (pdfError) {
+      console.error('Failed to create PDF:', pdfError.message);
+      console.error('PDF creation error details:', pdfError);
+      
+      // Return success with just the document URL if PDF creation fails
+      const docUrl = newDoc.getUrl();
+      console.log('Document URL:', docUrl);
+      
+      return ContentService.createTextOutput(JSON.stringify({
+        success: true,
+        documentUrl: docUrl,
+        pdfUrl: null,
+        documentId: newDocId,
+        pdfId: null,
+        warning: 'PDF creation failed, but document was created successfully'
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // PDF saved in target folder
+    console.log('PDF saved in target folder');
+    
+    // Get the URLs
+    const docUrl = newDoc.getUrl();
+    const pdfUrl = pdfFile ? pdfFile.getDownloadUrl() : null;
+    
+    console.log('Document URL:', docUrl);
+    console.log('PDF URL:', pdfUrl);
+    
+    // Documents created successfully in target folder
+    console.log('Documents created successfully in target folder');
+    
+    // Always return success
+    console.log('Document creation completed successfully in target folder');
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      success: true,
+      documentUrl: docUrl,
+      pdfUrl: pdfUrl,
+      documentId: newDocId,
+      pdfId: pdfFile ? pdfFile.getId() : null
+    })).setMimeType(ContentService.MimeType.JSON);
+    
   } catch (error) {
-    console.error('Error in getBookings:', error);
-    throw new Error('Failed to retrieve bookings: ' + error.message);
+    console.error('Error creating order form:', error);
+    return ContentService.createTextOutput(JSON.stringify({
+      success: false,
+      error: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
   }
 }
 
-// Create a new booking in the Google Sheet
-function createBooking(bookingData) {
-  try {
-    const e = bookingData._request || {};
-    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    let sheet = ss.getSheetByName(SHEET_NAME);
-    
-    // If sheet doesn't exist, create it with headers
-    if (!sheet) {
-      sheet = ss.insertSheet(SHEET_NAME);
-      const headers = [
-        'ID', 'NÉV', 'RENDSZÁM', 'ÉRKEZÉS', 'TÁVOZÁS', 'HÁNY NAP', 'HÁNY FŐ',
-        'ÖSSZEG', 'EMAIL', 'TELEFON', 'CREATED_AT', 'ÁLLAPOT'
-      ];
-      sheet.appendRow(headers);
-    }
-    
-    // Generate a unique ID for the booking
-    const id = Utilities.getUuid();
-    const now = new Date();
-    
-    // Calculate days between arrival and departure
-    const arrival = new Date(bookingData.arrival);
-    const departure = new Date(bookingData.departure);
-    const daysDifference = Math.ceil((departure - arrival) / (1000 * 60 * 60 * 24));
-    
-    // Prepare the row data according to the sheet's column structure
-    const rowData = [
-      id,                                    // ID
-      bookingData.name || '',                // NÉV
-      bookingData.licensePlate || '',        // RENDSZÁM
-      bookingData.arrival || '',             // ÉRKEZÉS
-      bookingData.departure || '',           // TÁVOZÁS
-      daysDifference || 1,                   // HÁNY NAP
-      bookingData.passengers || 1,           // HÁNY FŐ
-      bookingData.amount || 0,               // ÖSSZEG
-      bookingData.email || '',               // EMAIL
-      bookingData.phone || '',               // TELEFON
-      now.toISOString(),                     // CREATED_AT
-      'Függőben'                            // ÁLLAPOT
-    ];
-    
-    // Add the new row to the sheet
-    sheet.appendRow(rowData);
-    
-    // Prepare the response
-    const response = {
-      status: 'success',
-      message: 'Booking created successfully',
-      data: {
-        id,
-        ...bookingData,
-        status: 'Függőben',
-        createdAt: now.toISOString()
-      },
-      _request: e
-    };
-    
-    // Remove the _request property from the response data
-    delete response.data._request;
-    
-    return response;
-    
-  } catch (error) {
-    console.error('Error in createBooking:', error);
-    throw new Error('Failed to create booking: ' + error.message);
-  }
+// Test function - you can run this to test the script
+function testCreateOrderForm() {
+  const testBooking = {
+    name: 'John Doe',
+    licensePlate: 'ABC-123',
+    arrival: '2024.01.15 10:00',
+    departure: '2024.01.20 18:00',
+    days: '5',
+    total: '25000 Ft',
+    email: 'john@example.com',
+    phone: '+36 70 123 4567',
+    currentDate: '2024.01.15'
+  };
+  
+  const result = createOrderForm(testBooking);
+  console.log(result.getContent());
 }
 
-// Update the status of a booking
-function updateStatus(id, status, e = {}) {
-  try {
-    // Input validation
-    if (!id || typeof id !== 'string') {
-      throw new Error('Invalid or missing booking ID');
-    }
-    
-    if (!status || typeof status !== 'string') {
-      throw new Error('Invalid or missing status');
-    }
-    
-    // Ensure e is an object
-    if (!e || typeof e !== 'object') {
-      e = {};
-    }
-    
-    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    const sheet = ss.getSheetByName(SHEET_NAME);
-    
-    if (!sheet) {
-      throw new Error('Sheet not found');
-    }
-    
-    const data = sheet.getDataRange().getValues();
-    
-    if (!data || data.length === 0) {
-      throw new Error('No data found in sheet');
-    }
-    
-    const headers = data[0];
-    
-    // Find the status and ID column indices
-    const statusCol = headers.indexOf('ÁLLAPOT') + 1; // +1 because getRange is 1-indexed
-    const idCol = headers.indexOf('ID') + 1;
-    
-    if (statusCol === 0 || idCol === 0) {
-      throw new Error('Required columns not found');
-    }
-    
-    // Find the row with the matching ID
-    let rowFound = false;
-    for (let i = 1; i < data.length; i++) {
-      if (data[i] && data[i][idCol - 1] === id) {
-        // Update the status in the sheet
-        sheet.getRange(i + 1, statusCol).setValue(status);
-        rowFound = true;
-        
-        return {
-          status: 'success',
-          message: 'Booking status updated successfully',
-          data: { id, status },
-          _request: e
-        };
-      }
-    }
-    
-    throw new Error('Booking not found');
-    
-  } catch (error) {
-    console.error('Error in updateStatus:', error);
-    throw new Error('Failed to update booking status');
-  }
-}
+

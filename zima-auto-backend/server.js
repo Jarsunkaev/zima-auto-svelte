@@ -6,12 +6,23 @@ const path = require('path');
 const fs = require('fs').promises;
 const { google } = require('googleapis');
 
+// Import fetch for Node.js compatibility (if not available globally)
+let fetch;
+if (typeof globalThis.fetch === 'undefined') {
+  fetch = require('node-fetch');
+} else {
+  fetch = globalThis.fetch;
+}
+
 // Load environment variables from .env file
 dotenv.config();
 
 // Initialize email service
 const EmailService = require('./utils/emailService');
 const emailService = EmailService.getInstance();
+
+// Import Google Calendar functions
+const { getGoogleCalendarClient, addEventToCalendar, checkTimeSlotAvailability } = require('./utils/googleCalendar');
 
 // --- Google Sheets API integration ---
 let sheets;
@@ -91,6 +102,7 @@ startServer().catch(error => {
 // Configure CORS with more permissive settings for development
 const allowedOrigins = [
   'http://localhost:5000',
+  'http://localhost:5001',
   'http://localhost:3000',
   'http://localhost:3001',
   'https://www.zima-auto.com',
@@ -464,9 +476,11 @@ const sendContactEmails = async (contactData) => {
 };
 
 // Check for email service configuration
-if (!process.env.RESEND_API_KEY) {
-    console.error('❌ CRITICAL: Missing Resend API key!');
+if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    console.error('❌ CRITICAL: Missing SMTP configuration!');
     console.error('Email functionality may be limited.');
+} else {
+    console.log('✅ SMTP email service configured');
 }
 
 // Email service is ready
@@ -620,11 +634,18 @@ Object.keys(redirects).forEach(oldPath => {
 
 // Handle OPTIONS preflight requests
 app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.status(200).end();
+  const origin = req.headers.origin;
+  
+  // In development, allow any origin
+  if (process.env.NODE_ENV !== 'production' || (origin && allowedOrigins.includes(origin))) {
+    res.header('Access-Control-Allow-Origin', origin || '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, X-Forwarded-For');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.status(200).end();
+  } else {
+    res.status(403).end();
+  }
 });
 
 app.use(express.json()); // Parse JSON request bodies
@@ -904,24 +925,18 @@ app.post('/api/send-booking-emails', async (req, res) => {
     
     // Process the booking data
     let result;
+    let savedToSheets = false;
     
-    try {
-      // Save the booking data to Google Sheets
-      const savedData = await saveAirportParking(bookingData);
-      
-      // Format successful response
-      result = formatResponse(true, {
-        ...savedData,
-        id: savedData.id || `booking-${Date.now()}`
-      });
-      
-      console.log('Booking processed successfully:', result);
-      return res.status(200).json(result);
-      
-    } catch (error) {
-      console.error('Error processing booking:', error);
-      result = formatResponse(false, bookingData, error.message || 'Failed to process booking');
-      return res.status(500).json(result);
+    // Save to Google Sheets first for airport parking
+    if (bookingData.service === 'airportParking') {
+      try {
+        const savedData = await saveAirportParking(bookingData);
+        savedToSheets = true;
+        console.log('Booking saved to Google Sheets successfully');
+      } catch (error) {
+        console.error('Error saving to Google Sheets:', error);
+        // Continue with calendar and email even if sheets fail
+      }
     }
     console.log('====== EMAIL DEBUGGING ======');
     console.log('1. Receiving booking data for service:', bookingData.service);
@@ -961,11 +976,8 @@ app.post('/api/send-booking-emails', async (req, res) => {
       });
     }
 
-    // Add booking to Google Calendar with special handling for airport parking
+    // Send confirmation emails
     try {
-      // Get Google Calendar client
-      const calendar = await getGoogleCalendarClient();
-      
       // Prepare email data
       const emailData = {
         ...bookingData,
@@ -979,15 +991,18 @@ app.post('/api/send-booking-emails', async (req, res) => {
         priceBreakdown: bookingData.priceBreakdown || {}
       };
 
-      // Send confirmation email
-      try {
-        console.log('Attempting to send confirmation email to:', emailData.customerEmail);
-        await emailService.sendBookingConfirmationEmails(emailData);
-        console.log('Confirmation email sent successfully');
-      } catch (emailError) {
-        console.error('Failed to send confirmation email:', emailError);
-        // Don't fail the request if email fails
-      }
+      console.log('Attempting to send confirmation email to:', emailData.customerEmail);
+      await emailService.sendBookingConfirmationEmails(emailData);
+      console.log('Confirmation email sent successfully');
+    } catch (emailError) {
+      console.error('Failed to send confirmation email:', emailError);
+      // Don't fail the request if email fails
+    }
+
+    // Add booking to Google Calendar with special handling for airport parking
+    try {
+      // Get Google Calendar client
+      const calendar = await getGoogleCalendarClient();
 
       // Handle airport parking differently than other services
       if (bookingData.service === 'airportParking') {
@@ -1113,185 +1128,17 @@ app.post('/api/send-booking-emails', async (req, res) => {
       // Continue with the booking even if calendar fails - saving to Sheets is more critical
     }
 
-    // Save to Google Sheets for airport parking bookings
-    if (bookingData.service === 'airportParking') {
-      try {
-        await saveAirportParking(bookingData);
-        console.log('Airport parking booking saved to Google Sheets');
-      } catch (sheetError) {
-        console.error('Error saving to Google Sheets:', sheetError);
-        // Continue with the booking even if Google Sheets save fails
-      }
-    }
-
-    // Add booking to Google Calendar with special handling for airport parking
-    try {
-// Get Google Calendar client
-const calendar = await getGoogleCalendarClient();
-  
-// Prepare email data
-const emailData = {
-...bookingData,
-customerEmail: bookingData.customerEmail || (bookingData.contact && bookingData.contact.email) || bookingData.email,
-customerName: bookingData.customerName || bookingData.name || 'Customer',
-customerPhone: bookingData.customerPhone || (bookingData.contact && bookingData.contact.phone) || bookingData.phone || '',
-service: bookingData.service || 'airportParking',
-date: bookingData.date || new Date().toISOString(),
-time: bookingData.time || '',
-totalPrice: bookingData.totalPrice || 0,
-priceBreakdown: bookingData.priceBreakdown || {}
-};
-
-// Send confirmation email
-try {
-console.log('Attempting to send confirmation email to:', emailData.customerEmail);
-await emailService.sendBookingConfirmationEmails(emailData);
-console.log('Confirmation email sent successfully');
-} catch (emailError) {
-console.error('Failed to send confirmation email:', emailError);
-// Don't fail the request if email fails
-}
-
-// Handle airport parking differently than other services
-if (bookingData.service === 'airportParking') {
-console.log('Processing airport parking booking for Google Calendar');
-
-// Parse and adjust the airport parking date range
-const dateTimeInfo = parseAirportParkingDateRange(bookingData.date);
-  
-if (dateTimeInfo) {
-// Format customer name
-const customerName = bookingData.customerName || bookingData.name;
-
-console.log(`Adding airport parking to calendar from ${dateTimeInfo.startDate.toISOString()} to ${dateTimeInfo.endDate.toISOString()} for ${customerName}`);
-
-// Create a modified version of the booking data with the adjusted times
-const modifiedBookingData = {
-...bookingData,
-startDate: dateTimeInfo.startDateStr,
-startTime: dateTimeInfo.startTimeStr,
-endDate: dateTimeInfo.endDateStr,
-endTime: dateTimeInfo.endTimeStr,
-// Add the adjusted dates for Google Calendar
-calendarStartTime: dateTimeInfo.startDate,
-calendarEndTime: dateTimeInfo.endDate
-};
-
-// Add event to Google Calendar, passing the modified booking data
-const eventId = await addEventToCalendar(
-calendar,
-bookingData.service,
-dateTimeInfo.startDateStr,
-dateTimeInfo.startTimeStr,
-customerName,
-modifiedBookingData
-);
-
-console.log(`Successfully added airport parking booking to Google Calendar with event ID: ${eventId}`);
-
-// Add the event ID to the booking data for reference
-bookingData.eventId = eventId;
-} else {
-console.warn('Failed to parse airport parking date range - not adding to calendar');
-}
-}
-// Handle other service bookings (car wash, auto service, tire service)
-else if (bookingData.date && bookingData.time && bookingData.service) {
-console.log(`Processing service booking (${bookingData.service}) for Google Calendar`);
-console.log(`Received date: ${bookingData.date}, time: ${bookingData.time} for service ${bookingData.service}`);
-
-// Generate all potential slots for this service
-const allPotentialSlots = generateTimeSlots(bookingData.service);
-console.log('Generated time slots:', allPotentialSlots);
-  
-// Check if the exact time slot is available for THIS service only
-try {
-const busySlots = await checkTimeSlotAvailability(calendar, bookingData.date, bookingData.service, allPotentialSlots);
-console.log('Busy slots:', busySlots);
-  
-if (busySlots && busySlots.includes(bookingData.time)) {
-console.warn(`Selected time slot ${bookingData.time} for ${bookingData.service} is no longer available.`);
-return res.status(409).json({
-success: false,
-message: 'The selected time slot is no longer available. Please choose another time slot.'
-});
-}
-} catch (availabilityError) {
-console.error('Error checking time slot availability:', availabilityError);
-// Continue with booking even if availability check fails
-}
-
-// Format customer name
-const customerName = bookingData.customerName || bookingData.name;
-
-// Adjust the time for Google Calendar
-const adjustedDateTime = adjustTimeForCalendar(bookingData.date, bookingData.time);
-  
-if (adjustedDateTime) {
-// Create a modified version of the booking data with the adjusted time
-const modifiedBookingData = {
-...bookingData,
-// Keep the original date and time
-date: bookingData.date,
-time: bookingData.time,
-// Add the adjusted date for Google Calendar
-calendarDateTime: adjustedDateTime
-};
-
-// Add event to Google Calendar using the modified booking data
-const eventId = await addEventToCalendar(
-calendar,
-bookingData.service,
-bookingData.date,
-bookingData.time,
-customerName,
-modifiedBookingData
-);
-
-console.log(`Added booking to Google Calendar with event ID: ${eventId}`);
-
-// Add the event ID to the booking data for reference
-bookingData.eventId = eventId;
-} else {
-console.warn('Failed to adjust time for calendar - using original date/time');
-  
-// Fallback to using the original date/time if adjustment fails
-const eventId = await addEventToCalendar(
-calendar,
-bookingData.service,
-bookingData.date,
-bookingData.time,
-customerName,
-bookingData
-);
-
-console.log(`Added booking to Google Calendar with event ID (fallback): ${eventId}`);
-bookingData.eventId = eventId;
-}
-} else {
-console.warn('Booking is missing date/time or service fields - not adding to calendar', bookingData);
-}
-} catch (calendarError) {
-console.error('Error during Google Calendar operation:', calendarError);
-// Continue with the booking even if calendar fails - saving to Sheets is more critical
-}
-
-    // Save to Google Sheets for airport parking bookings
-    if (bookingData.service === 'airportParking') {
-      try {
-        await saveAirportParking(bookingData);
-        console.log('Airport parking booking saved to Google Sheets');
-      } catch (sheetError) {
-        console.error('Error saving to Google Sheets:', sheetError);
-        // Continue with the booking even if Google Sheets save fails
-      }
-    }
+    // Format the final response
+    result = formatResponse(true, {
+      ...bookingData,
+      id: bookingData.eventId || `booking-${Date.now()}`,
+      savedToSheets,
+      calendarEvent: bookingData.eventId || null
+    });
 
     // Respond to Frontend
-    res.status(200).json({
-      success: true,
-      message: 'Booking processed successfully'
-    });
+    console.log('Booking processing completed successfully');
+    res.status(200).json(result);
   } catch (error) {
     console.error('Error processing booking request:', error);
     
@@ -1450,10 +1297,38 @@ app.listen(port, '0.0.0.0', () => {
   // Log startup information
   console.log('Server Configuration:');
   console.log(`- Port: ${port}`);
-  console.log(`- Email Service: Mailjet`);
-  console.log(`- Mailjet API Key Configured: ${!!process.env.MAILJET_API_KEY}`);
+  console.log(`- Email Service: SMTP`);
+  console.log(`- SMTP Configured: ${!!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)}`);
   console.log(`- Google Calendar API Configured: ${!!process.env.GOOGLE_CALENDAR_CREDENTIALS}`);
   console.log(`- Frontend Proxy URL: ${process.env.FRONTEND_URL || 'https://zima-auto-frontend.fly.dev'}`);
   console.log(`- Custom Domain: ${process.env.CUSTOM_DOMAIN || 'https://zima-auto.com'}`);
   console.log('Server is ready to handle requests.');
+});
+
+// Proxy endpoint for Google Apps Script to avoid CORS issues
+app.post('/api/generate-order-form', async (req, res) => {
+  try {
+    console.log('Proxying Google Apps Script request:', req.body);
+    
+    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzs6b-VCT2Zge6aVd2tc8aGvh2cqPRtl8GI4yXI-fhmHQgtxQs8IOVdEpLJ6hcvz2MnPg/exec';
+    
+    const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(req.body)
+    });
+    
+    const data = await response.json();
+    console.log('Google Apps Script response:', data);
+    
+    res.json(data);
+  } catch (error) {
+    console.error('Error proxying Google Apps Script request:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
 });

@@ -31,7 +31,9 @@
 
   // Define the backend API URL
   // Using environment variable if available, otherwise default to the base URL
-  const BACKEND_API_URL = import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev';
+  // Use local backend for development, production backend for production
+const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev');
   const backendApiUrl = `${BACKEND_API_URL}/api/send-booking-emails`;
 
   // Handle service selection (Step 1 -> Step 2)
@@ -142,7 +144,9 @@
       console.log('Sending booking data to backend API:', emailData);
 
       // Use the environment variable for the API URL with fallback - ensure no trailing slash
-      let apiUrl = import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev';
+      // Use local backend for development, production backend for production
+const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev');
       apiUrl = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl; // Remove trailing slash if present
       console.log('Using API URL:', apiUrl);
       

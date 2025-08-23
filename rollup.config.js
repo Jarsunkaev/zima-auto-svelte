@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
-console.log('BUILD ENV:', process.env.VITE_GOOGLE_APPS_SCRIPT_URL);
+console.log('BUILD ENV - Sheets Script:', process.env.VITE_GOOGLE_APPS_SCRIPT_URL);
+console.log('BUILD ENV - Docs Script:', process.env.VITE_GOOGLE_DOCS_SCRIPT_URL);
 
 import { spawn } from 'child_process';
 import replace from '@rollup/plugin-replace';
@@ -52,6 +53,8 @@ export default {
 			preventAssignment: true,
 			'process.env.VITE_GOOGLE_APPS_SCRIPT_URL': JSON.stringify(process.env.VITE_GOOGLE_APPS_SCRIPT_URL || ''),
 			'import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL': JSON.stringify(process.env.VITE_GOOGLE_APPS_SCRIPT_URL || ''),
+			'process.env.VITE_GOOGLE_DOCS_SCRIPT_URL': JSON.stringify(process.env.VITE_GOOGLE_DOCS_SCRIPT_URL || ''),
+			'import.meta.env.VITE_GOOGLE_DOCS_SCRIPT_URL': JSON.stringify(process.env.VITE_GOOGLE_DOCS_SCRIPT_URL || ''),
 			'process.env.VITE_BACKEND_API_URL': JSON.stringify(process.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev/api'),
 			'import.meta.env.VITE_BACKEND_API_URL': JSON.stringify(process.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev/api')
 		}),

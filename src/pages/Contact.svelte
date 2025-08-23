@@ -160,7 +160,9 @@
     console.log('Sending contact form data to backend:', contactData);
 
     // Use environment variable if available, otherwise default to the base URL
-    const BACKEND_API_URL = import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev';
+    // Use local backend for development, production backend for production
+const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev');
     const response = await fetch(`${BACKEND_API_URL}/api/send-contact-email`, {
       method: 'POST',
       headers: {

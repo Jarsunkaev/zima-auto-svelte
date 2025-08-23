@@ -10,7 +10,8 @@ primary_region = 'fra'
 
 [env]
   VITE_BACKEND_API_URL = "https://zima-auto-backend.fly.dev"
-  VITE_GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzIMQqmeWhQOs_XaOdBWq-qjLq0pE9FXC1cgQOdi_1_Tx0XnQl3caOLsobkU6NtVuWI/exec"  # Add your Google Apps Script URL here
+  VITE_GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1xiEPUaIJdhJd7h6v6Gzr7xL80fk-li9bJKOwv0-ZcrQ_1vzqJXW4ghnYy8LPMpXo/exec"  # Sheets Script URL
+  VITE_GOOGLE_DOCS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzs6b-VCT2Zge6aVd2tc8aGvh2cqPRtl8GI4yXI-fhmHQgtxQs8IOVdEpLJ6hcvz2MnPg/exec"  # Docs Script URL
 
 [http_service]
   internal_port = 3000

@@ -1,21 +1,22 @@
 const nodemailer = require('nodemailer');
-const { Resend } = require('resend');
 const fs = require('fs');
 const path = require('path');
 const Handlebars = require('handlebars');
 
 class EmailService {
     constructor() {
-        this.resend = new Resend(process.env.RESEND_API_KEY);
+        // Initialize SMTP transport
         this.smtpTransport = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
-            port: parseInt(process.env.SMTP_PORT),
-            secure: false, // Use TLS
+            port: parseInt(process.env.SMTP_PORT) || 587,
+            secure: process.env.SMTP_SECURE === 'true', // Use TLS/SSL based on environment
             auth: {
                 user: process.env.SMTP_USER,
                 pass: process.env.SMTP_PASS
             }
         });
+        
+        console.log('✅ SMTP email service initialized');
         
         // Load email templates
         this.loadTemplates();
@@ -328,70 +329,45 @@ class EmailService {
         return serviceType;
     }
 
-    // Send email with multiple providers
+    // Send email via SMTP
     async sendEmail(options) {
-        const providers = [
-            { name: 'Resend', method: this._sendViaResend },
-            { name: 'SMTP', method: this._sendViaSMTP }
-        ];
-
         const fullOptions = {
             from: 'Zima Auto <ahmedhasimov@zima-auto.com>',
             ...options
         };
 
-        for (const provider of providers) {
-            try {
-                console.log(`Attempting to send email via ${provider.name}`);
-                
-                // Validate email options
-                if (!fullOptions.to) {
-                    throw new Error('Recipient email is required');
-                }
-                if (!fullOptions.subject) {
-                    throw new Error('Email subject is required');
-                }
-                if (!fullOptions.html) {
-                    throw new Error('Email HTML content is required');
-                }
-
-                const result = await provider.method.call(this, fullOptions);
-                console.log(`✅ Email sent successfully via ${provider.name}`);
-                return result;
-            } catch (error) {
-                console.error(`❌ Email sending failed with ${provider.name}:`, {
-                    errorMessage: error.message,
-                    errorStack: error.stack,
-                    emailOptions: {
-                        to: fullOptions.to,
-                        subject: fullOptions.subject,
-                        hasHtml: !!fullOptions.html
-                    }
-                });
-                // Continue to next provider
+        try {
+            console.log('Attempting to send email via SMTP');
+            
+            // Validate email options
+            if (!fullOptions.to) {
+                throw new Error('Recipient email is required');
             }
-        }
+            if (!fullOptions.subject) {
+                throw new Error('Email subject is required');
+            }
+            if (!fullOptions.html) {
+                throw new Error('Email HTML content is required');
+            }
 
-        throw new Error('All email providers failed. Check server logs for details.');
+            const result = await this._sendViaSMTP(fullOptions);
+            console.log('✅ Email sent successfully via SMTP');
+            return result;
+        } catch (error) {
+            console.error('❌ Email sending failed with SMTP:', {
+                errorMessage: error.message,
+                errorStack: error.stack,
+                emailOptions: {
+                    to: fullOptions.to,
+                    subject: fullOptions.subject,
+                    hasHtml: !!fullOptions.html
+                }
+            });
+            throw new Error('Email sending failed. Check server logs for details.');
+        }
     }
 
-    // Send via Resend API
-    async _sendViaResend(options) {
-        const result = await this.resend.emails.send({
-            from: options.from,
-            to: options.to,
-            cc: options.cc,
-            subject: options.subject,
-            html: options.html
-        });
 
-        if (result.error) {
-            throw new Error(result.error.message);
-        }
-
-        console.log('✅ Email sent via Resend:', result);
-        return result;
-    }
 
     // Send via SMTP
     async _sendViaSMTP(options) {
