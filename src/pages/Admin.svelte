@@ -45,6 +45,8 @@
   let showOrderModal = false;
   let selectedBooking = null;
   let modalScrollTop = 0;
+  let isGenerating = false;
+  let generationSuccess = false;
   
   // Tab management
   let activeTab = 'airport-parking';
@@ -161,6 +163,8 @@
     console.log('closeOrderModal called');
     showOrderModal = false;
     selectedBooking = null;
+    isGenerating = false;
+    generationSuccess = false;
     
     // Re-enable body scrolling when modal is closed
     document.body.style.overflow = '';
@@ -200,10 +204,8 @@
         return;
       }
       
-      const button = document.querySelector('.generate-button');
-      const originalText = button.textContent;
-      button.textContent = 'Generálás...';
-      button.disabled = true;
+      isGenerating = true;
+      generationSuccess = false;
       
       const requestData = {
         action: 'createOrderForm',
@@ -251,7 +253,10 @@
             a.click();
             document.body.removeChild(a);
           }
-          closeOrderModal();
+          generationSuccess = true;
+          setTimeout(() => {
+            closeOrderModal();
+          }, 2000); // Show success state for 2 seconds
         } else {
           alert('Dokumentum generálása hiba: ' + (data.error || 'Ismeretlen hiba'));
         }
@@ -261,9 +266,7 @@
         alert('Dokumentum generálása sikertelen. Kérjük, próbálja újra.');
       })
       .finally(() => {
-        // Restore button state
-        button.textContent = originalText;
-        button.disabled = false;
+        isGenerating = false;
       });
     } catch (error) {
       console.error('Error generating order form:', error);
@@ -836,7 +839,7 @@ Megrendelő aláírása: _________________________________`;
                                 <line x1="16" y1="17" x2="8" y2="17"></line>
                                 <polyline points="10,9 9,9 8,9"></polyline>
                               </svg>
-                              Dokumentum
+                              Letöltés
                             </button>
                           </td>
                         </tr>
@@ -960,8 +963,22 @@ Megrendelő aláírása: _________________________________`;
         </div>
         <button 
           class="generate-button"
-          on:click={generateOrderForm}>
-          Megrendelőlap Generálása
+          class:generating={isGenerating}
+          class:success={generationSuccess}
+          on:click={generateOrderForm}
+          disabled={isGenerating}>
+          {#if isGenerating}
+            <div class="button-spinner"></div>
+            <span>Generálás</span>
+          {:else if generationSuccess}
+            <svg class="success-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 4 12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Sikeres!</span>
+          {:else}
+            <span>Megrendelőlap Generálása</span>
+          {/if}
         </button>
       </div>
     </div>
@@ -1685,6 +1702,10 @@ Megrendelő aláírása: _________________________________`;
     transition: all 0.3s ease !important;
     position: relative !important;
     overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
   }
 
   .generate-button:hover {
@@ -1703,6 +1724,40 @@ Megrendelő aláírása: _________________________________`;
     cursor: not-allowed !important;
     transform: none !important;
     box-shadow: none !important;
+  }
+
+  .generate-button.generating {
+    background-color: #00bae5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .generate-button.success {
+    background-color: #10b981 !important;
+    cursor: default !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .button-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    flex-shrink: 0;
+  }
+
+  .success-icon {
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .generate-button.generating span,
+  .generate-button.success span {
+    color: white;
   }
 
   /* Responsive Styles */
