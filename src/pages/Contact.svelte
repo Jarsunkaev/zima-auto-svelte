@@ -227,39 +227,43 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
 <div class="container">
   <div class="contact-grid">
     <div class="contact-info">
-      <div class="info-card">
-        <div class="icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="currentColor"/>
-          </svg>
-        </div>
-        <div class="info-content">
-          <h3>{content[$currentLang].address.title}</h3>
-          <p>{content[$currentLang].address.content}</p>
-        </div>
-      </div>
+      <div class="info-card combined-info">
+        <div class="combined-info-content">
+          <div class="info-item">
+            <div class="icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="info-content">
+              <h3>{content[$currentLang].address.title}</h3>
+              <p>{content[$currentLang].address.content}</p>
+            </div>
+          </div>
 
-      <div class="info-card">
-        <div class="icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6.62 10.79C8.06 13.62 10.38 15.94 13.21 17.38L15.41 15.18C15.69 14.9 16.08 14.82 16.43 14.93C17.55 15.3 18.75 15.5 20 15.5C20.55 15.5 21 15.95 21 16.5V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z" fill="currentColor"/>
-          </svg>
-        </div>
-        <div class="info-content">
-          <h3>{content[$currentLang].phone.title}</h3>
-          <p><a href="tel:+36705550588" class="contact-link">{content[$currentLang].phone.content}</a></p>
-        </div>
-      </div>
+          <div class="info-item">
+            <div class="icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.62 10.79C8.06 13.62 10.38 15.94 13.21 17.38L15.41 15.18C15.69 14.9 16.08 14.82 16.43 14.93C17.55 15.3 18.75 15.5 20 15.5C20.55 15.5 21 15.95 21 16.5V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="info-content">
+              <h3>{content[$currentLang].phone.title}</h3>
+              <p><a href="tel:+36705550588" class="contact-link">{content[$currentLang].phone.content}</a></p>
+            </div>
+          </div>
 
-      <div class="info-card">
-        <div class="icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="currentColor"/>
-          </svg>
-        </div>
-        <div class="info-content">
-          <h3>{content[$currentLang].email.title}</h3>
-          <p><a href="mailto:info@zima-auto.com" class="contact-link">{content[$currentLang].email.content}</a></p>
+          <div class="info-item">
+            <div class="icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="info-content">
+              <h3>{content[$currentLang].email.title}</h3>
+              <p><a href="mailto:info@zima-auto.com" class="contact-link">{content[$currentLang].email.content}</a></p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -442,7 +446,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
 
   /* Keep existing styles */
   .contact-hero {
-    background-color: var(--secondary);
+    background-color: rgb(19, 21, 26);
     color: white;
     padding: 8rem 2rem 5rem;
     text-align: center;
@@ -461,7 +465,8 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
   }
 
   .contact-section {
-    padding: 5rem 2rem;
+    padding: 3rem 2rem;
+    background-color: rgb(19, 21, 26);
   }
 
   .contact-grid {
@@ -487,6 +492,23 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
+  }
+
+  .combined-info {
+    padding: 2rem;
+  }
+
+  .combined-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
   }
 
   .info-card:hover {
@@ -618,6 +640,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
     height: 450px;
     overflow: hidden;
     position: relative;
+    background-color: rgb(19, 21, 26);
   }
 
   .map-container {
@@ -708,6 +731,14 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
       padding: 1rem;
     }
 
+    .combined-info {
+      padding: 1.5rem;
+    }
+
+    .combined-info-content {
+      gap: 1.5rem;
+    }
+
     .icon {
       min-width: 40px;
       height: 40px;
@@ -764,6 +795,14 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
        }
        .info-card {
            padding: 1rem;
+           gap: 1rem;
+       }
+       
+       .combined-info {
+           padding: 1rem;
+       }
+       
+       .combined-info-content {
            gap: 1rem;
        }
         .icon {
