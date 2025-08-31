@@ -80,7 +80,106 @@
           <li><strong>Napló- és használati adatok.</strong> A napló- és használati adatok szolgáltatással kapcsolatos, diagnosztikai, használati és teljesítményadatok, amelyeket szervereink automatikusan gyűjtenek, amikor Ön hozzáfér vagy használja Szolgáltatásainkat, és amelyeket naplófájlokban rögzítünk. Attól függően, hogy hogyan lép kapcsolatba velünk, ezek a naplóadatok tartalmazhatják IP-címét, eszközadatait, böngészőtípusát és beállításait, valamint a Szolgáltatásokban végzett tevékenységével kapcsolatos információkat (például a használatával kapcsolatos dátum-/időbélyegeket, megtekintett oldalakat és fájlokat, kereséseket és más műveleteket, például a használt funkciókat), eszközeseményadatokat (például rendszertevékenység, hibajelentések (néha „összeomlási naplók"), és hardverbeállítások).</li>
         </ul>
 
-        <!-- Rest of the Hungarian Privacy Policy would go here -->
+        <h2 id="section-2">2. HOGYAN KEZELJÜK AZ ÖN INFORMÁCIÓIT?</h2>
+
+        <p><strong>Röviden:</strong> Az Ön adatait Szolgáltatásaink nyújtása, javítása és adminisztrálása, Önnel való kommunikáció, biztonsági és csalásmegelőzési célokból, valamint a törvényi előírásoknak való megfelelés érdekében kezeljük. Az Ön hozzájárulásával más célokra is kezelhetjük adatait.</p>
+
+        <p>Az Ön személyes adatait különböző okokból kezeljük, attól függően, hogyan lép kapcsolatba Szolgáltatásainkkal, beleértve:</p>
+
+        <p>Egy személy életfontosságú érdekeinek megmentése vagy védelme érdekében. Az Ön adatait akkor kezelhetjük, amikor szükséges egy személy életfontosságú érdekeinek megmentése vagy védelme, például a károsodás megelőzése érdekében.</p>
+
+        <h2 id="section-3">3. MILYEN JOGI ALAPOKRA TÁMASZKODUNK AZ ÖN INFORMÁCIÓINAK KEZELÉSÉHEZ?</h2>
+
+        <p><strong>Röviden:</strong> Csak akkor kezeljük az Ön személyes adatait, amikor úgy gondoljuk, hogy szükséges, és érvényes jogi okunk (azaz jogi alapunk) van rá a vonatkozó jogszabályok szerint, például az Ön hozzájárulásával, a törvényeknek való megfelelés érdekében, szolgáltatások nyújtása érdekében, szerződési kötelezettségeink bekapcsolódása vagy teljesítése érdekében, az Ön jogainak védelme érdekében, vagy legitim üzleti érdekeink teljesítése érdekében.</p>
+
+        <p>Az Általános Adatvédelmi Rendelet (GDPR) és az Egyesült Királyság GDPR-ja megköveteli, hogy elmagyarázzuk az érvényes jogi alapokat, amelyekre támaszkodunk az Ön személyes adatainak kezeléséhez. Így a következő jogi alapokra támaszkodhatunk az Ön személyes adatainak kezeléséhez:</p>
+
+        <ul>
+          <li><strong>Hozzájárulás.</strong> Az Ön adatait kezelhetjük, ha engedélyt adott nekünk (azaz hozzájárulást) az Ön személyes adatainak használatára egy meghatározott cél érdekében. Hozzájárulását bármikor visszavonhatja.</li>
+          <li><strong>Jogi kötelezettségek.</strong> Az Ön adatait kezelhetjük, ahol úgy gondoljuk, hogy szükséges a jogi kötelezettségeinknek való megfelelés, például egy bűnüldöző szervvel vagy szabályozó ügynökséggel való együttműködés, jogi jogaink gyakorlása vagy védelme, vagy az Ön adatainak nyilvánosságra hozatala bizonyítékként olyan peres eljárásban, amelyben részt veszünk.</li>
+          <li><strong>Életfontosságú érdekek.</strong> Az Ön adatait kezelhetjük, ahol úgy gondoljuk, hogy szükséges az Ön életfontosságú érdekeinek vagy egy harmadik fél életfontosságú érdekeinek védelme, például olyan helyzetekben, amelyek potenciális fenyegetést jelentenek bármely személy biztonságára.</li>
+        </ul>
+
+        <h2 id="section-4">4. MIKOR ÉS KIVEL OSZTJUK MEG AZ ÖN SZEMÉLYES ADATAIT?</h2>
+
+        <p><strong>Röviden:</strong> Bizonyos helyzetekben és a következő harmadik felekkel oszthatjuk meg az információkat.</p>
+
+        <p>Szükség lehet az Ön személyes adatainak megosztására a következő helyzetekben:</p>
+
+        <ul>
+          <li><strong>Üzleti átruházások.</strong> Megoszthatjuk vagy átruházhatjuk az Ön adatait kapcsolatban, vagy tárgyalások során, bármilyen egyesülés, vállalati eszközök értékesítése, finanszírozás, vagy üzletünk egészének vagy részének megszerzése egy másik vállalattól.</li>
+        </ul>
+
+        <h2 id="section-5">5. HASZNÁLUNK-E COOKIE-KAT ÉS EGYÉB KÖVETÉSI TECHNOLÓGIÁKAT?</h2>
+
+        <p><strong>Röviden:</strong> Cookie-kat és egyéb követési technológiákat használhatunk az Ön adatainak gyűjtésére és tárolására.</p>
+
+        <p>Cookie-kat és hasonló követési technológiákat (mint a web beacon-ek és pixelek) használhatunk az információk elérésére vagy tárolására. Részletes információkat arról, hogyan használjuk ezeket a technológiákat, és hogyan utasíthatja el bizonyos cookie-kat, a Cookie Értesítésünkben találja.</p>
+
+        <h2 id="section-6">6. MENNYI IDEIG TÁROLJUK AZ ÖN INFORMÁCIÓIT?</h2>
+
+        <p><strong>Röviden:</strong> Az Ön adatait annyi ideig tároljuk, amíg szükséges az ebben az adatvédelmi nyilatkozatban felvázolt célok teljesítéséhez, kivéve, ha a törvény másként nem írja elő.</p>
+
+        <p>Csak annyi ideig tároljuk az Ön személyes adatait, amíg szükséges az ebben az adatvédelmi nyilatkozatban felvázolt célokhoz, kivéve, ha a törvény hosszabb megőrzési időszakot ír elő vagy engedélyez (mint az adó, számvitel vagy egyéb jogi követelmények).</p>
+
+        <p>Amikor nincs folyamatos legitim üzleti igényünk az Ön személyes adatainak kezelésére, akkor vagy töröljük vagy anonimizáljuk az ilyen információkat, vagy, ha ez nem lehetséges (például azért, mert az Ön személyes adatait biztonsági mentési archívumokban tároltuk), akkor biztonságosan tároljuk az Ön személyes adatait és elkülönítjük minden további kezeléstől, amíg a törlés lehetséges.</p>
+
+        <h2 id="section-7">7. HOGYAN TARTJUK BIZTONSÁGBAN AZ ÖN INFORMÁCIÓIT?</h2>
+
+        <p><strong>Röviden:</strong> Célunk az Ön személyes adatainak védelme szervezeti és technikai biztonsági intézkedések rendszerével.</p>
+
+        <p>Megfelelő és ésszerű technikai és szervezeti biztonsági intézkedéseket alkalmaztunk az általunk kezelt személyes adatok biztonságának védelme érdekében. Azonban a biztonsági intézkedéseink és az Ön adatainak biztonságba helyezésére tett erőfeszítéseink ellenére sem egyetlen elektronikus átvitel az interneten vagy információtároló technológia sem garantálhat 100%-os biztonságot, így nem ígérhetjük vagy garantálhatjuk, hogy a hackerek, kiberbűnözők vagy más illetéktelen harmadik felek nem tudják legyőzni a biztonságunkat, és nem tudják helytelenül gyűjteni, hozzáférni, ellopni vagy módosítani az Ön adatait. Bár mindent megteszünk az Ön személyes adatainak védelme érdekében, a személyes adatok átvitele Szolgáltatásaink felé és onnan az Ön saját kockázatára történik. Csak biztonságos környezetben kellene hozzáférnie a Szolgáltatásokhoz.</p>
+
+        <h2 id="section-8">8. GYŰJTÜNK-E INFORMÁCIÓT KISKORÚAKTÓL?</h2>
+
+        <p><strong>Röviden:</strong> Nem gyűjtünk tudatosan adatokat 18 év alatti gyermekektől, és nem is reklámozunk nekik.</p>
+
+        <p>Nem kérünk tudatosan adatokat 18 év alatti gyermekektől, és nem is reklámozunk nekik. A Szolgáltatások használatával kijelenti, hogy legalább 18 éves, vagy hogy az ilyen kiskorú szülője vagy gyámja, és hozzájárul az ilyen kiskorú függő Szolgáltatások használatához. Ha megtudjuk, hogy 18 év alatti felhasználóktól gyűjtött személyes adatokat, deaktiváljuk a fiókot, és ésszerű intézkedéseket teszünk az ilyen adatok azonnali törlésére a nyilvántartásainkból. Ha tudomást szerez arról, hogy 18 év alatti gyermekektől gyűjtött adatokat birtokolunk, kérjük, vegye fel velünk a kapcsolatot az info@zima-auto.com címen.</p>
+
+        <h2 id="section-9">9. MIK AZ ÖN ADATVÉDELMI JOGAI?</h2>
+
+        <p><strong>Röviden:</strong> Bizonyos régiókban, mint az Európai Gazdasági Térség (EEA), az Egyesült Királyság (UK) és Svájc, olyan jogai vannak, amelyek nagyobb hozzáférést és ellenőrzést biztosítanak az Ön személyes adatai felett. Bármikor áttekintheti, módosíthatja vagy megszüntetheti fiókját.</p>
+
+        <p>Bizonyos régiókban (mint az EEA, UK és Svájc) bizonyos jogai vannak a vonatkozó adatvédelmi törvények szerint. Ezek között szerepelhet a jog (i) hozzáférés kérése és az Ön személyes adatainak másolatának beszerzése, (ii) helyesbítés vagy törlés kérése; (iii) az Ön személyes adatainak kezelésének korlátozása; (iv) ha alkalmazható, az adathordozhatóság; és (v) az automatizált döntéshozatal alá nem esés. Bizonyos körülmények között jogai lehetnek az Ön személyes adatainak kezelésével szembeni tiltakozásra is. Ilyen kérést a "HOGYAN LÉPHET KAPCSOLATBA VELÜNK EZZEL AZ ÉRTESÍTÉSSEL KAPCSOLATBAN?" című szakaszban megadott kapcsolattartási adatok használatával tehet meg.</p>
+
+        <p>Minden kérést figyelembe veszünk és a vonatkozó adatvédelmi törvényeknek megfelelően járunk el.</p>
+
+        <p>Ha az EEA-ban vagy az UK-ban található, és úgy gondolja, hogy törvénytelenül kezeljük az Ön személyes adatait, joga van panaszt tenni tagállamának adatvédelmi hatóságánál vagy az UK adatvédelmi hatóságánál.</p>
+
+        <p>Ha Svájcban található, kapcsolatba léphet a Szövetségi Adatvédelmi és Információs Biztosával.</p>
+
+        <p><strong>Hozzájárulás visszavonása:</strong> Ha a hozzájárulására támaszkodunk az Ön személyes adatainak kezeléséhez, joga van bármikor visszavonni a hozzájárulását. Hozzájárulását bármikor visszavonhatja a "HOGYAN LÉPHET KAPCSOLATBA VELÜNK EZZEL AZ ÉRTESÍTÉSSEL KAPCSOLATBAN?" című szakaszban megadott kapcsolattartási adatok használatával.</p>
+
+        <p>Azonban kérjük, vegye figyelembe, hogy ez nem befolyásolja a visszavonás előtti kezelés törvényességét, sem nem befolyásolja az Ön személyes adatainak kezelését, amely a hozzájáruláson kívüli törvényes kezelési alapokra támaszkodik.</p>
+
+        <p><strong>Cookie-k és hasonló technológiák:</strong> A legtöbb webes böngésző alapértelmezetten elfogadja a cookie-kat. Ha szeretné, általában választhatja ki, hogy böngészőjét úgy állítsa be, hogy távolítsa el és utasítsa el a cookie-kat. Ha úgy dönt, hogy eltávolítja vagy elutasítja a cookie-kat, ez befolyásolhatja Szolgáltatásaink bizonyos funkcióit vagy szolgáltatásait.</p>
+
+        <p>Ha kérdései vagy megjegyzései vannak az adatvédelmi jogairól, emailben írhat nekünk az info@zima-auto.com címen.</p>
+
+        <h2 id="section-10">10. KÖVETÉS-NEM-VÁLLALÁS FUNKCIÓK ELLENŐRZÉSEI</h2>
+
+        <p>A legtöbb webes böngésző és néhány mobil operációs rendszer és mobil alkalmazás tartalmaz egy Követés-Nem-Vállalás ("DNT") funkciót vagy beállítást, amelyet aktiválhat az online böngészői tevékenységeiről szóló adatok figyelésének és gyűjtésének adatvédelmi preferenciájának jelzésére. Ebben a szakaszban még nem végezték el az egységes technológiai szabványt a DNT jelek felismeréséhez és megvalósításához. Így jelenleg nem reagálunk a DNT böngésző jelekre vagy bármely más mechanizmusra, amely automatikusan kommunikálja az Ön választását, hogy ne legyen online követve. Ha a jövőben olyan online követési szabványt fogadnak el, amelyet követnünk kell, tájékoztatni fogjuk Önt erről a gyakorlatról az adatvédelmi nyilatkozat felülvizsgált verziójában.</p>
+
+        <h2 id="section-11">11. FRISSÍTÜNK-E EZT AZ ÉRTESÍTÉST?</h2>
+
+        <p><strong>Röviden:</strong> Igen, szükség szerint frissítjük ezt az értesítést, hogy megfeleljen a vonatkozó törvényeknek.</p>
+
+        <p>Időről időre frissíthetjük ezt az adatvédelmi nyilatkozatot. A frissített verziót egy frissített "Felülvizsgált" dátum jelzi, és a frissített verzió hatályba lép, amint elérhető. Ha lényeges változtatásokat végzünk ebben az adatvédelmi nyilatkozatban, értesíthetjük Önt vagy az ilyen változtatásokról szóló értesítés kiemelésével, vagy közvetlenül értesítés küldésével. Javasoljuk, hogy gyakran tekintse át ezt az adatvédelmi nyilatkozatot, hogy tájékoztatott legyen arról, hogyan védjük az Ön adatait.</p>
+
+        <h2 id="section-12">12. HOGYAN LÉPHET KAPCSOLATBA VELÜNK EZZEL AZ ÉRTESÍTÉSSEL KAPCSOLATBAN?</h2>
+
+        <p>Ha kérdései vagy megjegyzései vannak ezzel az értesítéssel kapcsolatban, kapcsolatba léphet velünk emailben az info@zima-auto.com címen vagy postai úton:</p>
+
+        <p>
+        Zima Auto Kft.<br>
+        Vecsés Széchényi utca 62 mellett<br>
+        Hrsz 0182/55<br>
+        2220 Hungary
+        </p>
+
+        <h2 id="section-13">13. HOGYAN TEKINTHETI ÁT, FRISSÍTHETI VAGY TÖRHETI AZ ÖNÁLTALUNK GYŰJTÖTT ADATOKAT?</h2>
+
+        <p>Az Ön országának vonatkozó törvényei alapján joga lehet hozzáférést kérni az általunk gyűjtött személyes adatokhoz, módosítani azokat, vagy törölni azokat. A személyes adatok áttekintéséhez, frissítéséhez vagy törléséhez kérjük, vegye fel velünk a kapcsolatot az info@zima-auto.com címen.</p>
 
       {:else}
         <!-- English Privacy Policy -->
