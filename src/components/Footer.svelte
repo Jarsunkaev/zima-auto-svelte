@@ -127,9 +127,19 @@
   <div class="footer-bottom">
     <div class="container">
       <p>{t('footer.copyright', $currentLang)}</p>
-      <a href="#privacy" on:click|preventDefault={() => navigate('privacy')} class="privacy-link">
-        {$currentLang === 'hu' ? 'Adatvédelmi irányelvek' : 'Privacy Policy'}
-      </a>
+      <div class="legal-links">
+        <a href="#privacy" on:click|preventDefault={() => navigate('privacy')} class="legal-link">
+          {$currentLang === 'hu' ? 'Adatvédelmi irányelvek' : 'Privacy Policy'}
+        </a>
+        <span class="separator">•</span>
+        <a href="#imprint" on:click|preventDefault={() => navigate('imprint')} class="legal-link">
+          {$currentLang === 'hu' ? 'Impresszum' : 'Imprint'}
+        </a>
+        <span class="separator">•</span>
+        <a href="#terms" on:click|preventDefault={() => navigate('terms')} class="legal-link">
+          {$currentLang === 'hu' ? 'ÁSZF' : 'Terms & Conditions'}
+        </a>
+      </div>
     </div>
   </div>
 
@@ -299,15 +309,28 @@
     color: #666;
   }
 
-  .privacy-link {
+  .legal-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .legal-link {
     color: #666;
     text-decoration: none;
     font-size: 0.9rem;
     transition: color 0.3s ease;
   }
 
-  .privacy-link:hover {
+  .legal-link:hover {
     color: var(--primary);
+  }
+
+  .separator {
+    color: #666;
+    font-size: 0.9rem;
   }
 
   @media screen and (max-width: 992px) {

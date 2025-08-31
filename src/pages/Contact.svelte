@@ -647,6 +647,8 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
     position: relative;
     height: 100%;
     width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
   }
 
   .map-section iframe {

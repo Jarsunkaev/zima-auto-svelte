@@ -41,6 +41,11 @@
   let showPassword = false;
   let statusSelect;
   
+  // Pagination state
+  let currentPage = 1;
+  let rowsPerPage = 50;
+  let totalPages = 1;
+  
   // Modal state for order form
   let showOrderModal = false;
   let selectedBooking = null;
@@ -60,6 +65,95 @@
     { id: 'tire-service', label: 'Tire Service' },
     { id: 'car-maintenance', label: 'Car Maintenance' }
   ];
+
+  // Computed properties for pagination
+  $: startIndex = (currentPage - 1) * rowsPerPage;
+  $: endIndex = startIndex + rowsPerPage;
+  $: paginatedBookings = bookings.slice(startIndex, endIndex);
+  $: totalPages = Math.ceil(bookings.length / rowsPerPage);
+  $: hasNextPage = currentPage < totalPages;
+  $: hasPrevPage = currentPage > 1;
+
+  // Pagination functions
+  function scrollToTop() {
+    // Scroll to the top of the table container
+    const tableContainer = document.querySelector('.table-container');
+    if (tableContainer) {
+      tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  function goToPage(page) {
+    if (page >= 1 && page <= totalPages) {
+      currentPage = page;
+      scrollToTop();
+    }
+  }
+
+  function goToNextPage() {
+    if (hasNextPage) {
+      currentPage++;
+      scrollToTop();
+    }
+  }
+
+  function goToPrevPage() {
+    if (hasPrevPage) {
+      currentPage--;
+      scrollToTop();
+    }
+  }
+
+  function goToFirstPage() {
+    currentPage = 1;
+    scrollToTop();
+  }
+
+  function goToLastPage() {
+    currentPage = totalPages;
+    scrollToTop();
+  }
+
+  // Generate page numbers for pagination display
+  function getPageNumbers() {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if total is small
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Show smart pagination with ellipsis
+      if (currentPage <= 3) {
+        // Near the beginning
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        // Near the end
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        // In the middle
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
+  }
 
   function updateSlider(tabId) {
     activeTab = tabId;
@@ -519,6 +613,9 @@ Megrendelő aláírása: _________________________________`;
       const data = await response.json();
       console.log('Bookings data received:', data);
       bookings = data.bookings || [];
+      
+      // Reset to first page when new data is loaded
+      currentPage = 1;
     } catch (error) {
       console.error('Error loading bookings:', error);
       console.error('Full error details:', {
@@ -783,6 +880,17 @@ Megrendelő aláírása: _________________________________`;
               </div>
 
               <div class="table-container">
+                <!-- Pagination Info -->
+                <div class="pagination-info">
+                  <div class="pagination-stats">
+                    <span>Összesen {bookings.length} foglalás</span>
+                    <span>•</span>
+                    <span>Oldal {currentPage} / {totalPages}</span>
+                    <span>•</span>
+                    <span>Megjelenítve {startIndex + 1}-{Math.min(endIndex, bookings.length)} / {bookings.length}</span>
+                  </div>
+                </div>
+                
                 <div class="table-responsive">
                   <table class="bookings-table">
                     <thead>
@@ -798,7 +906,7 @@ Megrendelő aláírása: _________________________________`;
                       </tr>
                     </thead>
                     <tbody>
-                      {#each bookings as booking}
+                      {#each paginatedBookings as booking}
                         <tr>
                           <td class="name-cell">{booking["NÉV"]}</td>
                           <td class="license-cell">{booking["RENDSZÁM"]}</td>
@@ -847,6 +955,47 @@ Megrendelő aláírása: _________________________________`;
                     </tbody>
                   </table>
                 </div>
+                
+                <!-- Pagination Controls -->
+                {#if totalPages > 1}
+                  <div class="pagination-controls">
+                    <button on:click={goToFirstPage} class="pagination-button" disabled={!hasPrevPage} title="Első oldal">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5"></path>
+                        <path d="M12 19l-7-7 7-7"></path>
+                      </svg>
+                    </button>
+                    <button on:click={goToPrevPage} class="pagination-button" disabled={!hasPrevPage} title="Előző oldal">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 6l-6 6 6 6"></path>
+                      </svg>
+                    </button>
+                    {#each getPageNumbers() as page}
+                      {#if page === '...'}
+                        <span class="pagination-ellipsis">...</span>
+                      {:else}
+                        <button 
+                          on:click={() => goToPage(page)}
+                          class="pagination-button"
+                          class:active={currentPage === page}
+                        >
+                          {page}
+                        </button>
+                      {/if}
+                    {/each}
+                    <button on:click={goToNextPage} class="pagination-button" disabled={!hasNextPage} title="Következő oldal">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 6l6 6-6 6"></path>
+                      </svg>
+                    </button>
+                    <button on:click={goToLastPage} class="pagination-button" disabled={!hasNextPage} title="Utolsó oldal">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"></path>
+                        <path d="M12 5l7 7-7 7"></path>
+                      </svg>
+                    </button>
+                  </div>
+                {/if}
               </div>
             </div>
           {:else if activeTab === 'car-wash'}
@@ -1760,6 +1909,85 @@ Megrendelő aláírása: _________________________________`;
     color: white;
   }
 
+  /* Pagination Info */
+  .pagination-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .pagination-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .pagination-stats span:nth-child(even) {
+    color: #cbd5e0;
+  }
+
+  /* Pagination Controls */
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f1f5f9;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .pagination-button {
+    background: none;
+    border: 1px solid #e2e8f0;
+    color: #4a5568;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    height: 30px;
+  }
+
+  .pagination-button:hover:not(:disabled) {
+    background-color: #f8fafc;
+    border-color: #cbd5e0;
+  }
+
+  .pagination-button:disabled {
+    color: #95a5a6;
+    cursor: not-allowed;
+    background-color: #f1f3f5;
+    border-color: #e2e8f0;
+  }
+
+  .pagination-button.active {
+    background-color: #2c3e50;
+    color: white;
+    border-color: #2c3e50;
+  }
+
+  .pagination-ellipsis {
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+  }
+
   /* Responsive Styles */
   @media (max-width: 1200px) {
     .admin-main {
@@ -1773,6 +2001,18 @@ Megrendelő aláírása: _________________________________`;
     .bookings-table th,
     .bookings-table td {
       padding: 0.75rem;
+    }
+    
+    .pagination-controls {
+      gap: 0.25rem;
+      padding: 0.75rem;
+    }
+    
+    .pagination-button {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+      min-width: 28px;
+      height: 28px;
     }
   }
   
@@ -1915,6 +2155,39 @@ Megrendelő aláírása: _________________________________`;
 
     .actions-cell {
       justify-content: center;
+    }
+    
+    /* Pagination Mobile */
+    .pagination-info {
+      padding: 0.75rem 1rem;
+    }
+    
+    .pagination-stats {
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.8rem;
+    }
+    
+    .pagination-stats span:nth-child(even) {
+      display: none;
+    }
+    
+    .pagination-controls {
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      padding: 0.75rem;
+    }
+    
+    .pagination-button {
+      padding: 0.35rem 0.6rem;
+      font-size: 0.8rem;
+      min-width: 26px;
+      height: 26px;
+    }
+    
+    .pagination-ellipsis {
+      padding: 0.35rem 0.6rem;
+      font-size: 0.8rem;
     }
   }
   

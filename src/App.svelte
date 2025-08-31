@@ -11,6 +11,8 @@
 	import Privacy from './pages/Privacy.svelte';
 	import ThankYou from './pages/ThankYou.svelte';  // Using the pages/ThankYou component
 	import Admin from './pages/Admin.svelte';
+	import Imprint from './pages/Imprint.svelte';
+	import Terms from './pages/Terms.svelte';
 	import DiscountPopup from './components/DiscountPopup.svelte';
 	import CookieConsent from './components/CookieConsent.svelte';
   
@@ -95,7 +97,7 @@ const handleRouting = () => {
   const pageName = path.substring(1).split('/')[0];
   
   // Check if this is a valid page
-  if (['about', 'services', 'contact', 'booking', 'privacy', 'thankyou', 'admin'].includes(pageName)) {
+  if (['about', 'services', 'contact', 'booking', 'privacy', 'thankyou', 'admin', 'imprint', 'terms'].includes(pageName)) {
     currentPage = pageName;
   } else {
     // Not a valid page - go to home or show 404
@@ -154,6 +156,10 @@ const handleRouting = () => {
       <ThankYou {lang} />
     {:else if currentPage === 'admin'}
       <Admin {lang} />
+    {:else if currentPage === 'imprint'}
+      <Imprint {lang} />
+    {:else if currentPage === 'terms'}
+      <Terms {lang} />
     {:else}
       <!-- Fallback if no page matches -->
       <div class="error-container">

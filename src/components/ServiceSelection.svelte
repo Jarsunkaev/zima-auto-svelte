@@ -109,7 +109,7 @@
   
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 1.5rem;
       margin-top: 3rem;
     }
@@ -167,15 +167,15 @@
       color: white;
     }
   
-    .service-card h3 {
-      font-size: 1.2rem;
+        .service-card h3 {
+      font-size: 1.25rem;
       margin-bottom: 0.8rem;
       color: var(--text);
     }
-  
+
     .service-card p {
-      font-size: 0.9rem;
-      line-height: 1.5;
+      font-size: 1rem;
+      line-height: 1.6;
       color: var(--text-light);
       margin-bottom: 1.2rem;
       flex-grow: 1;
@@ -184,11 +184,25 @@
     .service-action {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.5rem;
-      color: var(--primary);
+      color: #13151a;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 1.1rem;
       margin-top: auto;
+      transition: all 0.3s ease;
+    }
+
+    .service-card:hover .service-action {
+      color: rgba(0, 186, 229, 1);
+    }
+
+    .service-action svg {
+      transition: transform 0.3s ease;
+    }
+
+    .service-card:hover .service-action svg {
+      transform: translateX(3px);
     }
   
     /* Responsive Styles */
@@ -198,30 +212,45 @@
       }
     }
   
-    @media screen and (max-width: 768px) {
+        @media screen and (max-width: 768px) {
       .section-title {
         font-size: 1.8rem;
       }
-  
+
       .section-subtitle {
         font-size: 1rem;
       }
-  
+
       .services-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
       }
       
       .service-card {
-        min-height: 250px;
-        padding: 1.2rem;
+        min-height: 280px;
+        padding: 1.5rem;
+        text-align: center;
+      }
+
+      .service-icon {
+        margin: 0 auto 1.2rem;
       }
       
       .service-card h3 {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
       }
       
       .service-card p {
-        font-size: 0.85rem;
+        font-size: 0.95rem;
+      }
+
+      .service-action {
+        font-size: 1.1rem;
+        padding: 1rem 2.5rem;
+        min-height: 52px;
+        width: 100%;
+        max-width: 220px;
+        margin: 1rem auto 0;
       }
     }
   
@@ -232,6 +261,18 @@
       
       .section-subtitle {
         font-size: 0.9rem;
+      }
+
+      .service-card {
+        min-height: 260px;
+        padding: 1.2rem;
+      }
+
+      .service-action {
+        font-size: 1rem;
+        padding: 0.9rem 2rem;
+        min-height: 48px;
+        max-width: 200px;
       }
     }
     </style>

@@ -2,17 +2,15 @@
   import { currentLang } from '../lib/i18n';
 </script>
 
-<section class="privacy-hero">
-  <div class="container">
-    <h1>{$currentLang === 'hu' ? 'Adatvédelmi Szabályzat' : 'Privacy Policy'}</h1>
-    <p>{$currentLang === 'hu' 
-      ? 'Utolsó frissítés: 2024. április 24.' 
-      : 'Last updated: April 24, 2024'}</p>
-  </div>
-</section>
+<div class="page-container">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h1>{$currentLang === 'hu' ? 'Adatvédelmi Szabályzat' : 'Privacy Policy'}</h1>
+      <p>{$currentLang === 'hu' 
+        ? 'Utolsó frissítés: 2024. április 24.' 
+        : 'Last updated: April 24, 2024'}</p>
+    </div>
 
-<div class="privacy-container">
-  <div class="container">
     <div class="privacy-content">
       {#if $currentLang === 'hu'}
         <!-- Hungarian Privacy Policy -->
@@ -258,35 +256,46 @@
 </div>
 
 <style>
-  .privacy-hero {
-    background-color: var(--secondary);
-    color: white;
-    padding: 8rem 2rem 5rem;
-    text-align: center;
+  .page-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #13151a 0%, #1a1d24 100%);
+    padding-top: 80px;
   }
 
-  .privacy-hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-
-  .privacy-hero p {
-    font-size: 1.1rem;
-    max-width: 600px;
+  .content-wrapper {
+    max-width: 1200px;
     margin: 0 auto;
-    opacity: 0.9;
+    padding: 2rem;
   }
 
-  .privacy-container {
-    padding: 4rem 0 6rem;
-    background-color: #f8f9fa;
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: white;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #00bae5, #0088cc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .page-header p {
+    font-size: 1.1rem;
+    color: #a0aec0;
+    margin: 0;
   }
 
   .privacy-content {
-    background-color: white;
-    padding: 3rem;
+    background: white;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 2rem;
   }
 
   .privacy-content h2 {
@@ -336,24 +345,13 @@
     line-height: 1.7;
   }
 
-  /* Responsive adjustments */
-  @media screen and (max-width: 992px) {
-    .privacy-content {
-      padding: 2rem;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .privacy-hero h1 {
-      font-size: 2.2rem;
+  @media (max-width: 768px) {
+    .content-wrapper {
+      padding: 1rem;
     }
 
-    .privacy-hero p {
-      font-size: 1rem;
-    }
-
-    .privacy-container {
-      padding: 3rem 0 5rem;
+    .page-header h1 {
+      font-size: 2rem;
     }
 
     .privacy-content {
@@ -366,28 +364,6 @@
 
     .privacy-content h3 {
       font-size: 1.3rem;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    .privacy-hero h1 {
-      font-size: 1.8rem;
-    }
-
-    .privacy-container {
-      padding: 2rem 0 4rem;
-    }
-
-    .privacy-content {
-      padding: 1.2rem;
-    }
-
-    .privacy-content h2 {
-      font-size: 1.3rem;
-    }
-
-    .privacy-content h3 {
-      font-size: 1.1rem;
     }
   }
 </style>
