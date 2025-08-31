@@ -7,8 +7,8 @@
     <div class="page-header">
       <h1>{$currentLang === 'hu' ? 'Adatvédelmi Szabályzat' : 'Privacy Policy'}</h1>
       <p>{$currentLang === 'hu' 
-        ? 'Utolsó frissítés: 2024. április 24.' 
-        : 'Last updated: April 24, 2024'}</p>
+        ? 'Utolsó frissítés: 2025. augusztus 31.' 
+        : 'Last updated: August 31, 2025'}</p>
     </div>
 
     <div class="privacy-content">
