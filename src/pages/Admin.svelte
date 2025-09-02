@@ -46,6 +46,13 @@
   let rowsPerPage = 50;
   let totalPages = 1;
   
+  // Sorting and filtering state
+  let sortField = 'TÁVOZÁS';
+  let sortDirection = 'asc';
+  let selectedMonth = '';
+  let searchQuery = '';
+  let filteredBookings = [];
+  
   // Modal state for order form
   let showOrderModal = false;
   let selectedBooking = null;
@@ -66,11 +73,105 @@
     { id: 'car-maintenance', label: 'Car Maintenance' }
   ];
 
-  // Computed properties for pagination
+  // Computed properties for pagination (will be updated after filtering/sorting)
+
+  // Month filter options - will be populated dynamically
+  let monthOptions = [{ value: '', label: 'Minden hónap' }];
+
+  // Filter and sort bookings
+  $: {
+    if (bookings.length > 0) {
+      // Start with all bookings
+      let tempFiltered = [...bookings];
+
+      // Apply search filter (searches from complete dataset)
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase().trim();
+        console.log('Searching for:', query);
+        
+        tempFiltered = tempFiltered.filter(booking => {
+          // Only search in fields that actually have data
+          const customerName = (booking["NÉV"] || '').toString().toLowerCase();
+          const licensePlate = (booking["RENDSZÁM"] || '').toString().toLowerCase();
+          const email = (booking["EMAIL"] || '').toString().toLowerCase();
+          const phone = (booking["TELEFON"] || '').toString().toLowerCase();
+          
+          // Check if any field contains the search query
+          const nameMatch = customerName && customerName.includes(query);
+          const plateMatch = licensePlate && licensePlate.includes(query);
+          const emailMatch = email && email.includes(query);
+          const phoneMatch = phone && phone.includes(query);
+          
+          const isMatch = nameMatch || plateMatch || emailMatch || phoneMatch;
+          
+          if (isMatch) {
+            console.log('Match found:', {
+              name: customerName,
+              plate: licensePlate,
+              email: email,
+              phone: phone,
+              query: query
+            });
+          }
+          
+          return isMatch;
+        });
+        
+        console.log('Search results:', tempFiltered.length, 'bookings found');
+      }
+
+      // Apply month filter
+      if (selectedMonth) {
+        const [year, month] = selectedMonth.split('-');
+        tempFiltered = tempFiltered.filter(booking => {
+          if (!booking["TÁVOZÁS"]) return false;
+          const departureDate = new Date(booking["TÁVOZÁS"]);
+          if (isNaN(departureDate.getTime())) return false;
+          return departureDate.getFullYear() === parseInt(year) && 
+                 departureDate.getMonth() === parseInt(month) - 1;
+        });
+      }
+
+      // Apply sorting
+      tempFiltered.sort((a, b) => {
+        let aValue = a[sortField];
+        let bValue = b[sortField];
+
+        // Handle date sorting
+        if (sortField === 'TÁVOZÁS' || sortField === 'ÉRKEZÉS') {
+          aValue = aValue ? new Date(aValue).getTime() : 0;
+          bValue = bValue ? new Date(bValue).getTime() : 0;
+        }
+        // Handle numeric sorting
+        else if (sortField === 'HÁNY NAP' || sortField === 'ÖSSZEG') {
+          aValue = parseFloat(aValue) || 0;
+          bValue = parseFloat(bValue) || 0;
+        }
+        // Handle string sorting
+        else {
+          aValue = (aValue || '').toString().toLowerCase();
+          bValue = (bValue || '').toString().toLowerCase();
+        }
+
+        if (sortDirection === 'asc') {
+          return aValue > bValue ? 1 : aValue < bValue ? -1 : 0;
+        } else {
+          return aValue < bValue ? 1 : aValue > bValue ? -1 : 0;
+        }
+      });
+
+      filteredBookings = tempFiltered;
+
+      // Reset to first page when filtering/sorting changes
+      currentPage = 1;
+    }
+  }
+
+  // Update pagination for filtered data
   $: startIndex = (currentPage - 1) * rowsPerPage;
   $: endIndex = startIndex + rowsPerPage;
-  $: paginatedBookings = bookings.slice(startIndex, endIndex);
-  $: totalPages = Math.ceil(bookings.length / rowsPerPage);
+  $: paginatedBookings = filteredBookings.slice(startIndex, endIndex);
+  $: totalPages = Math.ceil(filteredBookings.length / rowsPerPage);
   $: hasNextPage = currentPage < totalPages;
   $: hasPrevPage = currentPage > 1;
 
@@ -201,6 +302,55 @@
     }
     isLoading = false;
   });
+
+  // Initialize month options and filteredBookings when bookings are loaded
+  $: if (bookings.length > 0) {
+    if (filteredBookings.length === 0) {
+      filteredBookings = [...bookings];
+    }
+    generateMonthOptions();
+  }
+
+  // Generate month options from actual booking data
+  function generateMonthOptions() {
+    console.log('Generating month options from', bookings.length, 'bookings');
+    
+    const months = new Set();
+    const monthNames = [
+      'Január', 'Február', 'Március', 'Április', 'Május', 'Június',
+      'Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December'
+    ];
+
+    bookings.forEach(booking => {
+      if (booking["TÁVOZÁS"]) {
+        const date = new Date(booking["TÁVOZÁS"]);
+        if (!isNaN(date.getTime())) {
+          const year = date.getFullYear();
+          const month = date.getMonth();
+          const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
+          months.add(monthKey);
+          console.log('Added month:', monthKey, 'from date:', booking["TÁVOZÁS"]);
+        }
+      }
+    });
+
+    // Convert to array and sort by date (chronological order)
+    const monthArray = Array.from(months).sort((a, b) => a.localeCompare(b));
+    console.log('Available months:', monthArray);
+    
+    monthOptions = [
+      { value: '', label: 'Minden hónap' },
+      ...monthArray.map(month => {
+        const [year, monthNum] = month.split('-');
+        return {
+          value: month,
+          label: `${monthNames[parseInt(monthNum) - 1]} ${year}`
+        };
+      })
+    ];
+    
+    console.log('Generated month options:', monthOptions);
+  }
 
   // Handle login
   function handleLogin() {
@@ -616,6 +766,10 @@ Megrendelő aláírása: _________________________________`;
       
       // Reset to first page when new data is loaded
       currentPage = 1;
+      
+      // Force month options generation after data is loaded
+      console.log('Bookings loaded, generating month options...');
+      generateMonthOptions();
     } catch (error) {
       console.error('Error loading bookings:', error);
       console.error('Full error details:', {
@@ -628,6 +782,8 @@ Megrendelő aláírása: _________________________________`;
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         console.log('Using mock data for localhost testing due to error');
         bookings = getMockBookings();
+        // Force month options generation for mock data too
+        generateMonthOptions();
         return;
       }
       
@@ -706,6 +862,37 @@ Megrendelő aláírása: _________________________________`;
       console.error('Error updating status:', error);
       alert('Hiba a státusz frissítésekor: ' + (error.message || 'Kérjük, ellenőrizze a konzolt részletekért.'));
     }
+  }
+
+  // Sorting functions
+  function handleSort(field) {
+    if (sortField === field) {
+      sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      sortField = field;
+      sortDirection = 'asc';
+    }
+  }
+
+  function getSortIcon(field) {
+    if (sortField !== field) return '↕';
+    return sortDirection === 'asc' ? '↑' : '↓';
+  }
+
+  // Filter functions
+  function handleMonthFilter() {
+    // Reset to first page when filter changes
+    currentPage = 1;
+  }
+
+  function clearFilters() {
+    selectedMonth = '';
+    searchQuery = '';
+    sortField = 'TÁVOZÁS';
+    sortDirection = 'asc';
+    currentPage = 1;
+    // Regenerate month options to ensure they're up to date
+    generateMonthOptions();
   }
 </script>
 
@@ -880,14 +1067,66 @@ Megrendelő aláírása: _________________________________`;
               </div>
 
               <div class="table-container">
+                <!-- Filter and Sort Controls -->
+                <div class="filter-controls">
+                  <div class="filter-left">
+                    <div class="filter-group">
+                      <label for="search-input">Keresés:</label>
+                      <input
+                        id="search-input"
+                        type="text"
+                        bind:value={searchQuery}
+                        placeholder="Név, rendszám, email, telefon..."
+                        class="search-input"
+                      />
+                    </div>
+                    <div class="filter-group">
+                      <label for="month-filter">Hónap szűrő:</label>
+                      <div class="filter-input-group">
+                        <select 
+                          id="month-filter"
+                          bind:value={selectedMonth}
+                          on:change={handleMonthFilter}
+                          class="month-select"
+                        >
+                          {#each monthOptions as option}
+                            <option value={option.value}>{option.label}</option>
+                          {/each}
+                        </select>
+
+                        <button on:click={clearFilters} class="clear-filters-btn" title="Szűrők törlése">
+                          <svg fill="#fcfcfc" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <path d="M12 16c1.671 0 3-1.331 3-3s-1.329-3-3-3-3 1.331-3 3 1.329 3 3 3z"></path>
+                              <path d="M20.817 11.186a8.94 8.94 0 0 0-1.355-3.219 9.053 9.053 0 0 0-2.43-2.43 8.95 8.95 0 0 0-3.219-1.355 9.028 9.028 0 0 0-1.838-.18V2L8 5l3.975 3V6.002c.484-.002.968.044 1.435.14a6.961 6.961 0 0 1 2.502 1.053 7.005 7.005 0 0 1 1.892 1.892A6.967 6.967 0 0 1 19 13a7.032 7.032 0 0 1-.55 2.725 7.11 7.11 0 0 1-.644 1.188 7.2 7.2 0 0 1-.858 1.039 7.028 7.028 0 0 1-3.536 1.907 7.13 7.13 0 0 1-2.822 0 6.961 6.961 0 0 1-2.503-1.054 7.002 7.002 0 0 1-1.89-1.89A6.996 6.996 0 0 1 5 13H3a9.02 9.02 0 0 0 1.539 5.034 9.096 9.096 0 0 0 2.428 2.428A8.95 8.95 0 0 0 12 22a9.09 9.09 0 0 0 1.814-.183 9.014 9.014 0 0 0 3.218-1.355 8.886 8.886 0 0 0 1.331-1.099 9.228 9.228 0 0 0 1.1-1.332A8.952 8.952 0 0 0 21 13a9.09 9.09 0 0 0-.183-1.814z"></path>
+                            </g>
+                          </svg>
+                          <span>Szűrők törlése</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="filter-right">
+                    <span class="filter-stats">
+                      {#if searchQuery.trim() || selectedMonth}
+                        {filteredBookings.length} foglalás találva
+                      {:else}
+                        {filteredBookings.length} foglalás összesen
+                      {/if}
+                    </span>
+                  </div>
+                </div>
+
                 <!-- Pagination Info -->
                 <div class="pagination-info">
                   <div class="pagination-stats">
-                    <span>Összesen {bookings.length} foglalás</span>
+                    <span>Összesen {filteredBookings.length} foglalás</span>
                     <span>•</span>
                     <span>Oldal {currentPage} / {totalPages}</span>
                     <span>•</span>
-                    <span>Megjelenítve {startIndex + 1}-{Math.min(endIndex, bookings.length)} / {bookings.length}</span>
+                    <span>Megjelenítve {startIndex + 1}-{Math.min(endIndex, filteredBookings.length)} / {filteredBookings.length}</span>
                   </div>
                 </div>
                 
@@ -895,12 +1134,30 @@ Megrendelő aláírása: _________________________________`;
                   <table class="bookings-table">
                     <thead>
                       <tr>
-                        <th>Ügyfél neve</th>
-                        <th>Rendszám</th>
-                        <th>Érkezés</th>
-                        <th>Távozás</th>
-                        <th>Nap</th>
-                        <th>Összeg</th>
+                        <th class="sortable-header" on:click={() => handleSort('NÉV')}>
+                          <span>Ügyfél neve</span>
+                          <span class="sort-icon">{getSortIcon('NÉV')}</span>
+                        </th>
+                        <th class="sortable-header" on:click={() => handleSort('RENDSZÁM')}>
+                          <span>Rendszám</span>
+                          <span class="sort-icon">{getSortIcon('RENDSZÁM')}</span>
+                        </th>
+                        <th class="sortable-header" on:click={() => handleSort('ÉRKEZÉS')}>
+                          <span>Érkezés</span>
+                          <span class="sort-icon">{getSortIcon('ÉRKEZÉS')}</span>
+                        </th>
+                        <th class="sortable-header" on:click={() => handleSort('TÁVOZÁS')}>
+                          <span>Távozás</span>
+                          <span class="sort-icon">{getSortIcon('TÁVOZÁS')}</span>
+                        </th>
+                        <th class="sortable-header" on:click={() => handleSort('HÁNY NAP')}>
+                          <span>Nap</span>
+                          <span class="sort-icon">{getSortIcon('HÁNY NAP')}</span>
+                        </th>
+                        <th class="sortable-header" on:click={() => handleSort('ÖSSZEG')}>
+                          <span>Összeg</span>
+                          <span class="sort-icon">{getSortIcon('ÖSSZEG')}</span>
+                        </th>
                         <th>Státusz</th>
                         <th>Műveletek</th>
                       </tr>
@@ -1534,6 +1791,124 @@ Megrendelő aláírása: _________________________________`;
     border-color: #cbd5e0;
   }
 
+  /* Filter Controls */
+  .filter-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    border-radius: 8px 8px 0 0;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filter-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .search-input {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+    color: #4a5568;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    min-width: 200px;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  }
+
+  .search-input::placeholder {
+    color: #a0aec0;
+    font-style: italic;
+  }
+
+  .filter-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .month-select {
+    padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+    color: #4a5568;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    min-width: 150px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px;
+  }
+
+  .month-select:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  }
+
+  .clear-filters-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .clear-filters-btn:hover {
+    background-color: #dc2626;
+  }
+
+  .filter-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .filter-stats {
+    font-size: 0.9rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+
   /* Table Container */
   .table-container {
     flex: 1;
@@ -1576,6 +1951,30 @@ Megrendelő aláírása: _________________________________`;
     position: sticky;
     top: 0;
     z-index: 10;
+  }
+
+  .sortable-header {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+  }
+
+  .sortable-header:hover {
+    background-color: #e2e8f0;
+  }
+
+  .sortable-header span:first-child {
+    margin-right: 0.5rem;
+  }
+
+  .sort-icon {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .sortable-header:hover .sort-icon {
+    opacity: 1;
   }
 
   .bookings-table td {
@@ -2032,6 +2431,27 @@ Megrendelő aláírása: _________________________________`;
   @media (max-width: 768px) {
     .admin-main {
       padding: 1rem;
+    }
+    
+    .filter-controls {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .filter-left {
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .filter-right {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .search-input {
+      min-width: 100%;
     }
     
     .tab-navigation {
