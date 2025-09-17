@@ -9,7 +9,6 @@ primary_region = 'fra'
 
 [deploy]
   strategy = 'bluegreen'
-  max_unavailable = 0.2
 
 [env]
   NODE_ENV = 'production'

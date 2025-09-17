@@ -100,7 +100,7 @@
           <p>{lang === 'hu' 
             ? 'Ez a weboldal cookie-kat használ a jobb felhasználói élmény érdekében. Az "Elfogadom" gombra kattintva hozzájárul a cookie-k használatához. További információt az ' 
             : 'We use cookies to enhance your browsing experience. By clicking "Accept", you consent to our use of cookies. See our '}
-            <a href="#privacy" on:click|preventDefault={() => window.location.hash = 'privacy'}>
+            <a href="/privacy" on:click|preventDefault={() => window.location.hash = 'privacy'}>
               {lang === 'hu' ? 'Adatvédelmi Szabályzatban' : 'Privacy Policy'}
             </a>
             {lang === 'hu' ? ' talál.' : ' for more information.'}

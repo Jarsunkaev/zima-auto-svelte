@@ -163,7 +163,10 @@
     // Use local backend for development, production backend for production
 const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev');
-    const response = await fetch(`${BACKEND_API_URL}/api/send-contact-email`, {
+// Normalize base and force single /api prefix (strip trailing slashes and trailing /api if present)
+    let apiBase = BACKEND_API_URL.replace(/\/+$/, '').replace(/\/api$/, '');
+    const contactEndpoint = `${apiBase}/api/send-contact-email`;
+    const response = await fetch(contactEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -171,7 +174,9 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
       body: JSON.stringify(contactData)
     });
 
-    const result = await response.json();
+    // Safely parse JSON (handle HTML error pages)
+    const contentType = response.headers.get('content-type') || '';
+    const result = contentType.includes('application/json') ? await response.json() : { message: await response.text() };
 
     if (response.ok) {
       console.log('Contact form submitted successfully:', result);

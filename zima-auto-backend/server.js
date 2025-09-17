@@ -880,10 +880,30 @@ app.post('/api/send-contact-email', async (req, res) => {
         message: 'Missing required fields in contact data'
       });
     }
-    res.status(200).json({
-      success: true,
-      message: 'Contact form processed successfully'
-    });
+
+    // Send contact form emails
+    try {
+      await emailService.sendContactFormEmails({
+        customerName: contactData.customerName,
+        customerEmail: contactData.customerEmail,
+        message: contactData.message
+      });
+      
+      console.log('Contact form emails sent successfully');
+      
+      res.status(200).json({
+        success: true,
+        message: 'Contact form processed successfully'
+      });
+    } catch (emailError) {
+      console.error('Error sending contact form emails:', emailError);
+      
+      res.status(500).json({
+        success: false,
+        message: 'Failed to send contact form emails',
+        error: emailError.message
+      });
+    }
 
   } catch (error) {
     console.error('Error processing contact form submission:', error);

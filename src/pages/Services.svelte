@@ -44,21 +44,21 @@
 
   // --- Data Structures ---
   const parkingPrices = [
-    { days: 1, normal: '7500 Ft', discount: '5500 Ft' }, { days: 2, normal: '8200 Ft', discount: '6200 Ft' },
-    { days: 3, normal: '9000 Ft', discount: '7000 Ft' }, { days: 4, normal: '9800 Ft', discount: '8000 Ft' },
-    { days: 5, normal: '10500 Ft', discount: '8600 Ft' }, { days: 6, normal: '11200 Ft', discount: '9500 Ft' },
-    { days: 7, normal: '12500 Ft', discount: '10500 Ft' }, { days: 8, normal: '14000 Ft', discount: '11000 Ft' },
-    { days: 9, normal: '15500 Ft', discount: '11500 Ft' }, { days: 10, normal: '16000 Ft', discount: '12000 Ft' },
-    { days: 11, normal: '17000 Ft', discount: '12400 Ft' }, { days: 12, normal: '17600 Ft', discount: '12900 Ft' },
-    { days: 13, normal: '18000 Ft', discount: '13500 Ft' }, { days: 14, normal: '18500 Ft', discount: '13900 Ft' },
-    { days: 15, normal: '19000 Ft', discount: '14300 Ft' }, { days: 16, normal: '19500 Ft', discount: '14700 Ft' },
-    { days: 17, normal: '20000 Ft', discount: '15000 Ft' }, { days: 18, normal: '20500 Ft', discount: '15400 Ft' },
-    { days: 19, normal: '21000 Ft', discount: '15800 Ft' }, { days: 20, normal: '21500 Ft', discount: '16200 Ft' },
-    { days: 21, normal: '22000 Ft', discount: '16600 Ft' }, { days: 22, normal: '22500 Ft', discount: '17000 Ft' },
-    { days: 23, normal: '23000 Ft', discount: '17400 Ft' }, { days: 24, normal: '23500 Ft', discount: '17800 Ft' },
-    { days: 25, normal: '24000 Ft', discount: '18200 Ft' }, { days: 26, normal: '24500 Ft', discount: '18600 Ft' },
-    { days: 27, normal: '25000 Ft', discount: '19000 Ft' }, { days: 28, normal: '25500 Ft', discount: '19500 Ft' },
-    { days: 29, normal: '26000 Ft', discount: '19500 Ft' }, { days: 30, normal: '26000 Ft', discount: '19500 Ft' }
+    { days: 1, normal: '7500 Ft', discount: '6200 Ft' }, { days: 2, normal: '8200 Ft', discount: '6900 Ft' },
+    { days: 3, normal: '9000 Ft', discount: '7700 Ft' }, { days: 4, normal: '9800 Ft', discount: '8700 Ft' },
+    { days: 5, normal: '10500 Ft', discount: '9300 Ft' }, { days: 6, normal: '11200 Ft', discount: '10200 Ft' },
+    { days: 7, normal: '12500 Ft', discount: '11200 Ft' }, { days: 8, normal: '14000 Ft', discount: '11700 Ft' },
+    { days: 9, normal: '15500 Ft', discount: '12200 Ft' }, { days: 10, normal: '16000 Ft', discount: '12700 Ft' },
+    { days: 11, normal: '17000 Ft', discount: '13100 Ft' }, { days: 12, normal: '17600 Ft', discount: '13600 Ft' },
+    { days: 13, normal: '18000 Ft', discount: '14200 Ft' }, { days: 14, normal: '18500 Ft', discount: '14600 Ft' },
+    { days: 15, normal: '19000 Ft', discount: '15000 Ft' }, { days: 16, normal: '19500 Ft', discount: '15400 Ft' },
+    { days: 17, normal: '20000 Ft', discount: '15700 Ft' }, { days: 18, normal: '20500 Ft', discount: '16100 Ft' },
+    { days: 19, normal: '21000 Ft', discount: '16500 Ft' }, { days: 20, normal: '21500 Ft', discount: '16900 Ft' },
+    { days: 21, normal: '22000 Ft', discount: '17300 Ft' }, { days: 22, normal: '22500 Ft', discount: '17700 Ft' },
+    { days: 23, normal: '23000 Ft', discount: '18100 Ft' }, { days: 24, normal: '23500 Ft', discount: '18500 Ft' },
+    { days: 25, normal: '24000 Ft', discount: '18900 Ft' }, { days: 26, normal: '24500 Ft', discount: '19300 Ft' },
+    { days: 27, normal: '25000 Ft', discount: '19700 Ft' }, { days: 28, normal: '25500 Ft', discount: '20200 Ft' },
+    { days: 29, normal: '26000 Ft', discount: '20200 Ft' }, { days: 30, normal: '26000 Ft', discount: '20200 Ft' }
   ];
 
    const carWashData = {

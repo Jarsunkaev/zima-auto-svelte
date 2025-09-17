@@ -332,7 +332,7 @@ class EmailService {
     // Send email via SMTP
     async sendEmail(options) {
         const fullOptions = {
-            from: 'Zima Auto <ahmedhasimov@zima-auto.com>',
+            from: process.env.MAIL_FROM || 'Zima Auto <ahmedhasimov@zima-auto.com>',
             ...options
         };
 
@@ -375,6 +375,7 @@ class EmailService {
             from: options.from,
             to: options.to,
             cc: options.cc,
+            replyTo: options.replyTo,
             subject: options.subject,
             html: options.html
         };
@@ -543,6 +544,7 @@ class EmailService {
             await this.sendEmail({
                 to: 'info@zima-auto.com',
                 cc: 'ahmedhasimov@zima-auto.com',
+                replyTo: customerEmail ? `${customerName || 'Customer'} <${customerEmail}>` : undefined,
                 subject: 'New Contact Form Submission',
                 html: adminHtml
             });
