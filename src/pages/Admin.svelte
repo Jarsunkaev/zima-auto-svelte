@@ -73,6 +73,15 @@
     { id: 'car-maintenance', label: 'Car Maintenance' }
   ];
 
+  // Maintenance tickets state
+  let maintenanceTickets = [];
+  let showTicketModal = false;
+  let showCreateTicketModal = false;
+  let selectedTicket = null;
+  let isGeneratingWorkOrder = false;
+  let workOrderGenerationSuccess = false;
+  let draggedTicket = null;
+
   // Computed properties for pagination (will be updated after filtering/sorting)
 
   // Month filter options - will be populated dynamically
@@ -174,6 +183,34 @@
   $: totalPages = Math.ceil(filteredBookings.length / rowsPerPage);
   $: hasNextPage = currentPage < totalPages;
   $: hasPrevPage = currentPage > 1;
+
+  // Drag and drop handlers
+  function handleDragStart(event, ticket) {
+    draggedTicket = ticket;
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('text/plain', ticket.id.toString());
+    event.target.style.opacity = '0.5';
+  }
+
+  function handleDragEnd(event) {
+    event.target.style.opacity = '1';
+  }
+
+  function handleDrop(event, newStatus) {
+    event.preventDefault();
+    const ticketId = event.dataTransfer.getData('text/plain');
+    const ticket = maintenanceTickets.find(t => t.id.toString() === ticketId);
+    
+    if (ticket && ticket.status !== newStatus) {
+      // Update the ticket status
+      maintenanceTickets = maintenanceTickets.map(t => 
+        t.id.toString() === ticketId 
+          ? { ...t, status: newStatus, updatedAt: new Date().toISOString() }
+          : t
+      );
+    }
+    draggedTicket = null;
+  }
 
   // Pagination functions
   function scrollToTop() {
@@ -299,6 +336,7 @@
       userEmail = savedEmail;
       isAuthenticated = true;
       await loadBookings();
+      await loadMaintenanceTickets();
     }
     isLoading = false;
   });
@@ -386,7 +424,7 @@
     showOrderModal = true;
     
     // Scroll to top and prevent body scrolling when modal is open
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     document.body.style.overflow = 'hidden';
     
     console.log('Modal state after opening:', { showOrderModal, selectedBooking });
@@ -894,6 +932,349 @@ Megrendelő aláírása: _________________________________`;
     // Regenerate month options to ensure they're up to date
     generateMonthOptions();
   }
+
+  // Maintenance tickets functions
+  async function loadMaintenanceTickets() {
+    try {
+      // For now, use mock data
+      maintenanceTickets = getMockMaintenanceTickets();
+      console.log('Maintenance tickets loaded:', maintenanceTickets.length);
+    } catch (error) {
+      console.error('Error loading maintenance tickets:', error);
+      maintenanceTickets = getMockMaintenanceTickets(); // Fallback to mock data
+    }
+  }
+
+  function getMockMaintenanceTickets() {
+    return [
+      {
+        id: 'WO-2024-001',
+        title: 'Fékrendszer javítás',
+        status: 'todo',
+        priority: 'high',
+        customer: {
+          name: 'Kovács János',
+          email: 'kovacs.janos@email.com',
+          phone: '+36 30 123 4567'
+        },
+        vehicle: {
+          vin: 'WDB12345678901234',
+          make: 'Mercedes-Benz',
+          model: 'C-Class',
+          year: 2018,
+          licensePlate: 'ABC-123',
+          mileage: 125000
+        },
+        service: {
+          type: 'repair',
+          description: 'Fékbetét csere, fékfolyadék cseréje',
+          estimatedHours: 2.5
+        },
+        parts: [
+          {
+            partNumber: 'MB-FB-001',
+            name: 'Fékbetét elöl',
+            quantity: 2,
+            unitPrice: 15000,
+            totalPrice: 30000,
+            supplier: 'Mercedes-Benz',
+            status: 'ordered'
+          },
+          {
+            partNumber: 'MB-FF-001',
+            name: 'Fékfolyadék',
+            quantity: 1,
+            unitPrice: 5000,
+            totalPrice: 5000,
+            supplier: 'Mercedes-Benz',
+            status: 'received'
+          }
+        ],
+        labor: [
+          {
+            technician: 'Nagy Péter',
+            hours: 2.5,
+            rate: 8000,
+            description: 'Fékrendszer javítás',
+            date: new Date().toISOString()
+          }
+        ],
+        costs: {
+          partsTotal: 35000,
+          laborTotal: 20000,
+          tax: 11000,
+          discount: 0,
+          total: 66000
+        },
+        notes: 'Ügyfél panasza: fékek csikorognak',
+        createdAt: new Date('2024-01-15T10:00:00').toISOString(),
+        updatedAt: new Date('2024-01-15T10:00:00').toISOString()
+      },
+      {
+        id: 'WO-2024-002',
+        title: 'Olajcsere és szűrők',
+        status: 'in-progress',
+        priority: 'medium',
+        customer: {
+          name: 'Nagy Mária',
+          email: 'nagy.maria@email.com',
+          phone: '+36 20 987 6543'
+        },
+        vehicle: {
+          vin: 'VW12345678901234',
+          make: 'Volkswagen',
+          model: 'Golf',
+          year: 2020,
+          licensePlate: 'XYZ-789',
+          mileage: 45000
+        },
+        service: {
+          type: 'maintenance',
+          description: 'Motorolaj csere, olajszűrő csere, levegőszűrő csere',
+          estimatedHours: 1.5
+        },
+        parts: [
+          {
+            partNumber: 'VW-OL-001',
+            name: 'Motorolaj 5W-30',
+            quantity: 4,
+            unitPrice: 3000,
+            totalPrice: 12000,
+            supplier: 'Volkswagen',
+            status: 'received'
+          },
+          {
+            partNumber: 'VW-OS-001',
+            name: 'Olajszűrő',
+            quantity: 1,
+            unitPrice: 4000,
+            totalPrice: 4000,
+            supplier: 'Volkswagen',
+            status: 'received'
+          }
+        ],
+        labor: [
+          {
+            technician: 'Szabó Gábor',
+            hours: 1.5,
+            rate: 8000,
+            description: 'Olajcsere és szűrők',
+            date: new Date().toISOString()
+          }
+        ],
+        costs: {
+          partsTotal: 16000,
+          laborTotal: 12000,
+          tax: 5600,
+          discount: 0,
+          total: 33600
+        },
+        notes: 'Rendszeres karbantartás',
+        createdAt: new Date('2024-01-16T08:00:00').toISOString(),
+        updatedAt: new Date('2024-01-16T14:30:00').toISOString()
+      },
+      {
+        id: 'WO-2024-003',
+        title: 'Vezérműszíj csere',
+        status: 'done',
+        priority: 'high',
+        customer: {
+          name: 'Szabó Péter',
+          email: 'szabo.peter@email.com',
+          phone: '+36 70 555 1234'
+        },
+        vehicle: {
+          vin: 'BMW12345678901234',
+          make: 'BMW',
+          model: '3 Series',
+          year: 2016,
+          licensePlate: 'DEF-456',
+          mileage: 180000
+        },
+        service: {
+          type: 'repair',
+          description: 'Vezérműszíj csere, vízpumpa csere, feszítő csere',
+          estimatedHours: 4.0
+        },
+        parts: [
+          {
+            partNumber: 'BMW-VS-001',
+            name: 'Vezérműszíj',
+            quantity: 1,
+            unitPrice: 25000,
+            totalPrice: 25000,
+            supplier: 'BMW',
+            status: 'installed'
+          },
+          {
+            partNumber: 'BMW-VP-001',
+            name: 'Vízpumpa',
+            quantity: 1,
+            unitPrice: 35000,
+            totalPrice: 35000,
+            supplier: 'BMW',
+            status: 'installed'
+          }
+        ],
+        labor: [
+          {
+            technician: 'Kovács András',
+            hours: 4.0,
+            rate: 8000,
+            description: 'Vezérműszíj csere',
+            date: new Date('2024-01-14T09:00:00').toISOString()
+          }
+        ],
+        costs: {
+          partsTotal: 60000,
+          laborTotal: 32000,
+          tax: 18400,
+          discount: 0,
+          total: 110400
+        },
+        notes: 'Előrejelzett karbantartás - 180.000 km',
+        createdAt: new Date('2024-01-14T09:00:00').toISOString(),
+        updatedAt: new Date('2024-01-14T17:00:00').toISOString()
+      },
+      {
+        id: 'WO-2024-004',
+        title: 'Diagnosztika',
+        status: 'todo',
+        priority: 'low',
+        customer: {
+          name: 'Tóth Anna',
+          email: 'toth.anna@email.com',
+          phone: '+36 30 555 9876'
+        },
+        vehicle: {
+          vin: 'AUDI12345678901234',
+          make: 'Audi',
+          model: 'A4',
+          year: 2019,
+          licensePlate: 'GHI-789',
+          mileage: 75000
+        },
+        service: {
+          type: 'diagnostic',
+          description: 'Motorhiba diagnosztika',
+          estimatedHours: 1.0
+        },
+        parts: [],
+        labor: [
+          {
+            technician: 'Nagy Péter',
+            hours: 1.0,
+            rate: 8000,
+            description: 'Diagnosztika',
+            date: new Date().toISOString()
+          }
+        ],
+        costs: {
+          partsTotal: 0,
+          laborTotal: 8000,
+          tax: 1600,
+          discount: 0,
+          total: 9600
+        },
+        notes: 'Motor ellenőrző lámpa világít',
+        createdAt: new Date('2024-01-17T11:00:00').toISOString(),
+        updatedAt: new Date('2024-01-17T11:00:00').toISOString()
+      }
+    ];
+  }
+
+  // Reactive statements for ticket filtering
+  $: todoTickets = maintenanceTickets.filter(ticket => ticket.status === 'todo');
+  $: inProgressTickets = maintenanceTickets.filter(ticket => ticket.status === 'in-progress');
+  $: doneTickets = maintenanceTickets.filter(ticket => ticket.status === 'done');
+
+  function getTicketsByStatus(status) {
+    return maintenanceTickets.filter(ticket => ticket.status === status);
+  }
+
+  function getStatusLabel(status) {
+    const labels = {
+      'todo': 'Teendő',
+      'in-progress': 'Folyamatban',
+      'done': 'Kész'
+    };
+    return labels[status] || status;
+  }
+
+  function getPriorityLabel(priority) {
+    const labels = {
+      'low': 'Alacsony',
+      'medium': 'Közepes',
+      'high': 'Magas',
+      'urgent': 'Sürgős'
+    };
+    return labels[priority] || priority;
+  }
+
+  function openTicketModal(ticket) {
+    selectedTicket = ticket;
+    showTicketModal = true;
+    // Prevent body scrolling and ensure modal appears in viewport
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${window.scrollY}px`;
+    document.body.style.width = '100%';
+  }
+
+  function closeTicketModal() {
+    showTicketModal = false;
+    selectedTicket = null;
+    isGeneratingWorkOrder = false;
+    workOrderGenerationSuccess = false;
+    // Restore body styles and scroll position
+    const scrollY = document.body.style.top;
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.overflow = '';
+    document.body.style.width = '';
+    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+  }
+
+  function updateTicketStatus(ticketId) {
+    const ticket = maintenanceTickets.find(t => t.id === ticketId);
+    if (ticket) {
+      const statusOrder = ['todo', 'in-progress', 'done'];
+      const currentIndex = statusOrder.indexOf(ticket.status);
+      if (currentIndex < statusOrder.length - 1) {
+        ticket.status = statusOrder[currentIndex + 1];
+        ticket.updatedAt = new Date().toISOString();
+        maintenanceTickets = [...maintenanceTickets]; // Trigger reactivity
+      }
+    }
+  }
+
+  async function generateWorkOrder() {
+    if (!selectedTicket) return;
+    
+    try {
+      isGeneratingWorkOrder = true;
+      workOrderGenerationSuccess = false;
+      
+      // Simulate work order generation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // In a real implementation, this would call the backend
+      console.log('Generating work order for ticket:', selectedTicket.id);
+      
+      workOrderGenerationSuccess = true;
+      
+      // Auto-close modal after success
+      setTimeout(() => {
+        closeTicketModal();
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Error generating work order:', error);
+      alert('Hiba a munkalap generálásakor. Kérjük, próbálja újra.');
+    } finally {
+      isGeneratingWorkOrder = false;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -1298,22 +1679,204 @@ Megrendelő aláírása: _________________________________`;
               </div>
             </div>
           {:else if activeTab === 'car-maintenance'}
-            <div class="coming-soon">
-              <div class="coming-soon-content">
-                <h2>Autókarbantartási Foglalások</h2>
-                <p>Mit siettek ti buzik? majd megcsinálom</p>
-                <div class="coming-soon-features">
-                  <div class="feature">
-                    <span class="feature-icon">🔍</span>
-                    <span>Szolgáltatás előzmények nyomon követése</span>
+            <div class="maintenance-dashboard">
+              <div class="content-header">
+                <div class="header-left">
+                  <h2>Autókarbantartási Jegyek</h2>
+                  <p class="subtitle">Munkalapok kezelése és nyomon követése</p>
+                </div>
+                <div class="header-actions">
+                  <button on:click={loadMaintenanceTickets} class="refresh-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M23 4v6h-6"></path>
+                      <path d="M1 20v-6h6"></path>
+                      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                    Frissítés
+                  </button>
+                  <button on:click={() => showCreateTicketModal = true} class="create-ticket-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Új Jegy
+                  </button>
+                </div>
+              </div>
+
+              <!-- Kanban Board -->
+              <div class="kanban-board">
+                <!-- Todo Column -->
+                <div class="kanban-column" data-status="todo">
+                  <div class="column-header">
+                    <h3>Teendő</h3>
+                    <span class="ticket-count">{todoTickets.length}</span>
                   </div>
-                  <div class="feature">
-                    <span class="feature-icon">⚙️</span>
-                    <span>Részletek készlet kezelése</span>
+                  <div class="column-content" on:drop={(e) => handleDrop(e, 'todo')} on:dragover|preventDefault on:dragenter|preventDefault>
+                    {#each todoTickets as ticket}
+                      <div 
+                        class="ticket-card" 
+                        draggable="true"
+                on:dragstart={(e) => handleDragStart(e, ticket)}
+                on:dragend={(e) => handleDragEnd(e)}
+                on:click={() => openTicketModal(ticket)}
+                        on:keydown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            openTicketModal(ticket);
+                          }
+                        }}
+                        tabindex="0"
+                        role="button"
+                        aria-label="View ticket details for {ticket.title}"
+                      >
+                        <div class="ticket-header">
+                          <span class="ticket-id">#{ticket.id}</span>
+                          <span class="ticket-priority" class:priority-low={ticket.priority === 'low'} class:priority-medium={ticket.priority === 'medium'} class:priority-high={ticket.priority === 'high'} class:priority-urgent={ticket.priority === 'urgent'}>
+                            {getPriorityLabel(ticket.priority)}
+                          </span>
+                        </div>
+                        <div class="ticket-content">
+                          <h4 class="ticket-title">{ticket.title}</h4>
+                          <div class="ticket-meta">
+                            <div class="customer-name">{ticket.customer.name}</div>
+                            <div class="vehicle-info">
+                              <span class="license-plate">{ticket.vehicle.licensePlate}</span>
+                              <span class="vehicle-model">{ticket.vehicle.make} {ticket.vehicle.model}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="ticket-footer">
+                          <span class="ticket-date">{formatDate(ticket.createdAt)}</span>
+                          <button 
+                            class="view-button"
+                            on:click|stopPropagation={() => openTicketModal(ticket)}
+                            title="Részletek megtekintése"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                              <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    {/each}
                   </div>
-                  <div class="feature">
-                    <span class="feature-icon">📋</span>
-                    <span>Munkarendelés kezelése</span>
+                </div>
+
+                <!-- In Progress Column -->
+                <div class="kanban-column" data-status="in-progress">
+                  <div class="column-header">
+                    <h3>Folyamatban</h3>
+                    <span class="ticket-count">{inProgressTickets.length}</span>
+                  </div>
+                  <div class="column-content" on:drop={(e) => handleDrop(e, 'in-progress')} on:dragover|preventDefault on:dragenter|preventDefault>
+                    {#each inProgressTickets as ticket}
+                      <div 
+                        class="ticket-card" 
+                        draggable="true"
+                on:dragstart={(e) => handleDragStart(e, ticket)}
+                on:dragend={(e) => handleDragEnd(e)}
+                on:click={() => openTicketModal(ticket)}
+                        on:keydown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            openTicketModal(ticket);
+                          }
+                        }}
+                        tabindex="0"
+                        role="button"
+                        aria-label="View ticket details for {ticket.title}"
+                      >
+                        <div class="ticket-header">
+                          <span class="ticket-id">#{ticket.id}</span>
+                          <span class="ticket-priority" class:priority-low={ticket.priority === 'low'} class:priority-medium={ticket.priority === 'medium'} class:priority-high={ticket.priority === 'high'} class:priority-urgent={ticket.priority === 'urgent'}>
+                            {getPriorityLabel(ticket.priority)}
+                          </span>
+                        </div>
+                        <div class="ticket-content">
+                          <h4 class="ticket-title">{ticket.title}</h4>
+                          <div class="ticket-meta">
+                            <div class="customer-name">{ticket.customer.name}</div>
+                            <div class="vehicle-info">
+                              <span class="license-plate">{ticket.vehicle.licensePlate}</span>
+                              <span class="vehicle-model">{ticket.vehicle.make} {ticket.vehicle.model}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="ticket-footer">
+                          <span class="ticket-date">{formatDate(ticket.createdAt)}</span>
+                          <button 
+                            class="view-button"
+                            on:click|stopPropagation={() => openTicketModal(ticket)}
+                            title="Részletek megtekintése"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                              <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    {/each}
+                  </div>
+                </div>
+
+                <!-- Done Column -->
+                <div class="kanban-column" data-status="done">
+                  <div class="column-header">
+                    <h3>Kész</h3>
+                    <span class="ticket-count">{doneTickets.length}</span>
+                  </div>
+                  <div class="column-content" on:drop={(e) => handleDrop(e, 'done')} on:dragover|preventDefault on:dragenter|preventDefault>
+                    {#each doneTickets as ticket}
+                      <div 
+                        class="ticket-card" 
+                        draggable="true"
+                on:dragstart={(e) => handleDragStart(e, ticket)}
+                on:dragend={(e) => handleDragEnd(e)}
+                on:click={() => openTicketModal(ticket)}
+                        on:keydown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            openTicketModal(ticket);
+                          }
+                        }}
+                        tabindex="0"
+                        role="button"
+                        aria-label="View ticket details for {ticket.title}"
+                      >
+                        <div class="ticket-header">
+                          <span class="ticket-id">#{ticket.id}</span>
+                          <span class="ticket-priority" class:priority-low={ticket.priority === 'low'} class:priority-medium={ticket.priority === 'medium'} class:priority-high={ticket.priority === 'high'} class:priority-urgent={ticket.priority === 'urgent'}>
+                            {getPriorityLabel(ticket.priority)}
+                          </span>
+                        </div>
+                        <div class="ticket-content">
+                          <h4 class="ticket-title">{ticket.title}</h4>
+                          <div class="ticket-meta">
+                            <div class="customer-name">{ticket.customer.name}</div>
+                            <div class="vehicle-info">
+                              <span class="license-plate">{ticket.vehicle.licensePlate}</span>
+                              <span class="vehicle-model">{ticket.vehicle.make} {ticket.vehicle.model}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="ticket-footer">
+                          <span class="ticket-date">{formatDate(ticket.createdAt)}</span>
+                          <button 
+                            class="view-button"
+                            on:click|stopPropagation={() => openTicketModal(ticket)}
+                            title="Részletek megtekintése"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                              <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    {/each}
                   </div>
                 </div>
               </div>
@@ -1386,6 +1949,250 @@ Megrendelő aláírása: _________________________________`;
             <span>Megrendelőlap Generálása</span>
           {/if}
         </button>
+      </div>
+    </div>
+  </div>
+{/if}
+
+<!-- Ticket Detail Modal -->
+{#if showTicketModal && selectedTicket}
+  <div 
+    class="modal-overlay ticket-modal-overlay"
+    on:click={closeTicketModal}
+    on:keydown={(e) => {
+      if (e.key === 'Escape') {
+        closeTicketModal();
+      }
+    }}
+    tabindex="-1">
+    <div 
+      class="modal-content ticket-modal-content"
+      on:click|stopPropagation
+      on:keydown={(e) => {
+        if (e.key === 'Escape') {
+          closeTicketModal();
+        }
+      }}
+      role="dialog"
+      aria-labelledby="ticket-modal-title"
+      aria-modal="true">
+      <div class="modal-header">
+        <h3 id="ticket-modal-title">Munkalap Részletek - {selectedTicket.id}</h3>
+        <button 
+          class="close-button"
+          on:click={closeTicketModal}
+          aria-label="Close modal">
+          ×
+        </button>
+      </div>
+      <div class="modal-body ticket-modal-body">
+        <!-- Ticket Header -->
+        <div class="ticket-detail-header">
+          <div class="ticket-title-section">
+            <h2>{selectedTicket.title}</h2>
+            <div class="ticket-meta-info">
+              <span class="ticket-status-badge" class:status-todo={selectedTicket.status === 'todo'} class:status-in-progress={selectedTicket.status === 'in-progress'} class:status-done={selectedTicket.status === 'done'}>
+                {getStatusLabel(selectedTicket.status)}
+              </span>
+              <span class="ticket-priority-badge" class:priority-low={selectedTicket.priority === 'low'} class:priority-medium={selectedTicket.priority === 'medium'} class:priority-high={selectedTicket.priority === 'high'} class:priority-urgent={selectedTicket.priority === 'urgent'}>
+                {getPriorityLabel(selectedTicket.priority)}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer and Vehicle Info -->
+        <div class="ticket-detail-section">
+          <h4>Ügyfél és Jármű Adatok</h4>
+          <div class="detail-grid">
+            <div class="detail-group">
+              <div class="detail-label">Ügyfél neve:</div>
+              <div class="detail-value">{selectedTicket.customer.name}</div>
+            </div>
+            <div class="detail-group">
+              <div class="detail-label">Email:</div>
+              <div class="detail-value">{selectedTicket.customer.email}</div>
+            </div>
+            <div class="detail-group">
+              <div class="detail-label">Telefon:</div>
+              <div class="detail-value">{selectedTicket.customer.phone}</div>
+            </div>
+            <div class="detail-group">
+              <div class="detail-label">Rendszám:</div>
+              <div class="detail-value license-plate">{selectedTicket.vehicle.licensePlate}</div>
+            </div>
+            <div class="detail-group">
+              <div class="detail-label">Jármű:</div>
+              <div class="detail-value">{selectedTicket.vehicle.year} {selectedTicket.vehicle.make} {selectedTicket.vehicle.model}</div>
+            </div>
+            <div class="detail-group">
+              <div class="detail-label">VIN:</div>
+              <div class="detail-value vin-number">{selectedTicket.vehicle.vin}</div>
+            </div>
+            <div class="detail-group">
+              <div class="detail-label">Kilométeróra:</div>
+              <div class="detail-value">{selectedTicket.vehicle.mileage.toLocaleString()} km</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Details -->
+        <div class="ticket-detail-section">
+          <h4>Szolgáltatás Részletek</h4>
+          <div class="service-details">
+            <div class="detail-group">
+              <div class="detail-label">Szolgáltatás típusa:</div>
+              <div class="detail-value">{selectedTicket.service.type}</div>
+            </div>
+            <div class="detail-group">
+              <div class="detail-label">Leírás:</div>
+              <div class="detail-value">{selectedTicket.service.description}</div>
+            </div>
+            <div class="detail-group">
+              <div class="detail-label">Becsült munkaóra:</div>
+              <div class="detail-value">{selectedTicket.service.estimatedHours} óra</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parts List -->
+        {#if selectedTicket.parts && selectedTicket.parts.length > 0}
+          <div class="ticket-detail-section">
+            <h4>Alkatrészek</h4>
+            <div class="parts-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cikkszám</th>
+                    <th>Név</th>
+                    <th>Mennyiség</th>
+                    <th>Egységár</th>
+                    <th>Összesen</th>
+                    <th>Státusz</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {#each selectedTicket.parts as part}
+                    <tr>
+                      <td>{part.partNumber}</td>
+                      <td>{part.name}</td>
+                      <td>{part.quantity}</td>
+                      <td>{part.unitPrice.toLocaleString()} Ft</td>
+                      <td>{part.totalPrice.toLocaleString()} Ft</td>
+                      <td>
+                        <span class="part-status" class:status-ordered={part.status === 'ordered'} class:status-received={part.status === 'received'} class:status-installed={part.status === 'installed'}>
+                          {part.status === 'ordered' ? 'Rendelve' : 
+                           part.status === 'received' ? 'Megérkezett' : 
+                           part.status === 'installed' ? 'Beszerelve' : part.status}
+                        </span>
+                      </td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {/if}
+
+        <!-- Labor Details -->
+        {#if selectedTicket.labor && selectedTicket.labor.length > 0}
+          <div class="ticket-detail-section">
+            <h4>Munkaerő</h4>
+            <div class="labor-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Technikus</th>
+                    <th>Leírás</th>
+                    <th>Óra</th>
+                    <th>Óradíj</th>
+                    <th>Összesen</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {#each selectedTicket.labor as labor}
+                    <tr>
+                      <td>{labor.technician}</td>
+                      <td>{labor.description}</td>
+                      <td>{labor.hours}</td>
+                      <td>{labor.rate.toLocaleString()} Ft</td>
+                      <td>{(labor.hours * labor.rate).toLocaleString()} Ft</td>
+                    </tr>
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {/if}
+
+        <!-- Cost Breakdown -->
+        <div class="ticket-detail-section">
+          <h4>Költség Bontás</h4>
+          <div class="cost-breakdown">
+            <div class="cost-item">
+              <span>Alkatrészek:</span>
+              <span>{selectedTicket.costs.partsTotal.toLocaleString()} Ft</span>
+            </div>
+            <div class="cost-item">
+              <span>Munkaerő:</span>
+              <span>{selectedTicket.costs.laborTotal.toLocaleString()} Ft</span>
+            </div>
+            <div class="cost-item">
+              <span>ÁFA:</span>
+              <span>{selectedTicket.costs.tax.toLocaleString()} Ft</span>
+            </div>
+            {#if selectedTicket.costs.discount > 0}
+              <div class="cost-item discount">
+                <span>Kedvezmény:</span>
+                <span>-{selectedTicket.costs.discount.toLocaleString()} Ft</span>
+              </div>
+            {/if}
+            <div class="cost-item total">
+              <span><strong>Összesen:</strong></span>
+              <span><strong>{selectedTicket.costs.total.toLocaleString()} Ft</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        {#if selectedTicket.notes}
+          <div class="ticket-detail-section">
+            <h4>Megjegyzések</h4>
+            <div class="notes-content">
+              {selectedTicket.notes}
+            </div>
+          </div>
+        {/if}
+
+        <!-- Action Buttons -->
+        <div class="ticket-actions">
+          <button 
+            class="generate-work-order-button"
+            class:generating={isGeneratingWorkOrder}
+            class:success={workOrderGenerationSuccess}
+            on:click={generateWorkOrder}
+            disabled={isGeneratingWorkOrder}>
+            {#if isGeneratingWorkOrder}
+              <div class="button-spinner"></div>
+              <span>Generálás</span>
+            {:else if workOrderGenerationSuccess}
+              <svg class="success-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M22 4 12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Sikeres!</span>
+            {:else}
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14,2 14,8 20,8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10,9 9,9 8,9"></polyline>
+              </svg>
+              <span>Munkalap Generálása</span>
+            {/if}
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -2162,37 +2969,41 @@ Megrendelő aláírása: _________________________________`;
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background-color: rgba(0, 0, 0, 0.5) !important;
-    z-index: 9999999 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    z-index: 10000000 !important;
     display: flex !important;
     justify-content: center !important;
-    align-items: flex-start !important;
+    align-items: center !important;
+    padding: 0 !important;
     visibility: visible !important;
     opacity: 1 !important;
   }
 
   .modal-content {
     background: white !important;
-    border-radius: 12px !important;
-    padding: 2rem !important;
-    max-width: 500px !important;
-    width: 90% !important;
-    max-height: 80vh !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
     overflow-y: auto !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
-    position: relative !important;
-    z-index: 10000000 !important;
+    box-shadow: none !important;
     visibility: visible !important;
     opacity: 1 !important;
+    position: relative !important;
+    z-index: 10000001 !important;
   }
 
   .modal-header {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 0 !important;
+    padding: 1.5rem 1.5rem 1rem 1.5rem !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 
   .modal-header h3 {
@@ -2214,6 +3025,22 @@ Megrendelő aláírása: _________________________________`;
     align-items: center !important;
     justify-content: center !important;
     transition: color 0.2s ease !important;
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    z-index: 10000002 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+  }
+
+  /* Override for ticket modal - ensure it stays within modal */
+  .ticket-modal-overlay .close-button {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 9999999999 !important;
+    background: none !important;
+    backdrop-filter: none !important;
   }
 
   .close-button:hover {
@@ -2306,6 +3133,575 @@ Megrendelő aláírása: _________________________________`;
   .generate-button.generating span,
   .generate-button.success span {
     color: white;
+  }
+
+  /* Maintenance Dashboard Styles */
+  .maintenance-dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .create-ticket-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .create-ticket-button:hover {
+    background-color: #059669;
+  }
+
+  /* Kanban Board */
+  .kanban-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    flex: 1;
+    overflow: hidden;
+    padding: 1rem 0;
+  }
+
+  .kanban-column {
+    display: flex;
+    flex-direction: column;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+  }
+
+  .column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .column-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+  }
+
+  .ticket-count {
+    background: #e2e8f0;
+    color: #64748b;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .column-content {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .ticket-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0.75rem;
+  }
+
+  .ticket-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: #cbd5e0;
+  }
+
+  .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .ticket-id {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.75rem;
+  }
+
+  .ticket-priority {
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ticket-priority.priority-low {
+    background-color: #f3f4f6;
+    color: #6b7280;
+  }
+
+  .ticket-priority.priority-medium {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+
+  .ticket-priority.priority-high {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+
+  .ticket-priority.priority-urgent {
+    background-color: #fecaca;
+    color: #7f1d1d;
+  }
+
+  .ticket-content {
+    margin-bottom: 0.75rem;
+  }
+
+  .ticket-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a202c;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .ticket-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .customer-name {
+    color: #374151;
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+
+  .vehicle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .license-plate {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: #00bae5;
+    background: #f0f9ff;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .vehicle-model {
+    color: #6b7280;
+    font-size: 0.75rem;
+  }
+
+  .ticket-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .ticket-date {
+    color: #6b7280;
+    font-size: 0.7rem;
+  }
+
+  .view-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .view-button:hover {
+    background-color: #2563eb;
+  }
+
+
+  /* Ticket Modal Styles */
+  .ticket-modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    z-index: 99999999 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 20px !important;
+  }
+
+  .ticket-modal-content {
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 0 !important;
+    width: 70% !important;
+    max-width: 800px !important;
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+    position: relative !important;
+    z-index: 999999999 !important;
+  }
+
+  .ticket-modal-body {
+    padding: 1.5rem !important;
+    color: #374151 !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  /* Ticket Modal specific close button */
+  .ticket-modal-content .close-button {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    background: none !important;
+    border: none !important;
+    font-size: 2rem !important;
+    cursor: pointer !important;
+    color: #666 !important;
+    padding: 0 !important;
+    width: 30px !important;
+    height: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: color 0.2s ease !important;
+    z-index: 9999999999 !important;
+    backdrop-filter: none !important;
+    pointer-events: auto !important;
+  }
+
+  .ticket-modal-content .close-button:hover {
+    color: #333 !important;
+  }
+
+  /* Ticket Modal specific header */
+  .ticket-modal-content .modal-header {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    background: white !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    margin-bottom: 0 !important;
+    z-index: 9999999998 !important;
+    pointer-events: auto !important;
+  }
+
+  .ticket-detail-header {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .ticket-title-section h2 {
+    font-size: 1.25rem;
+    color: #1a202c;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .ticket-meta-info {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .ticket-status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ticket-status-badge.status-todo {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+
+  .ticket-status-badge.status-in-progress {
+    background-color: #dbeafe;
+    color: #1e40af;
+  }
+
+  .ticket-status-badge.status-done {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+
+  .ticket-priority-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .ticket-priority-badge.priority-low {
+    background-color: #f3f4f6;
+    color: #6b7280;
+  }
+
+  .ticket-priority-badge.priority-medium {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+
+  .ticket-priority-badge.priority-high {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+
+  .ticket-priority-badge.priority-urgent {
+    background-color: #fecaca;
+    color: #7f1d1d;
+  }
+
+  .ticket-detail-section {
+    margin-bottom: 1rem;
+  }
+
+  .ticket-detail-section h4 {
+    font-size: 0.9rem;
+    color: #1a202c;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .detail-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .detail-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .detail-value {
+    color: #374151;
+    font-weight: 500;
+  }
+
+  .vin-number {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+  }
+
+  .service-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .parts-table,
+  .labor-table {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .parts-table table,
+  .labor-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .parts-table th,
+  .parts-table td,
+  .labor-table th,
+  .labor-table td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.8rem;
+  }
+
+  .parts-table th,
+  .labor-table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .part-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .part-status.status-ordered {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+
+  .part-status.status-received {
+    background-color: #dbeafe;
+    color: #1e40af;
+  }
+
+  .part-status.status-installed {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+
+  .cost-breakdown {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0;
+  }
+
+  .cost-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .cost-item:last-child {
+    border-bottom: none;
+  }
+
+  .cost-item.discount {
+    color: #059669;
+  }
+
+  .cost-item.total {
+    border-top: 2px solid #e2e8f0;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .notes-content {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    color: #374151;
+    line-height: 1.6;
+  }
+
+  .ticket-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .generate-work-order-button {
+    background-color: #2c3e50 !important;
+    color: white !important;
+    border: none !important;
+    padding: 1rem 2rem !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+  }
+
+  .generate-work-order-button:hover {
+    background-color: #1a252f !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3) !important;
+  }
+
+  .generate-work-order-button:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 4px 15px rgba(44, 62, 80, 0.2) !important;
+  }
+
+  .generate-work-order-button:disabled {
+    background-color: #95a5a6 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .generate-work-order-button.generating {
+    background-color: #00bae5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .generate-work-order-button.success {
+    background-color: #10b981 !important;
+    cursor: default !important;
+    transform: none !important;
+    box-shadow: none !important;
   }
 
   /* Pagination Info */
