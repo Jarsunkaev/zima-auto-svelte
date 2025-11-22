@@ -116,17 +116,6 @@
             margin-bottom: 10px;
         }
         
-        .tire-icon {
-            text-align: center;
-            margin: 15px 0;
-        }
-        
-        .tire-icon svg {
-            width: 80px;
-            height: 80px;
-            fill: #444444;
-        }
-        
         .tire-count {
             display: inline-block;
             background-color: #f0f0f0;
@@ -228,8 +217,8 @@
             <div class="email-logo">
                 <img src="https://zima-auto.com/images/zima-logo.avif" alt="Zima Auto Logo" />
             </div>
-            <h1 class="email-title">Appointment Confirmation</h1>
-            <p class="email-subtitle">Tire Service</p>
+            <h1 class="email-title">Foglalás visszaigazolás / Booking Confirmation</h1>
+            <p class="email-subtitle">Gumiszerviz / Tire Service</p>
         </div>
         
         <div class="email-body">
@@ -239,13 +228,7 @@
                 
                 <p>Köszönjük, hogy időpontot foglalt gumiszerviz szolgáltatásunkra a Zima Auto-nál. Foglalását visszaigazoljuk.</p>
                 
-                <div class="tire-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                        <path d="M494.916,254.43C494.336,119.185,419.934,7.603,325.521,0.384l-0.008-0.008C322.278,0.128,319.019,0,315.742,0H196.275 C152.226,0,111.872,22.852,80.64,60.646l2.628-0.657l59.46-16.998c2.406-0.674,4.992-0.282,7.074,1.109l20.872,13.901 L191.539,44.1c2.543-1.707,5.811-1.903,8.55-0.538l29.739,14.865c-3.456,4.497-6.801,9.173-10.001,14.089l-22.946-11.469 l-21.478,14.319c-2.867,1.911-6.596,1.911-9.463,0l-22.315-14.882L87.689,76.467L64.87,82.176 c-3.072,4.736-6.007,9.643-8.823,14.703l9.097,7.441l20.19,13.423l20.873-13.909c2.867-1.92,6.596-1.92,9.463,0l20.873,13.901 l20.864-13.901c2.543-1.707,5.811-1.903,8.55-0.538l30.174,15.087c-2.116,5.231-4.105,10.615-5.982,16.094l-27.401-13.696 L141.269,135.1c-2.867,1.911-6.596,1.911-9.464,0l-20.864-13.909L90.069,135.1c-2.867,1.911-6.596,1.911-9.464,0l-25.6-17.067 l-6.972-5.7c-12.066,25.318-20.992,53.896-26.095,84.582l6.784-6.716l24.909-25.506c1.596-1.621,3.78-2.552,6.059-2.56 c2.185,0.068,4.471,0.887,6.084,2.5l19.567,19.558l19.567-19.558c3.328-3.337,8.73-3.337,12.066,0l19.567,19.558l19.567-19.558 c3.328-3.337,8.73-3.337,12.066,0l10.761,10.761c-1.365,6.494-2.594,13.073-3.635,19.78c-0.742-0.393-1.502-0.785-2.125-1.408 l-11.034-11.034L142.575,202.3c-3.337,3.328-8.738,3.328-12.066,0l-19.567-19.567L91.375,202.3 c-3.337,3.328-8.738,3.328-12.066,0L59.81,182.801l-18.978,19.43l-22.34,22.127c-0.247,2.816-0.469,5.641-0.648,8.491 l12.151,7.296l28.058,14.003L79.309,232.9c3.328-3.337,8.73-3.337,12.066,0l19.567,19.558l19.567-19.558 c2.765-2.765,7.066-3.294,10.419-1.289l29.841,17.903c-0.034,2.159-0.094,4.309-0.094,6.485c0,4.531,0.085,9.028,0.23,13.5z"></path>
-                    </svg>
-                </div>
-                
-                <div class="service-type-badge">{{serviceType}}</div>
+                <div class="service-type-badge">{{serviceTypeHu}}</div>
                 
                 <div class="detail-card">
                     <h3 class="section-title">Foglalás részletei</h3>
@@ -273,7 +256,6 @@
                     <div class="detail-item">
                         <div class="detail-label">Gumiabroncsok száma:</div>
                         <div class="detail-value">
-                            {{tireCount}}
                             <span class="tire-count">{{tireCount}}</span>
                         </div>
                     </div>
@@ -308,6 +290,8 @@
                 
                 <p>Thank you for scheduling a tire service appointment with Zima Auto. Your booking has been confirmed.</p>
                 
+                <div class="service-type-badge">{{serviceType}}</div>
+                
                 <div class="detail-card">
                     <h3 class="section-title">Appointment Details</h3>
                     
@@ -334,7 +318,6 @@
                     <div class="detail-item">
                         <div class="detail-label">Number of Tires:</div>
                         <div class="detail-value">
-                            {{tireCount}}
                             <span class="tire-count">{{tireCount}}</span>
                         </div>
                     </div>
