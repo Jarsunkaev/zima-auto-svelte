@@ -189,9 +189,11 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
           referenceNumber: data.referenceNumber || data.id || 'N/A',
           bookingDate: new Date().toLocaleDateString(),
           bookingTime: new Date().toLocaleTimeString(),
+          // Ensure name is available at root level for confirmation page
+          name: emailData.customerName || emailData.contact?.name || emailData.name || data.contact?.name || '',
           // Ensure contact info is properly structured with fallbacks
           contact: {
-            name: data.contact?.name || emailData.contact?.name || emailData.name || '',
+            name: data.contact?.name || emailData.contact?.name || emailData.customerName || emailData.name || '',
             email: data.contact?.email || emailData.contact?.email || emailData.email || '',
             phone: data.contact?.phone || emailData.contact?.phone || emailData.phone || '',
             ...emailData.contact

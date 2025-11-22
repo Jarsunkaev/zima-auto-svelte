@@ -160,15 +160,15 @@
 
           <div class="detail-item">
             <span class="detail-label">{content[currentLang].confirmation.name}:</span>
-            <span class="detail-value">{bookingDetails.name}</span>
+            <span class="detail-value">{bookingDetails.name || bookingDetails.customerName || bookingDetails.contact?.name || ''}</span>
           </div>
 
           <div class="detail-item">
             <span class="detail-label">{content[currentLang].confirmation.contactInfo}:</span>
             <span class="detail-value">
-              {bookingDetails.contact.phone}
-              {#if bookingDetails.contact.email}
-                <br>{bookingDetails.contact.email}
+              {bookingDetails.contact?.phone || bookingDetails.phone || ''}
+              {#if bookingDetails.contact?.email || bookingDetails.email}
+                <br>{bookingDetails.contact?.email || bookingDetails.email}
               {/if}
             </span>
           </div>
@@ -201,6 +201,7 @@
     padding: 3rem 2rem;
     text-align: center;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    width: 100%;
   }
 
   .confirmation-icon {
@@ -296,6 +297,10 @@
 
   /* Responsive Styles */
   @media screen and (max-width: 768px) {
+    .confirmation-section {
+      padding: 4rem 1rem;
+    }
+
     .details-grid {
       grid-template-columns: 1fr;
     }
@@ -305,19 +310,34 @@
     }
 
     .confirmation-container {
-      padding: 2rem 1.5rem;
+      max-width: 100%;
+      padding: 2rem 1rem;
     }
 
     .confirmation-details {
-      padding: 1.5rem;
+      padding: 1.5rem 1rem;
     }
   }
 
   @media screen and (max-width: 480px) {
+    .confirmation-section {
+      padding: 3rem 0.5rem;
+    }
+
+    .confirmation-container {
+      padding: 1.5rem 0.75rem;
+      border-radius: 8px;
+    }
+
     .confirmation-container h2 {
       font-size: 1.5rem;
     }
     
+    .confirmation-details {
+      padding: 1.25rem 0.75rem;
+      border-radius: 6px;
+    }
+
     .confirmation-details h3 {
       font-size: 1.2rem;
     }
@@ -328,6 +348,10 @@
     
     .total-price-value {
       font-size: 1.2rem;
+    }
+
+    .detail-label {
+      font-size: 0.8rem;
     }
   }
 </style>
