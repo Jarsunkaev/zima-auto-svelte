@@ -3,11 +3,16 @@
   import PersonalInfoForm from './PersonalInfoForm.svelte';
   import TimeSlotSelector from './TimeSlotSelector.svelte';
   import LoadingSpinner from './LoadingSpinner.svelte';
+  import CustomDatePicker from './CustomDatePicker.svelte';
 
   const dispatch = createEventDispatcher();
 
   export let content;
   export let currentLang;
+
+  const today = new Date();
+  const maxDate = new Date();
+  maxDate.setMonth(maxDate.getMonth() + 3); // Allow bookings 3 months in advance
 
   let formData = {
     serviceType: '',
@@ -26,27 +31,64 @@
   let errors = {};
   let isSubmitting = false;
 
-  // Create service types with reactive changes on language toggle
-  $: serviceTypes = [
-    { value: 'maintenance', label: content[currentLang].bookingForm.autoService.serviceOptions.maintenance },
-    { value: 'repair', label: content[currentLang].bookingForm.autoService.serviceOptions.repair },
-    { value: 'diagnostic', label: content[currentLang].bookingForm.autoService.serviceOptions.diagnostic },
-    { value: 'other', label: content[currentLang].bookingForm.autoService.serviceOptions.other }
-  ];
+  // Utility functions
+  function formatDate(date) {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
 
-  function validateForm() {
-    errors = {};
-    let isValid = true;
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
 
-    if (!formData.serviceType) {
-      errors.serviceType = currentLang === 'hu' ? 'Kérjük válasszon szolgáltatást' : 'Please select a service type';
-      isValid = false;
+    return [year, month, day].join('-');
+  }
+
+  // Generate disabled dates (weekends - Saturdays and Sundays) for the next 3 months
+  function generateDisabledDates() {
+    const disabled = [];
+    const start = new Date(today);
+    const end = new Date(maxDate);
+    
+    for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+      const day = date.getDay();
+      if (day === 0 || day === 6) { // Sunday or Saturday
+        disabled.push(formatDate(date));
+      }
     }
+    
+    return disabled;
+  }
 
-    if (!formData.date) {
-      errors.date = currentLang === 'hu' ? 'Kérjük válasszon dátumot' : 'Please select a date';
-      isValid = false;
-    }
+  // Handle date change from custom datepicker
+  function handleDateChange(event) {
+    formData.date = event.detail;
+    errors.date = '';
+  }
+
+  $: disabledDates = generateDisabledDates();
+  
+    // Create service types with reactive changes on language toggle
+    $: serviceTypes = [
+      { value: 'maintenance', label: content[currentLang].bookingForm.autoService.serviceOptions.maintenance },
+      { value: 'repair', label: content[currentLang].bookingForm.autoService.serviceOptions.repair },
+      { value: 'diagnostic', label: content[currentLang].bookingForm.autoService.serviceOptions.diagnostic },
+      { value: 'other', label: content[currentLang].bookingForm.autoService.serviceOptions.other }
+    ];
+  
+    function validateForm() {
+      errors = {};
+      let isValid = true;
+  
+      if (!formData.serviceType) {
+        errors.serviceType = currentLang === 'hu' ? 'Kérjük válasszon szolgáltatást' : 'Please select a service type';
+        isValid = false;
+      }
+  
+      if (!formData.date) {
+        errors.date = currentLang === 'hu' ? 'Kérjük válasszon dátumot' : 'Please select a date';
+        isValid = false;
+      }
 
     if (!formData.time) {
       errors.time = currentLang === 'hu' ? 'Kérjük válasszon időpontot' : 'Please select a time';
@@ -140,19 +182,17 @@
   <div class="form-section">
     <h3>{content[currentLang].bookingForm.autoService.dateTime || 'Select Date & Time'}</h3>
     <div class="date-time-selector">
-      <label for="booking-date">
-        {content[currentLang].bookingForm.carWash.date || 'Date'}
-      </label>
-      <input
-        id="booking-date"
-        type="date"
-        bind:value={formData.date}
-        min={new Date().toISOString().split('T')[0]}
-        class:error={errors.date}
+      <CustomDatePicker
+        value={formData.date}
+        minDate={formatDate(today)}
+        maxDate={formatDate(maxDate)}
+        disabledDates={[]}
+        disableSundays={true}
+        label={content[currentLang].bookingForm.carWash.date || 'Date'}
+        errorMessage={errors.date}
+        {currentLang}
+        on:change={handleDateChange}
       />
-      {#if errors.date}
-        <p class="error-message">{errors.date}</p>
-      {/if}
     </div>
   </div>
 
@@ -329,7 +369,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }
 
-  input[type="date"],
   input[type="text"],
   textarea {
     width: 100%;
@@ -340,7 +379,6 @@
     font-family: inherit;
   }
 
-  input[type="date"].error,
   .error {
     border-color: #dc3545;
   }

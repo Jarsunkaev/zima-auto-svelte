@@ -53,7 +53,7 @@ export default {
     },
     tire: {
       title: "GUMISZERVIZ", // Fixed typo from previous hu.js 'GUMISZERIVZ'
-      description: "Szakértő technikusaink készen állnak az abroncsokkal kapcsolatos bármilyen probléma azonnali megoldására, és biztonságosan visszatérni az útra."
+      description: "Szakértő technikusaink készen állnak az abroncsokkal kapcsolatos bármilyen probléma azonnali megoldására, hogy biztonságosan visszatérhessen az útra."
     },
     service: {
       title: "AUTÓSZERVIZ",

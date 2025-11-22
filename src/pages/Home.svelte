@@ -255,7 +255,7 @@
           description={$currentLang === 'hu'
             ? (service.id === 'parking' ? 'Biztonságos parkolóhelyeink 24 órás kamerás megfigyeléssel és szakértő személyzettel várják járművét, maximális biztonságot nyújtva.' :
                service.id === 'washing' ? 'Ajándékozza meg járművét egy fürdőnappal professzionális autómosó szolgáltatásainkkal, amelyek célja, hogy autója csillogóan tisztán és fiatalon maradjon.' :
-               service.id === 'tire' ? 'Szakértő technikusaink készen állnak az abroncsokkal kapcsolatos bármilyen probléma azonnali megoldására, és biztonságosan visszatérni az útra.' :
+               service.id === 'tire' ? 'Szakértő technikusaink készen állnak az abroncsokkal kapcsolatos bármilyen probléma azonnali megoldására, hogy biztonságosan visszatérhessen az útra.' :
                'A rutinellenőrzéstől a komplex javításokig szakképzett szerelőink fel vannak szerelve az összes karbantartás elvégzésére.')
             : (service.id === 'parking' ? 'Our secure parking facility features fenced boundaries and 24-hour camera surveillance, guaranteeing the highest security for your vehicle.' :
                service.id === 'washing' ? 'Treat your vehicle to a spa day with our professional car washing services aimed at keeping your car looking sparkling clean and youthful.' :

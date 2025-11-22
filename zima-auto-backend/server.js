@@ -662,6 +662,52 @@ const businessHours = {
 // Time slot duration in minutes (30 minutes) - This defines the granularity of slots shown on frontend
 const timeSlotDuration = 30;
 
+// --- Day of Week Restrictions ---
+/**
+ * Check if a date is a Sunday (day 0)
+ * @param {string} dateStr - Date in YYYY-MM-DD format
+ * @returns {boolean} - True if the date is a Sunday
+ */
+function isSunday(dateStr) {
+  if (!dateStr || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return false;
+  }
+  const date = new Date(dateStr + 'T00:00:00');
+  return date.getDay() === 0;
+}
+
+/**
+ * Check if a date is a weekend (Saturday = 6, Sunday = 0)
+ * @param {string} dateStr - Date in YYYY-MM-DD format
+ * @returns {boolean} - True if the date is a weekend
+ */
+function isWeekend(dateStr) {
+  if (!dateStr || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return false;
+  }
+  const date = new Date(dateStr + 'T00:00:00');
+  const day = date.getDay();
+  return day === 0 || day === 6;
+}
+
+/**
+ * Check if a date is restricted for a specific service
+ * @param {string} dateStr - Date in YYYY-MM-DD format
+ * @param {string} service - Service type (carWash, tireService, autoService, airportParking)
+ * @returns {Object} - { restricted: boolean, message: string }
+ */
+function isDateRestricted(dateStr, service) {
+  if (service === 'carWash' || service === 'tireService' || service === 'autoService') {
+    if (isSunday(dateStr)) {
+      return {
+        restricted: true,
+        message: `${service === 'carWash' ? 'Car wash' : service === 'tireService' ? 'Tire service' : 'Car maintenance'} is not available on Sundays`
+      };
+    }
+  }
+  return { restricted: false, message: '' };
+}
+
 // --- Generate time slots based on business hours ---
 // This function generates the list of 30-minute intervals to display on the frontend.
 // It does NOT determine booking duration, which is handled in addEventToCalendar.
@@ -810,6 +856,18 @@ app.get('/api/available-slots', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Invalid service type. Expected one of: ' + validServices.join(', ')
+      });
+    }
+
+    // Check if the date is restricted for this service
+    const dateRestriction = isDateRestricted(date, service);
+    if (dateRestriction.restricted) {
+      console.log(`Date ${date} is restricted for service ${service}: ${dateRestriction.message}`);
+      return res.status(200).json({
+        success: true,
+        unavailableSlots: [], // Return empty slots - frontend will handle showing all slots as unavailable
+        message: dateRestriction.message,
+        dateRestricted: true
       });
     }
 
@@ -994,6 +1052,18 @@ app.post('/api/send-booking-emails', async (req, res) => {
         success: false,
         message: 'Missing required fields in booking data'
       });
+    }
+
+    // Check if the booking date is restricted for this service
+    if (bookingData.date && bookingData.service !== 'airportParking') {
+      const dateRestriction = isDateRestricted(bookingData.date, bookingData.service);
+      if (dateRestriction.restricted) {
+        console.error(`Booking rejected: Date ${bookingData.date} is restricted for service ${bookingData.service}`);
+        return res.status(400).json({
+          success: false,
+          message: dateRestriction.message
+        });
+      }
     }
 
     // Send confirmation emails

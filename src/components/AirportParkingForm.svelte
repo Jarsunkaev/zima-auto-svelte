@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import PersonalInfoForm from './PersonalInfoForm.svelte';
   import PriceCalculator from './PriceCalculator.svelte';
+  import CustomDatePicker from './CustomDatePicker.svelte';
   
   // Component props
   export let content = {};
@@ -305,14 +306,20 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
     
     <div class="form-row">
       <div class="form-group">
-        <label for="startDate">{content[currentLang].bookingForm.airportParking.startDate}</label>
-        <input
-          type="date"
-          id="startDate"
-          bind:value={formData.startDate}
-          min={formatDate(today)}
-          max={formatDate(maxDate)}
-          required
+        <CustomDatePicker
+          value={formData.startDate}
+          minDate={formatDate(today)}
+          maxDate={formatDate(maxDate)}
+          disabledDates={[]}
+          label={content[currentLang].bookingForm.airportParking.startDate}
+          {currentLang}
+          on:change={(e) => {
+            formData.startDate = e.detail;
+            // Update endDate min if startDate is after endDate
+            if (formData.startDate > formData.endDate) {
+              formData.endDate = formData.startDate;
+            }
+          }}
         />
       </div>
 
@@ -329,14 +336,16 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
     
     <div class="form-row">
       <div class="form-group">
-        <label for="endDate">{content[currentLang].bookingForm.airportParking.endDate}</label>
-        <input
-          type="date"
-          id="endDate"
-          bind:value={formData.endDate}
-          min={formData.startDate}
-          max={formatDate(maxDate)}
-          required
+        <CustomDatePicker
+          value={formData.endDate}
+          minDate={formData.startDate || formatDate(today)}
+          maxDate={formatDate(maxDate)}
+          disabledDates={[]}
+          label={content[currentLang].bookingForm.airportParking.endDate}
+          {currentLang}
+          on:change={(e) => {
+            formData.endDate = e.detail;
+          }}
         />
       </div>
 

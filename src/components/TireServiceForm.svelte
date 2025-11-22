@@ -4,11 +4,16 @@
     import PersonalInfoForm from './PersonalInfoForm.svelte';
     import TimeSlotSelector from './TimeSlotSelector.svelte';
     import LoadingSpinner from './LoadingSpinner.svelte';
+    import CustomDatePicker from './CustomDatePicker.svelte';
   
     const dispatch = createEventDispatcher();
   
     export let content;
     export let currentLang;
+  
+    const today = new Date();
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 3); // Allow bookings 3 months in advance
   
     let formData = {
       serviceType: '',
@@ -27,6 +32,42 @@
   
     let errors = {};
     let isSubmitting = false;
+  
+    // Utility functions
+    function formatDate(date) {
+      const d = new Date(date);
+      let month = '' + (d.getMonth() + 1);
+      let day = '' + d.getDate();
+      const year = d.getFullYear();
+  
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+  
+      return [year, month, day].join('-');
+    }
+  
+    // Generate disabled dates (Sundays) for the next 3 months
+    function generateDisabledDates() {
+      const disabled = [];
+      const start = new Date(today);
+      const end = new Date(maxDate);
+      
+      for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+        if (date.getDay() === 0) { // Sunday
+          disabled.push(formatDate(date));
+        }
+      }
+      
+      return disabled;
+    }
+  
+    // Handle date change from custom datepicker
+    function handleDateChange(event) {
+      formData.date = event.detail;
+      errors.date = '';
+    }
+  
+    $: disabledDates = generateDisabledDates();
   
     // Create service types with reactive changes on language toggle
     $: serviceTypes = [
@@ -143,19 +184,17 @@
     <div class="form-section">
       <h3>{content[currentLang].bookingForm.tireService.dateTime || 'Select Date & Time'}</h3>
       <div class="date-time-selector">
-        <label for="booking-date">
-          {content[currentLang].bookingForm.carWash.date || 'Date'}
-        </label>
-        <input
-          id="booking-date"
-          type="date"
-          bind:value={formData.date}
-          min={new Date().toISOString().split('T')[0]}
-          class:error={errors.date}
+        <CustomDatePicker
+          value={formData.date}
+          minDate={formatDate(today)}
+          maxDate={formatDate(maxDate)}
+          disabledDates={[]}
+          disableSundays={true}
+          label={content[currentLang].bookingForm.carWash.date || 'Date'}
+          errorMessage={errors.date}
+          {currentLang}
+          on:change={handleDateChange}
         />
-        {#if errors.date}
-          <p class="error-message">{errors.date}</p>
-        {/if}
       </div>
     </div>
   

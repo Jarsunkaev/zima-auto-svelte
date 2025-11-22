@@ -3,6 +3,7 @@
     import PersonalInfoForm from './PersonalInfoForm.svelte';
     import TimeSlotSelector from './TimeSlotSelector.svelte';
     import LoadingSpinner from './LoadingSpinner.svelte';
+    import CustomDatePicker from './CustomDatePicker.svelte';
     
     // Component props
     export let content = {};
@@ -56,6 +57,12 @@
       return [year, month, day].join('-');
     }
     
+    // Handle date change from custom datepicker
+    function handleDateChange(event) {
+      formData.bookingDate = event.detail;
+      formErrors.bookingDate = '';
+    }
+    
     // Handle time selection from TimeSlotSelector
     function handleTimeSelected(event) {
       formData.bookingTime = event.detail;
@@ -66,8 +73,16 @@
     function validateForm() {
       let isValid = true;
       
-      // Reset time slot error
+      // Reset errors
       formErrors.bookingTime = '';
+      
+      // Validate date is selected
+      if (!formData.bookingDate) {
+        formErrors.bookingDate = currentLang === 'hu' 
+          ? 'Kérjük válasszon dátumot' 
+          : 'Please select a date';
+        isValid = false;
+      }
       
       // Validate time slot is selected
       if (!formData.bookingTime) {
@@ -121,21 +136,17 @@
     <div class="form-section">
       <h3>{content[currentLang].bookingForm.carWash.dateTime || (currentLang === 'hu' ? 'Időpont kiválasztása' : 'Select Date & Time')}</h3>
       <div class="date-time-selector">
-        <label for="booking-date">
-          {content[currentLang].bookingForm.carWash.date || (currentLang === 'hu' ? 'Dátum' : 'Date')}
-        </label>
-        <input
-          id="booking-date"
-          type="date"
-          bind:value={formData.bookingDate}
-          min={formatDate(today)}
-          max={formatDate(maxDate)}
-          required
-          class:error={formErrors.bookingDate}
+        <CustomDatePicker
+          value={formData.bookingDate}
+          minDate={formatDate(today)}
+          maxDate={formatDate(maxDate)}
+          disabledDates={[]}
+          disableSundays={true}
+          label={content[currentLang].bookingForm.carWash.date || (currentLang === 'hu' ? 'Dátum' : 'Date')}
+          errorMessage={formErrors.bookingDate}
+          {currentLang}
+          on:change={handleDateChange}
         />
-        {#if formErrors.bookingDate}
-          <p class="error-message">{formErrors.bookingDate}</p>
-        {/if}
       </div>
     </div>
     
