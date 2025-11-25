@@ -1892,7 +1892,6 @@ Megrendelő aláírása: _________________________________`;
 {#if showOrderModal && selectedBooking}
   <div 
     class="modal-overlay"
-    style="padding-top: 150px !important;"
     on:click={closeOrderModal}
     on:keydown={(e) => {
       if (e.key === 'Escape') {
@@ -2983,12 +2982,13 @@ Megrendelő aláírása: _________________________________`;
 
   .modal-content {
     background: white !important;
-    border-radius: 0 !important;
+    border-radius: 12px !important;
     padding: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
+    width: 90% !important;
+    max-width: 600px !important;
+    max-height: 80vh !important;
     overflow-y: auto !important;
-    box-shadow: none !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
     visibility: visible !important;
     opacity: 1 !important;
     position: relative !important;
@@ -3004,6 +3004,7 @@ Megrendelő aláírása: _________________________________`;
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    border-bottom: 1px solid #e2e8f0 !important;
   }
 
   .modal-header h3 {
@@ -3025,12 +3026,10 @@ Megrendelő aláírása: _________________________________`;
     align-items: center !important;
     justify-content: center !important;
     transition: color 0.2s ease !important;
-    position: fixed !important;
-    top: 20px !important;
-    right: 20px !important;
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
     z-index: 10000002 !important;
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(10px) !important;
   }
 
   /* Override for ticket modal - ensure it stays within modal */
@@ -3049,6 +3048,7 @@ Megrendelő aláírása: _________________________________`;
 
   .modal-body {
     color: #374151 !important;
+    padding: 1.5rem !important;
   }
 
   .booking-details {

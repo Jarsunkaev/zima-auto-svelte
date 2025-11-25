@@ -467,6 +467,10 @@
   }
 
   @media screen and (max-width: 768px) {
+    .booking-form {
+      max-width: 100%;
+    }
+
     .service-types {
       grid-template-columns: 1fr;
     }

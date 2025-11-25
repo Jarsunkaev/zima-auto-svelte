@@ -350,6 +350,9 @@
     }
     
     @media screen and (max-width: 768px) {
+      .booking-form {
+        max-width: 100%;
+      }
       
       .form-section {
         padding: 1.25rem;

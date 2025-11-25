@@ -163,6 +163,13 @@
       animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
+    /* Mobile animation */
+    @media screen and (max-width: 992px) {
+      .cookie-consent-container {
+        animation: slideUpMobile 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+    }
+    
     .cookie-consent-banner {
       background-color: #13151a; /* Dark blue footer color */
       color: white;
@@ -327,13 +334,31 @@
         transform: translate(-50%, 0);
       }
     }
+
+    @keyframes slideUpMobile {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
     
     /* Responsive Adjustments */
     @media screen and (max-width: 992px) {
       .cookie-consent-container {
         bottom: 0;
+        left: 0;
+        right: 0;
+        transform: none;
         border-radius: 12px 12px 0 0;
         width: 100%;
+        max-width: 100%;
+        margin-bottom: 0;
+        /* Use safe area insets for mobile browsers - adds padding when browser nav is visible */
+        padding-bottom: env(safe-area-inset-bottom, 0);
       }
   
       .cookie-consent-banner {
@@ -342,6 +367,12 @@
     }
     
     @media screen and (max-width: 768px) {
+      .cookie-consent-container {
+        /* Ensure it stays flush at the bottom - safe-area-inset handles dynamic browser nav */
+        bottom: 0;
+        padding-bottom: env(safe-area-inset-bottom, 0);
+      }
+
       .cookie-icon {
         padding: 1rem;
       }
@@ -368,6 +399,11 @@
     }
     
     @media screen and (max-width: 480px) {
+      .cookie-consent-container {
+        /* Add small padding on very small screens for better appearance */
+        padding-bottom: max(env(safe-area-inset-bottom, 0), 0.5rem);
+      }
+
       .cookie-icon {
         display: none;
       }

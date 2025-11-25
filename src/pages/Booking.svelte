@@ -461,7 +461,12 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
       font-size: 1rem;
     }
 
+    .booking-form-section {
+      padding: 3rem 1rem;
+    }
+
     .booking-form-container {
+      max-width: 100%;
       padding: 1.5rem;
     }
 
@@ -479,7 +484,11 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
     .booking-hero h1 {
       font-size: 1.8rem;
     }
+    .booking-form-section {
+      padding: 2rem 0.5rem;
+    }
     .booking-form-container {
+      max-width: 100%;
       padding: 1rem;
     }
   }
