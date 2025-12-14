@@ -10,6 +10,8 @@
   export let label = '';
   export let errorMessage = '';
   export let currentLang = 'hu';
+  export let startDate = ''; // Start date for calculating 30-day limit
+  export let maxDaysTooltip = ''; // Tooltip message for dates exceeding max days
 
   const dispatch = createEventDispatcher();
 
@@ -18,6 +20,12 @@
   let currentYear = new Date().getFullYear();
   let calendarRef;
   let calendarDays = [];
+  let hoveredDate = null;
+  let tooltipPosition = { x: 0, y: 0 };
+  let tooltipOnLeft = false;
+  
+  // Reactive check for mobile
+  $: isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
 
   // Month names in Hungarian and English
   const monthNames = {
@@ -74,6 +82,83 @@
     
     return false;
   }
+  
+  function exceedsMaxDays(date) {
+    if (!startDate || !maxDaysTooltip) return false;
+    const dateStr = formatDate(date);
+    const start = new Date(startDate + 'T00:00:00Z');
+    const end = new Date(dateStr + 'T00:00:00Z');
+    const diffTime = end - start;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 30;
+  }
+  
+  function positionTooltip(button, dayData) {
+    const calendar = button.closest('.datepicker-calendar');
+    if (calendar) {
+      const buttonRect = button.getBoundingClientRect();
+      const calendarRect = calendar.getBoundingClientRect();
+      const spacing = 8; // Space between button and tooltip
+      
+      if (isMobile) {
+        // On mobile, center the tooltip horizontally in the calendar
+        // Use 50% for left positioning (handled by CSS transform)
+        const y = buttonRect.bottom - calendarRect.top + spacing;
+        tooltipPosition = { x: 50, y }; // x: 50 means 50% on mobile
+        tooltipOnLeft = false;
+      } else {
+        const tooltipWidth = 250;
+        // Calculate position to the right of the button
+        let x = buttonRect.right - calendarRect.left + spacing;
+        let y = buttonRect.top - calendarRect.top + buttonRect.height / 2;
+        
+        // Check if tooltip would go off-screen to the right
+        const calendarRight = calendarRect.width;
+        if (x + tooltipWidth > calendarRight) {
+          // Position to the left of the button instead
+          x = buttonRect.left - calendarRect.left - tooltipWidth - spacing;
+          tooltipOnLeft = true;
+        } else {
+          tooltipOnLeft = false;
+        }
+        
+        tooltipPosition = { x, y };
+      }
+      
+      hoveredDate = dayData;
+    }
+  }
+  
+  function handleDateHover(event, dayData) {
+    if (dayData.isDisabled && exceedsMaxDays(dayData.date)) {
+      positionTooltip(event.currentTarget, dayData);
+    } else {
+      hoveredDate = null;
+    }
+  }
+  
+  function handleDateLeave() {
+    // Only hide on mouse leave, not on touch devices
+    if (typeof window !== 'undefined' && 'ontouchstart' in window === false) {
+      hoveredDate = null;
+    }
+  }
+  
+  function handleDateClick(event, dayData) {
+    // On mobile, show tooltip for disabled dates that exceed max days
+    if (dayData.isDisabled && exceedsMaxDays(dayData.date)) {
+      event.preventDefault();
+      event.stopPropagation();
+      // Toggle tooltip on tap
+      if (hoveredDate && hoveredDate.dateStr === dayData.dateStr) {
+        hoveredDate = null;
+      } else {
+        positionTooltip(event.currentTarget, dayData);
+      }
+    } else if (!dayData.isDisabled) {
+      selectDate(dayData.date);
+    }
+  }
 
   function getDaysInMonth(month, year) {
     return new Date(year, month + 1, 0).getDate();
@@ -122,6 +207,7 @@
     value = dateStr;
     dispatch('change', dateStr);
     isOpen = false;
+    hoveredDate = null; // Hide tooltip when selecting a date
   }
 
   function previousMonth() {
@@ -149,6 +235,7 @@
   function handleClickOutside(event) {
     if (calendarRef && !calendarRef.contains(event.target)) {
       isOpen = false;
+      hoveredDate = null; // Hide tooltip when clicking outside
     }
   }
 
@@ -239,7 +326,9 @@
               class:selected={dayData.isSelected}
               class:disabled={dayData.isDisabled}
               disabled={dayData.isDisabled}
-              on:click={() => selectDate(dayData.date)}
+              on:click={(e) => handleDateClick(e, dayData)}
+              on:mouseenter={(e) => handleDateHover(e, dayData)}
+              on:mouseleave={handleDateLeave}
               aria-label="Select date {dayData.dateStr}"
             >
               {dayData.day}
@@ -249,6 +338,20 @@
           {/if}
         {/each}
       </div>
+      
+      {#if hoveredDate && maxDaysTooltip}
+        {@const tooltipStyle = isMobile 
+          ? `left: 50%; top: ${tooltipPosition.y}px; transform: translateX(-50%) translateY(-50%);` 
+          : `left: ${tooltipPosition.x}px; top: ${tooltipPosition.y}px; transform: translateY(-50%);`}
+        <div 
+          class="date-tooltip"
+          class:left-side={tooltipOnLeft}
+          class:mobile={isMobile}
+          style={tooltipStyle}
+        >
+          {maxDaysTooltip}
+        </div>
+      {/if}
     </div>
   {/if}
 
@@ -506,6 +609,50 @@
     font-size: 0.85rem;
     margin-top: 0.5rem;
   }
+  
+  .date-tooltip {
+    position: absolute;
+    background-color: #333;
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    z-index: 10001;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.4;
+    animation: tooltipFadeIn 0.2s ease;
+    /* Transform is handled inline to prevent jumping */
+  }
+  
+  @keyframes tooltipFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .date-tooltip::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+    border-right-color: #333;
+  }
+  
+  .date-tooltip.left-side::before {
+    left: auto;
+    right: -5px;
+    border-left-color: #333;
+    border-right-color: transparent;
+  }
 
   /* Mobile responsive */
   @media screen and (max-width: 768px) {
@@ -522,6 +669,36 @@
     .calendar-day {
       min-height: 34px;
       font-size: 0.8rem;
+    }
+    
+    .date-tooltip.mobile {
+      width: 90%;
+      max-width: 280px;
+      min-width: 200px;
+      font-size: 0.7rem;
+      padding: 0.6rem 0.8rem;
+      /* Transform and left positioning handled inline to prevent jumping */
+    }
+    
+    .date-tooltip.mobile::before {
+      left: 50%;
+      top: -5px;
+      transform: translateX(-50%);
+      border-top-color: transparent;
+      border-bottom-color: #333;
+      border-left-color: transparent;
+      border-right-color: transparent;
+    }
+    
+    .date-tooltip.mobile.left-side::before {
+      left: 50%;
+      right: auto;
+      top: -5px;
+      transform: translateX(-50%);
+      border-top-color: transparent;
+      border-bottom-color: #333;
+      border-left-color: transparent;
+      border-right-color: transparent;
     }
 
     .calendar-weekday {
