@@ -15291,7 +15291,7 @@ var app = (function () {
     		c: function create() {
     			li = element("li");
     			t = text(t_value);
-    			attr_dev(li, "class", "svelte-158zqk5");
+    			attr_dev(li, "class", "svelte-lcvteg");
     			add_location(li, file$l, 92, 14, 3817);
     		},
     		m: function mount(target, anchor) {
@@ -15340,9 +15340,9 @@ var app = (function () {
     			td1 = element("td");
     			t2 = text(t2_value);
     			t3 = space();
-    			attr_dev(td0, "class", "svelte-158zqk5");
+    			attr_dev(td0, "class", "svelte-lcvteg");
     			add_location(td0, file$l, 118, 16, 4838);
-    			attr_dev(td1, "class", "svelte-158zqk5");
+    			attr_dev(td1, "class", "svelte-lcvteg");
     			add_location(td1, file$l, 119, 16, 4875);
     			add_location(tr, file$l, 117, 14, 4817);
     			this.first = tr;
@@ -15401,13 +15401,13 @@ var app = (function () {
     			t3 = space();
     			span = element("span");
     			t4 = text(t4_value);
-    			attr_dev(h3, "class", "svelte-158zqk5");
+    			attr_dev(h3, "class", "svelte-lcvteg");
     			add_location(h3, file$l, 129, 13, 5126);
-    			attr_dev(span, "class", "per-set svelte-158zqk5");
+    			attr_dev(span, "class", "per-set svelte-lcvteg");
     			add_location(span, file$l, 132, 17, 5300);
-    			attr_dev(div0, "class", "service-price svelte-158zqk5");
+    			attr_dev(div0, "class", "service-price svelte-lcvteg");
     			add_location(div0, file$l, 130, 13, 5196);
-    			attr_dev(div1, "class", "tire-service-block svelte-158zqk5");
+    			attr_dev(div1, "class", "tire-service-block svelte-lcvteg");
     			add_location(div1, file$l, 128, 11, 5080);
     		},
     		m: function mount(target, anchor) {
@@ -15467,13 +15467,13 @@ var app = (function () {
     			t3 = space();
     			span = element("span");
     			t4 = text(t4_value);
-    			attr_dev(h3, "class", "svelte-158zqk5");
+    			attr_dev(h3, "class", "svelte-lcvteg");
     			add_location(h3, file$l, 139, 13, 5541);
-    			attr_dev(span, "class", "per-set svelte-158zqk5");
+    			attr_dev(span, "class", "per-set svelte-lcvteg");
     			add_location(span, file$l, 142, 17, 5733);
-    			attr_dev(div0, "class", "service-price svelte-158zqk5");
+    			attr_dev(div0, "class", "service-price svelte-lcvteg");
     			add_location(div0, file$l, 140, 13, 5620);
-    			attr_dev(div1, "class", "tire-service-block svelte-158zqk5");
+    			attr_dev(div1, "class", "tire-service-block svelte-lcvteg");
     			add_location(div1, file$l, 138, 11, 5495);
     		},
     		m: function mount(target, anchor) {
@@ -15533,13 +15533,13 @@ var app = (function () {
     			t3 = space();
     			span = element("span");
     			t4 = text(t4_value);
-    			attr_dev(h3, "class", "svelte-158zqk5");
+    			attr_dev(h3, "class", "svelte-lcvteg");
     			add_location(h3, file$l, 149, 13, 5993);
-    			attr_dev(span, "class", "per-set svelte-158zqk5");
+    			attr_dev(span, "class", "per-set svelte-lcvteg");
     			add_location(span, file$l, 152, 18, 6206);
-    			attr_dev(div0, "class", "service-price svelte-158zqk5");
+    			attr_dev(div0, "class", "service-price svelte-lcvteg");
     			add_location(div0, file$l, 150, 13, 6082);
-    			attr_dev(div1, "class", "tire-service-block svelte-158zqk5");
+    			attr_dev(div1, "class", "tire-service-block svelte-lcvteg");
     			add_location(div1, file$l, 148, 11, 5947);
     		},
     		m: function mount(target, anchor) {
@@ -15587,7 +15587,7 @@ var app = (function () {
     			div = element("div");
     			t0 = text(t0_value);
     			t1 = space();
-    			attr_dev(div, "class", "maintenance-bubble svelte-158zqk5");
+    			attr_dev(div, "class", "maintenance-bubble svelte-lcvteg");
     			add_location(div, file$l, 174, 10, 7157);
     			this.first = div;
     		},
@@ -15862,72 +15862,72 @@ var app = (function () {
     			div9 = element("div");
     			a1 = element("a");
     			t27 = text(t27_value);
-    			attr_dev(h1, "class", "svelte-158zqk5");
+    			attr_dev(h1, "class", "svelte-lcvteg");
     			add_location(h1, file$l, 69, 4, 2516);
-    			attr_dev(p0, "class", "svelte-158zqk5");
+    			attr_dev(p0, "class", "svelte-lcvteg");
     			add_location(p0, file$l, 70, 4, 2585);
-    			attr_dev(div0, "class", "container svelte-158zqk5");
+    			attr_dev(div0, "class", "container svelte-lcvteg");
     			add_location(div0, file$l, 68, 2, 2488);
-    			attr_dev(section0, "class", "services-hero svelte-158zqk5");
+    			attr_dev(section0, "class", "services-hero svelte-lcvteg");
     			add_location(section0, file$l, 67, 0, 2454);
-    			attr_dev(h20, "class", "svelte-158zqk5");
+    			attr_dev(h20, "class", "svelte-lcvteg");
     			add_location(h20, file$l, 81, 10, 2944);
-    			attr_dev(p1, "class", "service-description svelte-158zqk5");
+    			attr_dev(p1, "class", "service-description svelte-lcvteg");
     			add_location(p1, file$l, 82, 10, 3020);
-    			attr_dev(ul, "class", "feature-list svelte-158zqk5");
+    			attr_dev(ul, "class", "feature-list svelte-lcvteg");
     			add_location(ul, file$l, 87, 10, 3416);
     			attr_dev(a0, "href", "/booking");
-    			attr_dev(a0, "class", "btn btn-primary svelte-158zqk5");
+    			attr_dev(a0, "class", "btn btn-primary svelte-lcvteg");
     			add_location(a0, file$l, 95, 10, 3882);
-    			attr_dev(div1, "class", "service-content svelte-158zqk5");
+    			attr_dev(div1, "class", "service-content svelte-lcvteg");
     			add_location(div1, file$l, 80, 8, 2904);
     			if (!src_url_equal(img.src, img_src_value = "images/merc-tyre.webp")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "Tire Service");
-    			attr_dev(img, "class", "svelte-158zqk5");
+    			attr_dev(img, "class", "svelte-lcvteg");
     			add_location(img, file$l, 100, 10, 4064);
-    			attr_dev(div2, "class", "service-image svelte-158zqk5");
+    			attr_dev(div2, "class", "service-image svelte-lcvteg");
     			add_location(div2, file$l, 99, 8, 4026);
-    			attr_dev(div3, "class", "service-grid svelte-158zqk5");
+    			attr_dev(div3, "class", "service-grid svelte-lcvteg");
     			add_location(div3, file$l, 79, 6, 2869);
-    			attr_dev(h3, "class", "tire-main-service-title svelte-158zqk5");
+    			attr_dev(h3, "class", "tire-main-service-title svelte-lcvteg");
     			add_location(h3, file$l, 104, 6, 4154);
-    			attr_dev(th0, "class", "svelte-158zqk5");
+    			attr_dev(th0, "class", "svelte-lcvteg");
     			add_location(th0, file$l, 111, 14, 4531);
-    			attr_dev(th1, "class", "svelte-158zqk5");
+    			attr_dev(th1, "class", "svelte-lcvteg");
     			add_location(th1, file$l, 112, 14, 4597);
     			add_location(tr, file$l, 110, 12, 4512);
     			add_location(thead, file$l, 109, 10, 4492);
     			add_location(tbody, file$l, 115, 10, 4716);
-    			attr_dev(table, "class", "pricing-table tire-service-main-table svelte-158zqk5");
+    			attr_dev(table, "class", "pricing-table tire-service-main-table svelte-lcvteg");
     			add_location(table, file$l, 108, 8, 4428);
-    			attr_dev(div4, "class", "pricing-table-container scrollable-table tire-table-container svelte-158zqk5");
+    			attr_dev(div4, "class", "pricing-table-container scrollable-table tire-table-container svelte-lcvteg");
     			add_location(div4, file$l, 107, 6, 4344);
-    			attr_dev(div5, "class", "tire-services-grid svelte-158zqk5");
+    			attr_dev(div5, "class", "tire-services-grid svelte-lcvteg");
     			add_location(div5, file$l, 126, 6, 4993);
-    			attr_dev(div6, "class", "container svelte-158zqk5");
+    			attr_dev(div6, "class", "container svelte-lcvteg");
     			add_location(div6, file$l, 78, 4, 2839);
-    			attr_dev(section1, "class", "service-section svelte-158zqk5");
+    			attr_dev(section1, "class", "service-section svelte-lcvteg");
     			attr_dev(section1, "id", "tire");
     			add_location(section1, file$l, 77, 2, 2791);
-    			attr_dev(h21, "class", "svelte-158zqk5");
+    			attr_dev(h21, "class", "svelte-lcvteg");
     			add_location(h21, file$l, 164, 8, 6541);
-    			attr_dev(p2, "class", "service-description svelte-158zqk5");
+    			attr_dev(p2, "class", "service-description svelte-lcvteg");
     			add_location(p2, file$l, 165, 8, 6644);
-    			attr_dev(div7, "class", "service-content centered-content svelte-158zqk5");
+    			attr_dev(div7, "class", "service-content centered-content svelte-lcvteg");
     			add_location(div7, file$l, 163, 6, 6486);
-    			attr_dev(div8, "class", "maintenance-bubbles-container svelte-158zqk5");
+    			attr_dev(div8, "class", "maintenance-bubbles-container svelte-lcvteg");
     			add_location(div8, file$l, 172, 6, 7038);
     			attr_dev(a1, "href", "/contact");
-    			attr_dev(a1, "class", "btn btn-primary maintenance-contact-btn svelte-158zqk5");
+    			attr_dev(a1, "class", "btn btn-primary maintenance-contact-btn svelte-lcvteg");
     			add_location(a1, file$l, 181, 12, 7338);
-    			attr_dev(div9, "class", "centered-button-container svelte-158zqk5");
+    			attr_dev(div9, "class", "centered-button-container svelte-lcvteg");
     			add_location(div9, file$l, 180, 6, 7286);
-    			attr_dev(div10, "class", "container svelte-158zqk5");
+    			attr_dev(div10, "class", "container svelte-lcvteg");
     			add_location(div10, file$l, 162, 4, 6456);
-    			attr_dev(section2, "class", "service-section svelte-158zqk5");
+    			attr_dev(section2, "class", "service-section svelte-lcvteg");
     			attr_dev(section2, "id", "maintenance");
     			add_location(section2, file$l, 161, 2, 6401);
-    			attr_dev(div11, "class", "services-container svelte-158zqk5");
+    			attr_dev(div11, "class", "services-container svelte-lcvteg");
     			add_location(div11, file$l, 76, 0, 2756);
     		},
     		l: function claim(nodes) {

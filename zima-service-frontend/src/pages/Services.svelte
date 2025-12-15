@@ -198,14 +198,6 @@
     --text: #1a1a1a; /* Example text color */
     --text-light: #555; /* Example light text color */
     --light: #f4f4f4; /* Example light background color */
-    --teal-dark: #00796b; /* Darker teal for SMART title and pills */
-    --teal-light: #4db6ac; /* Lighter teal - maybe for borders or accents */
-    --dark-purple: #4b0082; /* Dark purple for PREMIUM title */
-    --lavender: #e6e6fa; /* Lavender for PREMIUM pills background */
-    --premium-pill-border: #b3a3c8; /* Slightly darker lavender border */
-    --frosted-background: rgba(255, 255, 255, 0.3); /* Increased transparency for more frosting */
-    --frosted-border: rgba(255, 255, 255, 0.5); /* Increased border visibility */
-    --bubble-color: rgba(0, 186, 229, 0.2); /* Semi-transparent primary color for bubbles */
   }
 
   .services-hero {
@@ -229,8 +221,7 @@
 
   .service-section {
     padding: 5rem 2rem;
-    position: relative; /* Needed for absolute positioning of animated background */
-    overflow: hidden; /* Hide overflowing bubbles */
+    position: relative;
   }
 
   /* Alternating background colors for sections */
@@ -257,14 +248,6 @@
     gap: 4rem;
     align-items: center;
     margin-bottom: 3rem; /* Add space below the grid before the table */
-  }
-
-  .service-grid.reverse {
-    direction: rtl;
-  }
-
-  .service-grid.reverse > * {
-    direction: ltr;
   }
 
   .service-content h2 {
@@ -548,14 +531,8 @@
         text-align: center;
     }
 
-    .service-grid.reverse {
-      direction: ltr;
-    }
-
     .service-grid .service-content { order: 1; }
     .service-grid .service-image { order: 2; }
-    .service-grid.reverse .service-content { order: 1; }
-    .service-grid.reverse .service-image { order: 2; }
 
     .service-image {
       max-width: 500px;
@@ -612,17 +589,6 @@
       padding: 1rem 1.5rem; /* Make button larger */
       font-size: 1rem;
     }
-
-    /* Adjust min-widths for smaller mobile screens - increased font sizes as requested */
-    .parking-table th,
-    .parking-table td { min-width: 75px; font-size: 1rem; } /* Increased from 0.85rem */
-    .parking-table .day-col { min-width: 45px;}
-
-    .car-wash-table th,
-    .car-wash-table td { min-width: 70px; font-size: 1rem; } /* Increased from 0.85rem */
-    .car-wash-table th:first-child,
-    .car-wash-table td:first-child { min-width: 90px;}
-
 
     .tire-service-main-table th,
     .tire-service-main-table td {
