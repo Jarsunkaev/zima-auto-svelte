@@ -42,7 +42,7 @@ export default {
     // --- End New Content ---
   },
   services: {
-    title: "SZOLGÁLTATÁSOK",
+    title: "Kérjük, válasszon egy szolgáltatást az alábbiak közül",
     parking: {
       title: "24/7 REPÜLŐTÉRI PARKOLÁS",
       description: "Biztonságos parkolási lehetőségünk bekerített határokkal és 24 órás kamerás megfigyeléssel rendelkezik, ami garantálja járművének a legnagyobb biztonságot."

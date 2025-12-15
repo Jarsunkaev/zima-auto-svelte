@@ -12925,7 +12925,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (199:6) {#each services as service, i}
+    // (202:6) {#each services as service, i}
     function create_each_block_1$4(ctx) {
     	let servicecard;
     	let current;
@@ -13018,14 +13018,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1$4.name,
     		type: "each",
-    		source: "(199:6) {#each services as service, i}",
+    		source: "(202:6) {#each services as service, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (244:6) {#each testimonials as testimonial, i}
+    // (247:6) {#each testimonials as testimonial, i}
     function create_each_block$8(ctx) {
     	let testimonialcard;
     	let current;
@@ -13073,7 +13073,7 @@ var app = (function () {
     		block,
     		id: create_each_block$8.name,
     		type: "each",
-    		source: "(244:6) {#each testimonials as testimonial, i}",
+    		source: "(247:6) {#each testimonials as testimonial, i}",
     		ctx
     	});
 
@@ -13082,123 +13082,126 @@ var app = (function () {
 
     function create_fragment$o(ctx) {
     	let section0;
+    	let div2;
     	let div0;
     	let t0;
     	let div1;
     	let t1;
-    	let div5;
-    	let div2;
+    	let div3;
+    	let t2;
+    	let div7;
+    	let div4;
     	let h1;
 
-    	let t2_value = (/*$currentLang*/ ctx[4] === 'hu'
+    	let t3_value = (/*$currentLang*/ ctx[4] === 'hu'
     	? 'Zima Autószerviz és Gumiszerviz'
     	: 'Zima Car Maintenance and Tire Service') + "";
 
-    	let t2;
     	let t3;
+    	let t4;
     	let p0;
 
-    	let t4_value = (/*$currentLang*/ ctx[4] === 'hu'
+    	let t5_value = (/*$currentLang*/ ctx[4] === 'hu'
     	? 'Ahol az autója minden igényére egy helyen kínálunk megoldást!'
     	: 'Where we offer solutions for all your car needs in one place!') + "";
 
-    	let t4;
     	let t5;
+    	let t6;
     	let button0;
 
-    	let t6_value = (/*$currentLang*/ ctx[4] === 'hu'
+    	let t7_value = (/*$currentLang*/ ctx[4] === 'hu'
     	? 'FOGLALJON MOST'
     	: 'BOOK NOW') + "";
 
-    	let t6;
     	let t7;
-    	let div4;
+    	let t8;
+    	let div6;
     	let span0;
 
-    	let t8_value = (/*$currentLang*/ ctx[4] === 'hu'
+    	let t9_value = (/*$currentLang*/ ctx[4] === 'hu'
     	? 'Görgessen lefelé'
     	: 'Scroll down') + "";
 
-    	let t8;
     	let t9;
-    	let div3;
+    	let t10;
+    	let div5;
     	let svg0;
     	let path0;
-    	let div4_aria_label_value;
-    	let t10;
+    	let div6_aria_label_value;
+    	let t11;
     	let section1;
-    	let div6;
+    	let div8;
     	let svg1;
     	let path1;
-    	let t11;
-    	let div8;
+    	let t12;
+    	let div10;
     	let h20;
 
-    	let t12_value = (/*$currentLang*/ ctx[4] === 'hu'
+    	let t13_value = (/*$currentLang*/ ctx[4] === 'hu'
     	? 'SZOLGÁLTATÁSOK'
     	: 'OUR SERVICES') + "";
 
-    	let t12;
     	let t13;
+    	let t14;
     	let p1;
 
-    	let t14_value = (/*$currentLang*/ ctx[4] === 'hu'
+    	let t15_value = (/*$currentLang*/ ctx[4] === 'hu'
     	? 'Fedezze fel átfogó szolgáltatásainkat, melyek az Ön járművének minden igényét kielégítik'
     	: 'Discover our comprehensive services covering all your vehicle needs in one place') + "";
 
-    	let t14;
     	let t15;
-    	let div7;
     	let t16;
     	let div9;
+    	let t17;
+    	let div11;
     	let svg2;
     	let path2;
-    	let t17;
-    	let section2;
-    	let div13;
-    	let div10;
     	let t18;
-    	let div11;
-    	let t19;
+    	let section2;
+    	let div15;
     	let div12;
+    	let t19;
+    	let div13;
     	let t20;
-    	let div17;
+    	let div14;
+    	let t21;
+    	let div19;
     	let h21;
 
-    	let t21_value = (/*$currentLang*/ ctx[4] === 'hu'
+    	let t22_value = (/*$currentLang*/ ctx[4] === 'hu'
     	? 'Ügyfeleink Véleménye'
     	: 'Customer Testimonials') + "";
 
-    	let t21;
     	let t22;
-    	let div14;
     	let t23;
     	let div16;
-    	let div15;
+    	let t24;
+    	let div18;
+    	let div17;
     	let a;
     	let img;
     	let img_src_value;
-    	let t24;
+    	let t25;
     	let span1;
-    	let t26;
+    	let t27;
     	let section3;
-    	let div19;
-    	let div18;
+    	let div21;
+    	let div20;
     	let h22;
 
-    	let t27_value = (/*$currentLang*/ ctx[4] === 'hu'
+    	let t28_value = (/*$currentLang*/ ctx[4] === 'hu'
     	? 'Fedezze fel versenyképes árainkat – nézze meg most!'
     	: 'Discover our competitive prices – check them out now!') + "";
 
-    	let t27;
     	let t28;
+    	let t29;
     	let button1;
 
-    	let t29_value = (/*$currentLang*/ ctx[4] === 'hu'
+    	let t30_value = (/*$currentLang*/ ctx[4] === 'hu'
     	? 'Árlista Megtekintése'
     	: 'View Price List') + "";
 
-    	let t29;
+    	let t30;
     	let current;
     	let mounted;
     	let dispose;
@@ -13229,103 +13232,110 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			section0 = element("section");
+    			div2 = element("div");
     			div0 = element("div");
     			t0 = space();
     			div1 = element("div");
     			t1 = space();
-    			div5 = element("div");
-    			div2 = element("div");
-    			h1 = element("h1");
-    			t2 = text(t2_value);
-    			t3 = space();
-    			p0 = element("p");
-    			t4 = text(t4_value);
-    			t5 = space();
-    			button0 = element("button");
-    			t6 = text(t6_value);
-    			t7 = space();
-    			div4 = element("div");
-    			span0 = element("span");
-    			t8 = text(t8_value);
-    			t9 = space();
     			div3 = element("div");
+    			t2 = space();
+    			div7 = element("div");
+    			div4 = element("div");
+    			h1 = element("h1");
+    			t3 = text(t3_value);
+    			t4 = space();
+    			p0 = element("p");
+    			t5 = text(t5_value);
+    			t6 = space();
+    			button0 = element("button");
+    			t7 = text(t7_value);
+    			t8 = space();
+    			div6 = element("div");
+    			span0 = element("span");
+    			t9 = text(t9_value);
+    			t10 = space();
+    			div5 = element("div");
     			svg0 = svg_element("svg");
     			path0 = svg_element("path");
-    			t10 = space();
+    			t11 = space();
     			section1 = element("section");
-    			div6 = element("div");
+    			div8 = element("div");
     			svg1 = svg_element("svg");
     			path1 = svg_element("path");
-    			t11 = space();
-    			div8 = element("div");
+    			t12 = space();
+    			div10 = element("div");
     			h20 = element("h2");
-    			t12 = text(t12_value);
-    			t13 = space();
+    			t13 = text(t13_value);
+    			t14 = space();
     			p1 = element("p");
-    			t14 = text(t14_value);
-    			t15 = space();
-    			div7 = element("div");
+    			t15 = text(t15_value);
+    			t16 = space();
+    			div9 = element("div");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
-    			t16 = space();
-    			div9 = element("div");
+    			t17 = space();
+    			div11 = element("div");
     			svg2 = svg_element("svg");
     			path2 = svg_element("path");
-    			t17 = space();
-    			section2 = element("section");
-    			div13 = element("div");
-    			div10 = element("div");
     			t18 = space();
-    			div11 = element("div");
-    			t19 = space();
+    			section2 = element("section");
+    			div15 = element("div");
     			div12 = element("div");
+    			t19 = space();
+    			div13 = element("div");
     			t20 = space();
-    			div17 = element("div");
-    			h21 = element("h2");
-    			t21 = text(t21_value);
-    			t22 = space();
     			div14 = element("div");
+    			t21 = space();
+    			div19 = element("div");
+    			h21 = element("h2");
+    			t22 = text(t22_value);
+    			t23 = space();
+    			div16 = element("div");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			t23 = space();
-    			div16 = element("div");
-    			div15 = element("div");
+    			t24 = space();
+    			div18 = element("div");
+    			div17 = element("div");
     			a = element("a");
     			img = element("img");
-    			t24 = space();
+    			t25 = space();
     			span1 = element("span");
     			span1.textContent = "Google reviews widget";
-    			t26 = space();
+    			t27 = space();
     			section3 = element("section");
-    			div19 = element("div");
-    			div18 = element("div");
+    			div21 = element("div");
+    			div20 = element("div");
     			h22 = element("h2");
-    			t27 = text(t27_value);
-    			t28 = space();
+    			t28 = text(t28_value);
+    			t29 = space();
     			button1 = element("button");
-    			t29 = text(t29_value);
-    			attr_dev(div0, "class", "hero-background svelte-4varmj");
-    			add_location(div0, file$o, 139, 2, 12926);
-    			attr_dev(div1, "class", "hero-overlay svelte-4varmj");
-    			add_location(div1, file$o, 140, 2, 12964);
-    			attr_dev(h1, "class", "svelte-4varmj");
-    			add_location(h1, file$o, 143, 6, 13075);
-    			attr_dev(p0, "class", "svelte-4varmj");
-    			add_location(p0, file$o, 144, 6, 13192);
-    			attr_dev(button0, "class", "btn btn-primary svelte-4varmj");
-    			add_location(button0, file$o, 147, 6, 13377);
-    			attr_dev(div2, "class", "hero-content svelte-4varmj");
-    			add_location(div2, file$o, 142, 4, 13042);
-    			attr_dev(span0, "class", "svelte-4varmj");
-    			add_location(span0, file$o, 172, 6, 14177);
+    			t30 = text(t30_value);
+    			attr_dev(div0, "class", "hero-image-left svelte-vpzf7a");
+    			add_location(div0, file$o, 140, 4, 12960);
+    			attr_dev(div1, "class", "hero-image-right svelte-vpzf7a");
+    			add_location(div1, file$o, 141, 4, 13000);
+    			attr_dev(div2, "class", "hero-background svelte-vpzf7a");
+    			add_location(div2, file$o, 139, 2, 12926);
+    			attr_dev(div3, "class", "hero-overlay svelte-vpzf7a");
+    			add_location(div3, file$o, 143, 2, 13048);
+    			attr_dev(h1, "class", "svelte-vpzf7a");
+    			add_location(h1, file$o, 146, 6, 13159);
+    			attr_dev(p0, "class", "svelte-vpzf7a");
+    			add_location(p0, file$o, 147, 6, 13276);
+    			attr_dev(button0, "class", "btn btn-primary svelte-vpzf7a");
+    			add_location(button0, file$o, 150, 6, 13461);
+    			attr_dev(div4, "class", "hero-content svelte-vpzf7a");
+    			add_location(div4, file$o, 145, 4, 13126);
+    			attr_dev(span0, "class", "svelte-vpzf7a");
+    			add_location(span0, file$o, 175, 6, 14261);
     			attr_dev(path0, "d", "M12 5v14M5 12l7 7 7-7");
-    			add_location(path0, file$o, 175, 10, 14484);
+    			add_location(path0, file$o, 178, 10, 14568);
     			attr_dev(svg0, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg0, "width", "24");
     			attr_dev(svg0, "height", "24");
@@ -13335,194 +13345,197 @@ var app = (function () {
     			attr_dev(svg0, "stroke-width", "2");
     			attr_dev(svg0, "stroke-linecap", "round");
     			attr_dev(svg0, "stroke-linejoin", "round");
-    			attr_dev(svg0, "class", "svelte-4varmj");
-    			add_location(svg0, file$o, 174, 8, 14292);
-    			attr_dev(div3, "class", "scroll-arrow svelte-4varmj");
-    			add_location(div3, file$o, 173, 6, 14257);
-    			attr_dev(div4, "class", "scroll-down-indicator svelte-4varmj");
-    			attr_dev(div4, "tabindex", "0");
-    			attr_dev(div4, "role", "button");
+    			attr_dev(svg0, "class", "svelte-vpzf7a");
+    			add_location(svg0, file$o, 177, 8, 14376);
+    			attr_dev(div5, "class", "scroll-arrow svelte-vpzf7a");
+    			add_location(div5, file$o, 176, 6, 14341);
+    			attr_dev(div6, "class", "scroll-down-indicator svelte-vpzf7a");
+    			attr_dev(div6, "tabindex", "0");
+    			attr_dev(div6, "role", "button");
 
-    			attr_dev(div4, "aria-label", div4_aria_label_value = /*$currentLang*/ ctx[4] === 'hu'
+    			attr_dev(div6, "aria-label", div6_aria_label_value = /*$currentLang*/ ctx[4] === 'hu'
     			? 'Görgessen lefelé'
     			: 'Scroll down');
 
-    			add_location(div4, file$o, 152, 4, 13543);
-    			attr_dev(div5, "class", "container hero-container svelte-4varmj");
-    			add_location(div5, file$o, 141, 2, 12999);
-    			attr_dev(section0, "class", "hero svelte-4varmj");
+    			add_location(div6, file$o, 155, 4, 13627);
+    			attr_dev(div7, "class", "container hero-container svelte-vpzf7a");
+    			add_location(div7, file$o, 144, 2, 13083);
+    			attr_dev(section0, "class", "hero svelte-vpzf7a");
     			add_location(section0, file$o, 138, 0, 12877);
     			attr_dev(path1, "fill", "#ffffff");
     			attr_dev(path1, "fill-opacity", "1");
     			attr_dev(path1, "d", "M0,0L1440,0L1440,0L0,0Z");
-    			add_location(path1, file$o, 185, 6, 14753);
+    			add_location(path1, file$o, 188, 6, 14837);
     			attr_dev(svg1, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg1, "viewBox", "0 0 1440 20");
     			attr_dev(svg1, "preserveAspectRatio", "none");
-    			attr_dev(svg1, "class", "svelte-4varmj");
-    			add_location(svg1, file$o, 184, 4, 14657);
-    			attr_dev(div6, "class", "wave-top svelte-4varmj");
-    			add_location(div6, file$o, 183, 2, 14630);
-    			attr_dev(h20, "class", "section-title svelte-4varmj");
-    			add_location(h20, file$o, 190, 4, 14878);
-    			attr_dev(p1, "class", "section-subtitle svelte-4varmj");
-    			add_location(p1, file$o, 191, 4, 14973);
-    			attr_dev(div7, "class", "services-grid svelte-4varmj");
-    			add_location(div7, file$o, 197, 4, 15240);
-    			attr_dev(div8, "class", "container");
-    			add_location(div8, file$o, 189, 2, 14850);
+    			attr_dev(svg1, "class", "svelte-vpzf7a");
+    			add_location(svg1, file$o, 187, 4, 14741);
+    			attr_dev(div8, "class", "wave-top svelte-vpzf7a");
+    			add_location(div8, file$o, 186, 2, 14714);
+    			attr_dev(h20, "class", "section-title svelte-vpzf7a");
+    			add_location(h20, file$o, 193, 4, 14962);
+    			attr_dev(p1, "class", "section-subtitle svelte-vpzf7a");
+    			add_location(p1, file$o, 194, 4, 15057);
+    			attr_dev(div9, "class", "services-grid svelte-vpzf7a");
+    			add_location(div9, file$o, 200, 4, 15324);
+    			attr_dev(div10, "class", "container");
+    			add_location(div10, file$o, 192, 2, 14934);
     			attr_dev(path2, "fill", "#141a25");
     			attr_dev(path2, "fill-opacity", "1");
     			attr_dev(path2, "d", "M0,20L1440,20L1440,20L0,20Z");
-    			add_location(path2, file$o, 225, 6, 16726);
+    			add_location(path2, file$o, 228, 6, 16810);
     			attr_dev(svg2, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg2, "viewBox", "0 0 1440 20");
     			attr_dev(svg2, "preserveAspectRatio", "none");
-    			attr_dev(svg2, "class", "svelte-4varmj");
-    			add_location(svg2, file$o, 224, 4, 16630);
-    			attr_dev(div9, "class", "wave-bottom svelte-4varmj");
-    			add_location(div9, file$o, 223, 2, 16600);
-    			attr_dev(section1, "class", "services-section svelte-4varmj");
+    			attr_dev(svg2, "class", "svelte-vpzf7a");
+    			add_location(svg2, file$o, 227, 4, 16714);
+    			attr_dev(div11, "class", "wave-bottom svelte-vpzf7a");
+    			add_location(div11, file$o, 226, 2, 16684);
+    			attr_dev(section1, "class", "services-section svelte-vpzf7a");
     			attr_dev(section1, "id", "services");
-    			add_location(section1, file$o, 182, 0, 14578);
-    			attr_dev(div10, "class", "shape shape-1 svelte-4varmj");
-    			add_location(div10, file$o, 232, 4, 16913);
-    			attr_dev(div11, "class", "shape shape-2 svelte-4varmj");
-    			add_location(div11, file$o, 233, 4, 16951);
-    			attr_dev(div12, "class", "shape shape-3 svelte-4varmj");
-    			add_location(div12, file$o, 234, 4, 16989);
-    			attr_dev(div13, "class", "background-shapes svelte-4varmj");
-    			add_location(div13, file$o, 231, 2, 16877);
-    			attr_dev(h21, "class", "section-title svelte-4varmj");
-    			add_location(h21, file$o, 238, 4, 17063);
-    			attr_dev(div14, "class", "testimonials-grid svelte-4varmj");
-    			add_location(div14, file$o, 242, 4, 17186);
+    			add_location(section1, file$o, 185, 0, 14662);
+    			attr_dev(div12, "class", "shape shape-1 svelte-vpzf7a");
+    			add_location(div12, file$o, 235, 4, 16997);
+    			attr_dev(div13, "class", "shape shape-2 svelte-vpzf7a");
+    			add_location(div13, file$o, 236, 4, 17035);
+    			attr_dev(div14, "class", "shape shape-3 svelte-vpzf7a");
+    			add_location(div14, file$o, 237, 4, 17073);
+    			attr_dev(div15, "class", "background-shapes svelte-vpzf7a");
+    			add_location(div15, file$o, 234, 2, 16961);
+    			attr_dev(h21, "class", "section-title svelte-vpzf7a");
+    			add_location(h21, file$o, 241, 4, 17147);
+    			attr_dev(div16, "class", "testimonials-grid svelte-vpzf7a");
+    			add_location(div16, file$o, 245, 4, 17270);
     			if (!src_url_equal(img.src, img_src_value = "https://embedsocial.com/cdn/icon/embedsocial-logo.webp")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "EmbedSocial");
-    			add_location(img, file$o, 258, 10, 17815);
-    			add_location(span1, file$o, 259, 10, 17910);
+    			add_location(img, file$o, 261, 10, 17899);
+    			add_location(span1, file$o, 262, 10, 17994);
     			attr_dev(a, "href", "https://embedsocial.com/google-reviews-widget/");
     			attr_dev(a, "title", "Add Google reviews on a website");
     			attr_dev(a, "target", "_blank");
     			attr_dev(a, "class", "powered-by-es es-slider");
-    			add_location(a, file$o, 257, 8, 17659);
-    			attr_dev(div15, "class", "embedsocial-widget");
-    			attr_dev(div15, "data-ref", "0374a3cc3b883d7c92fcc25ebb3f82bc");
-    			add_location(div15, file$o, 256, 6, 17574);
-    			attr_dev(div16, "class", "widget-container svelte-4varmj");
-    			add_location(div16, file$o, 255, 4, 17537);
-    			attr_dev(div17, "class", "container svelte-4varmj");
-    			add_location(div17, file$o, 237, 2, 17035);
-    			attr_dev(section2, "class", "testimonials-section svelte-4varmj");
-    			add_location(section2, file$o, 230, 0, 16836);
-    			attr_dev(h22, "class", "svelte-4varmj");
-    			add_location(h22, file$o, 269, 6, 18095);
-    			attr_dev(button1, "class", "btn btn-outline svelte-4varmj");
-    			add_location(button1, file$o, 270, 6, 18248);
-    			attr_dev(div18, "class", "cta-content svelte-4varmj");
-    			add_location(div18, file$o, 268, 4, 18063);
-    			attr_dev(div19, "class", "container");
-    			add_location(div19, file$o, 267, 2, 18035);
-    			attr_dev(section3, "class", "cta-section svelte-4varmj");
-    			add_location(section3, file$o, 266, 0, 18003);
+    			add_location(a, file$o, 260, 8, 17743);
+    			attr_dev(div17, "class", "embedsocial-widget");
+    			attr_dev(div17, "data-ref", "0374a3cc3b883d7c92fcc25ebb3f82bc");
+    			add_location(div17, file$o, 259, 6, 17658);
+    			attr_dev(div18, "class", "widget-container svelte-vpzf7a");
+    			add_location(div18, file$o, 258, 4, 17621);
+    			attr_dev(div19, "class", "container svelte-vpzf7a");
+    			add_location(div19, file$o, 240, 2, 17119);
+    			attr_dev(section2, "class", "testimonials-section svelte-vpzf7a");
+    			add_location(section2, file$o, 233, 0, 16920);
+    			attr_dev(h22, "class", "svelte-vpzf7a");
+    			add_location(h22, file$o, 272, 6, 18179);
+    			attr_dev(button1, "class", "btn btn-outline svelte-vpzf7a");
+    			add_location(button1, file$o, 273, 6, 18332);
+    			attr_dev(div20, "class", "cta-content svelte-vpzf7a");
+    			add_location(div20, file$o, 271, 4, 18147);
+    			attr_dev(div21, "class", "container");
+    			add_location(div21, file$o, 270, 2, 18119);
+    			attr_dev(section3, "class", "cta-section svelte-vpzf7a");
+    			add_location(section3, file$o, 269, 0, 18087);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, section0, anchor);
-    			append_dev(section0, div0);
-    			append_dev(section0, t0);
-    			append_dev(section0, div1);
+    			append_dev(section0, div2);
+    			append_dev(div2, div0);
+    			append_dev(div2, t0);
+    			append_dev(div2, div1);
     			append_dev(section0, t1);
-    			append_dev(section0, div5);
-    			append_dev(div5, div2);
-    			append_dev(div2, h1);
-    			append_dev(h1, t2);
-    			append_dev(div2, t3);
-    			append_dev(div2, p0);
-    			append_dev(p0, t4);
-    			append_dev(div2, t5);
-    			append_dev(div2, button0);
-    			append_dev(button0, t6);
-    			append_dev(div5, t7);
-    			append_dev(div5, div4);
-    			append_dev(div4, span0);
-    			append_dev(span0, t8);
-    			append_dev(div4, t9);
-    			append_dev(div4, div3);
-    			append_dev(div3, svg0);
+    			append_dev(section0, div3);
+    			append_dev(section0, t2);
+    			append_dev(section0, div7);
+    			append_dev(div7, div4);
+    			append_dev(div4, h1);
+    			append_dev(h1, t3);
+    			append_dev(div4, t4);
+    			append_dev(div4, p0);
+    			append_dev(p0, t5);
+    			append_dev(div4, t6);
+    			append_dev(div4, button0);
+    			append_dev(button0, t7);
+    			append_dev(div7, t8);
+    			append_dev(div7, div6);
+    			append_dev(div6, span0);
+    			append_dev(span0, t9);
+    			append_dev(div6, t10);
+    			append_dev(div6, div5);
+    			append_dev(div5, svg0);
     			append_dev(svg0, path0);
     			/*section0_binding*/ ctx[11](section0);
-    			insert_dev(target, t10, anchor);
+    			insert_dev(target, t11, anchor);
     			insert_dev(target, section1, anchor);
-    			append_dev(section1, div6);
-    			append_dev(div6, svg1);
-    			append_dev(svg1, path1);
-    			append_dev(section1, t11);
     			append_dev(section1, div8);
-    			append_dev(div8, h20);
-    			append_dev(h20, t12);
-    			append_dev(div8, t13);
-    			append_dev(div8, p1);
-    			append_dev(p1, t14);
-    			append_dev(div8, t15);
-    			append_dev(div8, div7);
+    			append_dev(div8, svg1);
+    			append_dev(svg1, path1);
+    			append_dev(section1, t12);
+    			append_dev(section1, div10);
+    			append_dev(div10, h20);
+    			append_dev(h20, t13);
+    			append_dev(div10, t14);
+    			append_dev(div10, p1);
+    			append_dev(p1, t15);
+    			append_dev(div10, t16);
+    			append_dev(div10, div9);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				if (each_blocks_1[i]) {
-    					each_blocks_1[i].m(div7, null);
+    					each_blocks_1[i].m(div9, null);
     				}
     			}
 
-    			append_dev(section1, t16);
-    			append_dev(section1, div9);
-    			append_dev(div9, svg2);
+    			append_dev(section1, t17);
+    			append_dev(section1, div11);
+    			append_dev(div11, svg2);
     			append_dev(svg2, path2);
-    			insert_dev(target, t17, anchor);
+    			insert_dev(target, t18, anchor);
     			insert_dev(target, section2, anchor);
-    			append_dev(section2, div13);
-    			append_dev(div13, div10);
-    			append_dev(div13, t18);
-    			append_dev(div13, div11);
-    			append_dev(div13, t19);
-    			append_dev(div13, div12);
-    			append_dev(section2, t20);
-    			append_dev(section2, div17);
-    			append_dev(div17, h21);
-    			append_dev(h21, t21);
-    			append_dev(div17, t22);
-    			append_dev(div17, div14);
+    			append_dev(section2, div15);
+    			append_dev(div15, div12);
+    			append_dev(div15, t19);
+    			append_dev(div15, div13);
+    			append_dev(div15, t20);
+    			append_dev(div15, div14);
+    			append_dev(section2, t21);
+    			append_dev(section2, div19);
+    			append_dev(div19, h21);
+    			append_dev(h21, t22);
+    			append_dev(div19, t23);
+    			append_dev(div19, div16);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				if (each_blocks[i]) {
-    					each_blocks[i].m(div14, null);
+    					each_blocks[i].m(div16, null);
     				}
     			}
 
-    			append_dev(div17, t23);
-    			append_dev(div17, div16);
-    			append_dev(div16, div15);
-    			append_dev(div15, a);
-    			append_dev(a, img);
-    			append_dev(a, t24);
-    			append_dev(a, span1);
-    			insert_dev(target, t26, anchor);
-    			insert_dev(target, section3, anchor);
-    			append_dev(section3, div19);
+    			append_dev(div19, t24);
     			append_dev(div19, div18);
-    			append_dev(div18, h22);
-    			append_dev(h22, t27);
-    			append_dev(div18, t28);
-    			append_dev(div18, button1);
-    			append_dev(button1, t29);
+    			append_dev(div18, div17);
+    			append_dev(div17, a);
+    			append_dev(a, img);
+    			append_dev(a, t25);
+    			append_dev(a, span1);
+    			insert_dev(target, t27, anchor);
+    			insert_dev(target, section3, anchor);
+    			append_dev(section3, div21);
+    			append_dev(div21, div20);
+    			append_dev(div20, h22);
+    			append_dev(h22, t28);
+    			append_dev(div20, t29);
+    			append_dev(div20, button1);
+    			append_dev(button1, t30);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
     					listen_dev(button0, "click", /*click_handler*/ ctx[8], false, false, false, false),
-    					listen_dev(div4, "click", /*click_handler_1*/ ctx[9], false, false, false, false),
-    					listen_dev(div4, "keydown", /*keydown_handler*/ ctx[10], false, false, false, false),
+    					listen_dev(div6, "click", /*click_handler_1*/ ctx[9], false, false, false, false),
+    					listen_dev(div6, "keydown", /*keydown_handler*/ ctx[10], false, false, false, false),
     					listen_dev(button1, "click", /*click_handler_2*/ ctx[13], false, false, false, false)
     				];
 
@@ -13530,35 +13543,35 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if ((!current || dirty & /*$currentLang*/ 16) && t2_value !== (t2_value = (/*$currentLang*/ ctx[4] === 'hu'
+    			if ((!current || dirty & /*$currentLang*/ 16) && t3_value !== (t3_value = (/*$currentLang*/ ctx[4] === 'hu'
     			? 'Zima Autószerviz és Gumiszerviz'
-    			: 'Zima Car Maintenance and Tire Service') + "")) set_data_dev(t2, t2_value);
+    			: 'Zima Car Maintenance and Tire Service') + "")) set_data_dev(t3, t3_value);
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t4_value !== (t4_value = (/*$currentLang*/ ctx[4] === 'hu'
+    			if ((!current || dirty & /*$currentLang*/ 16) && t5_value !== (t5_value = (/*$currentLang*/ ctx[4] === 'hu'
     			? 'Ahol az autója minden igényére egy helyen kínálunk megoldást!'
-    			: 'Where we offer solutions for all your car needs in one place!') + "")) set_data_dev(t4, t4_value);
+    			: 'Where we offer solutions for all your car needs in one place!') + "")) set_data_dev(t5, t5_value);
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t6_value !== (t6_value = (/*$currentLang*/ ctx[4] === 'hu'
+    			if ((!current || dirty & /*$currentLang*/ 16) && t7_value !== (t7_value = (/*$currentLang*/ ctx[4] === 'hu'
     			? 'FOGLALJON MOST'
-    			: 'BOOK NOW') + "")) set_data_dev(t6, t6_value);
+    			: 'BOOK NOW') + "")) set_data_dev(t7, t7_value);
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t8_value !== (t8_value = (/*$currentLang*/ ctx[4] === 'hu'
+    			if ((!current || dirty & /*$currentLang*/ 16) && t9_value !== (t9_value = (/*$currentLang*/ ctx[4] === 'hu'
     			? 'Görgessen lefelé'
-    			: 'Scroll down') + "")) set_data_dev(t8, t8_value);
+    			: 'Scroll down') + "")) set_data_dev(t9, t9_value);
 
-    			if (!current || dirty & /*$currentLang*/ 16 && div4_aria_label_value !== (div4_aria_label_value = /*$currentLang*/ ctx[4] === 'hu'
+    			if (!current || dirty & /*$currentLang*/ 16 && div6_aria_label_value !== (div6_aria_label_value = /*$currentLang*/ ctx[4] === 'hu'
     			? 'Görgessen lefelé'
     			: 'Scroll down')) {
-    				attr_dev(div4, "aria-label", div4_aria_label_value);
+    				attr_dev(div6, "aria-label", div6_aria_label_value);
     			}
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t12_value !== (t12_value = (/*$currentLang*/ ctx[4] === 'hu'
+    			if ((!current || dirty & /*$currentLang*/ 16) && t13_value !== (t13_value = (/*$currentLang*/ ctx[4] === 'hu'
     			? 'SZOLGÁLTATÁSOK'
-    			: 'OUR SERVICES') + "")) set_data_dev(t12, t12_value);
+    			: 'OUR SERVICES') + "")) set_data_dev(t13, t13_value);
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t14_value !== (t14_value = (/*$currentLang*/ ctx[4] === 'hu'
+    			if ((!current || dirty & /*$currentLang*/ 16) && t15_value !== (t15_value = (/*$currentLang*/ ctx[4] === 'hu'
     			? 'Fedezze fel átfogó szolgáltatásainkat, melyek az Ön járművének minden igényét kielégítik'
-    			: 'Discover our comprehensive services covering all your vehicle needs in one place') + "")) set_data_dev(t14, t14_value);
+    			: 'Discover our comprehensive services covering all your vehicle needs in one place') + "")) set_data_dev(t15, t15_value);
 
     			if (dirty & /*services, $currentLang, servicesVisible, handleServiceAction*/ 178) {
     				each_value_1 = /*services*/ ctx[5];
@@ -13575,7 +13588,7 @@ var app = (function () {
     						each_blocks_1[i] = create_each_block_1$4(child_ctx);
     						each_blocks_1[i].c();
     						transition_in(each_blocks_1[i], 1);
-    						each_blocks_1[i].m(div7, null);
+    						each_blocks_1[i].m(div9, null);
     					}
     				}
 
@@ -13588,9 +13601,9 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t21_value !== (t21_value = (/*$currentLang*/ ctx[4] === 'hu'
+    			if ((!current || dirty & /*$currentLang*/ 16) && t22_value !== (t22_value = (/*$currentLang*/ ctx[4] === 'hu'
     			? 'Ügyfeleink Véleménye'
-    			: 'Customer Testimonials') + "")) set_data_dev(t21, t21_value);
+    			: 'Customer Testimonials') + "")) set_data_dev(t22, t22_value);
 
     			if (dirty & /*testimonials, testimonialsVisible*/ 68) {
     				each_value = /*testimonials*/ ctx[6];
@@ -13607,7 +13620,7 @@ var app = (function () {
     						each_blocks[i] = create_each_block$8(child_ctx);
     						each_blocks[i].c();
     						transition_in(each_blocks[i], 1);
-    						each_blocks[i].m(div14, null);
+    						each_blocks[i].m(div16, null);
     					}
     				}
 
@@ -13620,13 +13633,13 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t27_value !== (t27_value = (/*$currentLang*/ ctx[4] === 'hu'
+    			if ((!current || dirty & /*$currentLang*/ 16) && t28_value !== (t28_value = (/*$currentLang*/ ctx[4] === 'hu'
     			? 'Fedezze fel versenyképes árainkat – nézze meg most!'
-    			: 'Discover our competitive prices – check them out now!') + "")) set_data_dev(t27, t27_value);
+    			: 'Discover our competitive prices – check them out now!') + "")) set_data_dev(t28, t28_value);
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t29_value !== (t29_value = (/*$currentLang*/ ctx[4] === 'hu'
+    			if ((!current || dirty & /*$currentLang*/ 16) && t30_value !== (t30_value = (/*$currentLang*/ ctx[4] === 'hu'
     			? 'Árlista Megtekintése'
-    			: 'View Price List') + "")) set_data_dev(t29, t29_value);
+    			: 'View Price List') + "")) set_data_dev(t30, t30_value);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -13659,13 +13672,13 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(section0);
     			/*section0_binding*/ ctx[11](null);
-    			if (detaching) detach_dev(t10);
+    			if (detaching) detach_dev(t11);
     			if (detaching) detach_dev(section1);
     			destroy_each(each_blocks_1, detaching);
-    			if (detaching) detach_dev(t17);
+    			if (detaching) detach_dev(t18);
     			if (detaching) detach_dev(section2);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(t26);
+    			if (detaching) detach_dev(t27);
     			if (detaching) detach_dev(section3);
     			mounted = false;
     			run_all(dispose);

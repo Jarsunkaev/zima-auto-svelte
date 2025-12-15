@@ -107,6 +107,10 @@ const allowedOrigins = [
   'http://localhost:3001',
   'https://www.zima-auto.com',
   'https://zima-auto.com',
+  'https://zima-parking.com',
+  'https://www.zima-parking.com',
+  'https://zima-service.com',
+  'https://www.zima-service.com',
   'https://zima-auto-frontend.fly.dev',
   'https://zima-auto-backend.fly.dev',
   'https://zima-auto-admin.fly.dev'

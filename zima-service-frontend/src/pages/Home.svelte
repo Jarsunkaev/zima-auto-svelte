@@ -137,7 +137,10 @@
 </script>
 
 <section class="hero" bind:this={heroSection}>
-  <div class="hero-background"></div>
+  <div class="hero-background">
+    <div class="hero-image-left"></div>
+    <div class="hero-image-right"></div>
+  </div>
   <div class="hero-overlay"></div>
   <div class="container hero-container">
     <div class="hero-content">
@@ -294,12 +297,36 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-size: cover;
-    background-position: center 20%;
-    background-repeat: no-repeat;
     z-index: 0;
-    background-image: url('/images/airport-car.webp');
-    will-change: transform;
+    overflow: hidden;
+  }
+
+  .hero-image-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/szervizke.jpg');
+    background-size: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
+    z-index: 1;
+  }
+
+  .hero-image-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/tiring.jpg');
+    background-size: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    clip-path: polygon(40% 0, 100% 0, 100% 100%, 60% 100%);
+    z-index: 1;
   }
 
   .hero-overlay {
@@ -310,9 +337,9 @@
     height: 100vh;
     background: linear-gradient(
       to right,
-      rgba(0, 0, 0, 0.2) 0%,
-      rgba(0, 0, 0, 0.3) 50%,
-      rgba(0, 0, 0, 0.4) 100%
+      rgba(0, 0, 0, 0.55) 0%,
+      rgba(0, 0, 0, 0.6) 50%,
+      rgba(0, 0, 0, 0.65) 100%
     );
     z-index: 1;
   }
@@ -647,6 +674,20 @@
   }
 
   @media screen and (max-width: 768px) {
+    /* Keep natural sizing on mobile for better framing */
+    .hero-image-left {
+      background-size: cover;
+      background-position: center 20%;
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+
+    .hero-image-right {
+      background-size: cover;
+      background-position: center;
+      clip-path: polygon(0 100%, 100% 0, 100% 100%);
+    }
+
+    /* Make the diagonal split more dramatic on mobile */
     .hero {
       min-height: 500px;
     }

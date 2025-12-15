@@ -17,7 +17,6 @@
   let servicesVisible = false;
   let testimonialsVisible = false;
   let ctaVisible = false;
-  let heroSection;
   let showReviewsWidget = false;
 
   // Subscribe to language changes
@@ -112,9 +111,6 @@
     script.id = 'EmbedSocialWidgetScript';
     script.src = 'https://embedsocial.com/cdn/aht.js';
     document.head.appendChild(script);
-    
-    // Setup parallax effect for hero section
-    
 
     // Setup animations with ScrollTrigger
 
@@ -158,64 +154,9 @@
   });
 </script>
 
-<section class="hero" bind:this={heroSection}>
-  <div class="hero-background"></div>
-  <div class="hero-overlay"></div>
-  <div class="container hero-container">
-    <div class="hero-content">
-      <h1>{$currentLang === 'hu' ? 'Üdvözöljük a Zima Auto Kft-nél!' : 'Welcome to Zima Auto!'}</h1>
-      <p>{$currentLang === 'hu'
-        ? 'Ahol az autója minden igényére egy helyen kínálunk megoldást!'
-        : 'Where we offer solutions for all your car needs in one place!'}</p>
-      <button class="btn btn-primary" on:click={() => document.querySelector('.services-section')?.scrollIntoView({ behavior: 'smooth' })}>
-        {$currentLang === 'hu' ? 'Szolgáltatások' : 'Services'}
-      </button>
-    </div>
-
-    <div
-      class="scroll-down-indicator"
-      on:click={() => {
-        const nextSection = document.querySelector('.services-section');
-        if (nextSection) {
-          nextSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      }}
-      on:keydown={(e) => {
-        if (e.key === 'Enter') {
-          const nextSection = document.querySelector('.services-section');
-          if (nextSection) {
-            nextSection.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
-      }}
-      tabindex="0"
-      role="button"
-      aria-label={$currentLang === 'hu' ? 'Görgessen lefelé' : 'Scroll down'}
-    >
-      <span>{$currentLang === 'hu' ? 'Görgessen lefelé' : 'Scroll down'}</span>
-      <div class="scroll-arrow">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 5v14M5 12l7 7 7-7"/>
-        </svg>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="services-section" id="services"> 
-  <div class="wave-top">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 20" preserveAspectRatio="none">
-      <path fill="#ffffff" fill-opacity="1" d="M0,0L1440,0L1440,0L0,0Z"></path>
-    </svg>
-  </div>
-
+<section class="services-section" id="services">
   <div class="container">
-    <h2 class="section-title">{$currentLang === 'hu' ? 'SZOLGÁLTATÁSOK' : 'OUR SERVICES'}</h2>
-    <p class="section-subtitle">
-      {$currentLang === 'hu'
-        ? 'Fedezze fel átfogó szolgáltatásainkat, melyek az Ön járművének minden igényét kielégítik'
-        : 'Discover our comprehensive services covering all your vehicle needs in one place'}
-    </p>
+    <h2 class="section-title">{t('services.title', $currentLang)}</h2>
 
     <div class="services-grid">
       {#each services as service, i}
@@ -249,12 +190,6 @@
         />
       {/each}
     </div>
-  </div>
-
-  <div class="wave-bottom">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 20" preserveAspectRatio="none">
-      <path fill="#141a25" fill-opacity="1" d="M0,20L1440,20L1440,20L0,20Z"></path>
-    </svg>
   </div>
 </section>
 
@@ -306,157 +241,9 @@
 </section>
 
 <style>
-  /* Hero Section */
-  .hero {
-    height: 100vh;
-    min-height: 600px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    overflow: hidden;
-  }
-
-  .hero-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-size: cover;
-    background-position: center 20%;
-    background-repeat: no-repeat;
-    z-index: 0;
-    background-image: url('/images/airport-car.webp');
-    will-change: transform;
-  }
-
-  .hero-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0.2) 0%,
-      rgba(0, 0, 0, 0.3) 50%,
-      rgba(0, 0, 0, 0.4) 100%
-    );
-    z-index: 1;
-  }
-
-  .hero-container {
-    position: relative;
-    z-index: 2;
-    padding: 0 2rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .hero-content {
-    text-align: center;
-    z-index: 2;
-    max-width: 1200px;
-    padding: 0 2rem;
-  }
-
-  .hero-content h1 {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .hero-content p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    line-height: 1.4;
-  }
-
-  .hero-content .btn {
-    font-size: 1.1rem;
-    padding: 1rem 2.5rem;
-    font-weight: 600;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  .hero-content .btn:hover,
-  .hero-content .btn:focus {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    background-color: var(--primary-dark);
-    outline: none;
-  }
-
-  /* Scroll down indicator */
-  .scroll-down-indicator {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
-    opacity: 0.8;
-    z-index: 3;
-  }
-
-  .scroll-down-indicator:hover,
-  .scroll-down-indicator:focus {
-    opacity: 1;
-    outline: none;
-  }
-
-  .scroll-down-indicator:focus {
-    outline: 2px solid var(--primary);
-    outline-offset: 4px;
-    border-radius: 4px;
-  }
-
-  .scroll-down-indicator span {
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 500;
-  }
-
-  .scroll-arrow svg {
-    animation: bounce 2s infinite;
-  }
-
-  @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateY(0);
-    }
-    40% {
-      transform: translateY(-10px);
-    }
-    60% {
-      transform: translateY(-5px);
-    }
-  }
-
   .section-title {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 4rem;
     font-size: 2.2rem;
     position: relative;
   }
@@ -472,45 +259,17 @@
     background-color: var(--primary);
   }
 
-  .section-subtitle {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 3rem;
-    color: #666;
-    font-size: 1.1rem;
-    line-height: 1.6;
-  }
-
   /* Services Section */
   .services-section {
-    padding: 6rem 2rem;
-    background-color: #f8f9fa;
+    padding: 10rem 2rem 6rem;
+    background-color: rgb(19, 21, 26);
     position: relative;
   }
 
-  /* Simplified waves for better mobile performance */
-  .wave-top, .wave-bottom {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 20px;
-    overflow: hidden;
-    line-height: 0;
-  }
-
-  .wave-top {
-    top: 0;
-    transform: translateY(-1px); /* Ensure no gaps */
-  }
-
-  .wave-bottom {
-    bottom: 0;
-    transform: translateY(1px); /* Ensure no gaps */
-  }
-
-  .wave-top svg, .wave-bottom svg {
-    width: 100%;
-    height: 100%;
+  .services-section .section-title {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 4rem;
   }
 
   .services-grid {
@@ -675,24 +434,6 @@
   }
 
   @media screen and (max-width: 768px) {
-    .hero {
-      min-height: 500px;
-    }
-    .hero-content h1 {
-      font-size: 2.8rem;
-      white-space: normal;
-      overflow: visible;
-      text-overflow: clip;
-    }
-
-    .hero-content p {
-      font-size: 1.4rem;
-    }
-
-    .scroll-down-indicator {
-      bottom: 20px;
-    }
-
     .services-grid {
       grid-template-columns: 1fr;
       gap: 1.5rem;
@@ -707,10 +448,6 @@
       font-size: 2.2rem;
     }
 
-    .section-subtitle {
-      font-size: 1.2rem;
-    }
-
     .testimonials-section .section-title {
       font-size: 2.2rem;
     }
@@ -719,13 +456,12 @@
       font-size: 2.2rem;
     }
 
-    .services-section,
+    .services-section {
+      padding: 8rem 1.5rem 4rem;
+    }
+    
     .testimonials-section {
       padding: 4rem 1.5rem;
-    }
-
-    .wave-top, .wave-bottom {
-      height: 10px;
     }
 
     /* Increased text sizes for mobile */
@@ -750,29 +486,12 @@
   }
 
   @media screen and (max-width: 480px) {
-    .hero {
-      min-height: 400px;
+    .services-section {
+      padding: 8rem 1rem 3rem;
     }
-    .hero-content h1 {
-      font-size: 2.4rem;
-    }
-
-    .hero-content p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
-
-    .hero-content .btn {
-      font-size: 1.1rem;
-      padding: 0.8rem 2rem;
-    }
-
-    .services-section, .testimonials-section, .cta-section {
+    
+    .testimonials-section, .cta-section {
       padding: 3rem 1rem;
-    }
-
-    .wave-top, .wave-bottom {
-      height: 5px;
     }
 
     .cta-section h2 {

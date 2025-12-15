@@ -51,7 +51,7 @@ export default {
     // --- End New Content ---
   },
   services: {
-    title: "OUR SERVICES",
+    title: "Please choose a service from below",
     parking: {
       title: "24/7 AIRPORT PARKING",
       description: "Our secure parking facility features fenced boundaries and 24-hour camera surveillance, guaranteeing the highest security for your vehicle."
