@@ -75,11 +75,6 @@
               </a>
             </li>
             <li>
-              <a href="#booking" on:click|preventDefault={() => navigate('booking')}>
-                {t('nav.booking', $currentLang)}
-              </a>
-            </li>
-            <li>
               <a href="#about" on:click|preventDefault={() => navigate('about')}>
                 {t('nav.about', $currentLang)}
               </a>

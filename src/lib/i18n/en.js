@@ -27,10 +27,10 @@ export default {
   },
   nav: {
     home: "HOME",
-    booking: "BOOKING",
     about: "ABOUT US",
-    services: "SERVICES & PRICES",
-    contact: "CONTACT"
+    contact: "CONTACT",
+    parkingAndWash: "PARKING & CAR WASH",
+    serviceAndTire: "MAINTENANCE & TIRE SERVICE"
   },
   hero: {
     welcome: "Welcome to Zima Auto!",

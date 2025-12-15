@@ -36,6 +36,12 @@
     document.body.style.overflow = '';
   }
 
+  function handleExternalNav(url) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+    mobileMenuOpen = false;
+    document.body.style.overflow = '';
+  }
+
   function handleLogoKeydown(e) {
     if (e.key === 'Enter' || e.key === ' ') {
       navigate('home');
@@ -86,19 +92,19 @@
             {t('nav.home', $currentLang)}
           </a>
         </li>
-        <li class:active={currentPage === 'booking'}>
-          <a href="#booking" on:click|preventDefault={() => handleNavClick('booking')}>
-            {t('nav.booking', $currentLang)}
+        <li>
+          <a href="https://zima-parking.com" on:click|preventDefault={() => handleExternalNav('https://zima-parking.com')}>
+            {t('nav.parkingAndWash', $currentLang)}
+          </a>
+        </li>
+        <li>
+          <a href="https://zima-service.com" on:click|preventDefault={() => handleExternalNav('https://zima-service.com')}>
+            {t('nav.serviceAndTire', $currentLang)}
           </a>
         </li>
         <li class:active={currentPage === 'about'}>
           <a href="#about" on:click|preventDefault={() => handleNavClick('about')}>
             {t('nav.about', $currentLang)}
-          </a>
-        </li>
-        <li class:active={currentPage === 'services'}>
-          <a href="#services" on:click|preventDefault={() => handleNavClick('services')}>
-            {t('nav.services', $currentLang)}
           </a>
         </li>
         <li class:active={currentPage === 'contact'}>

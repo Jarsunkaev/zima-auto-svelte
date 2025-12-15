@@ -7,7 +7,6 @@
 	import About from './pages/About.svelte';
 	import Services from './pages/Services.svelte';
 	import Contact from './pages/Contact.svelte';
-	import Booking from './pages/Booking.svelte';
 	import Privacy from './pages/Privacy.svelte';
 	import ThankYou from './pages/ThankYou.svelte';  // Using the pages/ThankYou component
 	import Admin from './pages/Admin.svelte';
@@ -148,8 +147,6 @@ const handleRouting = () => {
       <Services {lang} />
     {:else if currentPage === 'contact'}
       <Contact {navigate} {lang} />
-    {:else if currentPage === 'booking'}
-      <Booking {lang} />
     {:else if currentPage === 'privacy'}
       <Privacy {lang} />
     {:else if currentPage === 'thankyou'}

@@ -18,10 +18,10 @@ export default {
   },
   nav: {
     home: "FŐOLDAL",
-    booking: "FOGLALÁS",
     about: "RÓLUNK",
-    services: "SZOLGÁLTATÁSOK & ÁRAK",
-    contact: "KAPCSOLAT"
+    contact: "KAPCSOLAT",
+    parkingAndWash: "PARKOLÁS & AUTÓMOSÓ",
+    serviceAndTire: "SZERVIZ & GUMISZERVIZ"
   },
   hero: {
     welcome: "Üdvözöljük a Zima Auto Kft-nél!",
