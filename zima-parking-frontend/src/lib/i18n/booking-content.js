@@ -51,7 +51,8 @@ export const content = {
         parkingTotal: 'Parkolás díj',
         carWashStandard: 'Autómosó díj (alap)',
         carWashDiscount: 'Autómosó kedvezmény (20%)',
-        carWashDiscounted: 'Autómosó díj (kedvezményes)'
+        carWashDiscounted: 'Autómosó díj (kedvezményes)',
+        maxDaysExceeded: 'A 30 napnál hosszabb parkolás esetén kérjük, lépjen velünk kapcsolatba az árazásért'
       },
       carWash: {
         title: 'AUTÓMOSÓ IDŐPONTFOGLALÁS',
@@ -185,7 +186,8 @@ export const content = {
         parkingTotal: 'Parking fee',
         carWashStandard: 'Car wash fee (standard)',
         carWashDiscount: 'Car wash discount (20%)',
-        carWashDiscounted: 'Car wash fee (discounted)'
+        carWashDiscounted: 'Car wash fee (discounted)',
+        maxDaysExceeded: 'For parking longer than 30 days, please contact us for pricing'
       },
       carWash: {
         title: 'CAR WASH APPOINTMENT',

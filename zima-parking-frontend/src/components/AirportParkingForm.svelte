@@ -16,6 +16,26 @@
   const maxDate = new Date();
   maxDate.setMonth(maxDate.getMonth() + 3); // Allow bookings 3 months in advance
   
+  // Calculate max end date (30 days from start date)
+  $: maxEndDate = (() => {
+    if (!formData.startDate) return formatDate(maxDate);
+    const start = parseDate(formData.startDate);
+    const maxEnd = new Date(start);
+    maxEnd.setDate(maxEnd.getDate() + 30);
+    const maxAllowed = maxEnd > maxDate ? maxDate : maxEnd;
+    return formatDate(maxAllowed);
+  })();
+  
+  // Check if selected end date exceeds 30 days
+  $: exceedsMaxDays = (() => {
+    if (!formData.startDate || !formData.endDate) return false;
+    const start = parseDate(formData.startDate);
+    const end = parseDate(formData.endDate);
+    const diffTime = end - start;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 30;
+  })();
+  
   // Form data
   let formData = {
     // Airport parking specific
@@ -339,14 +359,25 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
         <CustomDatePicker
           value={formData.endDate}
           minDate={formData.startDate || formatDate(today)}
-          maxDate={formatDate(maxDate)}
+          maxDate={maxEndDate}
           disabledDates={[]}
           label={content[currentLang].bookingForm.airportParking.endDate}
           {currentLang}
+          errorMessage={exceedsMaxDays ? content[currentLang].bookingForm.airportParking.maxDaysExceeded : ''}
+          startDate={formData.startDate}
+          maxDaysTooltip={content[currentLang].bookingForm.airportParking.maxDaysExceeded}
           on:change={(e) => {
             formData.endDate = e.detail;
           }}
         />
+        {#if exceedsMaxDays}
+          <div class="tooltip-message" role="tooltip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>{content[currentLang].bookingForm.airportParking.maxDaysExceeded}</span>
+          </div>
+        {/if}
       </div>
 
       <div class="form-group">
@@ -530,6 +561,27 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
     color: #e53e3e;
     font-size: 0.85rem;
     margin-top: 0.5rem;
+  }
+  
+  .tooltip-message {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background-color: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    color: #856404;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  .tooltip-message svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: #856404;
   }
   
   .form-submit {

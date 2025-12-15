@@ -9,10 +9,12 @@
   export let shouldAnimate = false;
   export let ctaText = 'Learn more';
   export let ctaAction = () => {};
+  export let color = '#2b0f4d';
+  export let hoverColor = '#1f0839';
   
   import { onMount } from 'svelte';
   
-  let isVisible = false;
+  let isVisible = !shouldAnimate; // default visible if no animation requested
   let isHovered = false;
   
   $: if (shouldAnimate) {
@@ -33,20 +35,20 @@
 
 <button 
   class="service-card {isVisible ? 'visible' : ''} {isHovered ? 'hovered' : ''}" 
-  style="transition-delay: {100 * index}ms"
+  style={`--card-color: ${color}; --card-hover: ${hoverColor}; transition-delay: ${100 * index}ms`}
   on:mouseenter={handleMouseEnter}
   on:mouseleave={handleMouseLeave}
   on:click={ctaAction}
 >
+  <div class="bg-image" style={`background-image: url('${image}')`}></div>
+  <div class="color-overlay"></div>
+  
   <div class="service-icon">
     {@html svgIcon}
   </div>
   
   <h3>{title}</h3>
   <p>{description}</p>
-  
-  <div class="service-overlay" style="background-image: url('{image}')"></div>
-  <div class="gradient-overlay"></div>
   
   <div class="card-action">
     <span>{ctaText}</span>
@@ -59,7 +61,6 @@
 <style>
   .service-card {
     position: relative;
-    background-color: #fff;
     border-radius: 10px;
     overflow: hidden;
     padding: 30px 25px;
@@ -69,13 +70,14 @@
     flex-direction: column;
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.4s ease;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border: none;
     width: 100%;
     text-align: left;
     cursor: pointer;
+    background: transparent;
   }
   
   .service-card.visible {
@@ -84,8 +86,36 @@
   }
   
   .service-card.hovered {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+  }
+  
+  .service-card:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+  }
+  
+  .bg-image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+    transform: scale(1.02);
+  }
+  
+  .color-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: var(--card-color);
+    opacity: 0.75;
+    z-index: 1;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .service-card.hovered .color-overlay {
+    background-color: var(--card-hover);
+    opacity: 0.9;
   }
   
   .service-icon {
@@ -94,7 +124,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #00bae5;
+    background-color: rgba(255, 255, 255, 0.16);
     border-radius: 8px;
     margin-bottom: 20px;
     position: relative;
@@ -115,7 +145,7 @@
   h3 {
     font-size: 1.4rem;
     margin-bottom: 15px;
-    color: #333;
+    color: #fff;
     font-weight: 600;
     position: relative;
     z-index: 2;
@@ -124,72 +154,42 @@
   p {
     font-size: 0.95rem;
     line-height: 1.6;
-    color: #666;
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 20px;
     flex-grow: 1;
     position: relative;
     z-index: 2;
   }
   
-  .service-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 0;
-  }
-  
-  .gradient-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(30, 10, 60, 0.95), rgba(13, 13, 30, 0.9));
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 1;
-  }
-  
-  .service-card.hovered .service-overlay {
-    opacity: 1;
-  }
-  
-  .service-card.hovered .gradient-overlay {
-    opacity: 1;
-  }
-  
-  .service-card.hovered h3,
-  .service-card.hovered p {
-    color: white;
-  }
-  
   .card-action {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     font-weight: 600;
     font-size: 0.9rem;
-    color: #00bae5;
+    color: #f4f7ff;
     position: relative;
     z-index: 2;
     transition: all 0.3s ease;
     cursor: pointer;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    margin-top: auto;
+    align-self: center;
   }
   
   .card-action:focus {
-    outline: 2px solid #00bae5;
+    outline: 2px solid #f4f7ff;
     outline-offset: 2px;
     border-radius: 4px;
   }
   
   .service-card.hovered .card-action {
-    color: white;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.2);
   }
   
   /* Responsive styles */

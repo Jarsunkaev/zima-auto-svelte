@@ -252,6 +252,14 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
    // Scroll to top on mount
    onMount(() => {
        window.scrollTo({ top: 0, behavior: 'smooth' });
+       // Check for preselected service from home page
+       const preselectedService = sessionStorage.getItem('preselectedService');
+       if (preselectedService && (preselectedService === 'autoService' || preselectedService === 'tireService')) {
+         // Clear the sessionStorage so it doesn't persist
+         sessionStorage.removeItem('preselectedService');
+         // Automatically select the service and move to step 2
+         selectService(preselectedService);
+       }
    });
 
 </script>

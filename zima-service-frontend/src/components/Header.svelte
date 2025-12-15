@@ -116,7 +116,7 @@
           on:click={() => toggleLanguage('hu')}
           aria-label="Magyar nyelv"
         >
-          <img src="/flags/hu.svg" alt="Magyar zászló" width="24" height="16" />
+          <img src="flags/hu.svg" alt="Magyar zászló" width="24" height="16" />
           <span>HU</span>
         </button>
         <button
@@ -124,7 +124,7 @@
           on:click={() => toggleLanguage('en')}
           aria-label="English language"
         >
-          <img src="/flags/gb.svg" alt="British flag" width="24" height="16" />
+          <img src="flags/gb.svg" alt="British flag" width="24" height="16" />
           <span>EN</span>
         </button>
       </div>
