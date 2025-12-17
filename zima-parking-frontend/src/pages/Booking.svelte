@@ -481,6 +481,8 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
     .booking-form-container {
       max-width: 100%;
       padding: 1.5rem;
+      box-sizing: border-box;
+      width: 100%;
     }
 
     .booking-header {
@@ -499,10 +501,17 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
     }
     .booking-form-section {
       padding: 2rem 0.5rem;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%;
     }
     .booking-form-container {
       max-width: 100%;
       padding: 1rem;
+      box-sizing: border-box;
+      width: 100%;
+      margin-left: 0;
+      margin-right: 0;
     }
   }
 </style>

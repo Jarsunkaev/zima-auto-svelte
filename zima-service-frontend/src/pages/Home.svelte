@@ -308,10 +308,11 @@
     width: 100%;
     height: 100%;
     background-image: url('/images/szervizke.jpg');
-    background-size: 100%;
-    background-position: center center;
+    background-size: cover;
+    background-position: center 20%;
     background-repeat: no-repeat;
-    clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
+    /* Steeper diagonal on desktop (match parking) */
+    clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
     z-index: 1;
   }
 
@@ -325,7 +326,8 @@
     background-size: 100%;
     background-position: center center;
     background-repeat: no-repeat;
-    clip-path: polygon(40% 0, 100% 0, 100% 100%, 60% 100%);
+    /* Steeper diagonal on desktop (match parking) */
+    clip-path: polygon(30% 0, 100% 0, 100% 100%, 70% 100%);
     z-index: 1;
   }
 

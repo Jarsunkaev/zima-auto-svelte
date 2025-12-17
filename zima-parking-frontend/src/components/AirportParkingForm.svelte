@@ -474,6 +474,7 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
 
   .booking-form {
     width: 100%;
+    box-sizing: border-box;
   }
   
   .form-section {
@@ -511,6 +512,8 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
     display: flex;
     flex-direction: column;
     margin-bottom: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
   }
   
   .form-group:last-child {
@@ -549,6 +552,8 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
     transition: all 0.3s ease;
     font-family: inherit;
     width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
   }
   
   input:focus, select:focus {
@@ -598,9 +603,46 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
   
   /* Responsive styles */
   @media screen and (max-width: 768px) {
+    .booking-form {
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+    }
+    
+    .form-section {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    
     .form-row {
       grid-template-columns: 1fr;
       gap: 1rem;
+      margin-left: 0;
+      margin-right: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    .form-group {
+      width: 100%;
+      max-width: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      box-sizing: border-box;
+    }
+    
+    input[type="time"] {
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+      min-width: 0;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    
+    /* Ensure form rows don't overflow */
+    .form-row {
+      overflow: hidden;
     }
   }
 </style>

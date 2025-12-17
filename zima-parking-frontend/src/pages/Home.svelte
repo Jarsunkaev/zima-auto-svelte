@@ -354,7 +354,8 @@
     background-size: cover;
     background-position: center 20%;
     background-repeat: no-repeat;
-    clip-path: polygon(0 0, 100% 0, 60% 100%, 0 100%);
+    /* Steeper diagonal on desktop */
+    clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
     z-index: 1;
   }
 
@@ -368,7 +369,8 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    clip-path: polygon(40% 0, 100% 0, 100% 100%, 60% 100%);
+    /* Steeper diagonal on desktop */
+    clip-path: polygon(30% 0, 100% 0, 100% 100%, 70% 100%);
     z-index: 1;
   }
 

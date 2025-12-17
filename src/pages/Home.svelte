@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { slide } from 'svelte/transition';
   import { currentLang, t } from '../lib/i18n/index.js';
+  import HeroSection from '../components/HeroSection.svelte';
   import ServiceCard from '../components/ServiceCard.svelte';
   import TestimonialCard from '../components/TestimonialCard.svelte';
   import { gsap } from 'gsap';
@@ -112,6 +113,20 @@
     script.src = 'https://embedsocial.com/cdn/aht.js';
     document.head.appendChild(script);
 
+    // Auto-scroll to services section after hero animation
+    // Wait for hero animation to complete (approximately 2.5 seconds)
+    setTimeout(() => {
+      const servicesSection = document.querySelector('.services-section');
+      if (servicesSection) {
+        // Scroll directly to the services section top position
+        // This ensures the services section starts right at the top of viewport
+        window.scrollTo({
+          top: servicesSection.offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    }, 2500); // Wait 2.5 seconds for hero animation to complete
+
     // Setup animations with ScrollTrigger
 
     // Services section animation (handled by the shouldAnimate prop)
@@ -153,6 +168,8 @@
     });
   });
 </script>
+
+<HeroSection />
 
 <section class="services-section" id="services">
   <div class="container">
@@ -261,9 +278,17 @@
 
   /* Services Section */
   .services-section {
+    min-height: 100vh;
     padding: 10rem 2rem 6rem;
     background-color: rgb(19, 21, 26);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .services-section .container {
+    width: 100%;
   }
 
   .services-section .section-title {
@@ -457,6 +482,7 @@
     }
 
     .services-section {
+      min-height: auto;
       padding: 8rem 1.5rem 4rem;
     }
     

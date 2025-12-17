@@ -135,7 +135,7 @@
 <style>
   .hero {
     height: 100vh;
-    min-height: 600px;
+    height: 100dvh; /* Dynamic viewport height for mobile browsers */
     position: relative;
     display: flex;
     align-items: center;
@@ -283,7 +283,8 @@
   /* Responsive adjustments */
   @media screen and (max-width: 768px) {
     .hero {
-        min-height: 500px; /* Adjust min-height for smaller screens */
+      height: 100vh;
+      height: 100dvh; /* Dynamic viewport height for mobile browsers */
     }
     .hero-content h1 {
       font-size: 2.5rem;
@@ -302,9 +303,10 @@
   }
 
   @media screen and (max-width: 480px) {
-     .hero {
-         min-height: 400px; /* Further adjust min-height for very small screens */
-     }
+    .hero {
+      height: 100vh;
+      height: 100dvh; /* Dynamic viewport height for mobile browsers */
+    }
     .hero-content h1 {
       font-size: 2rem;
     }
