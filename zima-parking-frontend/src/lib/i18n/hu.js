@@ -21,7 +21,15 @@ export default {
     booking: "FOGLALÁS",
     about: "RÓLUNK",
     services: "SZOLGÁLTATÁSOK & ÁRAK",
-    contact: "KAPCSOLAT"
+    contact: "KAPCSOLAT",
+    faq: "GYIK"
+  },
+  faq: {
+    title: "Gyakran Ismételt Kérdések",
+    subtitle: "Mindent a parkolásról és az autóápolásról a Zimánál.",
+    viewAll: "Összes kérdés megtekintése",
+    contactCta: "Gyors választ szeretne?",
+    contactButton: "Lépjen kapcsolatba velünk"
   },
   hero: {
     welcome: "Üdvözöljük a Zima Auto Kft-nél!",

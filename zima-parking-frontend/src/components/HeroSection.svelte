@@ -1,8 +1,8 @@
 <script>
-  import { onMount } from 'svelte';
-  import { currentLang, t } from '../lib/i18n';
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { onMount } from "svelte";
+  import { currentLang, t } from "../lib/i18n";
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
   gsap.registerPlugin(ScrollTrigger);
 
   let animationPlayed = false;
@@ -14,17 +14,17 @@
     const viewportHeight = window.innerHeight;
     window.scrollTo({
       top: viewportHeight,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }
 
   function closeDiscountPopup() {
     showDiscountPopup = false;
-    localStorage.setItem('discountPopupShown', 'true');
+    localStorage.setItem("discountPopupShown", "true");
   }
 
   onMount(() => {
-    if (!localStorage.getItem('discountPopupShown')) {
+    if (!localStorage.getItem("discountPopupShown")) {
       setTimeout(() => {
         showDiscountPopup = true;
       }, 15000);
@@ -33,39 +33,38 @@
     if (!animationPlayed) {
       const tl = gsap.timeline();
 
-      tl.from('.hero-content h1', {
+      tl.from(".hero-content h1", {
         y: 50,
         opacity: 0,
         duration: 0.8,
-        delay: 0.2
+        delay: 0.2,
       })
-      .from('.hero-content p', {
-        y: 30,
-        opacity: 0,
-        duration: 0.6
-      }, '-=0.3')
-      .from('.hero-content .btn', {
-        y: 20,
-        opacity: 0,
-        duration: 0.5
-      }, '-=0.2')
-      .from('.hero-overlay', {
-        opacity: 0.3,
-        duration: 0.8
-      }, '-=0.5')
-      .from('.scroll-down-indicator', {
-        y: -20,
-        opacity: 0,
-        duration: 0.5
-      });
-
-      gsap.to('.scroll-down-indicator', {
-        y: 10,
-        duration: 1.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'power1.inOut'
-      });
+        .from(
+          ".hero-content p",
+          {
+            y: 30,
+            opacity: 0,
+            duration: 0.6,
+          },
+          "-=0.3",
+        )
+        .from(
+          ".hero-content .btn",
+          {
+            y: 20,
+            opacity: 0,
+            duration: 0.5,
+          },
+          "-=0.2",
+        )
+        .from(
+          ".hero-overlay",
+          {
+            opacity: 0.3,
+            duration: 0.8,
+          },
+          "-=0.5",
+        );
 
       animationPlayed = true;
     }
@@ -79,9 +78,9 @@
       onUpdate: (self) => {
         gsap.to(".hero-background", {
           y: self.progress * 200,
-          ease: "none"
+          ease: "none",
         });
-      }
+      },
     });
   });
 </script>
@@ -91,23 +90,27 @@
   <div class="hero-overlay"></div>
   <div class="container hero-container">
     <div class="hero-content">
-      <h1>{t('hero.welcome', $currentLang)}</h1>
-      <p>{t('hero.subtitle', $currentLang)}</p>
-      <button class="btn btn-primary">{t('hero.cta', $currentLang)}</button>
+      <h1>{t("hero.welcome", $currentLang)}</h1>
+      <p>{t("hero.subtitle", $currentLang)}</p>
+      <button class="btn btn-primary">{t("hero.cta", $currentLang)}</button>
     </div>
 
     <div
       class="scroll-down-indicator"
       on:click={scrollToNextSection}
-      on:keydown={(e) => e.key === 'Enter' && scrollToNextSection()}
+      on:keydown={(e) => e.key === "Enter" && scrollToNextSection()}
       tabindex="0"
       role="button"
-      aria-label={$currentLang === 'hu' ? 'Görgessen lefelé' : 'Scroll down'}
+      aria-label={$currentLang === "hu" ? "Görgessen lefelé" : "Scroll down"}
     >
-      <span>{$currentLang === 'hu' ? 'Görgessen lefelé' : 'Scroll down'}</span>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 5v14M5 12l7 7 7-7"/>
-      </svg>
+      <div class="mouse">
+        <div class="wheel"></div>
+      </div>
+      <div class="scroll-arrows">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </div>
 </section>
@@ -116,17 +119,33 @@
   <div class="discount-popup" role="dialog" aria-modal="true">
     <div class="discount-popup-background"></div>
     <div class="discount-popup-content">
-      <button class="close-popup" on:click={closeDiscountPopup} aria-label="Close popup">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 6L6 18M6 6l12 12"/>
+      <button
+        class="close-popup"
+        on:click={closeDiscountPopup}
+        aria-label="Close popup"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6L6 18M6 6l12 12" />
         </svg>
       </button>
-      <h2>{$currentLang === 'hu' ? '20% KEDVEZMÉNY' : '20% DISCOUNT'}</h2>
-      <p>{$currentLang === 'hu' 
-        ? 'Élvezze első látogatásakor 20%-os kedvezményt minden szolgáltatásunkra!'
-        : 'Enjoy 20% off on all our services during your first visit!'}</p>
+      <h2>{$currentLang === "hu" ? "20% KEDVEZMÉNY" : "20% DISCOUNT"}</h2>
+      <p>
+        {$currentLang === "hu"
+          ? "Élvezze első látogatásakor 20%-os kedvezményt minden szolgáltatásunkra!"
+          : "Enjoy 20% off on all our services during your first visit!"}
+      </p>
       <button class="btn btn-primary" on:click={closeDiscountPopup}>
-        {$currentLang === 'hu' ? 'ELFOGADOM' : 'I ACCEPT'}
+        {$currentLang === "hu" ? "ELFOGADOM" : "I ACCEPT"}
       </button>
     </div>
   </div>
@@ -154,7 +173,7 @@
     background-position: center 20%;
     background-repeat: no-repeat;
     z-index: 0;
-    background-image: url('/images/airport-car.webp');
+    background-image: url("/images/airport-car.webp");
     will-change: transform;
   }
 
@@ -232,58 +251,111 @@
   /* Scroll down indicator */
   .scroll-down-indicator {
     position: absolute;
-    bottom: 40px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: white;
     cursor: pointer;
-    transition: opacity 0.3s ease;
-    opacity: 0.8;
-    z-index: 3; /* Ensure indicator is above everything */
+    z-index: 10;
+    opacity: 0;
+    animation: fadeInIndicator 1s ease-out 2s forwards;
   }
 
-  .scroll-down-indicator:hover,
-  .scroll-down-indicator:focus {
+  @keyframes fadeInIndicator {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -10px);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+
+  .scroll-down-indicator:hover {
     opacity: 1;
-    outline: none;
   }
 
-  .scroll-down-indicator span {
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 500;
+  .mouse {
+    width: 26px;
+    height: 42px;
+    border: 2px solid white;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    padding-top: 8px;
+    margin-bottom: 5px;
   }
 
-  .scroll-down-indicator svg {
-    animation: bounce 2s infinite;
+  .wheel {
+    width: 4px;
+    height: 10px;
+    background: white;
+    border-radius: 2px;
+    animation: mouse-scroll 1.6s cubic-bezier(0.15, 0.41, 0.69, 0.94) infinite;
   }
 
-  @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
+  .scroll-arrows span {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+    transform: rotate(45deg);
+    margin: -3px auto 0;
+    animation: arrow-scroll 1.6s cubic-bezier(0.15, 0.41, 0.69, 0.94) infinite;
+  }
+
+  .scroll-arrows span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .scroll-arrows span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes mouse-scroll {
+    0% {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    20% {
+      opacity: 1;
       transform: translateY(0);
     }
-    40% {
-      transform: translateY(-10px);
+    100% {
+      opacity: 0;
+      transform: translateY(15px);
     }
-    60% {
-      transform: translateY(-5px);
+  }
+
+  @keyframes arrow-scroll {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
     }
   }
 
   @keyframes subtle-zoom {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.05); }
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.05);
+    }
   }
 
   /* Responsive adjustments */
   @media screen and (max-width: 768px) {
     .hero {
-        min-height: 500px; /* Adjust min-height for smaller screens */
+      min-height: 500px; /* Adjust min-height for smaller screens */
     }
     .hero-content h1 {
       font-size: 2.5rem;
@@ -302,9 +374,9 @@
   }
 
   @media screen and (max-width: 480px) {
-     .hero {
-         min-height: 400px; /* Further adjust min-height for very small screens */
-     }
+    .hero {
+      min-height: 400px; /* Further adjust min-height for very small screens */
+    }
     .hero-content h1 {
       font-size: 2rem;
     }
@@ -350,14 +422,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/images/car-wash.jpg');
+    background-image: url("/images/car-wash.jpg");
     background-size: cover;
     background-position: center;
     z-index: -1;
   }
 
   .discount-popup-background::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;

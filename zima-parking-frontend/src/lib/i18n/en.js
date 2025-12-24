@@ -30,7 +30,15 @@ export default {
     booking: "BOOKING",
     about: "ABOUT US",
     services: "SERVICES & PRICES",
-    contact: "CONTACT"
+    contact: "CONTACT",
+    faq: "FAQ"
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    subtitle: "Everything you need to know about parking and car care at Zima.",
+    viewAll: "View all questions",
+    contactCta: "Need a quick answer?",
+    contactButton: "Contact us"
   },
   hero: {
     welcome: "Welcome to Zima Auto!",

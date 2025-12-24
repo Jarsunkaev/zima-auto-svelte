@@ -101,6 +101,11 @@
             {t('nav.services', $currentLang)}
           </a>
         </li>
+        <li class:active={currentPage === 'faq'}>
+          <a href="#faq" on:click|preventDefault={() => handleNavClick('faq')}>
+            {t('nav.faq', $currentLang)}
+          </a>
+        </li>
         <li class:active={currentPage === 'contact'}>
           <a href="#contact" on:click|preventDefault={() => handleNavClick('contact')}>
             {t('nav.contact', $currentLang)}

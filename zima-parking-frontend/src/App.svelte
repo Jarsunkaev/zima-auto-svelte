@@ -13,6 +13,7 @@
 	import Admin from './pages/Admin.svelte';
 	import Imprint from './pages/Imprint.svelte';
 	import Terms from './pages/Terms.svelte';
+	import FAQPage from './pages/FAQ.svelte';
 	import DiscountPopup from './components/DiscountPopup.svelte';
 	import CookieConsent from './components/CookieConsent.svelte';
   
@@ -81,7 +82,7 @@
       const pageName = path.substring(1).split('/')[0];
       
       // Check if this is a valid page
-      if (['about', 'services', 'booking', 'contact', 'privacy', 'thankyou', 'admin', 'imprint', 'terms'].includes(pageName)) {
+	  if (['about', 'services', 'booking', 'contact', 'privacy', 'thankyou', 'admin', 'imprint', 'terms', 'faq'].includes(pageName)) {
         currentPage = pageName;
       } else {
         // Not a valid page - go to home or show 404
@@ -144,6 +145,8 @@
       <Imprint {lang} />
     {:else if currentPage === 'terms'}
       <Terms {lang} />
+    {:else if currentPage === 'faq'}
+      <FAQPage {lang} />
     {:else}
       <!-- Fallback if no page matches -->
       <div class="error-container">

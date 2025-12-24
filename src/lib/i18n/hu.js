@@ -21,7 +21,15 @@ export default {
     about: "RÓLUNK",
     contact: "KAPCSOLAT",
     parkingAndWash: "PARKOLÁS & AUTÓMOSÓ",
-    serviceAndTire: "SZERVIZ & GUMISZERVIZ"
+    serviceAndTire: "SZERVIZ & GUMISZERVIZ",
+    faq: "GYIK"
+  },
+  faq: {
+    title: "Gyakran Ismételt Kérdések",
+    subtitle: "Gyors válaszok parkolásról, szervizről és foglalásról.",
+    explore: "Összes kérdés megtekintése",
+    contactCta: "Személyes segítségre van szüksége?",
+    contactButton: "Lépjen kapcsolatba velünk"
   },
   hero: {
     welcome: "Üdvözöljük a Zima Auto Kft-nél!",

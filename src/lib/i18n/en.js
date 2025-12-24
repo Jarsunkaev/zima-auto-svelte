@@ -30,7 +30,15 @@ export default {
     about: "ABOUT US",
     contact: "CONTACT",
     parkingAndWash: "PARKING & CAR WASH",
-    serviceAndTire: "MAINTENANCE & TIRE SERVICE"
+    serviceAndTire: "MAINTENANCE & TIRE SERVICE",
+    faq: "FAQ"
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    subtitle: "Quick answers about parking, servicing and booking at Zima.",
+    explore: "View the full FAQ",
+    contactCta: "Need a human? Reach out",
+    contactButton: "Contact us"
   },
   hero: {
     welcome: "Welcome to Zima Auto!",
