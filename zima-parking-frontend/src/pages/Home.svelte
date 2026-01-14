@@ -2,8 +2,6 @@
   import { onMount } from "svelte";
   import { slide } from "svelte/transition";
   import { currentLang, t } from "../lib/i18n/index.js";
-  import FAQ from "../components/FAQ.svelte";
-  import { faqContent } from "../lib/faq-content";
   import ServiceCard from "../components/ServiceCard.svelte";
   import TestimonialCard from "../components/TestimonialCard.svelte";
   import { gsap } from "gsap";
@@ -71,13 +69,6 @@
     },
   ];
 
-  const homeFaqs = [
-    faqContent.parking[0],
-    faqContent.parking[1],
-    faqContent.services[0],
-    faqContent.services[1],
-    faqContent.booking[0],
-  ];
 
   // Handler for service card CTA buttons - navigate to booking page with service pre-selected
   function handleServiceAction(serviceId) {
@@ -345,53 +336,6 @@
   </div>
 </section>
 
-<section class="faq-home-section" id="home-faq">
-  <div class="container">
-    <div class="faq-home-head">
-      <span class="eyebrow">{$currentLang === "hu" ? "GYIK" : "FAQ"}</span>
-      <h2>
-        {$currentLang === "hu"
-          ? "Leggyakoribb kérdések"
-          : "Most asked questions"}
-      </h2>
-      <p>
-        {$currentLang === "hu"
-          ? "A parkolással, transzferrel és extra szolgáltatásokkal kapcsolatos leggyakoribb kérdések."
-          : "Popular questions about parking, transfers and add-on services."}
-      </p>
-      <div class="faq-home-actions">
-        <a
-          class="primary"
-          href="/faq"
-          on:click|preventDefault={() => {
-            window.scrollTo({ top: 0, behavior: "instant" });
-            navigate("faq");
-          }}
-        >
-          {$currentLang === "hu" ? "Összes kérdés" : "View full FAQ"}
-        </a>
-        <a
-          class="ghost"
-          href="/contact"
-          on:click|preventDefault={() => {
-            window.scrollTo({ top: 0, behavior: "instant" });
-            navigate("contact");
-          }}
-        >
-          {$currentLang === "hu" ? "Kapcsolat" : "Contact"}
-        </a>
-      </div>
-    </div>
-
-    <FAQ
-      faqs={homeFaqs}
-      showHeader={false}
-      accentColor="#00bae5"
-      transparent={true}
-      useContainer={false}
-    />
-  </div>
-</section>
 
 <style>
   /* Hero Section */
@@ -817,94 +761,6 @@
     margin-top: 3rem;
   }
 
-  /* FAQ Section */
-  .faq-home-section {
-    padding: 4rem 1rem;
-    background: linear-gradient(
-      180deg,
-      #0f172a 0%,
-      #0f172a 20%,
-      #f8fafc 20%,
-      #f8fafc 100%
-    );
-  }
-
-  .faq-home-head {
-    max-width: 960px;
-    margin: 0 auto 1.5rem;
-    text-align: center;
-    color: #0f172a;
-  }
-
-  .faq-home-head h2 {
-    font-size: clamp(2rem, 3vw, 2.4rem);
-    margin: 0.4rem 0;
-  }
-
-  .faq-home-head p {
-    max-width: 640px;
-    margin: 0.25rem auto 0;
-    color: #475569;
-  }
-
-  .faq-home-actions {
-    display: flex;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-top: 1rem;
-  }
-
-  .faq-home-actions .primary,
-  .faq-home-actions .ghost {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.7rem 1.2rem;
-    border-radius: 12px;
-    font-weight: 700;
-    text-decoration: none;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      background 0.2s ease;
-  }
-
-  .faq-home-actions .primary {
-    background: linear-gradient(120deg, #0ea5e9, #00bae5);
-    color: white;
-    box-shadow: 0 12px 30px -12px rgba(14, 165, 233, 0.55);
-  }
-
-  .faq-home-actions .primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 16px 36px -14px rgba(14, 165, 233, 0.65);
-  }
-
-  .faq-home-actions .ghost {
-    background: white;
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    color: #0f172a;
-  }
-
-  .faq-home-actions .ghost:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.15);
-  }
-
-  .faq-home-head .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 999px;
-    background: rgba(14, 165, 233, 0.12);
-    color: #0ea5e9;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-  }
-
   /* CTA Section */
 
   /* Responsive Styles - Optimized for mobile */
@@ -989,9 +845,6 @@
       gap: 1.5rem;
     }
 
-    .faq-home-actions {
-      flex-direction: column;
-    }
 
     .section-title {
       font-size: 2.2rem;
