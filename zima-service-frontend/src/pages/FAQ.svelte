@@ -6,8 +6,9 @@
 
   const categories = [
     { id: 'all', name: 'All', nameHu: 'Összes' },
+    { id: 'general', name: 'General', nameHu: 'Általános' },
     { id: 'services', name: 'Workshop', nameHu: 'Szerviz' },
-    { id: 'tires', name: 'Tires', nameHu: 'Gumi' },
+    { id: 'tires', name: 'Tires', nameHu: 'Gumik' },
     { id: 'detailing', name: 'Detailing', nameHu: 'Autóápolás' }
   ];
 
@@ -16,58 +17,59 @@
 </script>
 
 <main class="faq-page">
-  <section class="faq-hero">
-    <div class="hero-copy" in:fade>
-      <span class="eyebrow">
-        {$currentLang === 'hu' ? 'GYIK' : 'FAQ'}
-      </span>
-      <h1>{t('faq.title', 'Frequently Asked Questions')}</h1>
-      <p>
-        {t('faq.subtitle', 'Service, tires and detailing — the answers you need in one place.')}
+  <section class="faq-header-section">
+    <div class="container">
+      <h1>
+        {$currentLang === 'hu' ? 'GYAKRAN ISMÉTELT KÉRDÉSEK' : 'FREQUENTLY ASKED QUESTIONS'}
+      </h1>
+      <p class="subtitle">
+        {$currentLang === 'hu' 
+          ? 'Minden, amit a Zima szervizről, gumiszervizről és autóápolásról tudnia kell.'
+          : 'Everything you need to know about service, tires and detailing at Zima.'}
       </p>
-      <div class="hero-actions">
-        <a class="primary" href="/booking">
-          {$currentLang === 'hu' ? 'Foglalás indítása' : 'Start booking'}
-        </a>
-        <a class="ghost" href="/contact">
-          {t('faq.contactButton', 'Contact us')}
-        </a>
-      </div>
     </div>
   </section>
 
-  <section class="faq-body">
-    <div class="filter-bar" in:fade={{ delay: 80 }}>
-      {#each categories as category}
-        <button
-          class:active={activeCategory === category.id}
-          on:click={() => activeCategory = category.id}
-        >
-          {$currentLang === 'hu' ? category.nameHu : category.name}
-        </button>
-      {/each}
-    </div>
+  <section class="faq-content">
+    <div class="container">
+      <div class="filter-bar" in:fade={{ delay: 80 }}>
+        {#each categories as category}
+          <button
+            class:active={activeCategory === category.id}
+            on:click={() => activeCategory = category.id}
+          >
+            {$currentLang === 'hu' ? category.nameHu : category.name}
+          </button>
+        {/each}
+      </div>
 
-    <FAQ
-      faqs={filteredFaqs}
-      showHeader={false}
-      accentColor="#00bae5"
-    />
+      <FAQ
+        faqs={filteredFaqs}
+        showHeader={false}
+        accentColor="#00bae5"
+      />
 
-    <div class="cta-panel" in:fade={{ delay: 100 }}>
-      <div>
-        <p class="eyebrow soft">
-          {t('faq.contactCta', 'Need a quick answer?')}
-        </p>
+      <div class="contact-cta">
         <h3>
           {$currentLang === 'hu'
-            ? 'Hívjon vagy írjon, 1 órán belül reagálunk.'
-            : 'Call or email us — we respond within an hour.'}
+            ? 'Nem találta a választ? Vegye fel velünk a kapcsolatot!'
+            : 'Can\'t find what you\'re looking for? Contact us!'}
         </h3>
-      </div>
-      <div class="cta-actions">
-        <a href="tel:+36705550588" class="primary">+36 70 555 0588</a>
-        <a href="mailto:info@zima-auto.com" class="ghost">info@zima-auto.com</a>
+        <div class="cta-buttons">
+          <a href="tel:+36705550588" class="btn btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            +36 70 555 0588
+          </a>
+          <a href="mailto:info@zima-auto.com" class="btn btn-secondary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            info@zima-auto.com
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -76,148 +78,170 @@
 <style>
   .faq-page {
     min-height: 100vh;
-    background: #f8fafc;
-    color: #0f172a;
+    background: var(--light);
   }
 
-  .faq-hero {
-    max-width: 1100px;
+  .faq-header-section {
+    padding: 8rem 2rem 4rem;
+    background: var(--secondary);
+    color: white;
+    text-align: center;
+  }
+
+  .faq-header-section h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+  }
+
+  .faq-header-section .subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 700px;
     margin: 0 auto;
-    padding: 4rem 1.25rem 2rem;
-  }
-
-  .hero-copy h1 {
-    font-size: clamp(2.2rem, 3vw, 2.8rem);
-    margin: 0.4rem 0;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-copy p {
-    color: #475569;
-    max-width: 640px;
     line-height: 1.6;
   }
 
-  .hero-actions {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-top: 1.2rem;
-  }
-
-  .faq-body {
-    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  .faq-content {
+    padding: 4rem 0;
+    background: var(--light);
   }
 
   .filter-bar {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 2rem 1.25rem 0.5rem;
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
     justify-content: center;
+    margin-bottom: 3rem;
   }
 
   .filter-bar button {
-    border: 1px solid rgba(15, 23, 42, 0.08);
+    border: 2px solid var(--primary);
     background: white;
-    color: #0f172a;
-    padding: 0.55rem 1rem;
-    border-radius: 12px;
+    color: var(--primary);
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
     font-weight: 600;
-    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .filter-bar button:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 186, 229, 0.3);
   }
 
   .filter-bar button.active {
-    background: #0ea5e9;
+    background: var(--primary);
     color: white;
-    border-color: #0ea5e9;
-    box-shadow: 0 10px 25px -10px rgba(14, 165, 233, 0.45);
+    box-shadow: 0 4px 12px rgba(0, 186, 229, 0.4);
   }
 
-  .cta-panel {
-    max-width: 1100px;
-    margin: 2rem auto;
+  .contact-cta {
+    margin-top: 4rem;
+    padding: 3rem 2rem;
     background: white;
-    border-radius: 18px;
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    padding: 1.5rem 1.75rem;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .contact-cta h3 {
+    font-size: 1.8rem;
+    color: var(--secondary);
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+
+  .cta-buttons {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: 1rem;
-  }
-
-  .cta-panel h3 {
-    margin: 0.35rem 0 0;
-    color: #0f172a;
-  }
-
-  .cta-actions {
-    display: flex;
-    gap: 0.75rem;
+    justify-content: center;
     flex-wrap: wrap;
   }
 
-  .eyebrow {
+  .cta-buttons .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 999px;
-    background: rgba(14, 165, 233, 0.12);
-    color: #0ea5e9;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-  }
-
-  .eyebrow.soft {
-    background: rgba(14, 165, 233, 0.1);
-  }
-
-  .primary,
-  .ghost {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.35rem;
-    padding: 0.65rem 1.1rem;
-    border-radius: 12px;
-    font-weight: 700;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
     text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    border-radius: 8px;
+    transition: all 0.3s ease;
   }
 
-  .primary {
-    background: linear-gradient(120deg, #0ea5e9, #00bae5);
+  .cta-buttons .btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cta-buttons .btn-primary {
+    background: var(--primary);
     color: white;
-    box-shadow: 0 12px 30px -12px rgba(14, 165, 233, 0.55);
+    border: none;
   }
 
-  .primary:hover {
+  .cta-buttons .btn-primary:hover {
+    background: var(--primary-dark);
     transform: translateY(-2px);
-    box-shadow: 0 16px 36px -14px rgba(14, 165, 233, 0.65);
+    box-shadow: 0 6px 20px rgba(0, 186, 229, 0.4);
   }
 
-  .ghost {
+  .cta-buttons .btn-secondary {
     background: white;
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    color: #0f172a;
+    color: var(--secondary);
+    border: 2px solid var(--secondary);
   }
 
-  .ghost:hover {
+  .cta-buttons .btn-secondary:hover {
+    background: var(--secondary);
+    color: white;
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   }
 
-  @media (max-width: 960px) {
-    .cta-panel {
+  @media (max-width: 768px) {
+    .faq-header-section {
+      padding: 7rem 1.5rem 3rem;
+    }
+
+    .faq-content {
+      padding: 3rem 0;
+    }
+
+    .filter-bar {
+      padding: 0 1rem;
+    }
+
+    .filter-bar button {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.85rem;
+    }
+
+    .contact-cta {
+      padding: 2rem 1.5rem;
+    }
+
+    .contact-cta h3 {
+      font-size: 1.4rem;
+    }
+
+    .cta-buttons {
       flex-direction: column;
-      align-items: flex-start;
+      width: 100%;
+    }
+
+    .cta-buttons .btn {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
-

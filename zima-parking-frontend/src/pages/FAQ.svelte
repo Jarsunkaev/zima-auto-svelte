@@ -210,7 +210,7 @@
 
   @media (max-width: 768px) {
     .faq-header-section {
-      padding: 6rem 1.5rem 3rem;
+      padding: 7rem 1.5rem 3rem;
     }
 
     .faq-content {
