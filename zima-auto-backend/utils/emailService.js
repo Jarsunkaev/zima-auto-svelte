@@ -241,6 +241,19 @@ class EmailService {
                /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
+    // Build a safe Reply-To header from customer data
+    static buildReplyTo(email, name = 'Customer') {
+        if (!EmailService.isValidEmail(email)) {
+            return undefined;
+        }
+
+        const safeName = typeof name === 'string' && name.trim()
+            ? name.replace(/[<>"\r\n]/g, '').trim()
+            : 'Customer';
+
+        return `${safeName} <${email.trim().toLowerCase()}>`;
+    }
+
     // Extract email from booking data
     static extractEmail(bookingData) {
         const possibleEmailSources = [
@@ -477,6 +490,10 @@ class EmailService {
             await this.sendEmail({
                 to: 'info@zima-auto.com',
                 cc: 'ahmedhasimov@zima-auto.com',
+                replyTo: EmailService.buildReplyTo(
+                    customerEmail,
+                    bookingData.customerName || bookingData.name
+                ),
                 subject: `New Booking - ${serviceNameEn}`,
                 html: adminHtml
             });
@@ -544,7 +561,7 @@ class EmailService {
             await this.sendEmail({
                 to: 'info@zima-auto.com',
                 cc: 'ahmedhasimov@zima-auto.com',
-                replyTo: customerEmail ? `${customerName || 'Customer'} <${customerEmail}>` : undefined,
+                replyTo: EmailService.buildReplyTo(customerEmail, customerName),
                 subject: 'New Contact Form Submission',
                 html: adminHtml
             });

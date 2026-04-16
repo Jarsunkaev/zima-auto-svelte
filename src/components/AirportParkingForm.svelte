@@ -278,44 +278,9 @@
       bookingDetails.totalPrice = calculatedPrices.totalPrice;
     }
 
-    try {
-      // Ensure no trailing slash in the base URL and handle potential undefined
-      // Use local backend for development, production backend for production
-const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev').trim();
-      BACKEND_API_URL = BACKEND_API_URL.endsWith('/') ? BACKEND_API_URL.slice(0, -1) : BACKEND_API_URL;
-      
-      const apiUrl = `${BACKEND_API_URL}/api/send-booking-emails`;
-      console.log('Sending booking to:', apiUrl);
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(bookingDetails)
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Error response from backend API:', errorData);
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('Successfully saved booking:', data);
-      
-      // Only dispatch the bookingComplete event after successful API call
-      dispatch('bookingComplete', bookingDetails);
-      
-    } catch (error) {
-      console.error('Error saving booking:', error);
-      // Even if API call fails, we still want to proceed with the booking
-      dispatch('bookingComplete', bookingDetails);
-    } finally {
-      isSubmitting = false;
-    }
+    // Delegate API submission to the parent page to avoid duplicate requests.
+    dispatch('bookingComplete', bookingDetails);
+    isSubmitting = false;
   }
 </script>
 
