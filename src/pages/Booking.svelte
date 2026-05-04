@@ -140,28 +140,48 @@
 
       console.log('Sending booking data to backend API:', emailData);
 
-      // Normalize base and force a single /api prefix.
-      let apiBase = BACKEND_API_URL.replace(/\/+$/, '').replace(/\/api$/, '');
+      // Normalize base and try endpoints in order for compatibility across deployments.
+      const apiBase = BACKEND_API_URL.replace(/\/+$/, '').replace(/\/api$/, '');
       console.log('Using API base URL:', apiBase);
-      const endpoint = `${apiBase}/api/send-booking-emails`;
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(emailData)
-      });
+      const endpoints = [
+        `${apiBase}/api/send-booking-emails`,
+        `${apiBase}/send-booking-emails`,
+        `${apiBase}/api/bookings`
+      ];
 
-      // Handle response
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Backend error response:', errorText);
-        throw new Error(`Server responded with status ${response.status}: ${errorText}`);
+      let result = null;
+      let lastError = null;
+
+      for (const endpoint of endpoints) {
+        try {
+          console.log('Trying booking endpoint:', endpoint);
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(emailData)
+          });
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Server responded with status ${response.status}: ${errorText}`);
+          }
+
+          result = await response.json();
+          console.log('Booking request succeeded via:', endpoint);
+          break;
+        } catch (endpointError) {
+          console.error(`Booking endpoint failed: ${endpoint}`, endpointError);
+          lastError = endpointError;
+        }
       }
 
-      // Parse the JSON response from the backend
-      const result = await response.json();
+      if (!result) {
+        throw lastError || new Error('All booking endpoints failed');
+      }
+
       console.log('Backend response:', result);
 
       // Handle successful response
