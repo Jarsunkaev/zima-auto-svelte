@@ -2,7 +2,7 @@ export default {
   thankYou: {
     title: "Köszönjük!",
     message: "Az űrlapot sikeresen elküldtük. Köszönjük érdeklődését szolgáltatásaink iránt, és a lehető leghamarabb feldolgozzuk kérését.",
-    contactInfo: "Ha bármilyen kérdése van, forduljon hozzánk bizalommal a 06 70 555 0588 telefonszámon vagy az info@zima-auto.com e-mail címen.",
+    contactInfo: "Ha bármilyen kérdése van, forduljon hozzánk bizalommal a 06 70 555 0588 telefonszámon vagy az info@atgroup.hu e-mail címen.",
     homeButton: "VISSZA A FŐOLDALRA",
     contactButton: "KAPCSOLAT"
   },
@@ -32,7 +32,7 @@ export default {
     contactButton: "Lépjen kapcsolatba velünk"
   },
   hero: {
-    welcome: "Üdvözöljük a Zima Auto Kft-nél!",
+    welcome: "Üdvözöljük az A&T Group-nál!",
     subtitle: "Ahol az autója minden igényére egy helyen kínálunk megoldást!",
     cta: "FOGLALJON MOST"
   },
@@ -42,7 +42,7 @@ export default {
     // --- New Booking Page Content ---
     content: {
       sectionTitle: "Reptéri Parkolás Foglalás Részletei",
-      paragraph1: "Üdvözöljük online foglalási rendszerünkben. Kérjük, adja meg az alábbi szükséges információkat, hogy lefoglalhassa parkolóhelyét a Zima Auto reptér melletti létesítményében.",
+      paragraph1: "Üdvözöljük online foglalási rendszerünkben. Kérjük, adja meg az alábbi szükséges információkat, hogy lefoglalhassa parkolóhelyét a A&T Group reptér melletti létesítményében.",
       paragraph2: "Telephelyünk csak percekre található a repülőtértől, biztonságos és kényelmes parkolási megoldást kínálva utazásához.",
       paragraph3: "Kérésének elküldése után visszaigazoló e-mailt fog kapni a foglalás minden részletével, beleértve az útvonaltervet és a bejelentkezési eljárásokat.",
       note: "Ha bármilyen különleges kérése van vagy segítségre van szüksége, kérjük, lépjen kapcsolatba velünk közvetlenül."
@@ -82,8 +82,8 @@ export default {
     phone: "Telefon",
     phoneNumber: "06 70 555 0588",
     email: "Email",
-    emailAddress: "info@zima-auto.com",
+    emailAddress: "info@atgroup.hu",
     links: "Hivatkozások",
-    copyright: "© 2025 zima-auto.com. Minden jog fenntartva."
+    copyright: "© 2025 atgroup.hu. Minden jog fenntartva."
   }
 };

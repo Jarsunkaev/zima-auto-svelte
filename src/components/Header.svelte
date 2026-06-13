@@ -82,7 +82,7 @@
       role="button"
       aria-label="Go to homepage"
     >
-      <img src="images/zima-logo.avif" alt="Zima Auto" />
+      <img src="images/newlog_full.png" alt="A&T Group" />
     </div>
 
     <nav class:open={mobileMenuOpen}>
@@ -93,12 +93,12 @@
           </a>
         </li>
         <li>
-          <a href="https://zima-parking.com" on:click|preventDefault={() => handleExternalNav('https://zima-parking.com')}>
+          <a href="https://atparking.hu" on:click|preventDefault={() => handleExternalNav('https://atparking.hu')}>
             {t('nav.parkingAndWash', $currentLang)}
           </a>
         </li>
         <li>
-          <a href="https://zima-service.com" on:click|preventDefault={() => handleExternalNav('https://zima-service.com')}>
+          <a href="https://atszerviz.hu" on:click|preventDefault={() => handleExternalNav('https://atszerviz.hu')}>
             {t('nav.serviceAndTire', $currentLang)}
           </a>
         </li>
@@ -195,12 +195,12 @@
   }
 
   .logo img {
-    height: 50px;
+    height: 90px;
     transition: all 0.3s ease;
   }
 
   header.scrolled .logo img {
-    height: 40px;
+    height: 60px;
   }
 
   nav {

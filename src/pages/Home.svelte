@@ -29,10 +29,10 @@
 
   // External service URLs for specialized sites
   const serviceUrls = {
-    parking: "https://zima-parking.com",
-    washing: "https://zima-parking.com",
-    tire: "https://zima-service.com",
-    service: "https://zima-service.com",
+    parking: "https://atparking.hu",
+    washing: "https://atparking.hu",
+    tire: "https://atszerviz.hu",
+    service: "https://atszerviz.hu",
   };
 
   // Service data with SVG icons instead of image paths

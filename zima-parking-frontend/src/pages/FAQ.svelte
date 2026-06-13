@@ -24,8 +24,8 @@
       </h1>
       <p class="subtitle">
         {$currentLang === 'hu' 
-          ? 'Minden, amit a Zima parkolásáról és autóápolásáról tudnia kell.'
-          : 'Everything you need to know about parking and car care at Zima.'}
+          ? 'Minden, amit a A&T Group parkolásáról és autóápolásáról tudnia kell.'
+          : 'Everything you need to know about parking and car care at A&T Group.'}
       </p>
     </div>
   </section>
@@ -62,12 +62,12 @@
             </svg>
             +36 70 555 0588
           </a>
-          <a href="mailto:info@zima-auto.com" class="btn btn-secondary">
+          <a href="mailto:info@atgroup.hu" class="btn btn-secondary">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
               <polyline points="22,6 12,13 2,6"></polyline>
             </svg>
-            info@zima-auto.com
+            info@atgroup.hu
           </a>
         </div>
       </div>

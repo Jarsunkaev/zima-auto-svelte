@@ -185,7 +185,7 @@ class EmailService {
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Zima Auto - ${serviceName} Booking Confirmation</title>
+                <title>A&T Group - ${serviceName} Booking Confirmation</title>
                 <style>
                     body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
                     .container { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -197,10 +197,10 @@ class EmailService {
             <body>
                 <div class="container">
                     <div class="header">
-                        <h1>Zima Auto - ${serviceName} Booking Confirmation</h1>
+                        <h1>A&T Group - ${serviceName} Booking Confirmation</h1>
                     </div>
                     <div class="content">
-                        <p>Thank you for your booking with Zima Auto.</p>
+                        <p>Thank you for your booking with A&T Group.</p>
                         <p>This is a temporary confirmation email. Our team will contact you shortly with more details.</p>
                         
                         <div style="margin-top: 20px; padding: 15px; border: 1px solid #ddd; background-color: #fff;">
@@ -212,11 +212,11 @@ class EmailService {
                         </div>
                         
                         <p style="margin-top: 20px;">If you have any questions, please contact us at:</p>
-                        <p><strong>Email:</strong> info@zima-auto.com</p>
+                        <p><strong>Email:</strong> info@atgroup.hu</p>
                         <p><strong>Phone:</strong> +36 70 555 0588</p>
                     </div>
                     <div class="footer">
-                        &copy; 2025 Zima Auto. All rights reserved.
+                        &copy; 2025 A&T Group. All rights reserved.
                     </div>
                 </div>
             </body>
@@ -257,7 +257,7 @@ class EmailService {
             }
         }
 
-        return 'ahmedhasimov@zima-auto.com';
+        return 'info@atgroup.hu';
     }
 
     // Format service names
@@ -332,7 +332,7 @@ class EmailService {
     // Send email via SMTP
     async sendEmail(options) {
         const fullOptions = {
-            from: process.env.MAIL_FROM || 'Zima Auto <ahmedhasimov@zima-auto.com>',
+            from: process.env.MAIL_FROM || 'A&T Group <info@atgroup.hu>',
             ...options
         };
 
@@ -421,6 +421,7 @@ class EmailService {
                 
                 // Airport Parking specific fields
                 days: bookingData.days || '0',
+                numberOfCars: bookingData.numberOfCars || 1,
                 licensePlate: bookingData.licensePlate || 'N/A',
                 passengers: bookingData.passengers || '0',
                 carWashPackage: bookingData.carWashPackage || '',
@@ -460,12 +461,12 @@ class EmailService {
             // Format a suitable subject line based on service
             const serviceNameEn = EmailService.formatServiceName(bookingData.service, 'en');
             const serviceNameHu = EmailService.formatServiceName(bookingData.service, 'hu');
-            const subject = `Zima Auto - ${serviceNameHu} / ${serviceNameEn} - Confirmation`;
+            const subject = `A&T Group - ${serviceNameHu} / ${serviceNameEn} - Confirmation`;
 
             // Send email to customer with CC to admin
             await this.sendEmail({
                 to: customerEmail,
-                cc: 'ahmedhasimov@zima-auto.com',
+                cc: 'ahmed@atgroup.hu',
                 subject,
                 html: emailHtml
             });
@@ -473,10 +474,11 @@ class EmailService {
             // Create admin notification email
             const adminHtml = this.createAdminNotificationHtml(bookingData, customerEmail);
 
-            // Send email to Zima Auto admin
+            // Send email to A&T Group admin
             await this.sendEmail({
-                to: 'info@zima-auto.com',
-                cc: 'ahmedhasimov@zima-auto.com',
+                to: 'info@atgroup.hu',
+                cc: 'ahmed@atgroup.hu',
+                replyTo: customerEmail ? `${bookingData.customerName || 'Customer'} <${customerEmail}>` : undefined,
                 subject: `New Booking - ${serviceNameEn}`,
                 html: adminHtml
             });
@@ -522,7 +524,7 @@ class EmailService {
             }
 
             // Subject line
-            const subject = 'Zima Auto - Kapcsolatfelvétel / Contact Form Confirmation';
+            const subject = 'A&T Group - Kapcsolatfelvétel / Contact Form Confirmation';
 
             // Send confirmation to customer
             await this.sendEmail({
@@ -540,10 +542,10 @@ class EmailService {
                 <p>${message}</p>
             `;
 
-            // Send email to Zima Auto admin
+            // Send email to A&T Group admin
             await this.sendEmail({
-                to: 'info@zima-auto.com',
-                cc: 'ahmedhasimov@zima-auto.com',
+                to: 'info@atgroup.hu',
+                cc: 'ahmed@atgroup.hu',
                 replyTo: customerEmail ? `${customerName || 'Customer'} <${customerEmail}>` : undefined,
                 subject: 'New Contact Form Submission',
                 html: adminHtml
@@ -702,7 +704,7 @@ class EmailService {
 
                 <footer style="text-align: center; margin-top: 20px; color: #888; font-size: 12px;">
                     <p>
-                        © 2025 Zima Auto. Minden jog fenntartva. / All rights reserved.
+                        © 2025 A&T Group. Minden jog fenntartva. / All rights reserved.
                     </p>
                 </footer>
             </div>

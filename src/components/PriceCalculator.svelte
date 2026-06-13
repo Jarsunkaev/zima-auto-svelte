@@ -9,7 +9,7 @@
     endDate: null,
     startTime: null,
     endTime: null,
-    carWashPackage: 'none'
+    cars: [{ licensePlate: '', carWashPackage: 'none' }]
   };
   export let calculateDays; // Function from parent (AirportParkingForm)
   export const content = {}; // Receive the content object from parent component
@@ -90,23 +90,41 @@
     if (currentDays > 0) {
         // Find the correct price tier, or use the last one if days exceed the defined tiers
         let priceTier = parkingPrices[Math.min(currentDays, parkingPrices.length) - 1];
-        // Use the 'discount' price from the tier
-        parkingTotal = priceTier ? priceTier.discount : 0;
+        // Use the 'discount' price from the tier, multiplied by number of cars
+        let baseParkingPrice = priceTier ? priceTier.discount : 0;
+        let numberOfCars = formData.cars ? formData.cars.length : 1;
+        parkingTotal = baseParkingPrice * numberOfCars;
     } else {
         parkingTotal = 0; // Explicitly zero if duration is not positive
     }
 
     // Car Wash Price Calculation
-    const packageKey = formData.carWashPackage || 'none';
-    carWashStandardPrice = carWashPricing[packageKey] ?? 0; // Use nullish coalescing
-
-    // Calculate discount only if a valid package is selected
-    if (carWashStandardPrice > 0) {
-      carWashDiscountAmount = Math.round(carWashStandardPrice * 0.20); // 20% discount
-      carWashDiscountedPrice = carWashStandardPrice - carWashDiscountAmount;
+    carWashStandardPrice = 0;
+    carWashDiscountAmount = 0;
+    carWashDiscountedPrice = 0;
+    
+    if (formData.cars && formData.cars.length > 0) {
+      formData.cars.forEach(car => {
+        const packageKey = car.carWashPackage || 'none';
+        const standardPrice = carWashPricing[packageKey] ?? 0;
+        
+        if (standardPrice > 0) {
+          const discount = Math.round(standardPrice * 0.20); // 20% discount
+          carWashStandardPrice += standardPrice;
+          carWashDiscountAmount += discount;
+          carWashDiscountedPrice += (standardPrice - discount);
+        }
+      });
     } else {
-      carWashDiscountAmount = 0;
-      carWashDiscountedPrice = 0;
+      // Fallback if formData.cars is not array (for backward compatibility)
+      const packageKey = formData.carWashPackage || 'none';
+      carWashStandardPrice = carWashPricing[packageKey] ?? 0; // Use nullish coalescing
+
+      // Calculate discount only if a valid package is selected
+      if (carWashStandardPrice > 0) {
+        carWashDiscountAmount = Math.round(carWashStandardPrice * 0.20); // 20% discount
+        carWashDiscountedPrice = carWashStandardPrice - carWashDiscountAmount;
+      }
     }
 
     // Total Price Calculation
@@ -159,11 +177,11 @@
     </p>
 
     <p>
-      <span>{currentLanguage === 'hu' ? 'Parkolás díj' : 'Parking Total'}:</span>
+      <span>{currentLanguage === 'hu' ? 'Parkolás díj' : 'Parking Total'}{formData.cars && formData.cars.length > 1 ? ` (${formData.cars.length} ${currentLanguage === 'hu' ? 'autó' : 'cars'})` : ''}:</span>
       <span>{formatCurrency(parkingTotal)}</span>
     </p>
 
-    {#if formData.carWashPackage !== 'none' && carWashStandardPrice > 0}
+    {#if carWashStandardPrice > 0}
       <p class="car-wash-price">
         <span>{currentLanguage === 'hu' ? 'Autómosó díj (alap)' : 'Car Wash Fee (Standard)'}:</span>
         <span>{formatCurrency(carWashStandardPrice)}</span>

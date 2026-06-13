@@ -137,7 +137,7 @@
       
       // Use local backend for development, production backend for production
       const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-      let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev').trim();
+      let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://atgroup-backend.fly.dev').trim();
       BACKEND_API_URL = BACKEND_API_URL.endsWith('/') ? BACKEND_API_URL.slice(0, -1) : BACKEND_API_URL;
       
       const apiUrl = `${BACKEND_API_URL}/api/available-slots?date=${date}&service=${service}`;

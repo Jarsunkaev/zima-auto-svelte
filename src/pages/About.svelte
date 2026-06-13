@@ -19,15 +19,15 @@
   const content = {
     hu: {
       title: 'Kik vagyunk?',
-      subtitle: 'A Zima Autó Kft-nél új értelmet kap a kényelem és a kiválóság az autóápolási szolgáltatások terén. Több mint egy évtizedes tapasztalattal és szakértelemmel, büszkén kínáljuk az egyik legkiterjedtebb autószolgáltatási kínálatot, amely az Ön járművének minden igényét kielégíti egy helyen.',
+      subtitle: 'A A&T Group Kft-nél új értelmet kap a kényelem és a kiválóság az autóápolási szolgáltatások terén. Több mint egy évtizedes tapasztalattal és szakértelemmel, büszkén kínáljuk az egyik legkiterjedtebb autószolgáltatási kínálatot, amely az Ön járművének minden igényét kielégíti egy helyen.',
       story: {
         title: 'Tapasztalat, amiben megbízhat',
-        text: 'Több mint 10 év tapasztalattal szolgálva ügyfeleinket, tökéletesítettük képességeinket és finomítottuk folyamatainkat annak érdekében, hogy a legmagasabb színvonalú szolgáltatást és ügyfél-elégedettséget biztosítsunk. Járműve csak a legjobbat érdemli, és pontosan ezt nyújtjuk a Zima Autó Kft-nél.'
+        text: 'Több mint 10 év tapasztalattal szolgálva ügyfeleinket, tökéletesítettük képességeinket és finomítottuk folyamatainkat annak érdekében, hogy a legmagasabb színvonalú szolgáltatást és ügyfél-elégedettséget biztosítsunk. Járműve csak a legjobbat érdemli, és pontosan ezt nyújtjuk a A&T Group Kft-nél.'
       },
       // Repurposed 'mission' section for location
       mission: {
         title: 'Kiváló elhelyezkedés',
-        text: 'Stratégiai helyen, mindössze 5 kilométerre és 5 percre a Budapest Liszt Ferenc Nemzetközi Repülőterétől, Vecsésen, létesítményünk páratlan elérhetőséget és kényelmet biztosít. Búcsút mondhat a városban szétszórva lévő szolgáltatók keresési nehézségeinek. A Zima Autó Kft-vel gyorsan és hatékonyan kezelheti minden autójával kapcsolatos igényét, időt és energiát megtakarítva ezzel.'
+        text: 'Stratégiai helyen, mindössze 5 kilométerre és 5 percre a Budapest Liszt Ferenc Nemzetközi Repülőterétől, Vecsésen, létesítményünk páratlan elérhetőséget és kényelmet biztosít. Búcsút mondhat a városban szétszórva lévő szolgáltatók keresési nehézségeinek. A A&T Group Kft-vel gyorsan és hatékonyan kezelheti minden autójával kapcsolatos igényét, időt és energiát megtakarítva ezzel.'
       },
       // Repurposed 'values' section for 'Why Choose Us?'
       values: {
@@ -51,8 +51,8 @@
               paymentOptionsTitle: 'Rugalmas fizetési lehetőségek',
               paymentOptionsText: 'Tudjuk, hogy a kényelem fontos, ezért rugalmas fizetési lehetőségeket kínálunk, beleértve a készpénzes, bankkártyás fizetést is.',
               pricesTitle: 'Versenyképes árak',
-              pricesText: 'A Zima Autó Kft-nél úgy véljük, hogy a minőségi autóápolásnak mindenki számára elérhetőnek kell lennie. Ezért kínáljuk a legjobb árakat minden szolgáltatásunkra, biztosítva, hogy a lehető legtöbbet kapja pénzéért, anélkül, hogy engednénk a minőségből.',
-               conclusion: 'Tapasztalja meg a különbséget a Zima Autó Kft-nél - ahol minden alkalommal a kiválóság találkozik a kényelemmel.\n\nLépjen kapcsolatba velünk még ma, hogy felfedezze, hogyan emelhetjük autóápolási élményét új magasságokba!'
+              pricesText: 'A A&T Group Kft-nél úgy véljük, hogy a minőségi autóápolásnak mindenki számára elérhetőnek kell lennie. Ezért kínáljuk a legjobb árakat minden szolgáltatásunkra, biztosítva, hogy a lehető legtöbbet kapja pénzéért, anélkül, hogy engednénk a minőségből.',
+               conclusion: 'Tapasztalja meg a különbséget a A&T Group Kft-nél - ahol minden alkalommal a kiválóság találkozik a kényelemmel.\n\nLépjen kapcsolatba velünk még ma, hogy felfedezze, hogyan emelhetjük autóápolási élményét új magasságokba!'
           }
       },
       cta: 'Vegye igénybe szolgáltatásainkat'
@@ -62,12 +62,12 @@
       subtitle: 'With over a decade of unwavering dedication and expertise in the industry, we take pride in offering an unmatched range of services tailored to meet all your automotive requirements under one roof.',
       story: {
         title: 'Experience You Can Trust',
-        text: 'With more than 10 years of experience serving our valued customers, we have honed our skills and refined our processes to ensure the highest quality of service and customer satisfaction. Your vehicle deserves nothing but the best, and that\'s precisely what we deliver at Zima Auto Kft.'
+        text: 'With more than 10 years of experience serving our valued customers, we have honed our skills and refined our processes to ensure the highest quality of service and customer satisfaction. Your vehicle deserves nothing but the best, and that\'s precisely what we deliver at A&T Group Kft.'
       },
        // Repurposed 'mission' section for location
       mission: {
         title: 'Unbeatable Location',
-        text: 'Strategically situated just 4.8 kilometers and 5 minutes away from the Budapest Airport, at Vecsés our facility provides unparalleled accessibility and convenience. Say goodbye to the hassle of searching for multiple service providers scattered across the city. With Zima Auto Kft, you can address all your car care needs swiftly and efficiently, saving both time and effort.'
+        text: 'Strategically situated just 4.8 kilometers and 5 minutes away from the Budapest Airport, at Vecsés our facility provides unparalleled accessibility and convenience. Say goodbye to the hassle of searching for multiple service providers scattered across the city. With A&T Group Kft, you can address all your car care needs swiftly and efficiently, saving both time and effort.'
       },
       // Repurposed 'values' section for 'Why Choose Us?'
       values: {
@@ -91,8 +91,8 @@
               paymentOptionsTitle: 'Flexible Payment Options',
               paymentOptionsText: 'We understand the importance of convenience, which is why we offer flexible payment options including cash, debit, and credit cards, making your car care experience seamless and hassle-free.',
               pricesTitle: 'Competitive Prices',
-              pricesText: 'At Zima Auto Kft, we believe that quality car care should be accessible to everyone. That\'s why we offer the best competitive prices on all our services, ensuring that you get the most value for your money without compromising on quality.',
-              conclusion: 'Experience the difference with Zima Auto - where excellence meets convenience, every time.\n\nGet in touch with us today to discover how we can elevate your car care experience to new heights!'
+              pricesText: 'At A&T Group Kft, we believe that quality car care should be accessible to everyone. That\'s why we offer the best competitive prices on all our services, ensuring that you get the most value for your money without compromising on quality.',
+              conclusion: 'Experience the difference with A&T Group - where excellence meets convenience, every time.\n\nGet in touch with us today to discover how we can elevate your car care experience to new heights!'
           }
       },
       cta: 'Use our services'
@@ -173,7 +173,7 @@
           <p>{content[$currentLang].story.text}</p>
         </div>
         <div class="about-image">
-          <img src="images/parking-lot.webp" alt="Zima Auto parking lot" />
+          <img src="images/parking-lot.webp" alt="A&T Group parking lot" />
         </div>
       </div>
     </div>

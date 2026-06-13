@@ -16,26 +16,6 @@
   const maxDate = new Date();
   maxDate.setMonth(maxDate.getMonth() + 3); // Allow bookings 3 months in advance
   
-  // Calculate max end date (30 days from start date)
-  $: maxEndDate = (() => {
-    if (!formData.startDate) return formatDate(maxDate);
-    const start = parseDate(formData.startDate);
-    const maxEnd = new Date(start);
-    maxEnd.setDate(maxEnd.getDate() + 30);
-    const maxAllowed = maxEnd > maxDate ? maxDate : maxEnd;
-    return formatDate(maxAllowed);
-  })();
-  
-  // Check if selected end date exceeds 30 days
-  $: exceedsMaxDays = (() => {
-    if (!formData.startDate || !formData.endDate) return false;
-    const start = parseDate(formData.startDate);
-    const end = parseDate(formData.endDate);
-    const diffTime = end - start;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays > 30;
-  })();
-  
   // Form data
   let formData = {
     // Airport parking specific
@@ -43,9 +23,7 @@
     startTime: '12:00',
     endDate: formatDate(today),
     endTime: '12:00',
-    licensePlate: '',
-    passengers: '1',
-    carWashPackage: 'none',
+    cars: [{ licensePlate: '', carWashPackage: 'none', passengers: '1' }],
     
     // Personal info (will be bound from PersonalInfoForm)
     firstName: '',
@@ -62,8 +40,7 @@
   
   // Form validation
   let formErrors = {
-    licensePlate: '',
-    passengers: '',
+    cars: [{ licensePlate: '', passengers: '' }],
     firstName: '',
     lastName: '',
     email: '',
@@ -138,25 +115,25 @@
     let isValid = true;
     
     // Reset specific errors
-    formErrors.licensePlate = '';
-    formErrors.passengers = '';
+    formErrors.cars = formData.cars.map(() => ({ licensePlate: '', passengers: '' }));
     formErrors.firstName = '';
     formErrors.lastName = '';
     formErrors.email = '';
     formErrors.phone = '';
     
-    // Validate service-specific fields
-    if (!formData.licensePlate.trim()) {
-      formErrors.licensePlate = content[currentLang].bookingForm.airportParking.licensePlateRequired;
-      isValid = false;
-    }
-    
-    // Validate passengers is a number and within range
-    const numPassengers = parseInt(formData.passengers);
-    if (isNaN(numPassengers) || numPassengers < 1 || numPassengers > 20) {
-      formErrors.passengers = content[currentLang].bookingForm.airportParking.passengersRequired;
-      isValid = false;
-    }
+    // Validate service-specific fields for each car
+    formData.cars.forEach((car, index) => {
+      if (!car.licensePlate.trim()) {
+        formErrors.cars[index].licensePlate = content[currentLang].bookingForm.airportParking.licensePlateRequired || 'Rendszám megadása kötelező';
+        isValid = false;
+      }
+      
+      const numPassengers = parseInt(car.passengers);
+      if (isNaN(numPassengers) || numPassengers < 1 || numPassengers > 20) {
+        formErrors.cars[index].passengers = content[currentLang].bookingForm.airportParking.passengersRequired || 'Utasok száma kötelező';
+        isValid = false;
+      }
+    });
     
     // Validate personal info fields
     if (!formData.firstName.trim()) {
@@ -243,17 +220,25 @@
       arrivalTime: formData.startTime,
       departureTime: formData.endTime,
       // Other booking details
+      // Other booking details
       days: calculatedPrices.parkingDays,
-      licensePlate: formData.licensePlate,
-      passengers: formData.passengers,
+      cars: formData.cars,
+      numberOfCars: formData.cars.length,
+      licensePlate: formData.cars.map(c => c.licensePlate).join(', '),
+      passengers: formData.cars.reduce((sum, car) => sum + parseInt(car.passengers || 0), 0).toString(),
       // Add timestamps
       createdAt: new Date().toISOString()
     };
     
-    // For car wash package, if selected
-    if (formData.carWashPackage !== 'none') {
-      bookingDetails.carWashPackage = formData.carWashPackage;
-      bookingDetails.carWashPackageName = content[currentLang].bookingForm.airportParking.carWashOptions[formData.carWashPackage];
+    // Check if any car has a wash package
+    const hasCarWash = formData.cars.some(c => c.carWashPackage !== 'none');
+    
+    if (hasCarWash) {
+      bookingDetails.carWashPackage = 'multiple';
+      bookingDetails.carWashPackageName = formData.cars
+        .filter(c => c.carWashPackage !== 'none')
+        .map(c => `${c.licensePlate || 'Car'}: ${content[currentLang].bookingForm.airportParking.carWashOptions[c.carWashPackage]}`)
+        .join(', ');
       
       // Use the calculated prices from the PriceCalculator
       bookingDetails.priceBreakdown = {
@@ -265,6 +250,8 @@
       
       bookingDetails.totalPrice = calculatedPrices.totalPrice;
     } else {
+      bookingDetails.carWashPackage = 'none';
+      bookingDetails.carWashPackageName = 'None';
       // Only parking, no car wash - still use calculated price
       bookingDetails.priceBreakdown = {
         parkingTotal: calculatedPrices.parkingTotal,
@@ -276,44 +263,21 @@
       bookingDetails.totalPrice = calculatedPrices.totalPrice;
     }
 
-    try {
-      // Ensure no trailing slash in the base URL and handle potential undefined
-      // Use local backend for development, production backend for production
-const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev').trim();
-      BACKEND_API_URL = BACKEND_API_URL.endsWith('/') ? BACKEND_API_URL.slice(0, -1) : BACKEND_API_URL;
-      
-      const apiUrl = `${BACKEND_API_URL}/api/send-booking-emails`;
-      console.log('Sending booking to:', apiUrl);
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(bookingDetails)
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Error response from backend API:', errorData);
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('Successfully saved booking:', data);
-      
-      // Only dispatch the bookingComplete event after successful API call
-      dispatch('bookingComplete', bookingDetails);
-      
-    } catch (error) {
-      console.error('Error saving booking:', error);
-      // Even if API call fails, we still want to proceed with the booking
-      dispatch('bookingComplete', bookingDetails);
-    } finally {
-      isSubmitting = false;
+    // The actual API call is handled by the parent component (Booking.svelte)
+    // We just need to dispatch the validated booking details
+    dispatch('bookingComplete', bookingDetails);
+    isSubmitting = false;
+  }
+  function addCar() {
+    if (formData.cars.length < 5) {
+      formData.cars = [...formData.cars, { licensePlate: '', carWashPackage: 'none', passengers: '1' }];
+      formErrors.cars = [...formErrors.cars, { licensePlate: '', passengers: '' }];
     }
+  }
+
+  function removeCar(index) {
+    formData.cars = formData.cars.filter((_, i) => i !== index);
+    formErrors.cars = formErrors.cars.filter((_, i) => i !== index);
   }
 </script>
 
@@ -359,25 +323,14 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
         <CustomDatePicker
           value={formData.endDate}
           minDate={formData.startDate || formatDate(today)}
-          maxDate={maxEndDate}
+          maxDate={formatDate(maxDate)}
           disabledDates={[]}
           label={content[currentLang].bookingForm.airportParking.endDate}
           {currentLang}
-          errorMessage={exceedsMaxDays ? content[currentLang].bookingForm.airportParking.maxDaysExceeded : ''}
-          startDate={formData.startDate}
-          maxDaysTooltip={content[currentLang].bookingForm.airportParking.maxDaysExceeded}
           on:change={(e) => {
             formData.endDate = e.detail;
           }}
         />
-        {#if exceedsMaxDays}
-          <div class="tooltip-message" role="tooltip">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 8V12M12 16H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>{content[currentLang].bookingForm.airportParking.maxDaysExceeded}</span>
-          </div>
-        {/if}
       </div>
 
       <div class="form-group">
@@ -391,49 +344,76 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
       </div>
     </div>
     
-    <div class="form-row">
-      <div class="form-group">
-        <label for="licensePlate">{content[currentLang].bookingForm.airportParking.licensePlate}</label>
-        <input
-          type="text"
-          id="licensePlate"
-          bind:value={formData.licensePlate}
-          required
-          placeholder={currentLang === 'hu' ? 'Adja meg rendszámát' : 'Enter your license plate'}
-        />
-        {#if formErrors.licensePlate}
-          <p class="error-message">{formErrors.licensePlate}</p>
-        {/if}
-      </div>
+    {#each formData.cars as car, index}
+      {#if index > 0}
+        <div class="car-header">
+          <h4>{currentLang === 'hu' ? `Autó ${index + 1}` : `Car ${index + 1}`}</h4>
+          <button type="button" class="remove-car-btn" on:click={() => removeCar(index)}>
+            ✕ {currentLang === 'hu' ? 'Eltávolítás' : 'Remove'}
+          </button>
+        </div>
+      {/if}
+      <div class="form-row">
+        <div class="form-group">
+          <label for={`licensePlate_${index}`}>
+            {content[currentLang].bookingForm.airportParking.licensePlate} {index > 0 ? `(${index + 1})` : ''}
+          </label>
+          <input
+            type="text"
+            id={`licensePlate_${index}`}
+            bind:value={car.licensePlate}
+            required
+            placeholder={currentLang === 'hu' ? 'Adja meg rendszámát' : 'Enter your license plate'}
+          />
+          {#if formErrors.cars && formErrors.cars[index] && formErrors.cars[index].licensePlate}
+            <p class="error-message">{formErrors.cars[index].licensePlate}</p>
+          {/if}
+        </div>
 
-      <div class="form-group">
-        <label for="passengers">{content[currentLang].bookingForm.airportParking.passengers}</label>
-        <input
-          type="number"
-          id="passengers"
-          bind:value={formData.passengers}
-          min="1"
-          max="20"
-          required
-          placeholder={currentLang === 'hu' ? 'Adja meg az utasok számát' : 'Enter number of passengers'}
-        />
-        {#if formErrors.passengers}
-          <p class="error-message">{formErrors.passengers}</p>
-        {/if}
+        <div class="form-group">
+          <label for={`passengers_${index}`}>
+            {content[currentLang].bookingForm.airportParking.passengers} {index > 0 ? `(${index + 1})` : ''}
+          </label>
+          <input
+            type="number"
+            id={`passengers_${index}`}
+            bind:value={car.passengers}
+            min="1"
+            max="20"
+            required
+            placeholder={currentLang === 'hu' ? 'Adja meg az utasok számát' : 'Enter number of passengers'}
+          />
+          {#if formErrors.cars && formErrors.cars[index] && formErrors.cars[index].passengers}
+            <p class="error-message">{formErrors.cars[index].passengers}</p>
+          {/if}
+        </div>
       </div>
-    </div>
+    {/each}
+
+    {#if formData.cars.length < 5}
+      <div class="add-car-container">
+        <button type="button" class="add-car-btn" on:click={addCar}>
+          + {currentLang === 'hu' ? 'További autó hozzáadása' : 'Add additional cars'}
+        </button>
+      </div>
+    {/if}
     
     <div class="form-row car-wash-addon">
-      <h3>{content[currentLang].bookingForm.airportParking.addCarWash}</h3>
+      <h3 style="grid-column: 1 / -1;">{content[currentLang].bookingForm.airportParking.addCarWash}</h3>
 
-      <div class="form-group">
-        <label for="carWashPackage">{content[currentLang].bookingForm.airportParking.carWashOptions.title}</label>
-        <select id="carWashPackage" bind:value={formData.carWashPackage}>
-          <option value="none">{content[currentLang].bookingForm.airportParking.carWashOptions.none}</option>
-          <option value="smartInteriorExterior">{content[currentLang].bookingForm.airportParking.carWashOptions.smartInteriorExterior}</option>
-          <option value="premiumInteriorExterior">{content[currentLang].bookingForm.airportParking.carWashOptions.premiumInteriorExterior}</option>
-        </select>
-      </div>
+      {#each formData.cars as car, index}
+        <div class="form-group">
+          <label for={`carWashPackage_${index}`}>
+            {content[currentLang].bookingForm.airportParking.carWashOptions.title} 
+            ({car.licensePlate || (currentLang === 'hu' ? `${index + 1}. autó` : `Car ${index + 1}`)})
+          </label>
+          <select id={`carWashPackage_${index}`} bind:value={car.carWashPackage}>
+            <option value="none">{content[currentLang].bookingForm.airportParking.carWashOptions.none}</option>
+            <option value="smartInteriorExterior">{content[currentLang].bookingForm.airportParking.carWashOptions.smartInteriorExterior}</option>
+            <option value="premiumInteriorExterior">{content[currentLang].bookingForm.airportParking.carWashOptions.premiumInteriorExterior}</option>
+          </select>
+        </div>
+      {/each}
     </div>
     
     <!-- Use the Price Calculator Component with event forwarding -->
@@ -474,7 +454,6 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
 
   .booking-form {
     width: 100%;
-    box-sizing: border-box;
   }
   
   .form-section {
@@ -512,12 +491,60 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
     display: flex;
     flex-direction: column;
     margin-bottom: 1.5rem;
-    width: 100%;
-    box-sizing: border-box;
   }
   
   .form-group:last-child {
     margin-bottom: 0;
+  }
+  
+  .car-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+  }
+  
+  .car-header h4 {
+    margin: 0;
+    color: var(--primary);
+  }
+  
+  .remove-car-btn {
+    background: none;
+    border: none;
+    color: #e53e3e;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .remove-car-btn:hover {
+    text-decoration: underline;
+  }
+  
+  .add-car-container {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .add-car-btn {
+    background-color: transparent;
+    border: 2px dashed var(--primary);
+    color: var(--primary);
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .add-car-btn:hover {
+    background-color: rgba(0, 186, 229, 0.05);
   }
   
   .car-wash-addon {
@@ -552,8 +579,6 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
     transition: all 0.3s ease;
     font-family: inherit;
     width: 100%;
-    box-sizing: border-box;
-    max-width: 100%;
   }
   
   input:focus, select:focus {
@@ -566,27 +591,6 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
     color: #e53e3e;
     font-size: 0.85rem;
     margin-top: 0.5rem;
-  }
-  
-  .tooltip-message {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    padding: 0.75rem;
-    background-color: #fff3cd;
-    border: 1px solid #ffc107;
-    border-radius: 4px;
-    color: #856404;
-    font-size: 0.85rem;
-    line-height: 1.4;
-  }
-  
-  .tooltip-message svg {
-    flex-shrink: 0;
-    width: 16px;
-    height: 16px;
-    color: #856404;
   }
   
   .form-submit {
@@ -603,46 +607,9 @@ let BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env
   
   /* Responsive styles */
   @media screen and (max-width: 768px) {
-    .booking-form {
-      padding: 0;
-      width: 100%;
-      max-width: 100%;
-    }
-    
-    .form-section {
-      padding-left: 0;
-      padding-right: 0;
-    }
-    
     .form-row {
       grid-template-columns: 1fr;
       gap: 1rem;
-      margin-left: 0;
-      margin-right: 0;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    
-    .form-group {
-      width: 100%;
-      max-width: 100%;
-      margin-left: 0;
-      margin-right: 0;
-      box-sizing: border-box;
-    }
-    
-    input[type="time"] {
-      width: 100%;
-      max-width: 100%;
-      box-sizing: border-box;
-      min-width: 0;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-    
-    /* Ensure form rows don't overflow */
-    .form-row {
-      overflow: hidden;
     }
   }
 </style>

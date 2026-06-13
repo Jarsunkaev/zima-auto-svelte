@@ -83,8 +83,8 @@
         </h3>
       </div>
       <div class="cta-actions">
-        <a href="mailto:info@zima-auto.com" class="primary">
-          info@zima-auto.com
+        <a href="mailto:info@atgroup.hu" class="primary">
+          info@atgroup.hu
         </a>
         <a href="tel:+36705550588" class="ghost">
           +36 70 555 0588

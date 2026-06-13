@@ -132,8 +132,8 @@
     <div class="hero-content">
       <h1>
         {$currentLang === "hu"
-          ? "Zima Autószerviz és Gumiszerviz"
-          : "Zima Car Maintenance and Tire Service"}
+          ? "A&T Szerviz és Gumiszerviz"
+          : "A&T Car Maintenance and Tire Service"}
       </h1>
       <p>
         {$currentLang === "hu"

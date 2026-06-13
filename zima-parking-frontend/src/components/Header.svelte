@@ -76,7 +76,7 @@
       role="button"
       aria-label="Go to homepage"
     >
-      <img src="images/zima-logo.avif" alt="Zima Auto" />
+      <img src="images/newlog_full.png" alt="A&T Group" />
     </div>
 
     <nav class:open={mobileMenuOpen}>
@@ -194,12 +194,12 @@
   }
 
   .logo img {
-    height: 50px;
+    height: 90px;
     transition: all 0.3s ease;
   }
 
   header.scrolled .logo img {
-    height: 40px;
+    height: 60px;
   }
 
   nav {

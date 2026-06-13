@@ -105,6 +105,12 @@ const allowedOrigins = [
   'http://localhost:5001',
   'http://localhost:3000',
   'http://localhost:3001',
+  'https://www.atgroup.hu',
+  'https://atgroup.hu',
+  'https://atparking.hu',
+  'https://www.atparking.hu',
+  'https://atszerviz.hu',
+  'https://www.atszerviz.hu',
   'https://www.zima-auto.com',
   'https://zima-auto.com',
   'https://zima-parking.com',
@@ -114,7 +120,7 @@ const allowedOrigins = [
   'https://zima-auto-frontend.fly.dev',
   'https://zima-parking-frontend.fly.dev',
   'https://zima-service-frontend.fly.dev',
-  'https://zima-auto-backend.fly.dev',
+  'https://atgroup-backend.fly.dev',
   'https://zima-auto-admin.fly.dev'
 ];
 
@@ -254,7 +260,7 @@ async function saveAirportParking(bookingData) {
       days,
       licensePlate,
       passengers,
-      carWashPackage,
+      bookingData.carWashPackageName || carWashPackage,
       priceBreakdown?.totalPrice || totalPrice,
       'Függőben' // Status
     ];
@@ -570,7 +576,7 @@ app.use((req, res, next) => {
 Object.keys(redirects).forEach(oldPath => {
   app.get(oldPath, (req, res) => {
     // Construct the full URL with your custom domain
-    const customDomain = process.env.CUSTOM_DOMAIN || 'https://zima-auto.com';
+    const customDomain = process.env.CUSTOM_DOMAIN || 'https://atgroup.hu';
     const newPath = redirects[oldPath];
     
     // Validate the route
@@ -589,7 +595,7 @@ Object.keys(redirects).forEach(oldPath => {
       <!DOCTYPE html>
       <html>
       <head>
-        <title>Redirecting to Zima Auto</title>
+        <title>Redirecting to A&T Group</title>
         <meta http-equiv="refresh" content="0;url=${redirectUrl}">
         <style>
           body {
@@ -627,7 +633,7 @@ Object.keys(redirects).forEach(oldPath => {
       <body>
         <div class="redirect-container">
           <div class="loader"></div>
-          <p>Redirecting to Zima Auto...</p>
+          <p>Redirecting to A&T Group...</p>
         </div>
       </body>
       </html>
@@ -1388,7 +1394,7 @@ app.post('/contact', express.json(), async (req, res) => {
 
 // --- Start Server ---
 app.listen(port, '0.0.0.0', () => {
-  console.log(`Zima Auto Email Backend running on http://0.0.0.0:${port}`);
+  console.log(`A&T Group Email Backend running on http://0.0.0.0:${port}`);
   
   // Log startup information
   console.log('Server Configuration:');
@@ -1397,7 +1403,7 @@ app.listen(port, '0.0.0.0', () => {
   console.log(`- SMTP Configured: ${!!(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)}`);
   console.log(`- Google Calendar API Configured: ${!!process.env.GOOGLE_CALENDAR_CREDENTIALS}`);
   console.log(`- Frontend Proxy URL: ${process.env.FRONTEND_URL || 'https://zima-auto-frontend.fly.dev'}`);
-  console.log(`- Custom Domain: ${process.env.CUSTOM_DOMAIN || 'https://zima-auto.com'}`);
+  console.log(`- Custom Domain: ${process.env.CUSTOM_DOMAIN || 'https://atgroup.hu'}`);
   console.log('Server is ready to handle requests.');
 });
 

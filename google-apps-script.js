@@ -15,6 +15,10 @@ const TEMPLATE_DOC_ID = '1LbBcibpTR1OY_HZpK5yISg1MOTpAKhqXCi1k2RlUsZc';
 
 // Define allowed origins
 const ALLOWED_ORIGINS = [
+  'https://www.atgroup.hu',
+  'https://atgroup.hu',
+  'https://atparking.hu',
+  'https://www.atparking.hu',
   'https://www.zima-auto.com',
   'https://zima-auto.com',
   'http://localhost:5000',
@@ -25,7 +29,7 @@ const ALLOWED_ORIGINS = [
 function doGet(e) {
   return ContentService.createTextOutput(JSON.stringify({
     success: true,
-    message: 'Zima Auto Order Form Generator is running'
+    message: 'A&T Group Order Form Generator is running'
   })).setMimeType(ContentService.MimeType.JSON);
 }
 

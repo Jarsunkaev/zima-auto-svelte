@@ -7,7 +7,7 @@ async function testDomainDelegation() {
   const auth = new google.auth.GoogleAuth({
     credentials: serviceAccount,
     scopes: ['https://www.googleapis.com/auth/calendar'],
-    subject: 'ahmedhasimov@zima-auto.com' // Your admin email
+    subject: 'ahmed@atgroup.hu' // Your admin email
   });
   
   const calendar = google.calendar({ version: 'v3', auth });

@@ -3,15 +3,15 @@
 </script>
 
 <svelte:head>
-  <title>{lang === 'hu' ? 'Impresszum' : 'Imprint'} - Zima Auto</title>
-  <meta name="description" content={lang === 'hu' ? 'Zima Auto Kft. impresszum és cégadatok' : 'Zima Auto Kft. imprint and company information'}>
+  <title>{lang === 'hu' ? 'Impresszum' : 'Imprint'} - A&T Group</title>
+  <meta name="description" content={lang === 'hu' ? 'A&T Group Kft. impresszum és cégadatok' : 'A&T Group Kft. imprint and company information'}>
 </svelte:head>
 
 <div class="page-container">
   <div class="content-wrapper">
     <div class="page-header">
       <h1>{lang === 'hu' ? 'Impresszum' : 'Imprint'}</h1>
-      <p>{lang === 'hu' ? 'Zima Auto Korlátolt Felelősségű Társaság hivatalos adatai' : 'Official company information of Zima Auto Limited Liability Company'}</p>
+      <p>{lang === 'hu' ? 'A&T Group Korlátolt Felelősségű Társaság hivatalos adatai' : 'Official company information of A&T Group Limited Liability Company'}</p>
     </div>
 
     <div class="imprint-content">
@@ -26,7 +26,7 @@
       <div class="company-section">
         <h2>{lang === 'hu' ? '2. A cég elnevezése' : '2. Company Name'}</h2>
         <div class="terms-text">
-          <p><strong>Teljes név:</strong> Zima Autó Korlátolt Felelősségű Társaság</p>
+          <p><strong>Teljes név:</strong> A&T Group Korlátolt Felelősségű Társaság</p>
           <p><strong>Bejegyzés kelte:</strong> 2024.02.06.</p>
           <p><strong>Hatályos:</strong> 2024.02.06. - ...</p>
           <p><strong>Közzétéve:</strong> 2024.02.07.</p>
@@ -36,7 +36,7 @@
       <div class="company-section">
         <h2>{lang === 'hu' ? '3. A cég rövidített elnevezése' : '3. Company Short Name'}</h2>
         <div class="terms-text">
-          <p><strong>Rövidített név:</strong> Zima Autó Kft.</p>
+          <p><strong>Rövidített név:</strong> A&T Group Kft.</p>
           <p><strong>Bejegyzés kelte:</strong> 2024.02.06.</p>
           <p><strong>Hatályos:</strong> 2024.02.06. - ...</p>
           <p><strong>Közzétéve:</strong> 2024.02.07.</p>

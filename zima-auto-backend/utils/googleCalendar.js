@@ -104,25 +104,29 @@ async function addEventToCalendar(calendar, service, date, time, customerName, b
     const timeZone = 'Europe/Budapest'; // Define target timezone
 
     if (service === 'airportParking') {
-      const { startDate, startTime, endDate, endTime, customerEmail, customerPhone, days, licensePlate, passengers, carWashPackage, priceBreakdown, totalPrice, notes } = bookingData;
+      const { startDate, startTime, endDate, endTime, days, licensePlate, passengers, carWashPackage, carWashPackageName, priceBreakdown, totalPrice, notes, numberOfCars } = bookingData;
+      const actualEmail = bookingData.customerEmail || bookingData.contact?.email || bookingData.email || 'N/A';
+      const actualPhone = bookingData.customerPhone || bookingData.contact?.phone || bookingData.phone || 'N/A';
+      
       if (!startDate || !startTime || !endDate || !endTime) throw new Error('Missing required start/end date/time for airport parking');
 
       event = {
         summary: `${formatServiceName(service, 'hu')} - ${customerName}`, // Keep HU first for primary display
         description:
           `Service: ${formatServiceName(service, 'en')} / ${formatServiceName(service,'hu')}\n` +
-          `Customer: ${customerName}\nEmail: ${customerEmail || 'N/A'}\nPhone: ${customerPhone || 'N/A'}\n` +
+          `Customer: ${customerName}\nEmail: ${actualEmail}\nPhone: ${actualPhone}\n` +
           `Duration: ${days || 'N/A'} days\n` +
+          (numberOfCars ? `Number of Cars: ${numberOfCars}\n` : '') +
           (licensePlate ? `License Plate: ${licensePlate}\n` : '') +
           (passengers   ? `Passengers: ${passengers}\n` : '') +
-          (carWashPackage && carWashPackage!=='none' ? `Car Wash Package: ${carWashPackage}\n` : '') +
+          (carWashPackageName ? `Car Wash Package: ${carWashPackageName}\n` : (carWashPackage && carWashPackage!=='none' ? `Car Wash Package: ${carWashPackage}\n` : '')) +
           (priceBreakdown ? `Price Breakdown:\n${Object.entries(priceBreakdown).map(([k,v])=>`  ${k}: ${v} HUF`).join('\n')}\n` : '') +
           (totalPrice ? `Total Price: ${totalPrice} HUF\n` : '') +
           (notes ? `Notes: ${notes}\n` : ''),
         start: { dateTime: `${startDate}T${startTime}:00`, timeZone: timeZone },
         end:   { dateTime: `${endDate}T${endTime}:00`,     timeZone: timeZone },
         colorId: getServiceColorId(service),
-        extendedProperties: { private: { service: service, customerEmail: customerEmail, customerPhone: customerPhone, bookingReference: `ZIMA-${Date.now().toString(36).toUpperCase()}` } }
+        extendedProperties: { private: { service: service, customerEmail: actualEmail, customerPhone: actualPhone, bookingReference: `ZIMA-${Date.now().toString(36).toUpperCase()}` } }
       };
     } else {
       // Determine duration based on service
@@ -141,9 +145,12 @@ async function addEventToCalendar(calendar, service, date, time, customerName, b
       // Format end date/time back to ISO string parts in UTC - Google Calendar handles the timezone conversion
       const endDateTimeStr = dtEnd.toISOString().slice(0, 19); // YYYY-MM-DDTHH:mm:ss
 
+      const actualEmail = bookingData.customerEmail || bookingData.contact?.email || bookingData.email || 'N/A';
+      const actualPhone = bookingData.customerPhone || bookingData.contact?.phone || bookingData.phone || 'N/A';
+
       let description=
         `Service: ${formatServiceName(service, 'en')} / ${formatServiceName(service,'hu')}\n`+
-        `Customer: ${customerName}\nEmail: ${bookingData.customerEmail||'N/A'}\nPhone: ${bookingData.customerPhone||'N/A'}\n`;
+        `Customer: ${customerName}\nEmail: ${actualEmail}\nPhone: ${actualPhone}\n`;
       // Add other relevant fields from bookingData
       ['serviceType','carModel','licensePlate','tireCount','notes'].forEach(f=>{if(bookingData[f]!=null && bookingData[f] !== '') description+=`${f.charAt(0).toUpperCase()+f.slice(1)}: ${bookingData[f]}\n`;});
 

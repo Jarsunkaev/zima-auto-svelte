@@ -2,7 +2,7 @@ export default {
   thankYou: {
     title: "Thank You!",
     message: "Your form has been successfully submitted. We appreciate your interest in our services and will process your request as soon as possible.",
-    contactInfo: "If you have any questions, feel free to contact us at 06 70 555 0588 or info@zima-auto.com.",
+    contactInfo: "If you have any questions, feel free to contact us at 06 70 555 0588 or info@atgroup.hu.",
     homeButton: "BACK TO HOME",
     contactButton: "CONTACT US"
   },
@@ -35,13 +35,13 @@ export default {
   },
   faq: {
     title: "Frequently Asked Questions",
-    subtitle: "Quick answers about parking, servicing and booking at Zima.",
+    subtitle: "Quick answers about parking, servicing and booking at A&T Group.",
     explore: "View the full FAQ",
     contactCta: "Need a human? Reach out",
     contactButton: "Contact us"
   },
   hero: {
-    welcome: "Welcome to Zima Auto!",
+    welcome: "Welcome to A&T Group!",
     subtitle: "Where we offer solutions for all your car needs in one place!",
     cta: "BOOK NOW"
   },
@@ -51,7 +51,7 @@ export default {
     // --- New Booking Page Content ---
     content: {
       sectionTitle: "Airport Parking Booking Details",
-      paragraph1: "Welcome to our online booking system. Please provide the necessary information below to reserve your parking spot at Zima Auto near the airport.",
+      paragraph1: "Welcome to our online booking system. Please provide the necessary information below to reserve your parking spot at A&T Group near the airport.",
       paragraph2: "Our facility is located just minutes from the airport and offers a secure, convenient parking solution for your trip.",
       paragraph3: "After submitting your request, you will receive a confirmation email with all details regarding your booking, including directions and check-in procedures.",
       note: "If you have any special requests or require assistance, please contact us directly."
@@ -91,8 +91,8 @@ export default {
     phone: "Phone",
     phoneNumber: "06 70 555 0588",
     email: "Email",
-    emailAddress: "info@zima-auto.com",
+    emailAddress: "info@atgroup.hu",
     links: "Links",
-    copyright: "© 2025 zima-auto.com. All rights reserved."
+    copyright: "© 2025 atgroup.hu. All rights reserved."
   }
 };

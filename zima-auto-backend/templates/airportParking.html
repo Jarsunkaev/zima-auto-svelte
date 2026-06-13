@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zima Auto - Reptéri Parkolás / Airport Parking</title>
+    <title>A&T Group - Reptéri Parkolás / Airport Parking</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
@@ -28,7 +28,7 @@
         }
         
         .email-header {
-            background-color: #00bae5;
+            background-color: #000000;
             color: white;
             padding: 25px 20px;
             text-align: center;
@@ -213,7 +213,7 @@
     <div class="email-container">
         <div class="email-header">
             <div class="email-logo">
-                <img src="https://zima-auto.com/images/zima-logo.avif" alt="Zima Auto Logo" />
+                <img src="https://atgroup.hu/images/newlog_full.png" alt="A&T Group Logo" />
             </div>
             <h1 class="email-title">Foglalás visszaigazolás / Booking Confirmation</h1>
             <p class="email-subtitle">Reptéri Parkolás / Airport Parking</p>
@@ -224,7 +224,7 @@
             <div class="section">
                 <p class="greeting">Tisztelt {{customerName}}!</p>
                 
-                <p>Köszönjük a foglalását a Zima Auto-nál. A reptéri parkolás foglalása visszaigazolásra került.</p>
+                <p>Köszönjük a foglalását a A&T Group-nál. A reptéri parkolás foglalása visszaigazolásra került.</p>
                 
                 <div class="detail-card">
                     <h3 class="section-title">Foglalás részletei</h3>
@@ -249,12 +249,17 @@
                     <h3 class="section-title">Árak összegzése</h3>
                     
                     <div class="price-row">
-                        <span>Parkolás díj ({{days}} nap):</span>
+                        <span>Parkolás díj ({{days}} nap{{#ifNotEquals numberOfCars 1}}, {{numberOfCars}} autó{{/ifNotEquals}}):</span>
                         <span>{{priceBreakdown.parkingTotal}} Ft</span>
                     </div>
                     
                     {{#if carWashPackage}}
                     {{#ifNotEquals carWashPackage "none"}}
+                    <div class="price-row">
+                        <span>Autómosó csomagok:</span>
+                        <span style="font-size: 0.9em; text-align: right; max-width: 60%;">{{carWashPackageName}}</span>
+                    </div>
+                    
                     <div class="price-row">
                         <span>Autómosó díj (alap):</span>
                         <span>{{priceBreakdown.carWashStandard}} Ft</span>
@@ -285,7 +290,7 @@
             <div class="section">
                 <p class="greeting">Dear {{customerName}},</p>
                 
-                <p>Thank you for booking with Zima Auto. Your airport parking reservation has been confirmed.</p>
+                <p>Thank you for booking with A&T Group. Your airport parking reservation has been confirmed.</p>
                 
                 <div class="detail-card">
                     <h3 class="section-title">Booking Details</h3>
@@ -310,12 +315,17 @@
                     <h3 class="section-title">Price Summary</h3>
                     
                     <div class="price-row">
-                        <span>Parking Fee ({{days}} days):</span>
+                        <span>Parking Fee ({{days}} days{{#ifNotEquals numberOfCars 1}}, {{numberOfCars}} cars{{/ifNotEquals}}):</span>
                         <span>{{priceBreakdown.parkingTotal}} HUF</span>
                     </div>
                     
                     {{#if carWashPackage}}
                     {{#ifNotEquals carWashPackage "none"}}
+                    <div class="price-row">
+                        <span>Car Wash Packages:</span>
+                        <span style="font-size: 0.9em; text-align: right; max-width: 60%;">{{carWashPackageName}}</span>
+                    </div>
+                    
                     <div class="price-row">
                         <span>Car Wash Fee (Standard):</span>
                         <span>{{priceBreakdown.carWashStandard}} HUF</span>
@@ -343,14 +353,14 @@
             <div class="contact-box">
                 <p>Contact / Kapcsolat:</p>
                 <p>📞 +36 70 555 0588</p>
-                <p>✉️ info@zima-auto.com</p>
+                <p>✉️ info@atgroup.hu</p>
                 <p>📍 Vecsés Széchényi utca 62 mellett, 2220</p>
             </div>
         </div>
         
         <div class="email-footer">
-            <p>© 2025 Zima Auto. All rights reserved. / Minden jog fenntartva.</p>
-            <p>Best regards / Üdvözlettel, Zima Auto Team / Zima Auto Csapat</p>
+            <p>© 2025 A&T Group. All rights reserved. / Minden jog fenntartva.</p>
+            <p>Best regards / Üdvözlettel, A&T Group Team / A&T Group Csapat</p>
         </div>
     </div>
 </body>

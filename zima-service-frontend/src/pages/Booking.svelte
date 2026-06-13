@@ -33,7 +33,7 @@
   // Using environment variable if available, otherwise default to the base URL
   // Use local backend for development, production backend for production
 const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev');
+const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://atgroup-backend.fly.dev');
   const backendApiUrl = `${BACKEND_API_URL}/api/send-booking-emails`;
 
   // Handle service selection (Step 1 -> Step 2)
@@ -102,6 +102,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
       // Prepare data structure expected by the backend email endpoint
       // Map fields from the received formData to the backend's expected structure
       const emailData = {
+        ...formData, // Ensure all fields from the child component are included (e.g., carWashPackageName, cars, numberOfCars)
         service: formData.service, // Service type (e.g., 'carWash', 'airportParking')
         customerName: formData.name, // Full name
         // Ensure email is available at root level for backward compatibility
@@ -135,7 +136,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
         passengers: formData.passengers || 1, // Number of passengers
 
         // Always include admin email
-        adminEmail: 'ahmedhasimov@zima-auto.com',
+        adminEmail: 'ahmed@atgroup.hu',
         
         // Add timestamps
         createdAt: new Date().toISOString()
@@ -146,12 +147,12 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
       // Use the environment variable for the API URL with fallback - ensure no trailing slash
       // Use local backend for development, production backend for production
 const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev');
+let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://atgroup-backend.fly.dev');
       apiUrl = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl; // Remove trailing slash if present
       console.log('Using API URL:', apiUrl);
       
       // Use the send-booking-emails endpoint directly
-      const endpoint = `${apiUrl}/send-booking-emails`;
+      const endpoint = `${apiUrl}/api/send-booking-emails`;
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -252,14 +253,6 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
    // Scroll to top on mount
    onMount(() => {
        window.scrollTo({ top: 0, behavior: 'smooth' });
-       // Check for preselected service from home page
-       const preselectedService = sessionStorage.getItem('preselectedService');
-       if (preselectedService && (preselectedService === 'autoService' || preselectedService === 'tireService')) {
-         // Clear the sessionStorage so it doesn't persist
-         sessionStorage.removeItem('preselectedService');
-         // Automatically select the service and move to step 2
-         selectService(preselectedService);
-       }
    });
 
 </script>

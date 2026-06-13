@@ -130,12 +130,14 @@
 <div class="app-container {pageLoading ? 'loading' : ''} {pageTransition ? 'page-transition' : ''}">
   <div class="loader" class:hidden={!pageLoading}>
     <div class="logo-container">
-      <img src="images/zima-logo.avif" alt="Zima Auto" />
+      <img src="images/newlog_full.png" alt="A&T Group" />
     </div>
     <div class="spinner"></div>
   </div>
 
-  <Header {navigate} {currentPage} {lang} />
+  {#if currentPage !== 'admin'}
+    <Header {navigate} {currentPage} {lang} />
+  {/if}
 
   <main>
     {#if currentPage === 'home'}
@@ -169,9 +171,11 @@
     {/if}
   </main>
 
-  <Footer {navigate} {lang} />
-  <CookieConsent {lang} />
-  <DiscountPopup {lang} />
+  {#if currentPage !== 'admin'}
+    <Footer {navigate} {lang} />
+    <CookieConsent {lang} />
+    <DiscountPopup {lang} />
+  {/if}
 </div>
 
 <style>
@@ -259,7 +263,7 @@
   }
   
   .logo-container img {
-    height: 70px;
+    height: 100px;
     animation: pulse 2s infinite ease-in-out;
   }
   

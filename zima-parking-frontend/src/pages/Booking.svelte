@@ -3,10 +3,12 @@
   import { currentLang } from '../lib/i18n';
   import LoadingSpinner from '../components/LoadingSpinner.svelte';
 
-  // Import component parts - Only Parking and Car Wash for zima-parking-frontend
+  // Import component parts
   import ServiceSelection from '../components/ServiceSelection.svelte';
   import AirportParkingForm from '../components/AirportParkingForm.svelte';
   import CarWashForm from '../components/CarWashForm.svelte';
+  import AutoServiceForm from '../components/AutoServiceForm.svelte';
+  import TireServiceForm from '../components/TireServiceForm.svelte';
   import BookingConfirmation from '../components/BookingConfirmation.svelte';
 
   // Import translations
@@ -31,7 +33,7 @@
   // Using environment variable if available, otherwise default to the base URL
   // Use local backend for development, production backend for production
 const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev');
+const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://atgroup-backend.fly.dev');
   const backendApiUrl = `${BACKEND_API_URL}/api/send-booking-emails`;
 
   // Handle service selection (Step 1 -> Step 2)
@@ -100,6 +102,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
       // Prepare data structure expected by the backend email endpoint
       // Map fields from the received formData to the backend's expected structure
       const emailData = {
+        ...formData, // Ensure all fields from the child component are included (e.g., carWashPackageName, cars, numberOfCars)
         service: formData.service, // Service type (e.g., 'carWash', 'airportParking')
         customerName: formData.name, // Full name
         // Ensure email is available at root level for backward compatibility
@@ -133,7 +136,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
         passengers: formData.passengers || 1, // Number of passengers
 
         // Always include admin email
-        adminEmail: 'ahmedhasimov@zima-auto.com',
+        adminEmail: 'ahmed@atgroup.hu',
         
         // Add timestamps
         createdAt: new Date().toISOString()
@@ -144,12 +147,12 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
       // Use the environment variable for the API URL with fallback - ensure no trailing slash
       // Use local backend for development, production backend for production
 const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev');
+let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://atgroup-backend.fly.dev');
       apiUrl = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl; // Remove trailing slash if present
       console.log('Using API URL:', apiUrl);
       
       // Use the send-booking-emails endpoint directly
-      const endpoint = `${apiUrl}/send-booking-emails`;
+      const endpoint = `${apiUrl}/api/send-booking-emails`;
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -249,34 +252,7 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
 
    // Scroll to top on mount
    onMount(() => {
-    // Scroll to top on mount
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    // Check for preselected service from home page
-    const preselectedService = sessionStorage.getItem('preselectedService');
-    if (preselectedService && (preselectedService === 'airportParking' || preselectedService === 'carWash')) {
-      // Clear the sessionStorage so it doesn't persist
-      sessionStorage.removeItem('preselectedService');
-      // Small delay to ensure page is fully loaded
-      setTimeout(() => {
-        // Automatically select the service and move to step 2
-        selectService(preselectedService);
-      }, 100);
-    }
-    
-    // Also listen for the custom event in case navigation timing is different
-    const handleServicePreselected = (event) => {
-      const service = event.detail?.service;
-      if (service && (service === 'airportParking' || service === 'carWash')) {
-        selectService(service);
-      }
-    };
-    
-    window.addEventListener('servicePreselected', handleServicePreselected);
-    
-    return () => {
-      window.removeEventListener('servicePreselected', handleServicePreselected);
-    };
+       window.scrollTo({ top: 0, behavior: 'smooth' });
    });
 
 </script>
@@ -328,6 +304,18 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
             />
           {:else if selectedService === 'carWash'}
             <CarWashForm
+              {content}
+              currentLang={lang}
+              on:bookingComplete={handleBookingComplete}
+            />
+          {:else if selectedService === 'autoService'}
+            <AutoServiceForm
+              {content}
+              currentLang={lang}
+              on:bookingComplete={handleBookingComplete}
+            />
+          {:else if selectedService === 'tireService'}
+            <TireServiceForm
               {content}
               currentLang={lang}
               on:bookingComplete={handleBookingComplete}
@@ -481,8 +469,6 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
     .booking-form-container {
       max-width: 100%;
       padding: 1.5rem;
-      box-sizing: border-box;
-      width: 100%;
     }
 
     .booking-header {
@@ -501,17 +487,10 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
     }
     .booking-form-section {
       padding: 2rem 0.5rem;
-      box-sizing: border-box;
-      width: 100%;
-      max-width: 100%;
     }
     .booking-form-container {
       max-width: 100%;
       padding: 1rem;
-      box-sizing: border-box;
-      width: 100%;
-      margin-left: 0;
-      margin-right: 0;
     }
   }
 </style>

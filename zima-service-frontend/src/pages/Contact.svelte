@@ -46,7 +46,7 @@
       },
       email: {
         title: 'EMAIL',
-        content: 'info@zima-auto.com'
+        content: 'info@atgroup.hu'
       },
       hours: {
         title: 'NYITVATARTÁS',
@@ -77,7 +77,7 @@
       },
       email: {
         title: 'EMAIL',
-        content: 'info@zima-auto.com'
+        content: 'info@atgroup.hu'
       },
       hours: {
         title: 'BUSINESS HOURS',
@@ -154,7 +154,7 @@
       customerPhone: formData.phone || '',
       subject: formData.subject || 'Contact Form Inquiry',
       message: formData.message,
-      adminEmail: 'ahmedhasimov@zima-auto.com' // Updated admin email
+      adminEmail: 'ahmed@atgroup.hu' // Updated admin email
     };
 
     console.log('Sending contact form data to backend:', contactData);
@@ -162,7 +162,7 @@
     // Use environment variable if available, otherwise default to the base URL
     // Use local backend for development, production backend for production
 const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev');
+const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BACKEND_API_URL || 'https://atgroup-backend.fly.dev');
 // Normalize base and force single /api prefix (strip trailing slashes and trailing /api if present)
     let apiBase = BACKEND_API_URL.replace(/\/+$/, '').replace(/\/api$/, '');
     const contactEndpoint = `${apiBase}/api/send-contact-email`;
@@ -211,11 +211,11 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
   }
 }
 
-  // Function to open Google Maps directions to Zima Auto
+  // Function to open Google Maps directions to A&T Group
   // This function is now directly called by the button on the contact page
   function openGoogleMapsDirections() {
-    // Using the specific URL that initiates directions to Zima Auto
-    window.open('https://www.google.com/maps/place/Zima+Auto+Airport+Parking+-+Aut%C3%B3szerv%C3%ADz+-+Gumiszerv%C3%ADz+-+K%C3%A9zi+aut%C3%B3mos%C3%B3/@47.4099403,19.2301139,17z/data=!3m1!4b1!4m6!3m5!1s0x4741c1ece824d30f:0x632898beef8d5983!8m2!3d47.4099403!4d19.2326888!16s%2Fg%2F11vyx0730g?entry=ttu&g_ep=EgoyMDI1MDQyMy4wIKXMDSoASAFQAw%3D%3D', '_blank');
+    // Using the specific URL that initiates directions to A&T Group
+    window.open('https://www.google.com/maps/place/A&T Group+Auto+Airport+Parking+-+Aut%C3%B3szerv%C3%ADz+-+Gumiszerv%C3%ADz+-+K%C3%A9zi+aut%C3%B3mos%C3%B3/@47.4099403,19.2301139,17z/data=!3m1!4b1!4m6!3m5!1s0x4741c1ece824d30f:0x632898beef8d5983!8m2!3d47.4099403!4d19.2326888!16s%2Fg%2F11vyx0730g?entry=ttu&g_ep=EgoyMDI1MDQyMy4wIKXMDSoASAFQAw%3D%3D', '_blank');
   }
 
   // Removed functions for popup (toggleDirectionsPopup, closeDirectionsPopup, openGoogleMaps, openWaze)
@@ -266,7 +266,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
             </div>
             <div class="info-content">
               <h3>{content[$currentLang].email.title}</h3>
-              <p><a href="mailto:info@zima-auto.com" class="contact-link">{content[$currentLang].email.content}</a></p>
+              <p><a href="mailto:info@atgroup.hu" class="contact-link">{content[$currentLang].email.content}</a></p>
             </div>
           </div>
         </div>
@@ -401,7 +401,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
       allowfullscreen=""
       loading="lazy"
       referrerpolicy="no-referrer-when-downgrade"
-      title="Zima Auto location">
+      title="A&T Group location">
     </iframe>
     <button
       class="directions-link"

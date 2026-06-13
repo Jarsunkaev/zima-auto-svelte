@@ -15,7 +15,7 @@ try {
   });
 
   // Console logging to verify app loads
-  console.log('Zima Auto website loaded successfully');
+  console.log('A&T Group website loaded successfully');
 } catch (error) {
   console.error('Failed to mount Svelte app:', error);
   

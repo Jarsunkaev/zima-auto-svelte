@@ -55,8 +55,8 @@ export default {
 			'import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL': JSON.stringify(process.env.VITE_GOOGLE_APPS_SCRIPT_URL || ''),
 			'process.env.VITE_GOOGLE_DOCS_SCRIPT_URL': JSON.stringify(process.env.VITE_GOOGLE_DOCS_SCRIPT_URL || ''),
 			'import.meta.env.VITE_GOOGLE_DOCS_SCRIPT_URL': JSON.stringify(process.env.VITE_GOOGLE_DOCS_SCRIPT_URL || ''),
-			'process.env.VITE_BACKEND_API_URL': JSON.stringify(process.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev'),
-			'import.meta.env.VITE_BACKEND_API_URL': JSON.stringify(process.env.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev')
+			'process.env.VITE_BACKEND_API_URL': JSON.stringify(process.env.VITE_BACKEND_API_URL || 'https://atgroup-backend.fly.dev'),
+			'import.meta.env.VITE_BACKEND_API_URL': JSON.stringify(process.env.VITE_BACKEND_API_URL || 'https://atgroup-backend.fly.dev')
 		}),
 		svelte({
 			compilerOptions: {

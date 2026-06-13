@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
 
   // API URLs from environment variables with fallbacks
-  const API_BASE_URL = import.meta.env?.VITE_BACKEND_API_URL || 'https://zima-auto-backend.fly.dev';
+  const API_BASE_URL = import.meta.env?.VITE_BACKEND_API_URL || 'https://atgroup-backend.fly.dev';
   const GOOGLE_APPS_SCRIPT_URL = import.meta.env?.VITE_GOOGLE_DOCS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbyM18UKk9ry8mg4eELgCAG_2xiJ7qeTwwGsBSs0zVuj0tXdeSSxCU-JG8txfRn3yq82Cw/exec';
   
   // Safety check for environment variables
@@ -19,7 +19,7 @@
   
   // Use local backend for development, production backend for production
   const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  const BACKEND_URL = isDevelopment ? 'http://localhost:3001' : (API_BASE_URL.includes('zima-auto-backend') ? API_BASE_URL : 'https://zima-auto-backend.fly.dev');
+  const BACKEND_URL = isDevelopment ? 'http://localhost:3001' : (API_BASE_URL.includes('atgroup-backend') ? API_BASE_URL : 'https://atgroup-backend.fly.dev');
   
   console.log('Environment detection:', { isDevelopment, hostname: window.location.hostname, BACKEND_URL });
 
@@ -28,8 +28,8 @@
 
   // Admin credentials
   const ADMIN_CREDENTIALS = {
-    'ahmedhasimov@zima-auto.com': 'Hurma123',
-    'alihancoskun@zima-auto.com': 'Hurma123'
+    'ahmed@atgroup.hu': 'Hurma123',
+    'info@atgroup.hu': 'Hurma123'
   };
 
   let userEmail = '';
@@ -697,7 +697,7 @@
 
     <div class="contact-info">
         <p><strong>Érkezéskor hívja:</strong> +36 70 555 0588</p>
-        <p><strong>Email:</strong> info@zima-auto.com</p>
+        <p><strong>Email:</strong> info@atgroup.hu</p>
     </div>
 
     <div class="footer">
@@ -742,7 +742,7 @@
   function createTextVersion(booking) {
     const currentDate = getCurrentDate();
     
-    return `ZIMA AUTO
+    return `A&T GROUP
 
 MEGRENDELŐLAP
 Repülőtér Parkolás
@@ -755,7 +755,7 @@ Nap: ${booking["HÁNY NAP"]}
 Elérhetőség: ${booking["EMAIL"]} / ${booking["TELEFON"]}
 
 Érkezéskor hívja: +36 70 555 0588
-info@zima-auto.com
+info@atgroup.hu
 
 Dátum: Vecsés, ${currentDate}
 
@@ -1278,7 +1278,7 @@ Megrendelő aláírása: _________________________________`;
 </script>
 
 <svelte:head>
-  <title>Admin Panel - Zima Auto</title>
+  <title>Admin Panel - A&T Group</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </svelte:head>
 
@@ -1292,7 +1292,7 @@ Megrendelő aláírása: _________________________________`;
     <div class="login-wrapper">
       <div class="login-container">
         <div class="login-header">
-          <img src="images/zima-logo.avif" alt="Zima Auto Logo" class="login-logo" />
+          <img src="images/newlog_full.png" alt="A&T Group Logo" class="login-logo" />
           <h1>Admin Panel</h1>
           <p>Kérem, jelentkezzen be a folytatáshoz</p>
         </div>
@@ -2275,7 +2275,7 @@ Megrendelő aláírása: _________________________________`;
   }
   
   .login-logo {
-    max-width: 80px; /* Reduced from 120px to 80px */
+    max-width: 120px; /* Increased from 80px */
     margin-bottom: 1.5rem;
   }
   
@@ -2395,7 +2395,7 @@ Megrendelő aláírása: _________________________________`;
   .admin-main {
     flex: 1;
     padding: 2rem;
-    margin-top: 80px; /* Add space for the main site header */
+    margin-top: 0; /* Header is hidden on admin page */
     max-width: 1400px;
     margin-left: auto;
     margin-right: auto;

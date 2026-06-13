@@ -1,7 +1,7 @@
 # Backend configuration for zima-auto
 # See: https://fly.io/docs/reference/configuration/
 
-app = 'zima-auto-backend'
+app = 'atgroup-backend'
 primary_region = 'ams'
 
 [build]

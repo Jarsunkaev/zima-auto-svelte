@@ -20,11 +20,11 @@
     });
   }
 
-  // Function to open Google Maps directions to Zima Auto
+  // Function to open Google Maps directions to A&T Group
   function openGoogleMapsDirections() {
     // Updated URL based on user feedback
     window.open(
-      "https://www.google.com/maps/place/Zima+Auto+Airport+Parking+-+Aut%C3%B3szerv%C3%ADz+-+Gumiszerv%C3%ADz+-+K%C3%A9zi+aut%C3%B3mos%C3%B3/@47.4099403,19.2301139,17z/data=!3m1!4b1!4m6!3m5!1s0x4741c1ece824d30f:0x632898beef8d5983!8m2!3d47.4099403!4d19.2326888!16s%2Fg%2F11vyx0730g?entry=ttu&g_ep=EgoyMDI1MDQyMy4wIKXMDSoASAFQAw%3D%3D",
+      "https://www.google.com/maps/place/A&T Group+Auto+Airport+Parking+-+Aut%C3%B3szerv%C3%ADz+-+Gumiszerv%C3%ADz+-+K%C3%A9zi+aut%C3%B3mos%C3%B3/@47.4099403,19.2301139,17z/data=!3m1!4b1!4m6!3m5!1s0x4741c1ece824d30f:0x632898beef8d5983!8m2!3d47.4099403!4d19.2326888!16s%2Fg%2F11vyx0730g?entry=ttu&g_ep=EgoyMDI1MDQyMy4wIKXMDSoASAFQAw%3D%3D",
       "_blank",
     );
   }
@@ -47,7 +47,7 @@
       <div class="footer-grid">
         <div class="footer-info">
           <div class="footer-logo">
-            <img src="images/zima-logo.avif" alt="Zima Auto" />
+            <img src="images/newlog_full.png" alt="A&T Group" />
           </div>
           <div class="contact-info">
             <h3>{t("footer.visit", $currentLang)}</h3>
@@ -60,14 +60,14 @@
             </p>
             <p>
               <strong>{t("footer.email", $currentLang)}:</strong>
-              <a href="mailto:info@zima-auto.com" class="contact-link"
+              <a href="mailto:info@atgroup.hu" class="contact-link"
                 >{t("footer.emailAddress", $currentLang)}</a
               >
             </p>
           </div>
           <div class="social-links">
             <a
-              href="https://www.facebook.com/people/Zima-Aut%C3%B3/61558143560827/?_rdr"
+              href="https://www.facebook.com/people/A&T Group-Aut%C3%B3/61558143560827/?_rdr"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -171,7 +171,7 @@
               allowfullscreen=""
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
-              title="Zima Auto location"
+              title="A&T Group location"
             >
             </iframe>
             <button class="directions-link" on:click={openGoogleMapsDirections}>
@@ -270,7 +270,7 @@
   }
 
   .footer-logo img {
-    height: 45px;
+    height: 110px;
   }
 
   .contact-info h3 {
