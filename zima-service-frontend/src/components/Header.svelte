@@ -91,9 +91,9 @@
             {t('nav.booking', $currentLang)}
           </a>
         </li>
-        <li class:active={currentPage === 'about'}>
-          <a href="#about" on:click|preventDefault={() => handleNavClick('about')}>
-            {t('nav.about', $currentLang)}
+        <li>
+          <a href="https://atparking.hu" target="_blank" rel="noopener noreferrer">
+            {$currentLang === 'hu' ? 'REPTÉRI PARKOLÓ' : 'AIRPORT PARKING'}
           </a>
         </li>
         <li class:active={currentPage === 'services'}>

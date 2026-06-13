@@ -47,8 +47,8 @@
   let totalPages = 1;
   
   // Sorting and filtering state
-  let sortField = 'TÁVOZÁS';
-  let sortDirection = 'asc';
+  let sortField = 'CREATED_AT';
+  let sortDirection = 'desc';
   let selectedMonth = '';
   let searchQuery = '';
   let filteredBookings = [];
@@ -67,10 +67,7 @@
   let tabRefs = {};
 
   const tabs = [
-    { id: 'airport-parking', label: 'Airport Parking' },
-    { id: 'car-wash', label: 'Car Wash' },
-    { id: 'tire-service', label: 'Tire Service' },
-    { id: 'car-maintenance', label: 'Car Maintenance' }
+    { id: 'airport-parking', label: 'Airport Parking' }
   ];
 
   // Maintenance tickets state
@@ -143,16 +140,21 @@
 
       // Apply sorting
       tempFiltered.sort((a, b) => {
-        let aValue = a[sortField];
-        let bValue = b[sortField];
+        let currentSortField = sortField;
+        if (sortField === 'CREATED_AT') {
+          currentSortField = a['CREATED_AT'] !== undefined ? 'CREATED_AT' : (a['createdAt'] !== undefined ? 'createdAt' : 'ID');
+        }
+
+        let aValue = a[currentSortField];
+        let bValue = b[currentSortField];
 
         // Handle date sorting
-        if (sortField === 'TÁVOZÁS' || sortField === 'ÉRKEZÉS') {
+        if (currentSortField === 'TÁVOZÁS' || currentSortField === 'ÉRKEZÉS' || currentSortField === 'CREATED_AT' || currentSortField === 'createdAt') {
           aValue = aValue ? new Date(aValue).getTime() : 0;
           bValue = bValue ? new Date(bValue).getTime() : 0;
         }
         // Handle numeric sorting
-        else if (sortField === 'HÁNY NAP' || sortField === 'ÖSSZEG') {
+        else if (currentSortField === 'HÁNY NAP' || currentSortField === 'ÖSSZEG' || currentSortField === 'ID') {
           aValue = parseFloat(aValue) || 0;
           bValue = parseFloat(bValue) || 0;
         }
@@ -330,6 +332,13 @@
 
   // Check authentication on component mount
   onMount(async () => {
+    // Restrict access to atgroup.hu or local dev
+    const hostname = window.location.hostname;
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1' && !hostname.includes('atgroup.hu') && !hostname.includes('atgroup-frontend')) {
+      window.location.href = 'https://atgroup.hu/admin';
+      return;
+    }
+
     // Check if user is already logged in
     const savedEmail = localStorage.getItem('adminEmail');
     if (savedEmail && Object.keys(ADMIN_CREDENTIALS).includes(savedEmail)) {
@@ -1379,19 +1388,7 @@ Megrendelő aláírása: _________________________________`;
       <main class="admin-main">
         <!-- Tab Navigation -->
         <div class="tab-navigation">
-          <div class="tab-buttons">
-            {#each tabs as tab, index}
-              <button 
-                class="tab-button" 
-                class:active={activeTab === tab.id}
-                on:click={() => updateSlider(tab.id)}
-                bind:this={tabRefs[tab.id]}
-              >
-                <span class="tab-label">{tab.label}</span>
-              </button>
-            {/each}
-            <div class="tab-slider" style="transform: translateX({sliderLeft}px); width: {sliderWidth}px;"></div>
-          </div>
+          <h2 class="tab-heading">Airport Parking</h2>
           <div class="user-info">
             <div class="user-email">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1546,13 +1543,13 @@ Megrendelő aláírása: _________________________________`;
                     <tbody>
                       {#each paginatedBookings as booking}
                         <tr>
-                          <td class="name-cell">{booking["NÉV"]}</td>
-                          <td class="license-cell">{booking["RENDSZÁM"]}</td>
-                          <td class="date-cell">{formatDate(booking["ÉRKEZÉS"])}</td>
-                          <td class="date-cell">{formatDate(booking["TÁVOZÁS"])}</td>
-                          <td class="number-cell">{booking["HÁNY NAP"]}</td>
-                          <td class="total-cell">{booking["ÖSSZEG"]}</td>
-                          <td>
+                          <td class="name-cell" data-label="Ügyfél neve">{booking["NÉV"]}</td>
+                          <td class="license-cell" data-label="Rendszám">{booking["RENDSZÁM"]}</td>
+                          <td class="date-cell" data-label="Érkezés">{formatDate(booking["ÉRKEZÉS"])}</td>
+                          <td class="date-cell" data-label="Távozás">{formatDate(booking["TÁVOZÁS"])}</td>
+                          <td class="number-cell" data-label="Nap">{booking["HÁNY NAP"]}</td>
+                          <td class="total-cell" data-label="Összeg">{booking["ÖSSZEG"]}</td>
+                          <td data-label="Státusz">
                             <div class="status-select-container" class:paid={booking["ÁLLAPOT"] === "FIZETETT"} class:unpaid={!booking["ÁLLAPOT"] || booking["ÁLLAPOT"] === "NEM FIZETETT"}>
                               <select 
                                 class="status-select"
@@ -1569,23 +1566,36 @@ Megrendelő aláírása: _________________________________`;
                               </select>
                             </div>
                           </td>
-                          <td class="actions-cell">
+                          <td class="actions-cell" data-label="Műveletek">
                             <button 
                               class="document-button"
                               on:click={() => {
                                 console.log('Document button clicked for booking:', booking);
-                                openOrderModal(booking);
+                                selectedBooking = booking;
+                                generateOrderForm();
                               }}
+                              disabled={isGenerating && selectedBooking === booking}
                               title="Megrendelőlap generálása"
                             >
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14,2 14,8 20,8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                                <polyline points="10,9 9,9 8,9"></polyline>
-                              </svg>
-                              Letöltés
+                              {#if isGenerating && selectedBooking === booking}
+                                <div class="button-spinner" style="width: 16px; height: 16px; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; margin-right: 8px; display: inline-block; vertical-align: middle;"></div>
+                                <span style="vertical-align: middle;">Generálás</span>
+                              {:else if generationSuccess && selectedBooking === booking}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
+                                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                <span style="vertical-align: middle;">Kész</span>
+                              {:else}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
+                                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                  <polyline points="14,2 14,8 20,8"></polyline>
+                                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                                  <polyline points="10,9 9,9 8,9"></polyline>
+                                </svg>
+                                <span style="vertical-align: middle;">Letöltés</span>
+                              {/if}
                             </button>
                           </td>
                         </tr>
@@ -1888,70 +1898,7 @@ Megrendelő aláírása: _________________________________`;
   {/if}
 </div>
 
-<!-- Order Form Modal -->
-{#if showOrderModal && selectedBooking}
-  <div 
-    class="modal-overlay"
-    on:click={closeOrderModal}
-    on:keydown={(e) => {
-      if (e.key === 'Escape') {
-        closeOrderModal();
-      }
-    }}
-    tabindex="-1">
-    <div 
-      class="modal-content"
-      on:click|stopPropagation
-      on:keydown={(e) => {
-        if (e.key === 'Escape') {
-          closeOrderModal();
-        }
-      }}
-      role="dialog"
-      aria-labelledby="modal-title"
-      aria-modal="true">
-      <div class="modal-header">
-        <h3 id="modal-title">Megrendelőlap Generálása</h3>
-        <button 
-          class="close-button"
-          on:click={closeOrderModal}
-          aria-label="Close modal">
-          ×
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="booking-details">
-          <h4>Foglalás adatai:</h4>
-          <p><strong>Név:</strong> {selectedBooking["NÉV"]}</p>
-          <p><strong>Rendszám:</strong> {selectedBooking["RENDSZÁM"]}</p>
-          <p><strong>Érkezés:</strong> {formatDate(selectedBooking["ÉRKEZÉS"])}</p>
-          <p><strong>Távozás:</strong> {formatDate(selectedBooking["TÁVOZÁS"])}</p>
-          <p><strong>Nap:</strong> {selectedBooking["HÁNY NAP"]}</p>
-          <p><strong>Összeg:</strong> {selectedBooking["ÖSSZEG"]}</p>
-        </div>
-        <button 
-          class="generate-button"
-          class:generating={isGenerating}
-          class:success={generationSuccess}
-          on:click={generateOrderForm}
-          disabled={isGenerating}>
-          {#if isGenerating}
-            <div class="button-spinner"></div>
-            <span>Generálás</span>
-          {:else if generationSuccess}
-            <svg class="success-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M22 4 12 14.01l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Sikeres!</span>
-          {:else}
-            <span>Megrendelőlap Generálása</span>
-          {/if}
-        </button>
-      </div>
-    </div>
-  </div>
-{/if}
+
 
 <!-- Ticket Detail Modal -->
 {#if showTicketModal && selectedTicket}
@@ -2243,7 +2190,7 @@ Megrendelő aláírása: _________________________________`;
     margin-bottom: 1rem;
   }
   
-  @keyframes spin {
+  @keyframes -global-spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
@@ -2395,7 +2342,7 @@ Megrendelő aláírása: _________________________________`;
   .admin-main {
     flex: 1;
     padding: 2rem;
-    margin-top: 0; /* Header is hidden on admin page */
+    margin-top: 100px; /* Offset for global fixed header */
     max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
@@ -2406,6 +2353,13 @@ Megrendelő aláírása: _________________________________`;
   }
 
   /* Tab Navigation */
+  .tab-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+  }
+
   .tab-navigation {
     display: flex;
     justify-content: space-between;
@@ -3829,6 +3783,10 @@ Megrendelő aláírása: _________________________________`;
       padding: 1rem;
     }
     
+    .tab-heading {
+      font-size: 1.2rem;
+    }
+    
     .filter-controls {
       flex-direction: column;
       align-items: stretch;
@@ -3837,13 +3795,15 @@ Megrendelő aláírása: _________________________________`;
     }
 
     .filter-left {
-      justify-content: center;
+      flex-direction: column;
+      align-items: stretch;
       gap: 1rem;
     }
 
     .filter-right {
-      justify-content: center;
-      text-align: center;
+      flex-direction: column;
+      align-items: stretch;
+      text-align: left;
     }
 
     .search-input {
@@ -3857,10 +3817,7 @@ Megrendelő aláírása: _________________________________`;
     }
 
     .tab-buttons {
-      width: 100%;
-      overflow-x: auto;
-      gap: 0.25rem;
-      padding: 0.2rem;
+      display: none;
     }
 
     .tab-slider {
@@ -3871,6 +3828,8 @@ Megrendelő aláírása: _________________________________`;
       padding: 0.6rem 1rem;
       font-size: 0.85rem;
       min-width: fit-content;
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     .user-info {
@@ -3891,19 +3850,7 @@ Megrendelő aláírása: _________________________________`;
       padding: 1.5rem;
     }
     
-    /* Tab Navigation Mobile */
-    .tab-navigation {
-      padding: 0.25rem;
-      gap: 0.25rem;
-    }
-    
-    .tab-button {
-      padding: 0.75rem 1rem;
-      font-size: 0.85rem;
-      gap: 0.5rem;
-    }
 
-    
     /* Coming Soon Mobile */
     .coming-soon {
       padding: 2rem 1rem;
@@ -3963,6 +3910,10 @@ Megrendelő aláírása: _________________________________`;
     
     .bookings-table td:last-child {
       border-bottom: none;
+    }
+    
+    .bookings-table td.date-cell {
+      display: none !important;
     }
     
     .status-select {

@@ -1412,7 +1412,7 @@ app.post('/api/generate-order-form', async (req, res) => {
   try {
     console.log('Proxying Google Apps Script request:', req.body);
     
-    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzs6b-VCT2Zge6aVd2tc8aGvh2cqPRtl8GI4yXI-fhmHQgtxQs8IOVdEpLJ6hcvz2MnPg/exec';
+    const GOOGLE_APPS_SCRIPT_URL = process.env.GOOGLE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbzs6b-VCT2Zge6aVd2tc8aGvh2cqPRtl8GI4yXI-fhmHQgtxQs8IOVdEpLJ6hcvz2MnPg/exec';
     
     const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
       method: 'POST',

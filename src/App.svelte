@@ -16,8 +16,22 @@
 	import DiscountPopup from './components/DiscountPopup.svelte';
 	import CookieConsent from './components/CookieConsent.svelte';
   
+	// Get initial page before component mounts to prevent double rendering
+	function getInitialPage() {
+		if (typeof window !== 'undefined') {
+			const path = window.location.pathname;
+			if (path === '/thankyou') return 'thankyou';
+			if (path === '/' || path === '') return 'home';
+			const pageName = path.substring(1).split('/')[0];
+			if (['about', 'services', 'contact', 'booking', 'privacy', 'thankyou', 'admin', 'imprint', 'terms', 'faq'].includes(pageName)) {
+				return pageName;
+			}
+		}
+		return 'home';
+	}
+
 	// Page routing
-	let currentPage = 'home';
+	let currentPage = getInitialPage();
 	let pageLoading = true;
 	let pageTransition = false;
 	let lang = 'hu'; // Local state for current language
@@ -137,9 +151,7 @@ const handleRouting = () => {
     <div class="spinner"></div>
   </div>
 
-  {#if currentPage !== 'admin'}
-    <Header {navigate} {currentPage} {lang} />
-  {/if}
+  <Header {navigate} {currentPage} {lang} />
 
   <main>
     {#if currentPage === 'home'}

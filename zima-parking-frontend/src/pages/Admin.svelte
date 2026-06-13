@@ -330,6 +330,13 @@
 
   // Check authentication on component mount
   onMount(async () => {
+    // Restrict access to atgroup.hu or local dev
+    const hostname = window.location.hostname;
+    if (hostname !== 'localhost' && hostname !== '127.0.0.1' && !hostname.includes('atgroup.hu') && !hostname.includes('atgroup-frontend')) {
+      window.location.href = 'https://atgroup.hu/admin';
+      return;
+    }
+
     // Check if user is already logged in
     const savedEmail = localStorage.getItem('adminEmail');
     if (savedEmail && Object.keys(ADMIN_CREDENTIALS).includes(savedEmail)) {
@@ -2243,7 +2250,19 @@ Megrendelő aláírása: _________________________________`;
     margin-bottom: 1rem;
   }
   
-  @keyframes spin {
+  .button-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  @keyframes -global-spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
