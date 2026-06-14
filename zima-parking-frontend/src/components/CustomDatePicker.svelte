@@ -381,10 +381,10 @@
 
   .datepicker-input {
     width: 100%;
-    padding: 0.6rem 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 0.9rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    font-size: 1rem;
     font-family: inherit;
     background-color: white;
     color: var(--text);
@@ -394,6 +394,7 @@
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
+    box-sizing: border-box;
   }
 
   .datepicker-input:hover {

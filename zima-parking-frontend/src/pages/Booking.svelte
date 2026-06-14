@@ -250,9 +250,18 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
     window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
   }
 
-   // Scroll to top on mount
+   // Scroll to top on mount and check for preselected service
    onMount(() => {
        window.scrollTo({ top: 0, behavior: 'smooth' });
+       
+       // Check if a service was preselected from the home page
+       const preselectedService = sessionStorage.getItem("preselectedService");
+       if (preselectedService) {
+           selectedService = preselectedService;
+           currentStep = 2;
+           // Clear it so it doesn't persist if they navigate away and back
+           sessionStorage.removeItem("preselectedService");
+       }
    });
 
 </script>

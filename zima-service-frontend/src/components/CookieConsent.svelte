@@ -357,12 +357,12 @@
         width: 100%;
         max-width: 100%;
         margin-bottom: 0;
-        /* Use safe area insets for mobile browsers - adds padding when browser nav is visible */
-        padding-bottom: env(safe-area-inset-bottom, 0);
       }
   
       .cookie-consent-banner {
         border-radius: 12px 12px 0 0;
+        /* Use safe area insets for mobile browsers - adds padding when browser nav is visible */
+        padding-bottom: env(safe-area-inset-bottom, 0);
       }
     }
     
@@ -370,6 +370,9 @@
       .cookie-consent-container {
         /* Ensure it stays flush at the bottom - safe-area-inset handles dynamic browser nav */
         bottom: 0;
+      }
+
+      .cookie-consent-banner {
         padding-bottom: env(safe-area-inset-bottom, 0);
       }
 
@@ -400,6 +403,10 @@
     
     @media screen and (max-width: 480px) {
       .cookie-consent-container {
+        bottom: 0;
+      }
+
+      .cookie-consent-banner {
         /* Add small padding on very small screens for better appearance */
         padding-bottom: max(env(safe-area-inset-bottom, 0), 0.5rem);
       }

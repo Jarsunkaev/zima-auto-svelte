@@ -338,6 +338,14 @@
 
   /* Responsive styles */
   @media screen and (max-width: 768px) {
+    .logo img {
+      height: 55px;
+    }
+
+    header.scrolled .logo img {
+      height: 45px;
+    }
+
     .mobile-menu-toggle {
       display: flex;
     }

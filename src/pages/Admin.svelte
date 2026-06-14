@@ -2372,61 +2372,6 @@ Megrendelő aláírása: _________________________________`;
     gap: 1rem;
   }
 
-  .tab-buttons {
-    display: flex;
-    gap: 0.5rem;
-    position: relative;
-    background: #f1f5f9;
-    border-radius: 8px;
-    padding: 0.25rem;
-    align-items: center;
-  }
-
-  .tab-slider {
-    position: absolute;
-    top: 0.25rem;
-    left: 0.25rem;
-    height: calc(100% - 0.5rem);
-    background: white;
-    border-radius: 6px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    z-index: 1;
-    min-width: 80px; /* Minimum width to prevent too small slider */
-    transform-origin: left center;
-  }
-
-  .tab-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    background: none;
-    border: none;
-    color: #64748b;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: all 0.3s;
-    white-space: nowrap;
-    position: relative;
-    z-index: 2;
-    min-width: fit-content;
-  }
-
-  .tab-button:hover {
-    color: #334155;
-  }
-
-  .tab-button.active {
-    color: #1a202c;
-  }
-
-  .tab-label {
-    font-weight: 600;
-  }
 
   .user-info {
     display: flex;
@@ -3005,89 +2950,6 @@ Megrendelő aláírása: _________________________________`;
     padding: 1.5rem !important;
   }
 
-  .booking-details {
-    margin-bottom: 1.5rem !important;
-  }
-
-  .booking-details h4 {
-    margin: 0 0 1rem 0 !important;
-    color: #333 !important;
-  }
-
-  .booking-details p {
-    margin: 0.5rem 0 !important;
-  }
-
-  .generate-button {
-    background-color: #2c3e50 !important;
-    color: white !important;
-    border: none !important;
-    padding: 1rem !important;
-    border-radius: 8px !important;
-    cursor: pointer !important;
-    font-weight: 600 !important;
-    width: 100% !important;
-    font-size: 1rem !important;
-    transition: all 0.3s ease !important;
-    position: relative !important;
-    overflow: hidden !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 0.5rem !important;
-  }
-
-  .generate-button:hover {
-    background-color: #1a252f !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3) !important;
-  }
-
-  .generate-button:active {
-    transform: translateY(0) !important;
-    box-shadow: 0 4px 15px rgba(44, 62, 80, 0.2) !important;
-  }
-
-  .generate-button:disabled {
-    background-color: #95a5a6 !important;
-    cursor: not-allowed !important;
-    transform: none !important;
-    box-shadow: none !important;
-  }
-
-  .generate-button.generating {
-    background-color: #00bae5 !important;
-    cursor: not-allowed !important;
-    transform: none !important;
-    box-shadow: none !important;
-  }
-
-  .generate-button.success {
-    background-color: #10b981 !important;
-    cursor: default !important;
-    transform: none !important;
-    box-shadow: none !important;
-  }
-
-  .button-spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top: 2px solid white;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    flex-shrink: 0;
-  }
-
-  .success-icon {
-    color: white;
-    flex-shrink: 0;
-  }
-
-  .generate-button.generating span,
-  .generate-button.success span {
-    color: white;
-  }
 
   /* Maintenance Dashboard Styles */
   .maintenance-dashboard {
@@ -3816,21 +3678,6 @@ Megrendelő aláírása: _________________________________`;
       padding: 1rem;
     }
 
-    .tab-buttons {
-      display: none;
-    }
-
-    .tab-slider {
-      min-width: 60px; /* Smaller minimum width for mobile */
-    }
-
-    .tab-button {
-      padding: 0.6rem 1rem;
-      font-size: 0.85rem;
-      min-width: fit-content;
-      flex-shrink: 0;
-      white-space: nowrap;
-    }
 
     .user-info {
       width: 100%;

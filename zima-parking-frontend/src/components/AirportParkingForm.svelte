@@ -579,6 +579,22 @@
     transition: all 0.3s ease;
     font-family: inherit;
     width: 100%;
+    box-sizing: border-box;
+  }
+  
+  input[type="time"] {
+    background-color: white;
+    text-align: left;
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    height: auto;
+  }
+  
+  input[type="time"]::-webkit-date-and-time-value {
+    text-align: left;
   }
   
   input:focus, select:focus {
