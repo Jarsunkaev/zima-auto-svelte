@@ -1,10 +1,9 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { currentLang, t } from '../lib/i18n';
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  import VideoPlayer from '../components/VideoPlayer.svelte';
-
+  
   // Register ScrollTrigger
   gsap.registerPlugin(ScrollTrigger);
 
@@ -100,601 +99,499 @@
   };
 
   // Keep existing animation logic and ensure ScrollTrigger is used
+  let ctx;
+
   onMount(() => {
-    // Animate sections
-    gsap.from('.about-section', {
-      y: 50,
-      duration: 0.8,
-      stagger: 0.3,
-      ease: 'power2.out',
-      scrollTrigger: { // Use scrollTrigger for sections
-          trigger: '.about-section',
-          start: 'top 80%', // Adjust trigger point as needed
-          // markers: true // Uncomment for debugging trigger
-      }
-    });
+    ctx = gsap.context(() => {
+      // Cinematic fade-in with slight scale
+      gsap.fromTo('.about-hero .container > *', 
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power3.out',
+          clearProps: 'all'
+        }
+      );
 
-    // Animate the video section
-    gsap.from('.video-section-wrapper', {
-      y: 40,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.values-section',
-        start: 'top 70%',
-      }
-    });
+      // Animate individual sections with glassmorphism reveal
+      gsap.utils.toArray('.about-grid').forEach((section) => {
+        const content = section.querySelector('.about-content');
+        if (content) {
+          gsap.fromTo(content, 
+            { x: section.classList.contains('reverse') ? 50 : -50, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+              },
+              clearProps: 'all'
+            }
+          );
+        }
 
-    // Animate the two new content blocks in the offerings section grid
-    gsap.from('.offerings-section .about-content', {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.3, // Stagger animation between the two blocks
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.offerings-section', // Trigger when the offerings section comes into view
-        start: 'top 80%', // Adjust trigger point
-        // markers: true, // Uncomment for debugging
-      }
+        const image = section.querySelector('.about-image-wrapper');
+        if (image) {
+          gsap.fromTo(image, 
+            { x: section.classList.contains('reverse') ? -50 : 50, opacity: 0, scale: 0.95 },
+            {
+              x: 0,
+              opacity: 1,
+              scale: 1,
+              duration: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+              },
+              clearProps: 'all'
+            }
+          );
+        }
+      });
+      
+      // Refresh ScrollTrigger after a slight delay to ensure layout is ready
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 150);
     });
-     
-    // Animate the images in the two new grid blocks
-    gsap.from('.offerings-section .about-image', {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.15, // Slightly delay image animation
-      stagger: 0.3, // Stagger animation between the two images
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: '.offerings-section', // Trigger when the offerings section comes into view
-        start: 'top 80%', // Adjust trigger point
-        // markers: true, // Uncomment for debugging
-      }
-    });
+  });
+
+  onDestroy(() => {
+    if (ctx) ctx.revert();
   });
 </script>
 
 <section class="about-hero">
-  <div class="container">
-    <h1>{content[$currentLang].title}</h1>
-    <p>{content[$currentLang].subtitle}</p>
+  <div class="hero-background"></div>
+  <div class="container relative z-10">
+    <h1 class="hero-title">{content[$currentLang].title}</h1>
+    <p class="hero-subtitle">{content[$currentLang].subtitle}</p>
+  </div>
+  <div class="hero-wave">
+    <svg preserveAspectRatio="none" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+    </svg>
   </div>
 </section>
 
 <div class="about-container">
-  <section class="about-section story-section">
+  <!-- Section 1: Story -->
+  <section class="about-section odd-section">
     <div class="container">
       <div class="about-grid">
-        <div class="about-content">
+        <div class="about-content glass-card">
           <h2>{content[$currentLang].story.title}</h2>
+          <div class="heading-accent"></div>
           <p>{content[$currentLang].story.text}</p>
         </div>
-        <div class="about-image">
+        <div class="about-image-wrapper">
+          <div class="image-glow"></div>
           <img src="images/parking-lot.webp" alt="A&T Group parking lot" />
         </div>
       </div>
     </div>
   </section>
 
-  <section class="about-section mission-section">
+  <!-- Section 2: Mission -->
+  <section class="about-section even-section">
     <div class="container">
       <div class="about-grid reverse">
-        <div class="about-image">
+        <div class="about-image-wrapper">
+          <div class="image-glow"></div>
           <img src="images/map.avif" alt="Car Wash Service" />
         </div>
-        <div class="about-content">
+        <div class="about-content glass-card">
           <h2>{content[$currentLang].mission.title}</h2>
+          <div class="heading-accent"></div>
           <p>{content[$currentLang].mission.text}</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="about-section values-section">
+  <!-- Section 3: Offerings Block 1 -->
+  <section class="about-section odd-section">
     <div class="container">
-      <h2 class="section-title">{content[$currentLang].values.title}</h2>
+      <h2 class="section-main-title">{content[$currentLang].offerings.mainTitle}</h2>
       
-      <div class="video-section-wrapper">
-        <div class="video-container">
-          <VideoPlayer 
-            videoSrc="/zima_video.mp4" 
-            thumbnailSrc="/images/zima-gate.webp" 
-          />
-        </div>
-        <p class="video-caption">{content[$currentLang].values.videoCaption}</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="about-section offerings-section">
-    <div class="container">
-      <h2 class="section-title">{content[$currentLang].offerings.mainTitle}</h2>
-
       <div class="about-grid">
-        <div class="about-content">
+        <div class="about-content glass-card">
           <h3>{content[$currentLang].offerings.block1.title}</h3>
           <p>{content[$currentLang].offerings.block1.text}</p>
-          <ul>
+          <ul class="custom-list">
             {#each content[$currentLang].offerings.block1.listItems as item}
               <li>
-                {#if $currentLang === 'hu'}
-                  {@html item.replace(/\n/g, '<br><br>')}
-                {:else}
-                  {item}
-                {/if}
+                <div class="list-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <span>
+                  {#if $currentLang === 'hu'}
+                    {@html item.replace(/\n/g, '<br><br>')}
+                  {:else}
+                    {item}
+                  {/if}
+                </span>
               </li>
             {/each}
           </ul>
         </div>
-        <div class="about-image">
+        <div class="about-image-wrapper">
+          <div class="image-glow"></div>
           <img src="images/workshop2.jpg" alt="Auto Service" />
         </div>
       </div>
+    </div>
+  </section>
 
+  <!-- Section 4: Offerings Block 2 -->
+  <section class="about-section even-section">
+    <div class="container">
       <div class="about-grid reverse">
-        <div class="about-image">
+        <div class="about-image-wrapper">
+          <div class="image-glow"></div>
           <img src="images/car-wash.webp" alt="Car Wash" />
         </div>
-        <div class="about-content">
+        <div class="about-content glass-card">
           <h3>{content[$currentLang].offerings.block2.paymentOptionsTitle}</h3>
           <p>{content[$currentLang].offerings.block2.paymentOptionsText}</p>
 
-          <h3>{content[$currentLang].offerings.block2.pricesTitle}</h3>
+          <h3 class="mt-4">{content[$currentLang].offerings.block2.pricesTitle}</h3>
           <p>{content[$currentLang].offerings.block2.pricesText}</p>
 
-          <p>{@html content[$currentLang].offerings.block2.conclusion.replace(/\n/g, '<br><br>')}</p>
+          <div class="conclusion-box">
+            <p>{@html content[$currentLang].offerings.block2.conclusion.replace(/\n/g, '<br>')}</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="about-cta">
-    <div class="container">
-      <a href="/services" class="btn btn-primary">{content[$currentLang].cta}</a>
-    </div>
-  </section>
+  
 </div>
 
 <style>
-  /* Keep base styles */
+  :global(body) {
+    background-color: rgb(253, 251, 238);
+  }
+
+  /* --- HERO SECTION --- */
   .about-hero {
-    background-color: var(--secondary);
+    position: relative;
+    background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(27, 42, 75) 100%);
     color: white;
-    padding: 8rem 2rem 5rem;
+    padding: 10rem 2rem 8rem;
     text-align: center;
+    overflow: hidden;
   }
 
-  .about-hero h1 {
-    font-size: 3rem;
+  .hero-background {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%),
+                      radial-gradient(circle at bottom left, rgba(255,255,255,0.03) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .relative { position: relative; }
+  .z-10 { z-index: 10; }
+
+  .hero-title {
+    font-size: 4rem;
+    font-weight: 800;
     margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
-  .about-hero p {
-    font-size: 1.2rem;
-    max-width: 600px;
+  .hero-subtitle {
+    font-size: 1.35rem;
+    max-width: 700px;
     margin: 0 auto;
-    opacity: 0.9;
+    opacity: 0.85;
+    line-height: 1.6;
+    font-weight: 300;
   }
 
+  .hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+  }
+
+  .hero-wave svg {
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 120px;
+    fill: rgb(253, 251, 238);
+  }
+
+  /* --- SECTIONS & LAYOUT --- */
   .about-container {
     padding-bottom: 4rem;
+    background-color: rgb(253, 251, 238);
   }
 
-  /* Apply to all sections except hero and cta */
   .about-section {
-    padding: 5rem 2rem;
+    padding: 6rem 2rem;
   }
 
-  .about-section:nth-of-type(odd) { /* Apply to odd sections in the container */
-     background-color: white;
+  .odd-section {
+    background-color: rgb(253, 251, 238);
   }
 
-  .about-section:nth-of-type(even) { /* Apply to even sections in the container */
-     background-color: var(--light);
+  .even-section {
+    background-color: #ffffff;
   }
 
   .about-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: 5rem;
     align-items: center;
-    margin-bottom: 4rem; /* Space between grid blocks if multiple in a section */
-  }
-
-  /* Remove margin-bottom for the last grid in a section */
-  .about-section .about-grid:last-child {
-    margin-bottom: 0;
+    margin-bottom: 2rem;
   }
 
   .about-grid.reverse {
     direction: rtl;
   }
 
-  .about-grid.reverse .about-content,
-  .about-grid.reverse .about-image {
-    direction: ltr; /* Reset text and image direction */
+  .about-grid.reverse > * {
+    direction: ltr;
   }
 
-  .about-content h2 { /* Styles for main titles within grid content */
-    font-size: 2.2rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    padding-bottom: 15px;
+  /* --- GLASS CARDS (Content Blocks) --- */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
   }
 
-  .about-content h2::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0; /* Align underline left */
-    width: 50px;
-    height: 3px;
-    background-color: var(--primary);
+  .glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.08);
   }
 
-  .about-content h3 { /* Styles for sub-titles within grid content */
-    font-size: 1.5rem;
-    margin-top: 1.5rem; /* Space above subheadings */
+  .about-content h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: rgb(27, 42, 75);
     margin-bottom: 1rem;
-    color: var(--text-dark);
-    position: relative; /* For potential future styling */
+    line-height: 1.2;
   }
 
-  .about-content h3:first-child {
-    margin-top: 0; /* No top margin if it's the first element */
+  .heading-accent {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, rgb(27, 42, 75), rgb(75, 105, 165));
+    border-radius: 2px;
+    margin-bottom: 2rem;
+  }
+
+  .about-content h3 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: rgb(27, 42, 75);
+    margin-bottom: 1rem;
+  }
+
+  .mt-4 {
+    margin-top: 2.5rem;
   }
 
   .about-content p {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     line-height: 1.8;
-    color: var(--text-light);
-    margin-bottom: 1.5rem; /* Space between paragraphs */
-  }
-
-  .about-content ul {
-    list-style: none; /* Remove default bullets */
-    padding: 0;
-    margin: 1.5rem 0;
-    text-align: left;
-    max-width: 100%; /* Allow list to use full width in content block */
-  }
-
-  .about-content li {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: var(--text-light);
-    margin-bottom: 1rem;
-    padding-left: 1.5rem; /* Space for custom bullet */
-    position: relative;
-  }
-
-  .about-content li::before {
-    content: '•'; /* Custom bullet point */
-    color: var(--primary); /* Primary color bullet */
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
-    position: absolute;
-    left: 0;
-    top: 0; /* Align bullet to top of line */
-  }
-
-  .about-image {
-    overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    height: 100%;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .about-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-  }
-
-  .about-image:hover img {
-    transform: scale(1.05);
-  }
-
-  /* Styles for the Values section title */
-  .section-title {
-    text-align: center;
-    margin-bottom: 3rem;
-    font-size: 2.2rem;
-    position: relative;
-    padding-bottom: 15px;
-    display: inline-block; /* Make the underline centered under the text */
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .section-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%); /* Center the underline */
-    width: 60px;
-    height: 3px;
-    background-color: var(--primary);
-  }
-
-  /* Video section wrapper + container styles */
-  .video-section-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 3rem auto;
-    max-width: 800px;
-    width: 90%;
-  }
-
-  .video-container {
-    width: 100%;
+    color: #475569;
     margin-bottom: 1.5rem;
   }
 
-  .video-caption {
+  .section-main-title {
     text-align: center;
+    font-size: 3rem;
+    font-weight: 800;
+    color: rgb(27, 42, 75);
+    margin-bottom: 5rem;
+  }
+
+  /* --- LISTS & ICONS --- */
+  .custom-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+  }
+
+  .custom-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
     font-size: 1.1rem;
-    color: var(--text-light);
-    margin-top: 1.5rem;
-    max-width: 700px;
+    color: #475569;
+    line-height: 1.7;
   }
 
-  /* Styles for the Offerings section */
-  .offerings-section .section-title { 
-    margin-bottom: 4rem; /* More space below the main title */
+  .list-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: rgba(27, 42, 75, 0.1);
+    color: rgb(27, 42, 75);
+    border-radius: 50%;
+    margin-right: 1rem;
+    margin-top: 4px;
   }
 
+  .list-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .conclusion-box {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: rgba(27, 42, 75, 0.03);
+    border-left: 4px solid rgb(27, 42, 75);
+    border-radius: 0 12px 12px 0;
+  }
+
+  .conclusion-box p {
+    margin-bottom: 0;
+    font-weight: 500;
+    color: rgb(27, 42, 75);
+  }
+
+  /* --- IMAGES & HOVER EFFECTS --- */
+  .about-image-wrapper {
+    position: relative;
+    border-radius: 24px;
+    z-index: 1;
+  }
+
+  .image-glow {
+    position: absolute;
+    top: 5%; left: 5%; right: -5%; bottom: -5%;
+    background: linear-gradient(135deg, rgba(27,42,75,0.2), rgba(27,42,75,0.05));
+    border-radius: 24px;
+    z-index: -1;
+    transition: transform 0.5s ease;
+  }
+
+  .about-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .about-image-wrapper:hover .image-glow {
+    transform: translate(10px, 10px);
+  }
+
+
+  /* --- CTA BUTTON SECTION --- */
   .about-cta {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 6rem 2rem;
+    background-color: rgb(253, 251, 238);
   }
 
   .about-cta .btn {
-    font-size: 1.1rem;
-    padding: 1rem 2.5rem;
+    background-color: rgb(27, 42, 75) !important;
+    color: white !important;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 1.2rem 3rem;
+    border-radius: 12px;
+    border: none;
     text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 25px -5px rgba(27, 42, 75, 0.3);
   }
 
-  /* Responsive Styles */
-  @media screen and (max-width: 992px) {
-    .about-hero {
-      padding: 6rem 1.5rem 4rem;
-    }
+  .about-cta .btn:hover {
+    background-color: rgb(45, 68, 115) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px -5px rgba(27, 42, 75, 0.4);
+  }
 
+  /* --- RESPONSIVE DESIGN --- */
+  @media screen and (max-width: 1024px) {
+    .about-grid {
+      gap: 3rem;
+    }
+    .hero-title {
+      font-size: 3.5rem;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .about-hero {
+      padding: 8rem 1.5rem 6rem;
+    }
+    .hero-title {
+      font-size: 2.8rem;
+    }
+    .hero-wave svg {
+      height: 80px;
+    }
     .about-grid {
       grid-template-columns: 1fr;
-      gap: 2rem;
-      margin-bottom: 3rem;
+      gap: 3rem;
     }
-
     .about-grid.reverse {
       direction: ltr;
     }
-
+    .about-grid.reverse .about-image-wrapper {
+      order: 1;
+    }
     .about-grid.reverse .about-content {
-      order: 1;
-    }
-
-    .about-grid.reverse .about-image {
       order: 2;
     }
-
     .about-content {
-      order: 1;
+      padding: 2rem;
     }
-
-    .about-image {
-      order: 2;
-      min-height: 250px;
-      max-width: 100%;
-    }
-
-    .section-title,
-    .about-content h2 {
-      left: auto;
-      transform: none;
-      text-align: left;
-      margin-left: 0;
-      width: 100%;
-      display: block;
-    }
-
-    .section-title::after,
-    .about-content h2::after {
-      left: 0;
-      transform: none;
-    }
-
-    .values-section .section-title {
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-    }
-
-    .values-section .section-title::after {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .offerings-section .section-title {
+    .section-main-title {
+      font-size: 2.3rem;
       margin-bottom: 3rem;
     }
-
-    .about-content ul {
-      text-align: left;
-      max-width: 100%;
-    }
-
-    /* Video Section Responsive Adjustment */
-    .video-section-wrapper {
-      max-width: 90%;
-    }
-
-    .video-caption {
-      font-size: 1rem;
-    }
   }
 
-  @media screen and (max-width: 768px) {
-    .about-hero {
-      padding: 7rem 1.5rem 3rem;
-    }
-
-    .about-hero h1 {
+  @media screen and (max-width: 480px) {
+    .hero-title {
       font-size: 2.2rem;
     }
-
-    .about-hero p {
-      font-size: 1rem;
+    .hero-subtitle {
+      font-size: 1.1rem;
     }
-
-    .about-content h2 {
-      font-size: 1.8rem;
-    }
-
     .about-section {
-      padding: 3rem 1.5rem;
+      padding: 4rem 1.5rem;
     }
-
-    .about-content h3 {
-      font-size: 1.3rem;
+    .about-content {
+      padding: 1.5rem;
     }
-
-    .about-content p,
-    .about-content li {
-      font-size: 1rem;
-    }
-
-    .about-image {
-      min-height: 200px;
-    }
-
-    .video-section-wrapper {
-      margin: 2rem auto;
-      width: 95%;
-    }
-
-    .video-caption {
-      font-size: 0.95rem;
-      margin-top: 0.8rem;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    .about-hero {
-      padding: 6.5rem 1rem 2.5rem;
-    }
-
-    .about-hero h1 {
-      font-size: 1.8rem;
-    }
-
-    .section-title,
     .about-content h2 {
-      font-size: 1.5rem;
-      padding-bottom: 10px;
+      font-size: 2rem;
     }
-
-    .section-title::after,
-    .about-content h2::after {
-      width: 40px;
-    }
-
-    .about-content h3 {
-      font-size: 1.2rem;
-    }
-
-    .about-image {
-      min-height: 180px;
-    }
-
-    .about-grid {
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .about-section {
-      padding: 2rem 1rem;
-    }
-
     .about-cta {
-      padding: 2rem 1rem;
-    }
-
-    .about-cta .btn {
-      width: 100%;
-      max-width: 300px;
-      margin: 0 auto;
-    }
-
-    .video-section-wrapper {
-      margin: 1.5rem auto;
-    }
-
-    .video-caption {
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-    }
-  }
-
-  /* Specific style for the offerings section images */
-  .offerings-section .about-image {
-    max-width: 500px;
-    min-height: 250px;
-  }
-
-  .offerings-section .about-image img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
-
-  /* Adjust text alignment in the offerings section */
-  .offerings-section .about-content {
-    text-align: left;
-  }
-
-  .offerings-section .about-content h3 {
-    text-align: left;
-    margin-left: 0;
-  }
-
-  .offerings-section .about-content p {
-    text-align: left;
-  }
-
-  /* Responsive adjustments for offerings section */
-  @media screen and (max-width: 992px) {
-    .offerings-section .about-image {
-      max-width: 450px;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .offerings-section .about-image {
-      max-width: 400px;
-      min-height: 200px;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    .offerings-section .about-image {
-      max-width: 350px;
-      min-height: 180px;
+      padding: 4rem 1.5rem;
     }
   }
 </style>

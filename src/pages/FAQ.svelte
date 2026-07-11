@@ -56,7 +56,8 @@
 </script>
 
 <section class="faq-hero">
-  <div class="container">
+  <div class="hero-background"></div>
+  <div class="container relative z-10">
     <h1>
       {$currentLang === "hu"
         ? "GYAKORI KÉRDÉSEK"
@@ -67,6 +68,11 @@
         ? "Minden válasz egy helyen – parkolás, szerviz, foglalás."
         : "All answers in one place – parking, service, booking."}
     </p>
+  </div>
+  <div class="hero-wave">
+    <svg preserveAspectRatio="none" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+    </svg>
   </div>
 </section>
 
@@ -137,35 +143,63 @@
 
 <style>
   /* Hero Section */
+  /* Hero Section */
   .faq-hero {
-    background-color: rgb(19, 21, 26);
-    color: white;
-    padding: 8rem 2rem 4rem;
-    text-align: center;
     position: relative;
+    background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(27, 42, 75) 100%);
+    color: white;
+    padding: 10rem 2rem 8rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero-background {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%),
+                      radial-gradient(circle at bottom left, rgba(255,255,255,0.03) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .relative { position: relative; }
+  .z-10 { z-index: 10; }
+
+  .hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+  }
+
+  .hero-wave svg {
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 120px;
+    fill: rgb(253, 251, 238);
   }
 
   .faq-hero h1 {
-    font-size: 3rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
     margin-bottom: 1.5rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #00bae5, #0088cc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
   .faq-hero p {
-    font-size: 1.2rem;
-    max-width: 600px;
+    font-size: 1.35rem;
+    max-width: 700px;
     margin: 0 auto;
-    opacity: 0.9;
-    color: #a0aec0;
+    opacity: 0.85;
+    line-height: 1.6;
+    font-weight: 300;
+    color: white;
   }
 
   /* Content Section */
   .faq-content-section {
-    background-color: rgb(19, 21, 26);
+    background-color: rgb(253, 251, 238);
     padding: 2rem 2rem 6rem;
     min-height: 50vh;
   }
@@ -182,21 +216,23 @@
   .stat {
     text-align: center;
     padding: 1.5rem;
-    background: rgba(255, 255, 255, 0.05);
+    background: white;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   }
 
   .stat:hover {
     transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.08);
+    background: white;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
   }
 
   .stat strong {
     display: block;
     font-size: 1.8rem;
-    color: #00bae5;
+    color: var(--secondary);
     margin-bottom: 0.5rem;
   }
 
@@ -241,7 +277,7 @@
   /* CTA Section */
   .cta-section {
     padding: 5rem 2rem;
-    background-color: #13151a; /* Slightly darker/different shade */
+    background-color: rgb(27, 42, 75); /* Slightly darker/different shade */
     color: white;
     text-align: center;
     position: relative;
@@ -298,8 +334,8 @@
   }
 
   .btn-outline:hover {
-    background: white;
-    color: #13151a;
+    background: rgb(253, 251, 238);
+    color: rgb(27, 42, 75);
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   }

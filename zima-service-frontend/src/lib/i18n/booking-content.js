@@ -45,8 +45,8 @@ export const content = {
         carWashOptions: {
           title: 'Autómosó csomag',
           none: 'Nem kérek',
-          smartInteriorExterior: 'SMART - Belső és Külső (8900 Ft)',
-          premiumInteriorExterior: 'PRÉMIUM - Belső és Külső (11900 Ft)'
+          smartInteriorExterior: 'SMART - Belső és Külső (9900 Ft)',
+          premiumInteriorExterior: 'PRÉMIUM - Belső és Külső (14990 Ft)'
         },
         parkingTotal: 'Parkolás díj',
         carWashStandard: 'Autómosó díj (alap)',
@@ -179,8 +179,8 @@ export const content = {
         carWashOptions: {
           title: 'Car wash package',
           none: 'No, thanks',
-          smartInteriorExterior: 'SMART - Interior and Exterior (8900 HUF)',
-          premiumInteriorExterior: 'PREMIUM - Interior and Exterior (11900 HUF)'
+          smartInteriorExterior: 'SMART - Interior and Exterior (9900 HUF)',
+          premiumInteriorExterior: 'PREMIUM - Interior and Exterior (14990 HUF)'
         },
         parkingTotal: 'Parking fee',
         carWashStandard: 'Car wash fee (standard)',

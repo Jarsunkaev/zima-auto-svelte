@@ -205,7 +205,7 @@
     font-size: 0.8rem;
     padding: 0.3rem 0.8rem;
     border-radius: 20px;
-    background: #f0f4f8;
+    background: rgb(253, 251, 238);
     color: #64748b;
     margin-bottom: 0.75rem;
     font-weight: 600;

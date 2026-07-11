@@ -21,7 +21,7 @@
           <li>Más módon lép kapcsolatba velünk, beleértve bármilyen értékesítést, marketinget vagy eseményeket</li>
         </ul>
 
-        <p><strong>Kérdései vagy aggályai vannak?</strong> Az adatvédelmi nyilatkozat elolvasása segít Önnek megérteni az adatvédelmi jogait és választásait. Ha nem ért egyet szabályzatainkkal és gyakorlatainkkal, kérjük, ne használja Szolgáltatásainkat. Ha továbbra is kérdései vagy aggályai vannak, kérjük, vegye fel velünk a kapcsolatot az info@atgroup.hu címen.</p>
+        <p><strong>Kérdései vagy aggályai vannak?</strong> Az adatvédelmi nyilatkozat elolvasása segít Önnek megérteni az adatvédelmi jogait és választásait. Ha nem ért egyet szabályzatainkkal és gyakorlatainkkal, kérjük, ne használja Szolgáltatásainkat. Ha továbbra is kérdései vagy aggályai vannak, kérjük, vegye fel velünk a kapcsolatot az parking@atgroup.hu címen.</p>
 
         <h2>FŐBB PONTOK ÖSSZEFOGLALÁSA</h2>
 
@@ -134,7 +134,7 @@
 
         <p><strong>Röviden:</strong> Nem gyűjtünk tudatosan adatokat 18 év alatti gyermekektől, és nem is reklámozunk nekik.</p>
 
-        <p>Nem kérünk tudatosan adatokat 18 év alatti gyermekektől, és nem is reklámozunk nekik. A Szolgáltatások használatával kijelenti, hogy legalább 18 éves, vagy hogy az ilyen kiskorú szülője vagy gyámja, és hozzájárul az ilyen kiskorú függő Szolgáltatások használatához. Ha megtudjuk, hogy 18 év alatti felhasználóktól gyűjtött személyes adatokat, deaktiváljuk a fiókot, és ésszerű intézkedéseket teszünk az ilyen adatok azonnali törlésére a nyilvántartásainkból. Ha tudomást szerez arról, hogy 18 év alatti gyermekektől gyűjtött adatokat birtokolunk, kérjük, vegye fel velünk a kapcsolatot az info@atgroup.hu címen.</p>
+        <p>Nem kérünk tudatosan adatokat 18 év alatti gyermekektől, és nem is reklámozunk nekik. A Szolgáltatások használatával kijelenti, hogy legalább 18 éves, vagy hogy az ilyen kiskorú szülője vagy gyámja, és hozzájárul az ilyen kiskorú függő Szolgáltatások használatához. Ha megtudjuk, hogy 18 év alatti felhasználóktól gyűjtött személyes adatokat, deaktiváljuk a fiókot, és ésszerű intézkedéseket teszünk az ilyen adatok azonnali törlésére a nyilvántartásainkból. Ha tudomást szerez arról, hogy 18 év alatti gyermekektől gyűjtött adatokat birtokolunk, kérjük, vegye fel velünk a kapcsolatot az parking@atgroup.hu címen.</p>
 
         <h2 id="section-9">9. MIK AZ ÖN ADATVÉDELMI JOGAI?</h2>
 
@@ -154,7 +154,7 @@
 
         <p><strong>Cookie-k és hasonló technológiák:</strong> A legtöbb webes böngésző alapértelmezetten elfogadja a cookie-kat. Ha szeretné, általában választhatja ki, hogy böngészőjét úgy állítsa be, hogy távolítsa el és utasítsa el a cookie-kat. Ha úgy dönt, hogy eltávolítja vagy elutasítja a cookie-kat, ez befolyásolhatja Szolgáltatásaink bizonyos funkcióit vagy szolgáltatásait.</p>
 
-        <p>Ha kérdései vagy megjegyzései vannak az adatvédelmi jogairól, emailben írhat nekünk az info@atgroup.hu címen.</p>
+        <p>Ha kérdései vagy megjegyzései vannak az adatvédelmi jogairól, emailben írhat nekünk az parking@atgroup.hu címen.</p>
 
         <h2 id="section-10">10. KÖVETÉS-NEM-VÁLLALÁS FUNKCIÓK ELLENŐRZÉSEI</h2>
 
@@ -168,7 +168,7 @@
 
         <h2 id="section-12">12. HOGYAN LÉPHET KAPCSOLATBA VELÜNK EZZEL AZ ÉRTESÍTÉSSEL KAPCSOLATBAN?</h2>
 
-        <p>Ha kérdései vagy megjegyzései vannak ezzel az értesítéssel kapcsolatban, kapcsolatba léphet velünk emailben az info@atgroup.hu címen vagy postai úton:</p>
+        <p>Ha kérdései vagy megjegyzései vannak ezzel az értesítéssel kapcsolatban, kapcsolatba léphet velünk emailben az parking@atgroup.hu címen vagy postai úton:</p>
 
         <p>
         A&T Group Kft.<br>
@@ -179,7 +179,7 @@
 
         <h2 id="section-13">13. HOGYAN TEKINTHETI ÁT, FRISSÍTHETI VAGY TÖRHETI AZ ÖNÁLTALUNK GYŰJTÖTT ADATOKAT?</h2>
 
-        <p>Az Ön országának vonatkozó törvényei alapján joga lehet hozzáférést kérni az általunk gyűjtött személyes adatokhoz, módosítani azokat, vagy törölni azokat. A személyes adatok áttekintéséhez, frissítéséhez vagy törléséhez kérjük, vegye fel velünk a kapcsolatot az info@atgroup.hu címen.</p>
+        <p>Az Ön országának vonatkozó törvényei alapján joga lehet hozzáférést kérni az általunk gyűjtött személyes adatokhoz, módosítani azokat, vagy törölni azokat. A személyes adatok áttekintéséhez, frissítéséhez vagy törléséhez kérjük, vegye fel velünk a kapcsolatot az parking@atgroup.hu címen.</p>
 
       {:else}
         <!-- English Privacy Policy -->
@@ -190,7 +190,7 @@
           <li>Engage with us in other related ways, including any sales, marketing, or events</li>
         </ul>
 
-        <p><strong>Questions or concerns?</strong> Reading this privacy notice will help you understand your privacy rights and choices. If you do not agree with our policies and practices, please do not use our Services. If you still have any questions or concerns, please contact us at info@atgroup.hu.</p>
+        <p><strong>Questions or concerns?</strong> Reading this privacy notice will help you understand your privacy rights and choices. If you do not agree with our policies and practices, please do not use our Services. If you still have any questions or concerns, please contact us at parking@atgroup.hu.</p>
 
         <h2>SUMMARY OF KEY POINTS</h2>
 
@@ -303,7 +303,7 @@
 
         <p><strong>In Short:</strong> We do not knowingly collect data from or market to children under 18 years of age.</p>
 
-        <p>We do not knowingly solicit data from or market to children under 18 years of age. By using the Services, you represent that you are at least 18 or that you are the parent or guardian of such a minor and consent to such minor dependent's use of the Services. If we learn that personal information from users less than 18 years of age has been collected, we will deactivate the account and take reasonable measures to promptly delete such data from our records. If you become aware of any data we may have collected from children under age 18, please contact us at info@atgroup.hu.</p>
+        <p>We do not knowingly solicit data from or market to children under 18 years of age. By using the Services, you represent that you are at least 18 or that you are the parent or guardian of such a minor and consent to such minor dependent's use of the Services. If we learn that personal information from users less than 18 years of age has been collected, we will deactivate the account and take reasonable measures to promptly delete such data from our records. If you become aware of any data we may have collected from children under age 18, please contact us at parking@atgroup.hu.</p>
 
         <h2 id="section-9">9. WHAT ARE YOUR PRIVACY RIGHTS?</h2>
 
@@ -323,7 +323,7 @@
 
         <p><strong>Cookies and similar technologies:</strong> Most Web browsers are set to accept cookies by default. If you prefer, you can usually choose to set your browser to remove cookies and to reject cookies. If you choose to remove cookies or reject cookies, this could affect certain features or services of our Services.</p>
 
-        <p>If you have questions or comments about your privacy rights, you may email us at info@atgroup.hu.</p>
+        <p>If you have questions or comments about your privacy rights, you may email us at parking@atgroup.hu.</p>
 
         <h2 id="section-10">10. CONTROLS FOR DO-NOT-TRACK FEATURES</h2>
 
@@ -337,7 +337,7 @@
 
         <h2 id="section-12">12. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</h2>
 
-        <p>If you have questions or comments about this notice, you may contact us by email at info@atgroup.hu or by post at:</p>
+        <p>If you have questions or comments about this notice, you may contact us by email at parking@atgroup.hu or by post at:</p>
 
         <p>
         A&T Group Kft.<br>
@@ -348,7 +348,7 @@
 
         <h2 id="section-13">13. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?</h2>
 
-        <p>Based on the applicable laws of your country, you may have the right to request access to the personal information we collect from you, change that information, or delete it. To request to review, update, or delete your personal information, please contact us at info@atgroup.hu.</p>
+        <p>Based on the applicable laws of your country, you may have the right to request access to the personal information we collect from you, change that information, or delete it. To request to review, update, or delete your personal information, please contact us at parking@atgroup.hu.</p>
       {/if}
     </div>
   </div>
@@ -357,7 +357,7 @@
 <style>
   .page-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #13151a 0%, #1a1d24 100%);
+    background: linear-gradient(135deg, rgb(27, 42, 75) 0%, #1a1d24 100%);
     padding-top: 80px;
   }
 
@@ -390,7 +390,7 @@
   }
 
   .privacy-content {
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;

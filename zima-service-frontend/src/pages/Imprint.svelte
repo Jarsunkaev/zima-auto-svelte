@@ -153,7 +153,7 @@
 <style>
   .page-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #13151a 0%, #1a1d24 100%);
+    background: linear-gradient(135deg, rgb(27, 42, 75) 0%, #1a1d24 100%);
     padding-top: 80px;
   }
 
@@ -186,7 +186,7 @@
   }
 
   .imprint-content {
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -220,7 +220,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem;
-    background: #f7fafc;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     border-left: 4px solid #00bae5;
   }
@@ -269,7 +269,7 @@
     display: flex;
     gap: 1rem;
     padding: 1.5rem;
-    background: #f7fafc;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     border-left: 4px solid #00bae5;
   }
@@ -281,7 +281,7 @@
     min-width: 100px;
     text-align: center;
     padding: 0.5rem;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 6px;
     border: 2px solid #e2e8f0;
   }
@@ -313,7 +313,7 @@
   }
 
   .activity-dates span {
-    background: white;
+    background: rgb(253, 251, 238);
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
     border: 1px solid #e2e8f0;
@@ -327,7 +327,7 @@
 
   .bank-account {
     padding: 1.5rem;
-    background: #f7fafc;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     border-left: 4px solid #00bae5;
   }
@@ -338,7 +338,7 @@
     color: #2d3748;
     margin-bottom: 1rem;
     font-family: 'Courier New', monospace;
-    background: white;
+    background: rgb(253, 251, 238);
     padding: 0.75rem;
     border-radius: 6px;
     border: 2px solid #e2e8f0;
@@ -369,7 +369,7 @@
   }
 
   .account-info span {
-    background: white;
+    background: rgb(253, 251, 238);
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
     border: 1px solid #e2e8f0;

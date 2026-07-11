@@ -204,7 +204,7 @@
     
     .thumbnail-wrapper:hover .play-button {
       transform: scale(1.1);
-      background: white;
+      background: rgb(253, 251, 238);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     }
     

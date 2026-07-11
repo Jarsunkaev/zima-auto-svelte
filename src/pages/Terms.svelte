@@ -158,7 +158,7 @@
 <style>
   .page-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #13151a 0%, #1a1d24 100%);
+    background: linear-gradient(135deg, rgb(27, 42, 75) 0%, #1a1d24 100%);
     padding-top: 80px;
   }
 
@@ -191,7 +191,7 @@
   }
 
   .terms-content {
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -240,7 +240,7 @@
 
   .contact-info {
     padding: 2rem;
-    background: #f7fafc;
+    background: rgb(253, 251, 238);
     border-top: 1px solid #e2e8f0;
   }
 
@@ -264,7 +264,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     border-left: 4px solid #00bae5;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);

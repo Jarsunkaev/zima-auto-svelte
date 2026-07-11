@@ -122,15 +122,11 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
 
-  .form-section:last-child {
-    margin-bottom: 1.5rem;
-    padding-bottom: 0;
-    border-bottom: none;
-  }
+  
 
   .form-section h3 {
     font-size: 1.3rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     color: var(--text);
     position: relative;
   }
@@ -142,7 +138,7 @@
     left: 0;
     width: 40px;
     height: 3px;
-    background-color: var(--primary);
+    background-color: rgba(27, 42, 75, 0.7);
   }
 
   .form-row {
@@ -163,16 +159,17 @@
   }
 
   label {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     margin-bottom: 0.5rem;
-    color: var(--text);
-    font-weight: 500;
+    color: #475569;
+    font-weight: 600;
   }
 
   input {
-    padding: 0.8rem 1rem;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    padding: 1rem 1.25rem;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s ease;
     font-family: inherit;
@@ -180,8 +177,9 @@
   }
 
   input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(0, 186, 229, 0.2);
+    border-color: rgb(45, 68, 115);
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(45, 68, 115, 0.15);
     outline: none;
   }
 
@@ -231,7 +229,7 @@
     }
 
     .error-message {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
   }
 </style>

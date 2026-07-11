@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { currentLang } from '../lib/i18n';
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -14,21 +14,21 @@
 
   // --- Data Structures ---
   const parkingPrices = [
-    { days: 1, normal: '7500 Ft', discount: '6200 Ft' }, { days: 2, normal: '8200 Ft', discount: '6900 Ft' },
-    { days: 3, normal: '9000 Ft', discount: '7700 Ft' }, { days: 4, normal: '9800 Ft', discount: '8700 Ft' },
-    { days: 5, normal: '10500 Ft', discount: '9300 Ft' }, { days: 6, normal: '11200 Ft', discount: '10200 Ft' },
-    { days: 7, normal: '12500 Ft', discount: '11200 Ft' }, { days: 8, normal: '14000 Ft', discount: '11700 Ft' },
-    { days: 9, normal: '15500 Ft', discount: '12200 Ft' }, { days: 10, normal: '16000 Ft', discount: '12700 Ft' },
-    { days: 11, normal: '17000 Ft', discount: '13100 Ft' }, { days: 12, normal: '17600 Ft', discount: '13600 Ft' },
-    { days: 13, normal: '18000 Ft', discount: '14200 Ft' }, { days: 14, normal: '18500 Ft', discount: '14600 Ft' },
-    { days: 15, normal: '19000 Ft', discount: '15000 Ft' }, { days: 16, normal: '19500 Ft', discount: '15400 Ft' },
-    { days: 17, normal: '20000 Ft', discount: '15700 Ft' }, { days: 18, normal: '20500 Ft', discount: '16100 Ft' },
-    { days: 19, normal: '21000 Ft', discount: '16500 Ft' }, { days: 20, normal: '21500 Ft', discount: '16900 Ft' },
-    { days: 21, normal: '22000 Ft', discount: '17300 Ft' }, { days: 22, normal: '22500 Ft', discount: '17700 Ft' },
-    { days: 23, normal: '23000 Ft', discount: '18100 Ft' }, { days: 24, normal: '23500 Ft', discount: '18500 Ft' },
-    { days: 25, normal: '24000 Ft', discount: '18900 Ft' }, { days: 26, normal: '24500 Ft', discount: '19300 Ft' },
-    { days: 27, normal: '25000 Ft', discount: '19700 Ft' }, { days: 28, normal: '25500 Ft', discount: '20200 Ft' },
-    { days: 29, normal: '26000 Ft', discount: '20200 Ft' }, { days: 30, normal: '26000 Ft', discount: '20200 Ft' }
+    { days: 1, normal: '7500 Ft', discount: '6700 Ft' }, { days: 2, normal: '8200 Ft', discount: '7400 Ft' },
+    { days: 3, normal: '9000 Ft', discount: '8200 Ft' }, { days: 4, normal: '9800 Ft', discount: '9200 Ft' },
+    { days: 5, normal: '10500 Ft', discount: '9800 Ft' }, { days: 6, normal: '11200 Ft', discount: '10700 Ft' },
+    { days: 7, normal: '12500 Ft', discount: '11700 Ft' }, { days: 8, normal: '14000 Ft', discount: '12200 Ft' },
+    { days: 9, normal: '15500 Ft', discount: '12700 Ft' }, { days: 10, normal: '16000 Ft', discount: '13200 Ft' },
+    { days: 11, normal: '17000 Ft', discount: '13600 Ft' }, { days: 12, normal: '17600 Ft', discount: '14100 Ft' },
+    { days: 13, normal: '18000 Ft', discount: '14700 Ft' }, { days: 14, normal: '18500 Ft', discount: '15100 Ft' },
+    { days: 15, normal: '19000 Ft', discount: '15500 Ft' }, { days: 16, normal: '19500 Ft', discount: '15900 Ft' },
+    { days: 17, normal: '20000 Ft', discount: '16200 Ft' }, { days: 18, normal: '20500 Ft', discount: '16600 Ft' },
+    { days: 19, normal: '21000 Ft', discount: '17000 Ft' }, { days: 20, normal: '21500 Ft', discount: '17400 Ft' },
+    { days: 21, normal: '22000 Ft', discount: '17800 Ft' }, { days: 22, normal: '22500 Ft', discount: '18200 Ft' },
+    { days: 23, normal: '23000 Ft', discount: '18600 Ft' }, { days: 24, normal: '23500 Ft', discount: '19000 Ft' },
+    { days: 25, normal: '24000 Ft', discount: '19400 Ft' }, { days: 26, normal: '24500 Ft', discount: '19800 Ft' },
+    { days: 27, normal: '25000 Ft', discount: '20200 Ft' }, { days: 28, normal: '25500 Ft', discount: '20700 Ft' },
+    { days: 29, normal: '26000 Ft', discount: '20700 Ft' }, { days: 30, normal: '26000 Ft', discount: '20700 Ft' }
   ];
 
    const carWashData = {
@@ -59,8 +59,8 @@
               }
           },
           prices: [
-              { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '8900 Ft', 'Exterior': '5600 Ft', 'Interior': '3800 Ft' },
-              { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '10500 Ft', 'Exterior': '6100 Ft', 'Interior': '4300 Ft' }
+              { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '9900 Ft', 'Exterior': '6990 Ft', 'Interior': '4990 Ft' },
+              { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '14990 Ft', 'Exterior': '8990 Ft', 'Interior': '7990 Ft' }
           ]
       },
       premium: {
@@ -95,8 +95,8 @@
           }
           ,
           prices: [
-              { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '11900 Ft', 'Exterior': '6100 Ft', 'Interior': '4300 Ft' },
-              { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '13500 Ft', 'Exterior': '6900 Ft', 'Interior': '5600 Ft' }
+              { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '14990 Ft', 'Exterior': '8990 Ft', 'Interior': '7990 Ft' },
+              { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '19990 Ft', 'Exterior': '10990 Ft', 'Interior': '11900 Ft' }
           ]
       }
   };
@@ -105,26 +105,41 @@
   // Tire and Maintenance services removed for parking frontend
 
   onMount(() => {
-    // Animate service sections
-    gsap.from('.service-section', {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.3,
-      scrollTrigger: {
-        trigger: '.services-container',
-        start: 'top 70%'
-      }
-    });
+    // Refresh ScrollTrigger to fix height calculations after navigation
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+      // Animate service sections
+      gsap.from('.service-section', {
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.3,
+        scrollTrigger: {
+          trigger: '.services-container',
+          start: 'top 70%'
+        }
+      });
+    }, 100);
+  });
+
+  onDestroy(() => {
+    // Kill all scroll triggers to prevent issues when navigating away
+    ScrollTrigger.getAll().forEach(t => t.kill());
   });
 </script>
 
 <section class="services-hero">
-  <div class="container">
+  <div class="hero-background"></div>
+  <div class="container relative z-10">
     <h1>{$currentLang === 'hu' ? 'SZOLGÁLTATÁSOK' : 'SERVICES'}</h1>
     <p>{$currentLang === 'hu'
       ? 'Mindent egy helyen az Ön járművének kényeztetéséhez'
       : 'Everything in one place to pamper your vehicle'}</p>
+  </div>
+  <div class="hero-wave">
+    <svg preserveAspectRatio="none" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+    </svg>
   </div>
 </section>
 
@@ -316,7 +331,7 @@
     --secondary: #333; /* Example secondary color */
     --text: #1a1a1a; /* Example text color */
     --text-light: #555; /* Example light text color */
-    --light: #f4f4f4; /* Example light background color */
+    --light: rgb(253, 251, 238); /* Example light background color */
     --teal-dark: #00796b; /* Darker teal for SMART title and pills */
     --teal-light: #4db6ac; /* Lighter teal - maybe for borders or accents */
     --dark-purple: #4b0082; /* Dark purple for PREMIUM title */
@@ -324,26 +339,55 @@
     --premium-pill-border: #b3a3c8; /* Slightly darker lavender border */
     --frosted-background: rgba(255, 255, 255, 0.3); /* Increased transparency for more frosting */
     --frosted-border: rgba(255, 255, 255, 0.5); /* Increased border visibility */
-    --bubble-color: rgba(0, 186, 229, 0.2); /* Semi-transparent primary color for bubbles */
+    --bubble-color: rgba(27, 42, 75, 0.2); /* Semi-transparent primary color for bubbles */
   }
 
   .services-hero {
-    background-color: var(--secondary);
+    position: relative;
+    background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(27, 42, 75) 100%);
     color: white;
-    padding: 8rem 2rem 5rem;
+    padding: 10rem 2rem 8rem;
     text-align: center;
+    overflow: hidden;
+  }
+  .hero-background {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%),
+                      radial-gradient(circle at bottom left, rgba(255,255,255,0.03) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .relative { position: relative; }
+  .z-10 { z-index: 10; }
+  .hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+  }
+  .hero-wave svg {
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 120px;
+    fill: rgb(253, 251, 238);
   }
 
   .services-hero h1 {
-    font-size: 3rem;
+    font-size: 4rem;
+    font-weight: 800;
     margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
   .services-hero p {
-    font-size: 1.2rem;
-    max-width: 600px;
+    font-size: 1.35rem;
+    max-width: 700px;
     margin: 0 auto;
-    opacity: 0.9;
+    opacity: 0.85;
+    line-height: 1.6;
+    font-weight: 300;
   }
 
   .service-section {
@@ -354,11 +398,11 @@
 
   /* Alternating background colors for sections */
   .services-container section:nth-child(odd) {
-       background-color: white; /* Default white background */
-   }
+    background-color: rgb(253, 251, 238);
+  }
 
   .services-container section:nth-child(even) {
-    background-color: var(--light); /* Light grey background */
+    background-color: #ffffff;
   }
 
 
@@ -402,7 +446,7 @@
        left: 0; /* Align to left by default */
        width: 50px;
        height: 3px;
-       background-color: var(--primary); /* Primary Blue underline */
+       background-color: rgb(27, 42, 75); /* Primary Blue underline */
    }
 
     /* Mobile adjustment for centering underline on all titles */
@@ -451,7 +495,7 @@
     position: absolute;
     left: 0;
     top: 2px;
-    color: var(--primary);
+    color: rgb(27, 42, 75);
     font-weight: bold;
     font-size: 1.2em;
   }
@@ -468,21 +512,19 @@
 
   .service-image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
+    height: auto;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
   }
 
-  .service-image:hover img {
-    transform: scale(1.05);
-  }
 
   /* Pricing Tables Styles */
   .pricing-table-container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
     overflow: hidden; /* Hide overflow for the container */
     margin-top: 1.5rem; /* Adjust margin top for tables */
   }
@@ -675,14 +717,14 @@
     }
 
     .btn-primary {
-        background-color: var(--primary);
+        background-color: rgb(27, 42, 75);
         color: white;
     }
 
     .btn-primary:hover {
-        background-color: var(--primary-dark);
+        background-color: rgb(45, 68, 115);
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 186, 229, 0.3);
+        box-shadow: 0 5px 15px rgba(27, 42, 75, 0.3);
     }
 
 

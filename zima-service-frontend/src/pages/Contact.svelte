@@ -46,12 +46,12 @@
       },
       email: {
         title: 'EMAIL',
-        content: 'info@atgroup.hu'
+        content: 'szerviz@atgroup.hu'
       },
       hours: {
         title: 'NYITVATARTÁS',
         // Updated content to match screenshot format
-        content: '<strong>Parkoló:</strong><br>24/7<br><br><strong>Kézi Autómosó:</strong><br>H-Szo (08:00-18:00)<br><br><strong>Autó Szerviz:</strong><br>H-Szo (08:00-17:00)<br><br><strong>Gumiszerviz:</strong><br>H-Szo (08:00-17:00)'
+        content: '<strong>Parkoló:</strong><br>24/7<br><br><strong>Kézi Autómosó:</strong><br>H-Szo (08:00-18:00)<br><br><strong>Autó Szerviz:</strong><br>H-Szo (08:00-18:00)<br><br><strong>Gumiszerviz:</strong><br>H-Szo (08:00-18:00)'
       },
       form: {
         title: 'KÜLDJÖN ÜZENETET',
@@ -77,12 +77,12 @@
       },
       email: {
         title: 'EMAIL',
-        content: 'info@atgroup.hu'
+        content: 'szerviz@atgroup.hu'
       },
       hours: {
         title: 'BUSINESS HOURS',
         // Updated content to match screenshot format (translated)
-        content: '<strong>Parking:</strong><br>24/7<br><br><strong>Car Wash:</strong><br>Mon-Sat (08:00-18:00)<br><br><strong>Auto Service:</strong><br>Mon-Sat (08:00-17:00)<br><br><strong>Tire Service:</strong><br>Mon-Sat (08:00-17:00)'
+        content: '<strong>Parking:</strong><br>24/7<br><br><strong>Car Wash:</strong><br>Mon-Sat (08:00-18:00)<br><br><strong>Auto Service:</strong><br>Mon-Sat (08:00-18:00)<br><br><strong>Tire Service:</strong><br>Mon-Sat (08:00-18:00)'
       },
       form: {
         title: 'SEND A MESSAGE',
@@ -222,10 +222,10 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
 </script>
 
 <section class="contact-hero">
-<div class="container">
-  <h1>{content[$currentLang].title}</h1>
-  <p>{content[$currentLang].subtitle}</p>
-</div>
+  <div class="container">
+    <h1>{content[$currentLang].title}</h1>
+    <p>{content[$currentLang].subtitle}</p>
+  </div>
 </section>
 
 <section class="contact-section">
@@ -266,7 +266,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
             </div>
             <div class="info-content">
               <h3>{content[$currentLang].email.title}</h3>
-              <p><a href="mailto:info@atgroup.hu" class="contact-link">{content[$currentLang].email.content}</a></p>
+              <p><a href="mailto:szerviz@atgroup.hu" class="contact-link">{content[$currentLang].email.content}</a></p>
             </div>
           </div>
         </div>
@@ -451,27 +451,30 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
 
   /* Keep existing styles */
   .contact-hero {
-    background-color: rgb(19, 21, 26);
+    padding: 8rem 2rem 4rem;
+    background: var(--secondary);
     color: white;
-    padding: 8rem 2rem 5rem;
     text-align: center;
   }
 
   .contact-hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
   }
 
   .contact-hero p {
-    font-size: 1.2rem;
-    max-width: 600px;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 700px;
     margin: 0 auto;
-    opacity: 0.9;
+    line-height: 1.6;
   }
 
   .contact-section {
     padding: 3rem 2rem;
-    background-color: rgb(19, 21, 26);
+    background-color: var(--secondary);
   }
 
   .contact-grid {
@@ -493,7 +496,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
     align-items: flex-start;
     gap: 1.5rem;
     padding: 1.5rem;
-    background-color: white;
+    background-color: rgb(253, 251, 238);
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
@@ -527,9 +530,9 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
     justify-content: center;
     min-width: 50px;
     height: 50px;
-    background-color: rgba(0, 186, 229, 0.1);
+    background-color: rgba(27, 42, 75, 0.1);
     border-radius: 50%;
-    color: var(--primary);
+    color: rgb(27, 42, 75);
     flex-shrink: 0;
   }
 
@@ -540,7 +543,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
   }
 
   .contact-form-container {
-    background-color: white;
+    background-color: rgb(253, 251, 238);
     border-radius: 12px;
     padding: 2.5rem;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
@@ -565,7 +568,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
     transform: translateX(-50%);
     width: 50px;
     height: 3px;
-    background-color: var(--primary);
+    background-color: rgb(27, 42, 75);
   }
 
   .form-group {
@@ -597,9 +600,9 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
   }
 
   input:focus, textarea:focus {
-    border-color: var(--primary);
+    border-color: rgb(27, 42, 75);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.2);
+    box-shadow: 0 0 0 3px rgba(27, 42, 75, 0.2);
   }
 
   .contact-form button {
@@ -608,7 +611,14 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
     margin-top: 1rem;
     font-size: 1rem;
     cursor: pointer;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    background-color: rgb(27, 42, 75) !important;
+    color: white !important;
+    border: none;
+    border-radius: 8px;
+  }
+  .contact-form button:hover:not(:disabled) {
+    background-color: rgb(45, 68, 115) !important;
   }
 
    .contact-form button:disabled {
@@ -627,7 +637,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
   }
 
   .success-message svg {
-       fill: var(--primary);
+       fill: rgb(27, 42, 75);
   }
 
   .success-message p {
@@ -645,7 +655,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
     height: 450px;
     overflow: hidden;
     position: relative;
-    background-color: rgb(19, 21, 26);
+    background-color: rgb(27, 42, 75);
   }
 
   .map-container {
@@ -860,6 +870,6 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
   }
 
   .contact-link:hover {
-    color: var(--primary);
+    color: rgb(27, 42, 75);
   }
 </style>

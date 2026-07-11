@@ -99,8 +99,8 @@ export const faqContent = {
       categoryHu: 'Foglalás',
       question: 'How do I make a booking?',
       questionHu: 'Hogyan foglalhatok?',
-      answer: 'You can book online through our website, call us at +36 70 555 0588, or email info@atgroup.hu.',
-      answerHu: 'Foglalhat weboldalunkon, telefonon a +36 70 555 0588 számon, vagy e-mailben az info@atgroup.hu címen.'
+      answer: 'You can book online through our website, call us at +36 70 585 9959, or email parking@atgroup.hu.',
+      answerHu: 'Foglalhat weboldalunkon, telefonon a +36 70 585 9959 számon, vagy e-mailben az parking@atgroup.hu címen.'
     },
     {
       category: 'Booking',

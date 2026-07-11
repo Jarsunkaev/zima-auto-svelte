@@ -178,6 +178,13 @@ class EmailService {
     createFallbackTemplate(service, data) {
         const serviceName = EmailService.formatServiceName(service, 'en');
         
+        let contactEmail = 'info@atgroup.hu';
+        if (service === 'airportParking' || service === 'carWash') {
+            contactEmail = 'parking@atgroup.hu';
+        } else if (service === 'autoService' || service === 'tireService') {
+            contactEmail = 'szerviz@atgroup.hu';
+        }
+
         // Basic responsive email template
         return `
             <!DOCTYPE html>
@@ -212,7 +219,7 @@ class EmailService {
                         </div>
                         
                         <p style="margin-top: 20px;">If you have any questions, please contact us at:</p>
-                        <p><strong>Email:</strong> info@atgroup.hu</p>
+                        <p><strong>Email:</strong> ${contactEmail}</p>
                         <p><strong>Phone:</strong> +36 70 555 0588</p>
                     </div>
                     <div class="footer">
@@ -474,9 +481,17 @@ class EmailService {
             // Create admin notification email
             const adminHtml = this.createAdminNotificationHtml(bookingData, customerEmail);
 
+            // Determine admin notification email address based on service
+            let adminEmail = 'info@atgroup.hu';
+            if (bookingData.service === 'airportParking' || bookingData.service === 'carWash') {
+                adminEmail = 'parking@atgroup.hu';
+            } else if (bookingData.service === 'autoService' || bookingData.service === 'tireService') {
+                adminEmail = 'szerviz@atgroup.hu';
+            }
+
             // Send email to A&T Group admin
             await this.sendEmail({
-                to: 'info@atgroup.hu',
+                to: adminEmail,
                 cc: 'ahmed@atgroup.hu',
                 replyTo: customerEmail ? `${bookingData.customerName || 'Customer'} <${customerEmail}>` : undefined,
                 subject: `New Booking - ${serviceNameEn}`,

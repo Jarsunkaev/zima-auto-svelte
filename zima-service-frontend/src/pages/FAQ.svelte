@@ -17,16 +17,22 @@
 </script>
 
 <main class="faq-page">
-  <section class="faq-header-section">
-    <div class="container">
+  <section class="faq-hero">
+    <div class="hero-background"></div>
+    <div class="container relative z-10">
       <h1>
         {$currentLang === 'hu' ? 'GYAKRAN ISMÉTELT KÉRDÉSEK' : 'FREQUENTLY ASKED QUESTIONS'}
       </h1>
-      <p class="subtitle">
+      <p>
         {$currentLang === 'hu' 
           ? 'Minden, amit a A&T Group szervizről, gumiszervizről és autóápolásról tudnia kell.'
           : 'Everything you need to know about service, tires and detailing at A&T Group.'}
       </p>
+    </div>
+    <div class="hero-wave">
+      <svg preserveAspectRatio="none" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      </svg>
     </div>
   </section>
 
@@ -62,12 +68,12 @@
             </svg>
             +36 70 555 0588
           </a>
-          <a href="mailto:info@atgroup.hu" class="btn btn-secondary">
+          <a href="mailto:szerviz@atgroup.hu" class="btn btn-secondary">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
               <polyline points="22,6 12,13 2,6"></polyline>
             </svg>
-            info@atgroup.hu
+            szerviz@atgroup.hu
           </a>
         </div>
       </div>
@@ -81,31 +87,62 @@
     background: var(--light);
   }
 
-  .faq-header-section {
-    padding: 8rem 2rem 4rem;
-    background: var(--secondary);
+  .faq-hero {
+    position: relative;
+    background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(27, 42, 75) 100%);
     color: white;
+    padding: 10rem 2rem 8rem;
     text-align: center;
+    overflow: hidden;
   }
 
-  .faq-header-section h1 {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 700;
-    margin-bottom: 1rem;
-    letter-spacing: 1px;
+  .hero-background {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%),
+                      radial-gradient(circle at bottom left, rgba(255,255,255,0.03) 0%, transparent 40%);
+    pointer-events: none;
   }
 
-  .faq-header-section .subtitle {
-    font-size: 1.1rem;
-    color: rgba(255, 255, 255, 0.9);
+  .relative { position: relative; }
+  .z-10 { z-index: 10; }
+
+  .hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+  }
+
+  .hero-wave svg {
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 120px;
+    fill: rgb(253, 251, 238);
+  }
+
+  .faq-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .faq-hero p {
+    font-size: 1.35rem;
     max-width: 700px;
     margin: 0 auto;
+    opacity: 0.85;
     line-height: 1.6;
+    font-weight: 300;
+    color: white;
   }
 
   .faq-content {
     padding: 4rem 0;
-    background: var(--light);
+    background: rgb(253, 251, 238);
   }
 
   .filter-bar {
@@ -118,7 +155,7 @@
 
   .filter-bar button {
     border: 2px solid var(--primary);
-    background: white;
+    background: rgb(253, 251, 238);
     color: var(--primary);
     padding: 0.7rem 1.5rem;
     border-radius: 8px;
@@ -146,7 +183,7 @@
   .contact-cta {
     margin-top: 4rem;
     padding: 3rem 2rem;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 12px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -196,7 +233,7 @@
   }
 
   .cta-buttons .btn-secondary {
-    background: white;
+    background: rgb(253, 251, 238);
     color: var(--secondary);
     border: 2px solid var(--secondary);
   }

@@ -60,7 +60,7 @@
             </p>
             <p>
               <strong>{t("footer.email", $currentLang)}:</strong>
-              <a href="mailto:info@atgroup.hu" class="contact-link"
+              <a href="mailto:szerviz@atgroup.hu" class="contact-link"
                 >{t("footer.emailAddress", $currentLang)}</a
               >
             </p>
@@ -465,7 +465,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: var(--primary);
+    background-color: rgb(27, 42, 75);
     color: white;
     border: none;
     cursor: pointer;
@@ -487,14 +487,14 @@
   }
 
   .back-to-top:hover {
-    background-color: var(--primary-dark);
+    background-color: rgb(45, 68, 115);
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   }
 
   .back-to-top:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 186, 229, 0.3);
+    box-shadow: 0 0 0 3px rgba(27, 42, 75, 0.3);
   }
 
   @media screen and (max-width: 768px) {

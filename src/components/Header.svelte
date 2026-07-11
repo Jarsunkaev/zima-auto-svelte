@@ -189,7 +189,7 @@
   }
 
   .logo:focus {
-    outline: 2px solid var(--primary);
+    outline: 2px solid #00bae5;
     outline-offset: 4px;
     border-radius: 4px;
   }
@@ -234,7 +234,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background-color: var(--primary);
+    background-color: #00bae5;
     transition: width 0.3s ease;
   }
 
@@ -249,7 +249,7 @@
   }
 
   nav li.active a {
-    color: var(--primary);
+    color: #00bae5;
   }
 
   .right-section {
@@ -325,7 +325,7 @@
   }
 
   .mobile-menu-toggle:focus {
-    outline: 2px solid var(--primary);
+    outline: 2px solid #00bae5;
     outline-offset: 4px;
     border-radius: 4px;
   }
@@ -333,7 +333,7 @@
   .mobile-menu-toggle span {
     width: 100%;
     height: 2px;
-    background-color: white; /* Default color on dark backgrounds */
+    background-color: rgb(253, 251, 238); /* Default color on dark backgrounds */
     transition: all 0.3s ease;
     border-radius: 2px;
   }
@@ -362,7 +362,7 @@
       right: -100%;
       width: 100%;
       height: 100vh;
-      background-color: rgba(19, 21, 26, 0.98);
+      background-color: rgba(27, 42, 75, 0.98);
       flex-direction: column;
       justify-content: center;
       transition: all 0.4s ease;
@@ -393,7 +393,7 @@
     nav li a:focus,
     nav li.active a {
       opacity: 1;
-      color: var(--primary);
+      color: #00bae5;
     }
 
     header.scrolled nav li a {

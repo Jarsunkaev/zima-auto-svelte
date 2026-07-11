@@ -446,10 +446,11 @@
 <style>
   .form-title {
     text-align: center;
-    margin-bottom: 2rem;
     font-size: 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
   }
 
   .booking-form {
@@ -457,7 +458,7 @@
   }
   
   .form-section {
-    margin-bottom: 2.5rem;
+    margin-bottom: 4rem;
     padding-bottom: 2rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
@@ -471,7 +472,7 @@
   
   .form-row h3 {
     font-size: 1.3rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
     color: var(--text);
     position: relative;
     grid-column: 1 / -1;
@@ -484,7 +485,7 @@
     left: 0;
     width: 40px;
     height: 3px;
-    background-color: var(--primary);
+    background-color: rgba(27, 42, 75, 0.7);
   }
   
   .form-group {
@@ -509,7 +510,7 @@
   
   .car-header h4 {
     margin: 0;
-    color: var(--primary);
+    color: rgba(27, 42, 75, 0.7);
   }
   
   .remove-car-btn {
@@ -518,7 +519,7 @@
     color: #e53e3e;
     cursor: pointer;
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
   }
   
   .remove-car-btn:hover {
@@ -526,16 +527,15 @@
   }
   
   .add-car-container {
-    margin-bottom: 2rem;
     text-align: center;
   }
   
   .add-car-btn {
     background-color: transparent;
-    border: 2px dashed var(--primary);
-    color: var(--primary);
+    border: 2px dashed rgb(45, 68, 115);
+    color: rgb(45, 68, 115);
     padding: 0.8rem 1.5rem;
-    border-radius: 8px;
+    border-radius: 50px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -544,16 +544,14 @@
   }
   
   .add-car-btn:hover {
-    background-color: rgba(0, 186, 229, 0.05);
+    background-color: rgba(45, 68, 115, 0.05);
   }
   
   .car-wash-addon {
     margin-top: 0.5rem;
-    margin-bottom: 2rem;
     padding: 1.5rem;
     background-color: rgba(0, 186, 229, 0.05);
-    border-radius: 8px;
-    border-left: 3px solid var(--primary);
+    border-left: 3px solid rgba(27, 42, 75, 0.7);
   }
   
   .car-wash-addon h3 {
@@ -565,16 +563,17 @@
   }
   
   label {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     margin-bottom: 0.5rem;
-    color: var(--text);
-    font-weight: 500;
+    color: #475569;
+    font-weight: 600;
   }
   
   input, select {
-    padding: 0.8rem 1rem;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    padding: 1rem 1.25rem;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s ease;
     font-family: inherit;
@@ -582,8 +581,9 @@
   }
   
   input:focus, select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(0, 186, 229, 0.2);
+    border-color: rgb(45, 68, 115);
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(45, 68, 115, 0.15);
     outline: none;
   }
   
@@ -599,10 +599,22 @@
   }
   
   .form-submit button {
+    white-space: nowrap;
+    max-width: 100%;
     padding: 1rem 2.5rem;
     font-size: 1rem;
     font-weight: 600;
     min-width: 200px;
+    background-color: rgb(27, 42, 75);
+    border-radius: 50px;
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .form-submit button:hover:not(:disabled) {
+    background-color: rgb(45, 68, 115);
+    transform: translateY(-2px);
   }
   
   /* Responsive styles */
@@ -611,5 +623,13 @@
       grid-template-columns: 1fr;
       gap: 1rem;
     }
+  }
+
+  .car-wash-addon {
+    transition: all 0.3s ease;
+  }
+  .car-wash-addon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
   }
 </style>

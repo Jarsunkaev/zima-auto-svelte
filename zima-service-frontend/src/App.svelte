@@ -182,12 +182,12 @@
   @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap');
   
   :global(:root) {
-    --primary: rgba(0, 186, 229, 1);
-    --primary-dark: rgba(0, 150, 190, 1);
-    --secondary: #13151a;
+    --primary: rgb(27, 42, 75);
+    --primary-dark: rgb(45, 68, 115);
+    --secondary: rgb(27, 42, 75);
     --text: #333333;
     --text-light: #666666;
-    --light: #f8f9fa;
+    --light: rgb(253, 251, 238);
     --white: #ffffff;
     --gray: #cccccc;
     --dark-gray: #888888;
@@ -244,7 +244,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: rgb(253, 251, 238);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -276,7 +276,7 @@
   .spinner {
     width: 40px;
     height: 40px;
-    border: 3px solid rgba(0, 186, 229, 0.2);
+    border: 3px solid rgba(27, 42, 75, 0.2);
     border-top-color: var(--primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -354,7 +354,7 @@
   
   :global(.btn-outline:hover),
   :global(.btn-outline:focus) {
-    background-color: white;
+    background-color: rgb(253, 251, 238);
     color: var(--text);
     transform: translateY(-2px);
     outline: none;

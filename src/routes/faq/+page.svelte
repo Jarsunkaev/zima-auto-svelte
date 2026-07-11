@@ -97,7 +97,7 @@
 <style>
   .faq-page {
     min-height: 100vh;
-    background: #f7f8fb;
+    background: rgb(253, 251, 238);
     color: #0f172a;
   }
 
@@ -132,7 +132,7 @@
   }
 
   .hero-card {
-    background: #ffffff;
+    background: rgb(253, 251, 238);
     border: 1px solid rgba(15, 23, 42, 0.06);
     border-radius: 16px;
     padding: 1.25rem;
@@ -145,7 +145,7 @@
   .stat {
     padding: 0.9rem;
     border-radius: 12px;
-    background: #f8fafc;
+    background: rgb(253, 251, 238);
     text-align: center;
     border: 1px solid rgba(15, 23, 42, 0.05);
   }
@@ -162,7 +162,7 @@
   }
 
   .faq-body {
-    background: #f8fafc;
+    background: rgb(253, 251, 238);
     color: #0f172a;
     margin-top: 0.5rem;
   }
@@ -179,7 +179,7 @@
 
   .filter-bar button {
     border: 1px solid rgba(15, 23, 42, 0.08);
-    background: white;
+    background: rgb(253, 251, 238);
     color: #0f172a;
     padding: 0.55rem 1rem;
     border-radius: 12px;
@@ -197,7 +197,7 @@
   .cta-panel {
     max-width: 1100px;
     margin: 2rem auto 0;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 18px;
     border: 1px solid rgba(15, 23, 42, 0.08);
     padding: 1.5rem 1.75rem;

@@ -57,7 +57,7 @@
 <style>
   .thankyou-section {
     padding: 6rem 2rem;
-    background-color: #13151a;
+    background-color: rgb(27, 42, 75);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -66,7 +66,7 @@
   .thankyou-content {
     max-width: 700px;
     margin: 0 auto;
-    background-color: white;
+    background-color: rgb(253, 251, 238);
     border-radius: 12px;
     padding: 3rem 2rem;
     text-align: center;
@@ -98,7 +98,7 @@
   }
   
   .message-box {
-    background-color: #f8f9fa;
+    background-color: rgb(253, 251, 238);
     border-radius: 8px;
     padding: 2rem;
     margin-bottom: 2rem;

@@ -2,7 +2,7 @@ export default {
   thankYou: {
     title: "Köszönjük!",
     message: "Az űrlapot sikeresen elküldtük. Köszönjük érdeklődését szolgáltatásaink iránt, és a lehető leghamarabb feldolgozzuk kérését.",
-    contactInfo: "Ha bármilyen kérdése van, forduljon hozzánk bizalommal a 06 70 555 0588 telefonszámon vagy az info@atgroup.hu e-mail címen.",
+    contactInfo: "Ha bármilyen kérdése van, forduljon hozzánk bizalommal a 06 70 585 9959 telefonszámon vagy az parking@atgroup.hu e-mail címen.",
     homeButton: "VISSZA A FŐOLDALRA",
     contactButton: "KAPCSOLAT"
   },
@@ -80,9 +80,9 @@ export default {
     visit: "LÁTOGASSON MEG MINKET",
     address: "Vecsés Széchényi utca 62 mellett, Hrsz 0182/55, 2220",
     phone: "Telefon",
-    phoneNumber: "06 70 555 0588",
+    phoneNumber: "06 70 585 9959",
     email: "Email",
-    emailAddress: "info@atgroup.hu",
+    emailAddress: "parking@atgroup.hu",
     links: "Hivatkozások",
     copyright: "© 2025 atgroup.hu. Minden jog fenntartva."
   }

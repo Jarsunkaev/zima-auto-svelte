@@ -135,7 +135,7 @@
       transform: translateX(-50%);
       width: 60px;
       height: 3px;
-      background-color: var(--primary);
+      background-color: rgba(27, 42, 75, 0.7);
     }
   
     .section-subtitle {
@@ -218,7 +218,7 @@
       align-items: center;
       justify-content: center;
       background-color: rgba(255, 255, 255, 0.16);
-      border-radius: 8px;
+      border-radius: 16px;
       margin-bottom: 20px;
       position: relative;
       z-index: 2;
@@ -245,7 +245,7 @@
     }
 
     .service-card p {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       line-height: 1.6;
       color: rgba(255, 255, 255, 0.9);
       margin-bottom: 20px;
@@ -321,7 +321,7 @@
       }
       
       .service-card p {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
       }
 
       .card-action {

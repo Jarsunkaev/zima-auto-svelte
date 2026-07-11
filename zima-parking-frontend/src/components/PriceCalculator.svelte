@@ -24,27 +24,27 @@
 
   // --- Pricing Data (Hardcoded) ---
   const parkingPrices = [
-    { days: 1, normal: 7500, discount: 6200 }, { days: 2, normal: 8200, discount: 6900 },
-    { days: 3, normal: 9000, discount: 7700 }, { days: 4, normal: 9800, discount: 8700 },
-    { days: 5, normal: 10500, discount: 9300 }, { days: 6, normal: 11200, discount: 10200 },
-    { days: 7, normal: 12500, discount: 11200 }, { days: 8, normal: 14000, discount: 11700 },
-    { days: 9, normal: 15500, discount: 12200 }, { days: 10, normal: 16000, discount: 12700 },
-    { days: 11, normal: 17000, discount: 13100 }, { days: 12, normal: 17600, discount: 13600 },
-    { days: 13, normal: 18000, discount: 14200 }, { days: 14, normal: 18500, discount: 14600 },
-    { days: 15, normal: 19000, discount: 15000 }, { days: 16, normal: 19500, discount: 15400 },
-    { days: 17, normal: 20000, discount: 15700 }, { days: 18, normal: 20500, discount: 16100 },
-    { days: 19, normal: 21000, discount: 16500 }, { days: 20, normal: 21500, discount: 16900 },
-    { days: 21, normal: 22000, discount: 17300 }, { days: 22, normal: 22500, discount: 17700 },
-    { days: 23, normal: 23000, discount: 18100 }, { days: 24, normal: 23500, discount: 18500 },
-    { days: 25, normal: 24000, discount: 18900 }, { days: 26, normal: 24500, discount: 19300 },
-    { days: 27, normal: 25000, discount: 19700 }, { days: 28, normal: 25500, discount: 20200 },
-    { days: 29, normal: 26000, discount: 20200 }, { days: 30, normal: 26000, discount: 20200 }
+    { days: 1, normal: 7500, discount: 6700 }, { days: 2, normal: 8200, discount: 7400 },
+    { days: 3, normal: 9000, discount: 8200 }, { days: 4, normal: 9800, discount: 9200 },
+    { days: 5, normal: 10500, discount: 9800 }, { days: 6, normal: 11200, discount: 10700 },
+    { days: 7, normal: 12500, discount: 11700 }, { days: 8, normal: 14000, discount: 12200 },
+    { days: 9, normal: 15500, discount: 12700 }, { days: 10, normal: 16000, discount: 13200 },
+    { days: 11, normal: 17000, discount: 13600 }, { days: 12, normal: 17600, discount: 14100 },
+    { days: 13, normal: 18000, discount: 14700 }, { days: 14, normal: 18500, discount: 15100 },
+    { days: 15, normal: 19000, discount: 15500 }, { days: 16, normal: 19500, discount: 15900 },
+    { days: 17, normal: 20000, discount: 16200 }, { days: 18, normal: 20500, discount: 16600 },
+    { days: 19, normal: 21000, discount: 17000 }, { days: 20, normal: 21500, discount: 17400 },
+    { days: 21, normal: 22000, discount: 17800 }, { days: 22, normal: 22500, discount: 18200 },
+    { days: 23, normal: 23000, discount: 18600 }, { days: 24, normal: 23500, discount: 19000 },
+    { days: 25, normal: 24000, discount: 19400 }, { days: 26, normal: 24500, discount: 19800 },
+    { days: 27, normal: 25000, discount: 20200 }, { days: 28, normal: 25500, discount: 20700 },
+    { days: 29, normal: 26000, discount: 20700 }, { days: 30, normal: 26000, discount: 20700 }
     // Prices beyond 30 days use the 30-day price based on calculation logic
   ];
   const carWashPricing = {
     none: 0,
-    smartInteriorExterior: 8900,
-    premiumInteriorExterior: 11900
+    smartInteriorExterior: 9900,
+    premiumInteriorExterior: 14990
   };
 
   // --- Reactive Variables ---
@@ -282,7 +282,7 @@
   .total-price {
     font-size: 1.3rem; /* Larger font for total */
     font-weight: 700; /* Bold total value */
-    color: var(--primary); /* Use primary color for emphasis */
+    color: rgba(27, 42, 75, 0.7); /* Use primary color for emphasis */
   }
 
   /* Error message style */

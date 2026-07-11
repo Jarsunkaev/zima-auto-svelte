@@ -282,7 +282,7 @@
   .total-price {
     font-size: 1.3rem; /* Larger font for total */
     font-weight: 700; /* Bold total value */
-    color: var(--primary); /* Use primary color for emphasis */
+    color: rgba(27, 42, 75, 0.7); /* Use primary color for emphasis */
   }
 
   /* Error message style */

@@ -29,7 +29,7 @@
   // Admin credentials
   const ADMIN_CREDENTIALS = {
     'ahmed@atgroup.hu': 'Hurma123',
-    'info@atgroup.hu': 'Hurma123'
+    'parking@atgroup.hu': 'Hurma123'
   };
 
   let userEmail = '';
@@ -703,8 +703,8 @@
     </div>
 
     <div class="contact-info">
-        <p><strong>Érkezéskor hívja:</strong> +36 70 555 0588</p>
-        <p><strong>Email:</strong> info@atgroup.hu</p>
+        <p><strong>Érkezéskor hívja:</strong> +36 70 585 9959</p>
+        <p><strong>Email:</strong> parking@atgroup.hu</p>
     </div>
 
     <div class="footer">
@@ -761,8 +761,8 @@ Felvétel időpontja: ${formatDateForDocument(booking["TÁVOZÁS"])}
 Nap: ${booking["HÁNY NAP"]}
 Elérhetőség: ${booking["EMAIL"]} / ${booking["TELEFON"]}
 
-Érkezéskor hívja: +36 70 555 0588
-info@atgroup.hu
+Érkezéskor hívja: +36 70 585 9959
+parking@atgroup.hu
 
 Dátum: Vecsés, ${currentDate}
 
@@ -2217,7 +2217,7 @@ Megrendelő aláírása: _________________________________`;
     font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
     line-height: 1.6;
     color: #333;
-    background-color: #f8fafc;
+    background-color: rgb(253, 251, 238);
     margin: 0;
     padding: 0;
   }
@@ -2225,7 +2225,7 @@ Megrendelő aláírása: _________________________________`;
   /* Admin Page Layout */
   .admin-page {
     min-height: 100vh;
-    background: #13151a;
+    background: rgb(27, 42, 75);
     display: flex;
     flex-direction: column;
   }
@@ -2274,14 +2274,14 @@ Megrendelő aláírása: _________________________________`;
     justify-content: center;
     min-height: 100vh;
     padding: 2rem;
-    background: #13151a;
+    background: rgb(27, 42, 75);
     margin-top: 0; /* Add space for the main site header */
   }
   
   .login-container {
     width: 100%;
     max-width: 420px;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 12px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -2332,7 +2332,7 @@ Megrendelő aláírása: _________________________________`;
     border-radius: 8px;
     font-size: 1rem;
     transition: border-color 0.3s, box-shadow 0.3s;
-    background-color: #f8fafc;
+    background-color: rgb(253, 251, 238);
   }
   
   .form-input:focus {
@@ -2429,7 +2429,7 @@ Megrendelő aláírása: _________________________________`;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 12px;
     padding: 1rem 1.5rem;
     margin-bottom: 0.5rem; /* Reduced from 1rem to 0.5rem */
@@ -2452,7 +2452,7 @@ Megrendelő aláírása: _________________________________`;
     top: 0.25rem;
     left: 0.25rem;
     height: calc(100% - 0.5rem);
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 6px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -2533,7 +2533,7 @@ Megrendelő aláírása: _________________________________`;
 
   /* Tab Content */
   .tab-content {
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 12px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     overflow: hidden;
@@ -2584,7 +2584,7 @@ Megrendelő aláírása: _________________________________`;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background-color: #13151a;
+    background-color: rgb(27, 42, 75);
     color: white;
     border-radius: 6px;
     text-decoration: none;
@@ -2601,7 +2601,7 @@ Megrendelő aláírása: _________________________________`;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: white;
+    background: rgb(253, 251, 238);
     border: 1px solid #e2e8f0;
     color: #4a5568;
     padding: 0.5rem 1rem;
@@ -2612,7 +2612,7 @@ Megrendelő aláírása: _________________________________`;
   }
   
   .refresh-button:hover {
-    background-color: #f8fafc;
+    background-color: rgb(253, 251, 238);
     border-color: #cbd5e0;
   }
 
@@ -2622,7 +2622,7 @@ Megrendelő aláírása: _________________________________`;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    background: #f8fafc;
+    background: rgb(253, 251, 238);
     border-bottom: 1px solid #e2e8f0;
     border-radius: 8px 8px 0 0;
     gap: 1rem;
@@ -2654,7 +2654,7 @@ Megrendelő aláírása: _________________________________`;
     padding: 0.5rem 0.75rem;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
-    background: white;
+    background: rgb(253, 251, 238);
     font-size: 0.9rem;
     color: #4a5568;
     transition: border-color 0.2s, box-shadow 0.2s;
@@ -2682,7 +2682,7 @@ Megrendelő aláírása: _________________________________`;
     padding: 0.5rem 2.5rem 0.5rem 0.75rem;
     border: 1px solid #e2e8f0;
     border-radius: 6px;
-    background: white;
+    background: rgb(253, 251, 238);
     font-size: 0.9rem;
     color: #4a5568;
     cursor: pointer;
@@ -2745,7 +2745,7 @@ Megrendelő aláírása: _________________________________`;
   .table-responsive {
     width: 100%;
     overflow: auto;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     flex: 1;
@@ -2763,7 +2763,7 @@ Megrendelő aláírása: _________________________________`;
   }
 
   .bookings-table th {
-    background-color: #f8fafc;
+    background-color: rgb(253, 251, 238);
     color: #4a5568;
     font-weight: 600;
     text-transform: uppercase;
@@ -2810,7 +2810,7 @@ Megrendelő aláírása: _________________________________`;
   }
 
   .bookings-table tr:hover {
-    background-color: #f8fafc;
+    background-color: rgb(253, 251, 238);
   }
 
   .bookings-table tr:last-child td {
@@ -2880,7 +2880,7 @@ Megrendelő aláírása: _________________________________`;
     padding: 0.6rem 1rem;
     border-radius: 8px;
     border: 2px solid #e2e8f0;
-    background: white;
+    background: rgb(253, 251, 238);
     cursor: pointer;
     font-size: 0.95rem;
     font-weight: 500;
@@ -2968,7 +2968,7 @@ Megrendelő aláírása: _________________________________`;
     align-items: center;
     gap: 0.75rem;
     padding: 1rem;
-    background: #f8fafc;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     border: 1px solid #e2e8f0;
   }
@@ -3000,7 +3000,7 @@ Megrendelő aláírása: _________________________________`;
   }
 
   .modal-content {
-    background: white !important;
+    background: rgb(253, 251, 238) !important;
     border-radius: 12px !important;
     padding: 0 !important;
     width: 90% !important;
@@ -3195,7 +3195,7 @@ Megrendelő aláírása: _________________________________`;
   .kanban-column {
     display: flex;
     flex-direction: column;
-    background: #f8fafc;
+    background: rgb(253, 251, 238);
     border-radius: 12px;
     border: 1px solid #e2e8f0;
     overflow: hidden;
@@ -3206,7 +3206,7 @@ Megrendelő aláírása: _________________________________`;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    background: white;
+    background: rgb(253, 251, 238);
     border-bottom: 1px solid #e2e8f0;
   }
 
@@ -3237,7 +3237,7 @@ Megrendelő aláírása: _________________________________`;
   }
 
   .ticket-card {
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     border: 1px solid #e2e8f0;
@@ -3390,7 +3390,7 @@ Megrendelő aláírása: _________________________________`;
   }
 
   .ticket-modal-content {
-    background: white !important;
+    background: rgb(253, 251, 238) !important;
     border-radius: 12px !important;
     padding: 0 !important;
     width: 70% !important;
@@ -3441,7 +3441,7 @@ Megrendelő aláírása: _________________________________`;
     top: auto !important;
     left: auto !important;
     width: 100% !important;
-    background: white !important;
+    background: rgb(253, 251, 238) !important;
     border-bottom: 1px solid #e2e8f0 !important;
     margin-bottom: 0 !important;
     z-index: 9999999998 !important;
@@ -3594,7 +3594,7 @@ Megrendelő aláírása: _________________________________`;
 
   .parts-table th,
   .labor-table th {
-    background-color: #f8fafc;
+    background-color: rgb(253, 251, 238);
     font-weight: 600;
     color: #4a5568;
     font-size: 0.8rem;
@@ -3627,7 +3627,7 @@ Megrendelő aláírása: _________________________________`;
   }
 
   .cost-breakdown {
-    background: #f8fafc;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     padding: 1.5rem;
     border: 1px solid #e2e8f0;
@@ -3657,7 +3657,7 @@ Megrendelő aláírása: _________________________________`;
   }
 
   .notes-content {
-    background: #f8fafc;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     padding: 1rem;
     border: 1px solid #e2e8f0;
@@ -3729,7 +3729,7 @@ Megrendelő aláírása: _________________________________`;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    background: #f8fafc;
+    background: rgb(253, 251, 238);
     border-bottom: 1px solid #e2e8f0;
     border-radius: 8px 8px 0 0;
   }
@@ -3778,7 +3778,7 @@ Megrendelő aláírása: _________________________________`;
   }
 
   .pagination-button:hover:not(:disabled) {
-    background-color: #f8fafc;
+    background-color: rgb(253, 251, 238);
     border-color: #cbd5e0;
   }
 
@@ -3958,7 +3958,7 @@ Megrendelő aláírása: _________________________________`;
       border: 1px solid #e2e8f0;
       border-radius: 8px;
       overflow: hidden;
-      background: white;
+      background: rgb(253, 251, 238);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
     

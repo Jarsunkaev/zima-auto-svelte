@@ -258,9 +258,15 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
 </script>
 
 <section class="booking-hero">
-  <div class="container">
+  <div class="hero-background"></div>
+  <div class="container relative z-10">
     <h1>{content[lang].title}</h1>
     <p>{content[lang].subtitle}</p>
+  </div>
+  <div class="hero-wave">
+    <svg preserveAspectRatio="none" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+    </svg>
   </div>
 </section>
 
@@ -382,28 +388,57 @@ let apiUrl = isDevelopment ? 'http://localhost:3001' : (import.meta.env.VITE_BAC
 
   /* Booking Hero Section */
   .booking-hero {
-    background-color: var(--secondary); /* Use your secondary color variable */
+    position: relative;
+    background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(27, 42, 75) 100%);
     color: white;
-    padding: 8rem 2rem 5rem;
+    padding: 10rem 2rem 8rem;
     text-align: center;
+    overflow: hidden;
+  }
+  .hero-background {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%),
+                      radial-gradient(circle at bottom left, rgba(255,255,255,0.03) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .relative { position: relative; }
+  .z-10 { z-index: 10; }
+  .hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+  }
+  .hero-wave svg {
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 120px;
+    fill: rgb(253, 251, 238);
   }
 
   .booking-hero h1 {
-    font-size: 3rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
     margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
   .booking-hero p {
-    font-size: 1.2rem;
-    max-width: 600px;
+    font-size: 1.35rem;
+    max-width: 700px;
     margin: 0 auto;
-    opacity: 0.9;
+    opacity: 0.85;
+    line-height: 1.6;
+    font-weight: 300;
   }
 
   /* Booking Form Section */
   .booking-form-section {
     padding: 5rem 2rem;
-    background-color: white;
+    background-color: rgb(253, 251, 238);
   }
 
   .booking-header {

@@ -178,13 +178,9 @@
 </section>
 
 <section class="services-section" id="services">
-  <div class="wave-top">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1440 20"
-      preserveAspectRatio="none"
-    >
-      <path fill="#ffffff" fill-opacity="1" d="M0,0L1440,0L1440,0L0,0Z"></path>
+    <div class="wave-top" style="position: absolute; top: -1px; left: 0; width: 100%; transform: rotate(180deg); z-index: 10;">
+    <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" style="display: block; width: calc(100% + 1.3px); height: 80px;">
+      <path fill="rgb(253, 251, 238)" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
     </svg>
   </div>
 
@@ -228,14 +224,9 @@
     </div>
   </div>
 
-  <div class="wave-bottom">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1440 20"
-      preserveAspectRatio="none"
-    >
-      <path fill="#141a25" fill-opacity="1" d="M0,20L1440,20L1440,20L0,20Z"
-      ></path>
+    <div class="wave-bottom" style="position: absolute; bottom: -1px; left: 0; width: 100%; z-index: 10;">
+    <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" style="display: block; width: calc(100% + 1.3px); height: 80px;">
+      <path fill="#ffffff" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
     </svg>
   </div>
 </section>
@@ -349,9 +340,9 @@
     height: 100vh;
     background: linear-gradient(
       to right,
-      rgba(0, 0, 0, 0.55) 0%,
-      rgba(0, 0, 0, 0.6) 50%,
-      rgba(0, 0, 0, 0.65) 100%
+      rgba(15, 23, 42, 0.85) 0%,
+      rgba(27, 42, 75, 0.75) 50%,
+      rgba(15, 23, 42, 0.85) 100%
     );
     z-index: 1;
   }
@@ -375,7 +366,8 @@
   }
 
   .hero-content h1 {
-    font-size: 3.5rem;
+    font-size: 4rem;
+    letter-spacing: -0.02em;
     font-weight: 700;
     margin-bottom: 1.5rem;
     line-height: 1.2;
@@ -443,7 +435,7 @@
   .wheel {
     width: 4px;
     height: 10px;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 2px;
     animation: mouse-scroll 1.6s cubic-bezier(0.15, 0.41, 0.69, 0.94) infinite;
   }
@@ -524,7 +516,7 @@
   /* Services Section */
   .services-section {
     padding: 6rem 2rem;
-    background-color: #f8f9fa;
+    background-color: rgb(253, 251, 238);
     position: relative;
   }
 
@@ -566,7 +558,7 @@
   /* Testimonials Section */
   .testimonials-section {
     padding: 6rem 2rem;
-    background-color: #141a25;
+    background-color: rgb(27, 42, 75);
     color: white;
     position: relative;
     overflow: hidden;
@@ -799,7 +791,7 @@
   .widget-container {
     max-width: 1000px;
     margin: 3rem auto 0;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     padding: 1rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);

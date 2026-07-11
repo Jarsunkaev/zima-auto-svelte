@@ -171,7 +171,7 @@
     }
     
     .cookie-consent-banner {
-      background-color: #13151a; /* Dark blue footer color */
+      background-color: rgb(27, 42, 75); /* Dark blue footer color */
       color: white;
       border-radius: 12px;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);

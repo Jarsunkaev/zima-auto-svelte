@@ -335,7 +335,7 @@
   .services-section {
     min-height: 100vh;
     padding: 10rem 2rem 6rem;
-    background-color: rgb(19, 21, 26);
+    background-color: rgb(27, 42, 75);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -361,7 +361,7 @@
   /* Testimonials Section */
   .testimonials-section {
     padding: 6rem 2rem;
-    background-color: #141a25;
+    background-color: rgb(27, 42, 75);
     color: white;
     position: relative;
     overflow: hidden;
@@ -514,7 +514,7 @@
   /* FAQ Section */
   .faq-home-section {
     padding: 6rem 1rem;
-    background-color: rgb(19, 21, 26);
+    background-color: rgb(27, 42, 75);
     position: relative;
   }
 
@@ -573,7 +573,7 @@
   }
 
   .faq-home-actions .ghost {
-    background: white;
+    background: rgb(253, 251, 238);
     border: 1px solid rgba(15, 23, 42, 0.08);
     color: #0f172a;
   }
@@ -600,7 +600,7 @@
   .widget-container {
     max-width: 1000px;
     margin: 3rem auto 0;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     padding: 1rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);

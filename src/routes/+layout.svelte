@@ -68,7 +68,7 @@
   .language-switcher button {
     padding: 0.5rem 1rem;
     border: 1px solid #ccc;
-    background: white;
+    background: rgb(253, 251, 238);
     cursor: pointer;
     border-radius: 4px;
   }

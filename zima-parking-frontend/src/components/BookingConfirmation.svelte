@@ -190,7 +190,7 @@
   /* Confirmation Section */
   .confirmation-section {
     padding: 6rem 2rem;
-    background-color: white;
+    background-color: rgb(253, 251, 238);
   }
 
   .confirmation-container {
@@ -229,7 +229,7 @@
   }
 
   .confirmation-details {
-    background-color: white;
+    background-color: rgb(253, 251, 238);
     border-radius: 8px;
     padding: 2rem;
     text-align: left;

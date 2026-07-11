@@ -120,7 +120,7 @@
   
     .service-card {
       position: relative;
-      background-color: white;
+      background-color: rgb(253, 251, 238);
       border-radius: 12px;
       padding: 1.5rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -186,7 +186,7 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      color: #13151a;
+      color: rgb(27, 42, 75);
       font-weight: 600;
       font-size: 1.1rem;
       margin-top: auto;

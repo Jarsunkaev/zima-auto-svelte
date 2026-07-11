@@ -295,7 +295,6 @@
 <style>
   .form-title {
     text-align: center;
-    margin-bottom: 2rem;
     font-size: 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -303,7 +302,8 @@
 
   .form-section h3 {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
   }
 
   .booking-form {
@@ -316,10 +316,6 @@
   }
 
   .form-section {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     width: 100%;
   }
 
@@ -347,7 +343,8 @@
   }
 
   .service-type-option:hover {
-    border-color: var(--primary);
+    border-color: rgb(45, 68, 115);
+    background-color: white;
     background-color: rgba(0, 186, 229, 0.05);
   }
 
@@ -359,14 +356,11 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
   }
 
   .time-slot-container {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    background: transparent;
   }
 
   input[type="text"],
@@ -413,7 +407,7 @@
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .checkbox-label input[type="checkbox"] {
@@ -422,7 +416,7 @@
   }
 
   .privacy-link {
-    color: var(--primary);
+    color: rgba(27, 42, 75, 0.7);
     text-decoration: none;
     transition: color 0.3s ease;
   }
@@ -445,20 +439,21 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    background-color: var(--primary);
+    background-color: rgb(27, 42, 75);
     color: white;
     border: none;
     padding: 1rem 2rem;
     font-size: 1.1rem;
-    border-radius: 6px;
+    border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: 100%;
-    max-width: 300px;
+    max-width: 400px;
+    white-space: nowrap;
   }
 
   .submit-button:hover:not(:disabled) {
-    background-color: var(--primary-dark);
+    background-color: rgb(45, 68, 115);
   }
 
   .submit-button:disabled {
@@ -489,5 +484,30 @@
     .form-section {
       padding: 1rem;
     }
+  }
+
+  .form-submit button {
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    min-width: 200px;
+    background-color: rgb(45, 68, 115);
+    border-radius: 50px;
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .form-submit button:hover:not(:disabled) {
+    background-color: rgb(45, 68, 115);
+    transform: translateY(-2px);
+  }
+
+  .service-option, .package-option {
+    transition: all 0.3s ease;
+  }
+  .service-option:hover, .package-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
   }
 </style>

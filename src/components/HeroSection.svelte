@@ -291,7 +291,7 @@
   .wheel {
     width: 4px;
     height: 10px;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 2px;
     animation: mouse-scroll 1.6s cubic-bezier(0.15, 0.41, 0.69, 0.94) infinite;
   }
@@ -398,7 +398,7 @@
   /* Example CSS for your next section (add this to your global styles or the next section's component) */
   /*
   .your-next-section-class {
-      background-color: white; // Or any solid color
+      background-color: rgb(253, 251, 238); // Or any solid color
       position: relative; // Often helpful for z-index stacking
       z-index: 1; // Ensure it's above the fixed hero background (z-index: 0)
   }

@@ -6,8 +6,8 @@ export const faqContent = {
       categoryHu: 'Általános',
       question: 'What are your opening hours?',
       questionHu: 'Mik a nyitvatartási idők?',
-      answer: 'Parking: 24/7 | Hand Car Wash: Mon–Sat (08:00–18:00) | Auto Service: Mon–Sat (08:00–17:00) | Tire Service: Mon–Sat (08:00–17:00)',
-      answerHu: 'Parkoló: 24/7 | Kézi Autómosó: H–Szo (08:00–18:00) | Autó Szerviz: H–Szo (08:00–17:00) | Gumiszerviz: H–Szo (08:00–17:00)'
+      answer: 'Parking: 24/7 | Hand Car Wash: Mon–Sat (08:00–18:00) | Auto Service: Mon–Sat (08:00–18:00) | Tire Service: Mon–Sat (08:00–18:00)',
+      answerHu: 'Parkoló: 24/7 | Kézi Autómosó: H–Szo (08:00–18:00) | Autó Szerviz: H–Szo (08:00–18:00) | Gumiszerviz: H–Szo (08:00–18:00)'
     },
     {
       category: 'General',

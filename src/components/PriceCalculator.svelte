@@ -43,8 +43,8 @@
   ];
   const carWashPricing = {
     none: 0,
-    smartInteriorExterior: 8900,
-    premiumInteriorExterior: 11900
+    smartInteriorExterior: 9900,
+    premiumInteriorExterior: 14990
   };
 
   // --- Reactive Variables ---

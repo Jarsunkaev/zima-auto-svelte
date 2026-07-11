@@ -141,7 +141,7 @@
 
   .popup-content {
     position: relative;
-    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(19, 21, 26, 0.98));
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(27, 42, 75, 0.98));
     border-radius: 24px;
     max-width: 600px;
     width: 100%;
@@ -163,9 +163,9 @@
     font-size: 4rem;
     font-weight: 900;
     line-height: 1;
-    color: var(--primary, #00bae5);
+    color: white;
     margin-bottom: 1rem;
-    text-shadow: 0 0 20px rgba(0, 186, 229, 0.4);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
   }
 
   h2 {

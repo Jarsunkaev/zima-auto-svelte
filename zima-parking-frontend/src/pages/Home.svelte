@@ -69,7 +69,6 @@
     },
   ];
 
-
   // Handler for service card CTA buttons - navigate to booking page with service pre-selected
   function handleServiceAction(serviceId) {
     // Map service IDs to booking service IDs
@@ -101,21 +100,6 @@
     // Setup parallax effect for hero section
 
     // Setup animations with ScrollTrigger
-
-    // Booking section animation
-    gsap.from(".booking-container", {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      scrollTrigger: {
-        trigger: ".booking-section",
-        start: "top 80%",
-        onEnter: () => {
-          bookingVisible = true;
-        },
-      },
-    });
-
     // Services section animation (handled by the shouldAnimate prop)
     const servicesSection = document.querySelector(".services-section");
     if (servicesSection) {
@@ -168,14 +152,14 @@
     <div
       class="scroll-down-indicator"
       on:click={() => {
-        const nextSection = document.querySelector(".booking-section");
+        const nextSection = document.querySelector(".services-section");
         if (nextSection) {
           nextSection.scrollIntoView({ behavior: "smooth" });
         }
       }}
       on:keydown={(e) => {
         if (e.key === "Enter") {
-          const nextSection = document.querySelector(".booking-section");
+          const nextSection = document.querySelector(".services-section");
           if (nextSection) {
             nextSection.scrollIntoView({ behavior: "smooth" });
           }
@@ -197,43 +181,10 @@
   </div>
 </section>
 
-<section class="booking-section" id="booking">
-  <div class="container">
-    <h2 class="section-title">
-      {$currentLang === "hu" ? "FOGLALJON HELYET" : "BOOK A SPOT"}
-    </h2>
-
-    <div class="booking-container">
-      <div class="booking-image">
-        <img src="images/zima-gate.webp" alt="Airport Parking" loading="lazy" />
-      </div>
-      <div class="booking-content">
-        <p class="booking-description">
-          {$currentLang === "hu"
-            ? "Foglaljon biztonságos parkolóhelyet már ma! Garantált helyek, 24/7 felügyelet, ingyenes reptéri transzfer."
-            : "Book your secure parking spot today! Guaranteed spaces, 24/7 surveillance, free airport transfer."}
-        </p>
-        <button
-          class="btn btn-primary booking-btn"
-          on:click={() => navigate("booking")}
-        >
-          {$currentLang === "hu"
-            ? "Reptéri Parkolás Foglalása"
-            : "Book Airport Parking"}
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="services-section" id="services">
-  <div class="wave-top">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1440 20"
-      preserveAspectRatio="none"
-    >
-      <path fill="#ffffff" fill-opacity="1" d="M0,0L1440,0L1440,0L0,0Z"></path>
+    <div class="wave-top" style="position: absolute; top: -1px; left: 0; width: 100%; transform: rotate(180deg); z-index: 10;">
+    <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" style="display: block; width: calc(100% + 1.3px); height: 80px;">
+      <path fill="rgb(253, 251, 238)" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
     </svg>
   </div>
 
@@ -277,14 +228,9 @@
     </div>
   </div>
 
-  <div class="wave-bottom">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1440 20"
-      preserveAspectRatio="none"
-    >
-      <path fill="#141a25" fill-opacity="1" d="M0,20L1440,20L1440,20L0,20Z"
-      ></path>
+    <div class="wave-bottom" style="position: absolute; bottom: -1px; left: 0; width: 100%; z-index: 10;">
+    <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" style="display: block; width: calc(100% + 1.3px); height: 80px;">
+      <path fill="#ffffff" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
     </svg>
   </div>
 </section>
@@ -335,7 +281,6 @@
     </div>
   </div>
 </section>
-
 
 <style>
   /* Hero Section */
@@ -398,9 +343,9 @@
     height: 100vh;
     background: linear-gradient(
       to right,
-      rgba(0, 0, 0, 0.55) 0%,
-      rgba(0, 0, 0, 0.6) 50%,
-      rgba(0, 0, 0, 0.65) 100%
+      rgba(15, 23, 42, 0.5) 0%,
+      rgba(27, 42, 75, 0.35) 50%,
+      rgba(15, 23, 42, 0.5) 100%
     );
     z-index: 1;
   }
@@ -424,7 +369,8 @@
   }
 
   .hero-content h1 {
-    font-size: 3.5rem;
+    font-size: 4rem;
+    letter-spacing: -0.02em;
     font-weight: 700;
     margin-bottom: 1.5rem;
     line-height: 1.2;
@@ -492,7 +438,7 @@
   .wheel {
     width: 4px;
     height: 10px;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 2px;
     animation: mouse-scroll 1.6s cubic-bezier(0.15, 0.41, 0.69, 0.94) infinite;
   }
@@ -543,13 +489,6 @@
     }
   }
 
-  /* Booking Section */
-  .booking-section {
-    padding: 6rem 2rem;
-    background-color: #ffffff;
-    position: relative;
-  }
-
   .section-title {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -577,76 +516,10 @@
     line-height: 1.6;
   }
 
-  .booking-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 3rem;
-    max-width: 1000px;
-    margin: 0 auto;
-    background-color: #f8f9fa;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  }
-
-  .booking-image {
-    flex: 1.2;
-    overflow: hidden;
-  }
-
-  .booking-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
-  }
-
-  .booking-container:hover .booking-image img {
-    transform: scale(1.05);
-  }
-
-  .booking-content {
-    flex: 0.8;
-    padding: 3rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .booking-description {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    color: #555;
-    margin-bottom: 2rem;
-  }
-
-  .booking-btn {
-    align-self: center;
-    font-size: 1rem;
-    padding: 0.8rem 2rem;
-    /* Inherits primary button styles but explicit for clarity */
-    background-color: var(--secondary);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .booking-btn:hover,
-  .booking-btn:focus {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    background-color: var(--primary-dark);
-    outline: none;
-  }
-
   /* Services Section */
   .services-section {
     padding: 6rem 2rem;
-    background-color: #f8f9fa;
+    background-color: rgb(253, 251, 238);
     position: relative;
   }
 
@@ -688,7 +561,7 @@
   /* Testimonials Section */
   .testimonials-section {
     padding: 6rem 2rem;
-    background-color: #141a25;
+    background-color: rgb(27, 42, 75);
     color: white;
     position: relative;
     overflow: hidden;
@@ -792,12 +665,6 @@
       width: 100%;
       height: 250px;
     }
-
-    .booking-content {
-      width: 100%;
-      padding: 2rem;
-    }
-
     .section-title {
       font-size: 2rem;
     }
@@ -845,7 +712,6 @@
       gap: 1.5rem;
     }
 
-
     .section-title {
       font-size: 2.2rem;
     }
@@ -859,8 +725,7 @@
     }
 
     .services-section,
-    .testimonials-section,
-    .booking-section {
+    .testimonials-section {
       padding: 4rem 1.5rem;
     }
 
@@ -887,11 +752,6 @@
       font-size: 1.1rem !important;
       line-height: 1.6 !important;
     }
-
-    .booking-description {
-      font-size: 1.2rem !important;
-      line-height: 1.6 !important;
-    }
   }
 
   @media screen and (max-width: 480px) {
@@ -912,7 +772,6 @@
       padding: 0.8rem 2rem;
     }
 
-    .booking-section,
     .services-section,
     .testimonials-section {
       padding: 3rem 1rem;
@@ -922,15 +781,6 @@
     .wave-bottom {
       height: 5px;
     }
-
-    .booking-content {
-      padding: 1.5rem;
-    }
-
-    .booking-description {
-      font-size: 1.2rem !important;
-    }
-
     /* Even larger text sizes for smaller screens */
     :global(.service-card h3) {
       font-size: 1.8rem !important;
@@ -954,7 +804,7 @@
   .widget-container {
     max-width: 1000px;
     margin: 3rem auto 0;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     padding: 1rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);

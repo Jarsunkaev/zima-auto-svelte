@@ -53,9 +53,12 @@
             <h3>{t("footer.visit", $currentLang)}</h3>
             <p class="address">{t("footer.address", $currentLang)}</p>
             <p>
-              <strong>{t("footer.phone", $currentLang)}:</strong>
-              <a href="tel:+36705550588" class="contact-link"
-                >{t("footer.phoneNumber", $currentLang)}</a
+              <strong>{t("footer.phone", $currentLang)}:</strong><br/>
+              <a href="tel:+36707343444" class="contact-link"
+                >+36 70 734 3444</a
+              ><br/>
+              <a href="tel:+36705859959" class="contact-link"
+                >+36 70 585 9959</a
               >
             </p>
             <p>
@@ -467,7 +470,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: var(--primary);
+    background-color: rgb(27, 42, 75);
     color: white;
     border: none;
     cursor: pointer;
@@ -489,14 +492,14 @@
   }
 
   .back-to-top:hover {
-    background-color: var(--primary-dark);
+    background-color: rgb(45, 68, 115);
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
   }
 
   .back-to-top:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 186, 229, 0.3);
+    box-shadow: 0 0 0 3px rgba(27, 42, 75, 0.3);
   }
 
   @media screen and (max-width: 768px) {

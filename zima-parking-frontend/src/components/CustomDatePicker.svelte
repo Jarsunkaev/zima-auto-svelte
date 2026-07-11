@@ -381,12 +381,12 @@
 
   .datepicker-input {
     width: 100%;
-    padding: 0.8rem 1rem;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    padding: 1rem 1.25rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
     font-size: 1rem;
     font-family: inherit;
-    background-color: white;
+    background-color: #f8fafc;
     color: var(--text);
     display: flex;
     align-items: center;
@@ -398,7 +398,8 @@
   }
 
   .datepicker-input:hover {
-    border-color: var(--primary);
+    border-color: rgb(45, 68, 115);
+    background-color: white;
   }
 
   .datepicker-input.has-value {
@@ -480,8 +481,9 @@
 
   .calendar-nav-button:hover {
     background: var(--light);
-    border-color: var(--primary);
-    color: var(--primary);
+    border-color: rgb(45, 68, 115);
+    background-color: white;
+    color: rgba(27, 42, 75, 0.7);
   }
 
   .calendar-nav-button:active {
@@ -540,7 +542,7 @@
     align-items: center;
     justify-content: center;
     border: 1px solid transparent;
-    border-radius: 5px;
+    border-radius: 12px;
     background: white;
     color: var(--text);
     font-size: 0.8rem;
@@ -554,20 +556,23 @@
 
   .calendar-day:hover:not(.disabled) {
     background: var(--light);
-    border-color: var(--primary);
+    border-color: rgb(45, 68, 115);
+    background-color: white;
     transform: scale(1.05);
   }
 
   .calendar-day.today {
-    border-color: var(--primary);
+    border-color: rgb(45, 68, 115);
+    background-color: white;
     font-weight: 700;
     background: rgba(0, 186, 229, 0.1);
   }
 
   .calendar-day.selected {
-    background: var(--primary);
+    background: rgba(27, 42, 75, 0.7);
     color: white;
-    border-color: var(--primary);
+    border-color: rgb(45, 68, 115);
+    background-color: white;
     font-weight: 700;
   }
 

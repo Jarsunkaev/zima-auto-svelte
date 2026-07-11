@@ -58,7 +58,7 @@
           <ul>
             <li>{lang === 'hu' ? 'Online foglalási rendszeren keresztül' : 'Through online booking system'}</li>
             <li>{lang === 'hu' ? 'Telefonon: +36 70 555 0588' : 'By phone: +36 70 555 0588'}</li>
-            <li>{lang === 'hu' ? 'Emailben: info@atgroup.hu' : 'By email: info@atgroup.hu'}</li>
+            <li>{lang === 'hu' ? 'Emailben: szerviz@atgroup.hu' : 'By email: szerviz@atgroup.hu'}</li>
           </ul>
           
           <p><strong>3.3.</strong> {lang === 'hu' ? 'A fizetés a következő módokon történhet:' : 'Payment can be made in the following ways:'}</p>
@@ -112,7 +112,7 @@
           
           <p><strong>6.2.</strong> {lang === 'hu' ? 'A panasz benyújtásának módjai:' : 'Ways to submit complaints:'}</p>
           <ul>
-            <li>{lang === 'hu' ? 'Email: info@atgroup.hu' : 'Email: info@atgroup.hu'}</li>
+            <li>{lang === 'hu' ? 'Email: szerviz@atgroup.hu' : 'Email: szerviz@atgroup.hu'}</li>
             <li>{lang === 'hu' ? 'Postai cím: 2220 Vecsés, Ipari utca 1.' : 'Postal address: 2220 Vecsés, Ipari utca 1.'}</li>
             <li>{lang === 'hu' ? 'Személyesen: a Szolgáltató székhelyén' : 'In person: at the Service Provider\'s registered office'}</li>
           </ul>
@@ -144,7 +144,7 @@
             <strong>{lang === 'hu' ? 'Telefon:' : 'Phone:'}</strong> +36 70 555 0588
           </div>
           <div class="contact-item">
-            <strong>{lang === 'hu' ? 'Email:' : 'Email:'}</strong> info@atgroup.hu
+            <strong>{lang === 'hu' ? 'Email:' : 'Email:'}</strong> szerviz@atgroup.hu
           </div>
           <div class="contact-item">
             <strong>{lang === 'hu' ? 'Nyitvatartás:' : 'Opening hours:'}</strong> {lang === 'hu' ? 'Hétfő - Vasárnap: 00:00 - 24:00' : 'Monday - Sunday: 00:00 - 24:00'}
@@ -158,7 +158,7 @@
 <style>
   .page-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #13151a 0%, #1a1d24 100%);
+    background: linear-gradient(135deg, rgb(27, 42, 75) 0%, #1a1d24 100%);
     padding-top: 80px;
   }
 
@@ -191,7 +191,7 @@
   }
 
   .terms-content {
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -240,7 +240,7 @@
 
   .contact-info {
     padding: 2rem;
-    background: #f7fafc;
+    background: rgb(253, 251, 238);
     border-top: 1px solid #e2e8f0;
   }
 
@@ -264,7 +264,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     border-left: 4px solid #00bae5;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);

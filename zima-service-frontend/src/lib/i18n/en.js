@@ -2,7 +2,7 @@ export default {
   thankYou: {
     title: "Thank You!",
     message: "Your form has been successfully submitted. We appreciate your interest in our services and will process your request as soon as possible.",
-    contactInfo: "If you have any questions, feel free to contact us at 06 70 555 0588 or info@atgroup.hu.",
+    contactInfo: "If you have any questions, feel free to contact us at 06 70 555 0588 or szerviz@atgroup.hu.",
     homeButton: "BACK TO HOME",
     contactButton: "CONTACT US"
   },
@@ -91,7 +91,7 @@ export default {
     phone: "Phone",
     phoneNumber: "06 70 555 0588",
     email: "Email",
-    emailAddress: "info@atgroup.hu",
+    emailAddress: "szerviz@atgroup.hu",
     links: "Links",
     copyright: "© 2025 atgroup.hu. All rights reserved."
   }

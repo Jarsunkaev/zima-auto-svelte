@@ -81,7 +81,7 @@
 <style>
   .google-reviews {
     padding: 2rem;
-    background: white;
+    background: rgb(253, 251, 238);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
@@ -114,7 +114,7 @@
   }
 
   .review-card {
-    background: #f8f9fa;
+    background: rgb(253, 251, 238);
     padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);

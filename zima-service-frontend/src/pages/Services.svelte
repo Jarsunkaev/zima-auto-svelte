@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { currentLang } from '../lib/i18n';
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -51,26 +51,41 @@
   ];
 
   onMount(() => {
-    // Animate service sections
-    gsap.from('.service-section', {
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.3,
-      scrollTrigger: {
-        trigger: '.services-container',
-        start: 'top 70%'
-      }
-    });
+    // Refresh ScrollTrigger to fix height calculations after navigation
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+      // Animate service sections
+      gsap.from('.service-section', {
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.3,
+        scrollTrigger: {
+          trigger: '.services-container',
+          start: 'top 70%'
+        }
+      });
+    }, 100);
+  });
+
+  onDestroy(() => {
+    // Kill all scroll triggers to prevent issues when navigating away
+    ScrollTrigger.getAll().forEach(t => t.kill());
   });
 </script>
 
 <section class="services-hero">
-  <div class="container">
+  <div class="hero-background"></div>
+  <div class="container relative z-10">
     <h1>{$currentLang === 'hu' ? 'SZOLGÁLTATÁSOK' : 'SERVICES'}</h1>
     <p>{$currentLang === 'hu'
       ? 'Mindent egy helyen az Ön járművének kényeztetéséhez'
       : 'Everything in one place to pamper your vehicle'}</p>
+  </div>
+  <div class="hero-wave">
+    <svg preserveAspectRatio="none" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+    </svg>
   </div>
 </section>
 
@@ -197,26 +212,55 @@
     --secondary: #333; /* Example secondary color */
     --text: #1a1a1a; /* Example text color */
     --text-light: #555; /* Example light text color */
-    --light: #f4f4f4; /* Example light background color */
+    --light: rgb(253, 251, 238); /* Example light background color */
   }
 
   .services-hero {
-    background-color: var(--secondary);
+    position: relative;
+    background: linear-gradient(135deg, rgb(15, 23, 42) 0%, rgb(27, 42, 75) 100%);
     color: white;
-    padding: 8rem 2rem 5rem;
+    padding: 10rem 2rem 8rem;
     text-align: center;
+    overflow: hidden;
+  }
+  .hero-background {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%),
+                      radial-gradient(circle at bottom left, rgba(255,255,255,0.03) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .relative { position: relative; }
+  .z-10 { z-index: 10; }
+  .hero-wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    line-height: 0;
+  }
+  .hero-wave svg {
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 120px;
+    fill: rgb(253, 251, 238);
   }
 
   .services-hero h1 {
-    font-size: 3rem;
+    font-size: 4rem;
+    font-weight: 800;
     margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
   .services-hero p {
-    font-size: 1.2rem;
-    max-width: 600px;
+    font-size: 1.35rem;
+    max-width: 700px;
     margin: 0 auto;
-    opacity: 0.9;
+    opacity: 0.85;
+    line-height: 1.6;
+    font-weight: 300;
   }
 
   .service-section {
@@ -226,11 +270,11 @@
 
   /* Alternating background colors for sections */
   .services-container section:nth-child(odd) {
-       background-color: white; /* Default white background */
-   }
+    background-color: rgb(253, 251, 238);
+  }
 
   .services-container section:nth-child(even) {
-    background-color: var(--light); /* Light grey background */
+    background-color: #ffffff;
   }
 
 
@@ -266,7 +310,7 @@
        left: 0; /* Align to left by default */
        width: 50px;
        height: 3px;
-       background-color: var(--primary); /* Primary Blue underline */
+       background-color: rgb(27, 42, 75); /* Primary Blue underline */
    }
 
      /* Specific rule to center the underline only for the maintenance section */
@@ -321,7 +365,7 @@
     position: absolute;
     left: 0;
     top: 2px;
-    color: var(--primary);
+    color: rgb(27, 42, 75);
     font-weight: bold;
     font-size: 1.2em;
   }
@@ -338,21 +382,19 @@
 
   .service-image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
+    height: auto;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
   }
 
-  .service-image:hover img {
-    transform: scale(1.05);
-  }
 
   /* Pricing Tables Styles */
   .pricing-table-container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
     overflow: hidden; /* Hide overflow for the container */
     margin-top: 1.5rem; /* Adjust margin top for tables */
   }
@@ -429,13 +471,19 @@
     }
 
     .tire-service-block {
-      background-color: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07); /* Slightly more pronounced shadow */
-      text-align: center;
-      border: 1px solid #eee;
-    }
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+  .tire-service-block:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+  }
 
      .tire-service-block h3 {
          font-size: 1.1rem;
@@ -447,7 +495,7 @@
     .service-price {
       font-size: 1.2rem; /* Slightly larger price */
       font-weight: 600; /* Bolder price */
-      color: var(--primary); /* Use primary color for price */
+      color: rgb(27, 42, 75); /* Use primary color for price */
       margin-top: 0.5rem;
     }
 
@@ -464,19 +512,21 @@
     }
 
     .maintenance-bubble {
-        background-color: #1a1a1a; /* Black/very dark grey background */
-        color: white; /* White text color */
-        padding: 0.8rem 1.5rem; /* Padding inside the bubble */
-        border-radius: 50px; /* Large border-radius for bubble shape */
-        font-size: 1.1rem;
-        font-weight: 500;
-        text-align: center;
-        white-space: nowrap; /* Prevent text from wrapping inside the bubble */
-        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-        cursor: default; /* Change cursor since they are not links now */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-        flex-shrink: 0; /* Prevent bubbles from shrinking */
-    }
+    background: rgb(27, 42, 75);
+    border: none;
+    border-radius: 50px;
+    padding: 1rem 2rem;
+    box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+  }
+  .maintenance-bubble:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.2);
+    background: rgb(15, 23, 42);
+  }
 
     /* Removed hover effect if they are not meant to be clicked */
     /* .maintenance-bubble:hover { ... } */
@@ -496,14 +546,14 @@
     }
 
     .btn-primary {
-        background-color: var(--primary);
+        background-color: rgb(27, 42, 75);
         color: white;
     }
 
     .btn-primary:hover {
-        background-color: var(--primary-dark);
+        background-color: rgb(45, 68, 115);
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 186, 229, 0.3);
+        box-shadow: 0 5px 15px rgba(27, 42, 75, 0.3);
     }
 
    /* Specific style for the maintenance contact button */

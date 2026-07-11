@@ -30,28 +30,31 @@
       }
     };
 
-    // If cookie consent already closed, show popup after delay
-    if (cookieConsentClosed) {
+    // Also check phone modal status
+    const phoneChangeClosed = localStorage.getItem('phoneChangeModalClosed') === 'true';
+
+    // If both closed, show popup after delay
+    if (cookieConsentClosed && phoneChangeClosed) {
       showPopupWithDelay();
     } else {
-      // Otherwise, wait for cookie consent to be closed
-      const checkCookieConsent = setInterval(() => {
+      // Otherwise, wait for both to be closed
+      const checkPrerequisites = setInterval(() => {
         const consent = localStorage.getItem('cookieConsent');
-        if (consent) {
+        const phoneClosed = localStorage.getItem('phoneChangeModalClosed') === 'true';
+        if (consent && phoneClosed) {
           cookieConsentClosed = true;
-          clearInterval(checkCookieConsent);
+          clearInterval(checkPrerequisites);
           showPopupWithDelay();
         }
       }, 1000); // Check every second
 
-      // Fallback: Show after 15 seconds regardless of cookie consent
-      // This ensures popup shows even if user doesn't interact with cookie banner
+      // Fallback: Show after 20 seconds regardless
       setTimeout(() => {
         if (!showPopup && !hasShown) {
           showPopup = true;
-          clearInterval(checkCookieConsent);
+          clearInterval(checkPrerequisites);
         }
-      }, 15000); // Fallback after 15 seconds
+      }, 20000); // Fallback after 20 seconds
     }
   });
 
@@ -141,7 +144,7 @@
 
   .popup-content {
     position: relative;
-    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(19, 21, 26, 0.98));
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.95), rgba(27, 42, 75, 0.98));
     border-radius: 24px;
     max-width: 600px;
     width: 100%;
@@ -163,9 +166,9 @@
     font-size: 4rem;
     font-weight: 900;
     line-height: 1;
-    color: var(--primary, #00bae5);
+    color: white;
     margin-bottom: 1rem;
-    text-shadow: 0 0 20px rgba(0, 186, 229, 0.4);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
   }
 
   h2 {

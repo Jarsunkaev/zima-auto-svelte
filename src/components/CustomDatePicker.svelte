@@ -283,7 +283,7 @@
     border-radius: 6px;
     font-size: 0.9rem;
     font-family: inherit;
-    background-color: white;
+    background-color: rgb(253, 251, 238);
     color: var(--text);
     display: flex;
     align-items: center;
@@ -326,7 +326,7 @@
     top: calc(100% + 0.5rem);
     left: 50%;
     transform: translateX(-50%);
-    background: white;
+    background: rgb(253, 251, 238);
     border: 1px solid #ddd;
     border-radius: 6px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -363,7 +363,7 @@
     justify-content: center;
     border: 1px solid #ddd;
     border-radius: 4px;
-    background: white;
+    background: rgb(253, 251, 238);
     color: var(--text);
     cursor: pointer;
     transition: all 0.2s ease;
@@ -437,7 +437,7 @@
     justify-content: center;
     border: 1px solid transparent;
     border-radius: 5px;
-    background: white;
+    background: rgb(253, 251, 238);
     color: var(--text);
     font-size: 0.8rem;
     cursor: pointer;

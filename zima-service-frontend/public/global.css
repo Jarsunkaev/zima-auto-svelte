@@ -2,10 +2,10 @@
 :root {
 	--primary: rgba(0, 186, 229, 1);
 	--primary-dark: rgba(0, 150, 190, 1);
-	--secondary: #13151a;
+	--secondary: rgb(27, 42, 75);
 	--text: #333333;
 	--text-light: #666666;
-	--light: #f8f9fa;
+	--light: rgb(253, 251, 238);
 	--white: #ffffff;
 	--gray: #cccccc;
 	--dark-gray: #888888;

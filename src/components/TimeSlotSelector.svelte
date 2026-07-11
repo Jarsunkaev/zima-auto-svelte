@@ -17,8 +17,8 @@
   const businessHours = {
     // Format: [opening hour, closing hour] in 24-hour format
     'carWash': [8, 18],       // 8:00 - 18:00
-    'autoService': [8, 17],   // 8:00 - 17:00
-    'tireService': [8, 17],   // 8:00 - 17:00
+    'autoService': [8, 18],   // 8:00 - 18:00
+    'tireService': [8, 18],   // 8:00 - 18:00
     'airportParking': [0, 24] // 24/7 service
   };
 
@@ -28,7 +28,7 @@
       morning: [],
       afternoon: []
     };
-    const [openingHour, closingHour] = businessHours[service] || [8, 17]; // Default to 8-17
+    const [openingHour, closingHour] = businessHours[service] || [8, 18]; // Default to 8-17
 
     // Handle 24h service edge case (0 to 24 means 0 to 23:xx)
     const endHour = closingHour === 24 ? 23 : closingHour -1;
@@ -389,7 +389,7 @@
   .time-slot {
     position: relative;
     padding: 0.6rem 0.5rem;
-    background-color: white;
+    background-color: rgb(253, 251, 238);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     font-size: 0.9rem;
