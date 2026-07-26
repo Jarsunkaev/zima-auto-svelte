@@ -6,7 +6,6 @@
   gsap.registerPlugin(ScrollTrigger);
 
   let animationPlayed = false;
-  let showDiscountPopup = false;
   let heroSection;
   let nextSection;
 
@@ -18,17 +17,7 @@
     });
   }
 
-  function closeDiscountPopup() {
-    showDiscountPopup = false;
-    localStorage.setItem("discountPopupShown", "true");
-  }
-
   onMount(() => {
-    if (!localStorage.getItem("discountPopupShown")) {
-      setTimeout(() => {
-        showDiscountPopup = true;
-      }, 15000);
-    }
 
     if (!animationPlayed) {
       const tl = gsap.timeline();
@@ -114,42 +103,6 @@
     </div>
   </div>
 </section>
-
-{#if showDiscountPopup}
-  <div class="discount-popup" role="dialog" aria-modal="true">
-    <div class="discount-popup-background"></div>
-    <div class="discount-popup-content">
-      <button
-        class="close-popup"
-        on:click={closeDiscountPopup}
-        aria-label="Close popup"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M18 6L6 18M6 6l12 12" />
-        </svg>
-      </button>
-      <h2>{$currentLang === "hu" ? "20% KEDVEZMÉNY" : "20% DISCOUNT"}</h2>
-      <p>
-        {$currentLang === "hu"
-          ? "Élvezze első látogatásakor 20%-os kedvezményt minden szolgáltatásunkra!"
-          : "Enjoy 20% off on all our services during your first visit!"}
-      </p>
-      <button class="btn btn-primary" on:click={closeDiscountPopup}>
-        {$currentLang === "hu" ? "ELFOGADOM" : "I ACCEPT"}
-      </button>
-    </div>
-  </div>
-{/if}
 
 <style>
   .hero {

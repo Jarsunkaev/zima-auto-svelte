@@ -31,6 +31,7 @@ export default {
     contact: "CONTACT",
     parkingAndWash: "PARKING & CAR WASH",
     serviceAndTire: "MAINTENANCE & TIRE SERVICE",
+    services: "PRICING",
     faq: "FAQ"
   },
   faq: {

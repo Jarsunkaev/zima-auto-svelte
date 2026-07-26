@@ -20,7 +20,7 @@ export default {
     home: "FŐOLDAL",
     booking: "FOGLALÁS",
     about: "RÓLUNK",
-    services: "SZOLGÁLTATÁSOK & ÁRAK",
+    services: "ÁRAK",
     contact: "KAPCSOLAT",
     faq: "GYIK"
   },

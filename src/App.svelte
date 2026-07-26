@@ -13,7 +13,6 @@
 	import Imprint from './pages/Imprint.svelte';
 	import Terms from './pages/Terms.svelte';
 	import FAQPage from './pages/FAQ.svelte';
-	import DiscountPopup from './components/DiscountPopup.svelte';
 	import CookieConsent from './components/CookieConsent.svelte';
 	import PhoneChangeModal from './components/PhoneChangeModal.svelte';
   
@@ -50,7 +49,7 @@
 	  // After a brief transition delay, update the page
 	  setTimeout(() => {
 	    currentPage = page;
-	    window.scrollTo(0, 0);
+	    window.scrollTo({ top: 0, behavior: 'instant' });
 	    
 	    // Update URL using HTML5 history API instead of hash
 	    if (page === 'home') {
@@ -61,6 +60,7 @@
 	    
 	    // After page loads, remove transition class
 	    setTimeout(() => {
+	      window.scrollTo({ top: 0, behavior: 'instant' });
 	      pageTransition = false;
 	    }, 100);
 	  }, 300);
@@ -188,7 +188,6 @@ const handleRouting = () => {
     <Footer {navigate} {lang} />
     <CookieConsent {lang} />
     <PhoneChangeModal />
-    <DiscountPopup />
   {/if}
 </div>
 

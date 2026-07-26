@@ -247,18 +247,7 @@
       {$currentLang === "hu" ? "Ügyfeleink Véleménye" : "Customer Testimonials"}
     </h2>
 
-    <div class="testimonials-grid">
-      {#each testimonials as testimonial, i}
-        <TestimonialCard
-          name={testimonial.name}
-          location={testimonial.location}
-          text={testimonial.text}
-          image={testimonial.image}
-          index={i}
-          isVisible={testimonialsVisible}
-        />
-      {/each}
-    </div>
+
 
     <div class="widget-container">
       <div
@@ -341,12 +330,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(
-      to right,
-      rgba(15, 23, 42, 0.5) 0%,
-      rgba(27, 42, 75, 0.35) 50%,
-      rgba(15, 23, 42, 0.5) 100%
-    );
+    background-color: rgba(0, 0, 0, 0.45);
     z-index: 1;
   }
 
@@ -817,6 +801,17 @@
 
   :global(.powered-by-es) {
     display: none !important;
+  }
+
+  /* Target the 'Leave a review' button inside EmbedSocial */
+  :global(.embedsocial-widget .es-button),
+  :global(.embedsocial-widget .es-btn),
+  :global(.embedsocial-widget [class*="-button"]),
+  :global(.embedsocial-widget [class*="-btn"]),
+  :global(.embedsocial-widget a.es-leave-review) {
+    background-color: rgb(27, 42, 75) !important;
+    border-color: rgb(27, 42, 75) !important;
+    color: white !important;
   }
 
   /* Responsive adjustments */

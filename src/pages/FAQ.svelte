@@ -268,10 +268,10 @@
   }
 
   .filter-bar button.active {
-    background: #00bae5;
+    background: rgb(27, 42, 75);
     color: white;
-    border-color: #00bae5;
-    box-shadow: 0 4px 12px rgba(0, 186, 229, 0.3);
+    border-color: rgb(27, 42, 75);
+    box-shadow: 0 4px 12px rgba(27, 42, 75, 0.4);
   }
 
   /* CTA Section */

@@ -77,7 +77,7 @@
 <section class="services-hero">
   <div class="hero-background"></div>
   <div class="container relative z-10">
-    <h1>{$currentLang === 'hu' ? 'SZOLGÁLTATÁSOK' : 'SERVICES'}</h1>
+    <h1>{$currentLang === 'hu' ? 'ÁRAK' : 'PRICING'}</h1>
     <p>{$currentLang === 'hu'
       ? 'Mindent egy helyen az Ön járművének kényeztetéséhez'
       : 'Everything in one place to pamper your vehicle'}</p>
@@ -511,21 +511,22 @@
         padding: 0 1rem; /* Add some padding inside the container */
     }
 
-    .maintenance-bubble {
-    background: rgb(27, 42, 75);
+  .maintenance-bubble {
+    background: rgb(253, 251, 238);
     border: none;
     border-radius: 50px;
     padding: 1rem 2rem;
     box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
     font-weight: 600;
-    color: white;
+    color: rgb(27, 42, 75);
     text-align: center;
   }
   .maintenance-bubble:hover {
     transform: translateY(-3px);
     box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.2);
-    background: rgb(15, 23, 42);
+    background: #ffffff;
+    color: rgb(27, 42, 75);
   }
 
     /* Removed hover effect if they are not meant to be clicked */

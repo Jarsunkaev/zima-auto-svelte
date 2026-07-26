@@ -229,18 +229,7 @@
       {$currentLang === "hu" ? "Ügyfeleink Véleménye" : "Customer Testimonials"}
     </h2>
 
-    <div class="testimonials-grid">
-      {#each testimonials as testimonial, i}
-        <TestimonialCard
-          name={testimonial.name}
-          location={testimonial.location}
-          text={testimonial.text}
-          image={testimonial.image}
-          index={i}
-          isVisible={testimonialsVisible}
-        />
-      {/each}
-    </div>
+
 
     <div class="widget-container">
       <div
@@ -270,7 +259,7 @@
       <span class="eyebrow">{$currentLang === "hu" ? "GYIK" : "FAQ"}</span>
       <h2>
         {$currentLang === "hu"
-          ? "Leggyakoribb kérdések"
+          ? "Gyakori Kérdések"
           : "Most asked questions"}
       </h2>
       <p>
@@ -562,20 +551,20 @@
   }
 
   .faq-home-actions .primary {
-    background: linear-gradient(120deg, #0ea5e9, #00bae5);
-    color: white;
-    box-shadow: 0 12px 30px -12px rgba(14, 165, 233, 0.55);
+    background: rgb(253, 251, 238);
+    color: rgb(27, 42, 75);
+    box-shadow: 0 12px 30px -12px rgba(27, 42, 75, 0.55);
   }
 
   .faq-home-actions .primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 16px 36px -14px rgba(14, 165, 233, 0.65);
+    box-shadow: 0 16px 36px -14px rgba(27, 42, 75, 0.65);
   }
 
   .faq-home-actions .ghost {
     background: rgb(253, 251, 238);
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    color: #0f172a;
+    border: 1px solid rgba(27, 42, 75, 0.2);
+    color: rgb(27, 42, 75);
   }
 
   .faq-home-actions .ghost:hover {
@@ -613,6 +602,17 @@
 
   :global(.powered-by-es) {
     display: none !important;
+  }
+
+  /* Target the 'Leave a review' button inside EmbedSocial */
+  :global(.embedsocial-widget .es-button),
+  :global(.embedsocial-widget .es-btn),
+  :global(.embedsocial-widget [class*="-button"]),
+  :global(.embedsocial-widget [class*="-btn"]),
+  :global(.embedsocial-widget a.es-leave-review) {
+    background-color: rgb(27, 42, 75) !important;
+    border-color: rgb(27, 42, 75) !important;
+    color: white !important;
   }
 
   /* Responsive adjustments */

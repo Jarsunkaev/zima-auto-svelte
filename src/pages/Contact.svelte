@@ -866,12 +866,12 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
    /* Removed styles for directions-popup and navigation-buttons */
 
   .contact-link {
-    color: var(--text);
+    color: rgb(27, 42, 75);
     text-decoration: none;
     transition: color 0.3s ease;
   }
 
   .contact-link:hover {
-    color: rgb(27, 42, 75);
+    color: #555;
   }
 </style>

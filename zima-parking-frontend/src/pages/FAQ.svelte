@@ -155,9 +155,9 @@
   }
 
   .filter-bar button {
-    border: 2px solid var(--primary);
+    border: 2px solid rgb(27, 42, 75);
     background: rgb(253, 251, 238);
-    color: var(--primary);
+    color: rgb(27, 42, 75);
     padding: 0.7rem 1.5rem;
     border-radius: 8px;
     font-weight: 600;
@@ -169,22 +169,22 @@
   }
 
   .filter-bar button:hover {
-    background: var(--primary);
+    background: rgb(27, 42, 75);
     color: white;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 186, 229, 0.3);
+    box-shadow: 0 4px 12px rgba(27, 42, 75, 0.3);
   }
 
   .filter-bar button.active {
-    background: var(--primary);
+    background: rgb(27, 42, 75);
     color: white;
-    box-shadow: 0 4px 12px rgba(0, 186, 229, 0.4);
+    box-shadow: 0 4px 12px rgba(27, 42, 75, 0.4);
   }
 
   .contact-cta {
     margin-top: 4rem;
     padding: 3rem 2rem;
-    background: rgb(253, 251, 238);
+    background: rgb(27, 42, 75);
     border-radius: 12px;
     text-align: center;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -192,7 +192,7 @@
 
   .contact-cta h3 {
     font-size: 1.8rem;
-    color: var(--secondary);
+    color: rgb(253, 251, 238);
     margin-bottom: 2rem;
     font-weight: 600;
   }
@@ -222,28 +222,28 @@
   }
 
   .cta-buttons .btn-primary {
-    background: var(--primary);
-    color: white;
+    background: rgb(253, 251, 238);
+    color: rgb(27, 42, 75);
     border: none;
   }
 
   .cta-buttons .btn-primary:hover {
-    background: var(--primary-dark);
+    background: #ffffff;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 186, 229, 0.4);
+    box-shadow: 0 6px 20px rgba(253, 251, 238, 0.2);
   }
 
   .cta-buttons .btn-secondary {
-    background: rgb(253, 251, 238);
-    color: var(--secondary);
-    border: 2px solid var(--secondary);
+    background: transparent;
+    color: rgb(253, 251, 238);
+    border: 2px solid rgb(253, 251, 238);
   }
 
   .cta-buttons .btn-secondary:hover {
-    background: var(--secondary);
-    color: white;
+    background: rgb(253, 251, 238);
+    color: rgb(27, 42, 75);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 20px rgba(253, 251, 238, 0.15);
   }
 
   @media (max-width: 768px) {

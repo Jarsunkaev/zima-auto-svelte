@@ -227,6 +227,18 @@
     </div>
   </div>
 
+  <a
+    href="https://wa.me/36705859959"
+    class="whatsapp-btn"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="WhatsApp"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.031 21c-1.636 0-3.222-.416-4.648-1.211L3 20.916l1.173-4.223A8.956 8.956 0 013 12c0-4.962 4.038-9 9-9s9 4.038 9 9-4.038 9-8.969 9zM12 4.606C7.925 4.606 4.606 7.925 4.606 12c0 1.62.52 3.167 1.493 4.444l-.678 2.44 2.508-.658a7.359 7.359 0 004.071 1.211c4.075 0 7.394-3.319 7.394-7.394 0-4.075-3.319-7.394-7.394-7.394zm3.968 10.37c-.218-.109-1.287-.636-1.485-.709-.199-.073-.343-.109-.488.109-.144.218-.564.709-.691.854-.127.145-.254.164-.472.055-.218-.109-.918-.338-1.748-1.077-.645-.575-1.08-1.285-1.207-1.503-.127-.218-.014-.336.095-.445.099-.098.218-.254.327-.381.109-.127.145-.218.218-.363.073-.145.036-.272-.018-.381-.055-.109-.488-1.18-.669-1.616-.176-.425-.355-.367-.488-.374-.127-.007-.272-.007-.418-.007s-.381.055-.581.272c-.199.218-.763.745-.763 1.816s.781 2.107.89 2.253c.109.145 1.536 2.344 3.725 3.29.52.225.926.359 1.242.459.523.166 1.001.143 1.381.087.427-.063 1.287-.527 1.468-1.036.182-.509.182-.945.127-1.036-.054-.091-.199-.145-.417-.254z"/>
+    </svg>
+  </a>
+
   <button
     class="back-to-top"
     class:visible={showBackToTop}
@@ -251,8 +263,8 @@
 
 <style>
   footer {
-    background-color: #111111;
-    color: #f5f5f5;
+    background-color: rgb(253, 251, 238);
+    color: rgb(27, 42, 75);
   }
 
   .footer-top {
@@ -278,7 +290,7 @@
     font-size: 1.1rem;
     position: relative;
     display: inline-block;
-    color: white;
+    color: rgb(27, 42, 75);
   }
 
   .contact-info h3::after {
@@ -288,13 +300,13 @@
     left: 0;
     width: 40px;
     height: 2px;
-    background-color: #00bae5;
+    background-color: rgb(27, 42, 75);
   }
 
   .contact-info p {
     margin-bottom: 10px;
     font-size: 0.95rem;
-    color: #aaa;
+    color: #333;
     line-height: 1.6;
   }
 
@@ -310,14 +322,14 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(27, 42, 75, 0.1);
     border-radius: 50%;
-    color: #aaa;
+    color: rgb(27, 42, 75);
     transition: all 0.3s ease;
   }
 
   .social-links a:hover {
-    background-color: #00bae5;
+    background-color: rgb(27, 42, 75);
     color: white;
     transform: translateY(-3px);
   }
@@ -327,7 +339,7 @@
     font-size: 1.1rem;
     position: relative;
     display: inline-block;
-    color: white;
+    color: rgb(27, 42, 75);
   }
 
   .footer-links h3::after {
@@ -337,7 +349,7 @@
     left: 0;
     width: 40px;
     height: 2px;
-    background-color: #00bae5;
+    background-color: rgb(27, 42, 75);
   }
 
   .footer-links ul {
@@ -351,7 +363,7 @@
   }
 
   .footer-links a {
-    color: #aaa;
+    color: #333;
     transition: all 0.3s ease;
     display: inline-block;
     position: relative;
@@ -366,12 +378,12 @@
     transform: translateY(-50%);
     width: 6px;
     height: 6px;
-    background-color: #00bae5;
+    background-color: rgb(27, 42, 75);
     border-radius: 50%;
   }
 
   .footer-links a:hover {
-    color: white;
+    color: rgb(27, 42, 75);
     padding-left: 20px;
   }
 
@@ -385,7 +397,7 @@
   }
 
   .footer-bottom {
-    background-color: #0a0a0a;
+    background-color: rgba(27, 42, 75, 0.05);
     padding: 20px 0;
     text-align: center;
   }
@@ -400,7 +412,7 @@
   .footer-bottom p {
     margin: 0;
     font-size: 0.9rem;
-    color: #666;
+    color: #555;
   }
 
   .legal-links {
@@ -412,18 +424,18 @@
   }
 
   .legal-link {
-    color: #666;
+    color: #555;
     text-decoration: none;
     font-size: 0.9rem;
     transition: color 0.3s ease;
   }
 
   .legal-link:hover {
-    color: var(--primary);
+    color: rgb(27, 42, 75);
   }
 
   .separator {
-    color: #666;
+    color: #555;
     font-size: 0.9rem;
   }
 
@@ -480,6 +492,29 @@
     z-index: 1000;
   }
 
+  .whatsapp-btn {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #25d366;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+  }
+
+  .whatsapp-btn:hover {
+    background-color: #128C7E;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
   .back-to-top.visible {
     opacity: 1;
     visibility: visible;
@@ -503,6 +538,16 @@
       right: 20px;
       width: 40px;
       height: 40px;
+    }
+    .whatsapp-btn {
+      bottom: 70px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+    }
+    .whatsapp-btn svg {
+      width: 24px;
+      height: 24px;
     }
   }
 
@@ -544,12 +589,12 @@
   }
 
   .contact-link {
-    color: #aaa;
+    color: rgb(27, 42, 75);
     text-decoration: none;
     transition: color 0.3s ease;
   }
 
   .contact-link:hover {
-    color: var(--primary);
+    color: #555;
   }
 </style>

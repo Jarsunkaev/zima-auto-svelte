@@ -186,7 +186,7 @@
       justify-content: center;
       padding: 1.5rem;
       background-color: rgba(255, 255, 255, 0.05);
-      color: var(--primary, #00bae5);
+      color: rgb(253, 251, 238);
     }
     
     .cookie-content {

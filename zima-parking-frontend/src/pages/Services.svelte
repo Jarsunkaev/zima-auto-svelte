@@ -131,7 +131,7 @@
 <section class="services-hero">
   <div class="hero-background"></div>
   <div class="container relative z-10">
-    <h1>{$currentLang === 'hu' ? 'SZOLGÁLTATÁSOK' : 'SERVICES'}</h1>
+    <h1>{$currentLang === 'hu' ? 'ÁRAK' : 'PRICING'}</h1>
     <p>{$currentLang === 'hu'
       ? 'Mindent egy helyen az Ön járművének kényeztetéséhez'
       : 'Everything in one place to pamper your vehicle'}</p>

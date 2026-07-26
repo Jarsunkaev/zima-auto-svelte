@@ -102,6 +102,11 @@
             {t('nav.serviceAndTire', $currentLang)}
           </a>
         </li>
+        <li class:active={currentPage === 'services'}>
+          <a href="#services" on:click|preventDefault={() => handleNavClick('services')}>
+            {t('nav.services', $currentLang)}
+          </a>
+        </li>
         <li class:active={currentPage === 'about'}>
           <a href="#about" on:click|preventDefault={() => handleNavClick('about')}>
             {t('nav.about', $currentLang)}
@@ -169,7 +174,7 @@
   }
 
   header.scrolled {
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(253, 251, 238, 0.95);
     padding: 1rem 0;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
@@ -189,7 +194,7 @@
   }
 
   .logo:focus {
-    outline: 2px solid #00bae5;
+    outline: 2px solid rgb(27, 42, 75);
     outline-offset: 4px;
     border-radius: 4px;
   }
@@ -211,7 +216,7 @@
   nav ul {
     display: flex;
     list-style: none;
-    gap: 2.5rem;
+    gap: 1.5rem;
   }
 
   nav li a {
@@ -221,6 +226,8 @@
     transition: all 0.3s ease;
     color: white; /* Default color on dark backgrounds */
     padding: 0.5rem 0;
+    font-size: 0.95rem;
+    white-space: nowrap;
   }
 
   header.scrolled nav li a {
@@ -234,7 +241,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background-color: #00bae5;
+    background-color: rgb(27, 42, 75);
     transition: width 0.3s ease;
   }
 
@@ -249,7 +256,13 @@
   }
 
   nav li.active a {
-    color: #00bae5;
+    color: white;
+  }
+
+  header.scrolled nav li a:hover,
+  header.scrolled nav li a:focus,
+  header.scrolled nav li.active a {
+    color: rgb(27, 42, 75);
   }
 
   .right-section {
@@ -325,7 +338,7 @@
   }
 
   .mobile-menu-toggle:focus {
-    outline: 2px solid #00bae5;
+    outline: 2px solid rgb(27, 42, 75);
     outline-offset: 4px;
     border-radius: 4px;
   }
@@ -340,6 +353,10 @@
 
   header.scrolled .mobile-menu-toggle span {
     background-color: #333; /* Color when on light background */
+  }
+
+  .mobile-menu-toggle.open span {
+    background-color: rgb(253, 251, 238) !important;
   }
 
   /* Responsive styles */
@@ -393,7 +410,8 @@
     nav li a:focus,
     nav li.active a {
       opacity: 1;
-      color: #00bae5;
+      color: white;
+      font-weight: 700;
     }
 
     header.scrolled nav li a {

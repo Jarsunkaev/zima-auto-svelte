@@ -22,6 +22,7 @@ export default {
     contact: "KAPCSOLAT",
     parkingAndWash: "PARKOLÁS & AUTÓMOSÓ",
     serviceAndTire: "SZERVIZ & GUMISZERVIZ",
+    services: "ÁRAK",
     faq: "GYIK"
   },
   faq: {

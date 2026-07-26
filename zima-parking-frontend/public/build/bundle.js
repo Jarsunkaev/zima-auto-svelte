@@ -1345,45 +1345,40 @@ var app = (function () {
     	let t4;
     	let li2;
     	let a2;
-    	let t5_value = (/*$currentLang*/ ctx[4] === 'hu' ? 'SZERVIZ' : 'SERVICE') + "";
+    	let t5_value = t('nav.services', /*$currentLang*/ ctx[4]) + "";
     	let t5;
     	let t6;
     	let li3;
     	let a3;
-    	let t7_value = t('nav.services', /*$currentLang*/ ctx[4]) + "";
+    	let t7_value = t('nav.faq', /*$currentLang*/ ctx[4]) + "";
     	let t7;
     	let t8;
     	let li4;
     	let a4;
-    	let t9_value = t('nav.faq', /*$currentLang*/ ctx[4]) + "";
+    	let t9_value = t('nav.contact', /*$currentLang*/ ctx[4]) + "";
     	let t9;
     	let t10;
-    	let li5;
-    	let a5;
-    	let t11_value = t('nav.contact', /*$currentLang*/ ctx[4]) + "";
-    	let t11;
-    	let t12;
     	let div2;
     	let div1;
     	let button0;
     	let img1;
     	let img1_src_value;
-    	let t13;
+    	let t11;
     	let span0;
     	let button0_class_value;
-    	let t15;
+    	let t13;
     	let button1;
     	let img2;
     	let img2_src_value;
-    	let t16;
+    	let t14;
     	let span1;
     	let button1_class_value;
-    	let t18;
+    	let t16;
     	let button2;
     	let span2;
-    	let t19;
+    	let t17;
     	let span3;
-    	let t20;
+    	let t18;
     	let span4;
     	let mounted;
     	let dispose;
@@ -1417,115 +1412,105 @@ var app = (function () {
     			a4 = element("a");
     			t9 = text(t9_value);
     			t10 = space();
-    			li5 = element("li");
-    			a5 = element("a");
-    			t11 = text(t11_value);
-    			t12 = space();
     			div2 = element("div");
     			div1 = element("div");
     			button0 = element("button");
     			img1 = element("img");
-    			t13 = space();
+    			t11 = space();
     			span0 = element("span");
     			span0.textContent = "HU";
-    			t15 = space();
+    			t13 = space();
     			button1 = element("button");
     			img2 = element("img");
-    			t16 = space();
+    			t14 = space();
     			span1 = element("span");
     			span1.textContent = "EN";
-    			t18 = space();
+    			t16 = space();
     			button2 = element("button");
     			span2 = element("span");
-    			t19 = space();
+    			t17 = space();
     			span3 = element("span");
-    			t20 = space();
+    			t18 = space();
     			span4 = element("span");
     			if (!src_url_equal(img0.src, img0_src_value = "images/newlog_full.png")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "alt", "A&T Group");
-    			attr_dev(img0, "class", "svelte-1led4hd");
+    			attr_dev(img0, "class", "svelte-nn8nmj");
     			add_location(img0, file$t, 78, 6, 1812);
-    			attr_dev(div0, "class", "logo svelte-1led4hd");
+    			attr_dev(div0, "class", "logo svelte-nn8nmj");
     			attr_dev(div0, "tabindex", "0");
     			attr_dev(div0, "role", "button");
     			attr_dev(div0, "aria-label", "Go to homepage");
     			add_location(div0, file$t, 70, 4, 1626);
     			attr_dev(a0, "href", "#home");
-    			attr_dev(a0, "class", "svelte-1led4hd");
+    			attr_dev(a0, "class", "svelte-nn8nmj");
     			add_location(a0, file$t, 84, 10, 1987);
     			toggle_class(li0, "active", /*currentPage*/ ctx[1] === 'home');
     			add_location(li0, file$t, 83, 8, 1934);
     			attr_dev(a1, "href", "#booking");
-    			attr_dev(a1, "class", "svelte-1led4hd");
+    			attr_dev(a1, "class", "svelte-nn8nmj");
     			add_location(a1, file$t, 89, 10, 2194);
     			toggle_class(li1, "active", /*currentPage*/ ctx[1] === 'booking');
     			add_location(li1, file$t, 88, 8, 2138);
-    			attr_dev(a2, "href", "https://atszerviz.hu");
-    			attr_dev(a2, "target", "_blank");
-    			attr_dev(a2, "rel", "noopener noreferrer");
-    			attr_dev(a2, "class", "svelte-1led4hd");
-    			add_location(a2, file$t, 94, 10, 2369);
+    			attr_dev(a2, "href", "#services");
+    			attr_dev(a2, "class", "svelte-nn8nmj");
+    			add_location(a2, file$t, 94, 10, 2411);
+    			toggle_class(li2, "active", /*currentPage*/ ctx[1] === 'services');
     			add_location(li2, file$t, 93, 8, 2354);
-    			attr_dev(a3, "href", "#services");
-    			attr_dev(a3, "class", "svelte-1led4hd");
-    			add_location(a3, file$t, 99, 10, 2597);
-    			toggle_class(li3, "active", /*currentPage*/ ctx[1] === 'services');
-    			add_location(li3, file$t, 98, 8, 2540);
-    			attr_dev(a4, "href", "#faq");
-    			attr_dev(a4, "class", "svelte-1led4hd");
-    			add_location(a4, file$t, 104, 10, 2812);
-    			toggle_class(li4, "active", /*currentPage*/ ctx[1] === 'faq');
-    			add_location(li4, file$t, 103, 8, 2760);
-    			attr_dev(a5, "href", "#contact");
-    			attr_dev(a5, "class", "svelte-1led4hd");
-    			add_location(a5, file$t, 109, 10, 3016);
-    			toggle_class(li5, "active", /*currentPage*/ ctx[1] === 'contact');
-    			add_location(li5, file$t, 108, 8, 2960);
-    			attr_dev(ul, "class", "svelte-1led4hd");
+    			attr_dev(a3, "href", "#faq");
+    			attr_dev(a3, "class", "svelte-nn8nmj");
+    			add_location(a3, file$t, 99, 10, 2626);
+    			toggle_class(li3, "active", /*currentPage*/ ctx[1] === 'faq');
+    			add_location(li3, file$t, 98, 8, 2574);
+    			attr_dev(a4, "href", "#contact");
+    			attr_dev(a4, "class", "svelte-nn8nmj");
+    			add_location(a4, file$t, 104, 10, 2830);
+    			toggle_class(li4, "active", /*currentPage*/ ctx[1] === 'contact');
+    			add_location(li4, file$t, 103, 8, 2774);
+    			attr_dev(ul, "class", "svelte-nn8nmj");
     			add_location(ul, file$t, 82, 6, 1921);
-    			attr_dev(nav, "class", "svelte-1led4hd");
+    			attr_dev(nav, "class", "svelte-nn8nmj");
     			toggle_class(nav, "open", /*mobileMenuOpen*/ ctx[3]);
     			add_location(nav, file$t, 81, 4, 1881);
     			if (!src_url_equal(img1.src, img1_src_value = "flags/hu.svg")) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "alt", "Magyar zászló");
     			attr_dev(img1, "width", "24");
     			attr_dev(img1, "height", "16");
-    			attr_dev(img1, "class", "svelte-1led4hd");
-    			add_location(img1, file$t, 123, 10, 3454);
-    			attr_dev(span0, "class", "svelte-1led4hd");
-    			add_location(span0, file$t, 124, 10, 3534);
-    			attr_dev(button0, "class", button0_class_value = "language-button " + (/*$currentLang*/ ctx[4] === 'hu' ? 'active' : '') + " svelte-1led4hd");
+    			attr_dev(img1, "class", "svelte-nn8nmj");
+    			add_location(img1, file$t, 118, 10, 3268);
+    			attr_dev(span0, "class", "svelte-nn8nmj");
+    			add_location(span0, file$t, 119, 10, 3348);
+    			attr_dev(button0, "class", button0_class_value = "language-button " + (/*$currentLang*/ ctx[4] === 'hu' ? 'active' : '') + " svelte-nn8nmj");
     			attr_dev(button0, "aria-label", "Magyar nyelv");
-    			add_location(button0, file$t, 118, 8, 3268);
+    			add_location(button0, file$t, 113, 8, 3082);
     			if (!src_url_equal(img2.src, img2_src_value = "flags/gb.svg")) attr_dev(img2, "src", img2_src_value);
     			attr_dev(img2, "alt", "British flag");
     			attr_dev(img2, "width", "24");
     			attr_dev(img2, "height", "16");
-    			attr_dev(img2, "class", "svelte-1led4hd");
-    			add_location(img2, file$t, 131, 10, 3766);
-    			attr_dev(span1, "class", "svelte-1led4hd");
-    			add_location(span1, file$t, 132, 10, 3845);
-    			attr_dev(button1, "class", button1_class_value = "language-button " + (/*$currentLang*/ ctx[4] === 'en' ? 'active' : '') + " svelte-1led4hd");
+    			attr_dev(img2, "class", "svelte-nn8nmj");
+    			add_location(img2, file$t, 126, 10, 3580);
+    			attr_dev(span1, "class", "svelte-nn8nmj");
+    			add_location(span1, file$t, 127, 10, 3659);
+    			attr_dev(button1, "class", button1_class_value = "language-button " + (/*$currentLang*/ ctx[4] === 'en' ? 'active' : '') + " svelte-nn8nmj");
     			attr_dev(button1, "aria-label", "English language");
-    			add_location(button1, file$t, 126, 8, 3576);
-    			attr_dev(div1, "class", "language-toggle svelte-1led4hd");
-    			add_location(div1, file$t, 117, 6, 3230);
-    			attr_dev(span2, "class", "svelte-1led4hd");
-    			add_location(span2, file$t, 143, 8, 4102);
-    			attr_dev(span3, "class", "svelte-1led4hd");
-    			add_location(span3, file$t, 144, 8, 4124);
-    			attr_dev(span4, "class", "svelte-1led4hd");
-    			add_location(span4, file$t, 145, 8, 4146);
-    			attr_dev(button2, "class", "mobile-menu-toggle svelte-1led4hd");
+    			add_location(button1, file$t, 121, 8, 3390);
+    			attr_dev(div1, "class", "language-toggle svelte-nn8nmj");
+    			add_location(div1, file$t, 112, 6, 3044);
+    			attr_dev(span2, "class", "svelte-nn8nmj");
+    			add_location(span2, file$t, 138, 8, 3916);
+    			attr_dev(span3, "class", "svelte-nn8nmj");
+    			add_location(span3, file$t, 139, 8, 3938);
+    			attr_dev(span4, "class", "svelte-nn8nmj");
+    			add_location(span4, file$t, 140, 8, 3960);
+    			attr_dev(button2, "class", "mobile-menu-toggle svelte-nn8nmj");
     			attr_dev(button2, "aria-label", "Toggle menu");
     			attr_dev(button2, "aria-expanded", /*mobileMenuOpen*/ ctx[3]);
     			toggle_class(button2, "open", /*mobileMenuOpen*/ ctx[3]);
-    			add_location(button2, file$t, 136, 6, 3899);
-    			attr_dev(div2, "class", "right-section svelte-1led4hd");
-    			add_location(div2, file$t, 116, 4, 3196);
-    			attr_dev(div3, "class", "container svelte-1led4hd");
+    			add_location(button2, file$t, 131, 6, 3713);
+    			attr_dev(div2, "class", "right-section svelte-nn8nmj");
+    			add_location(div2, file$t, 111, 4, 3010);
+    			attr_dev(div3, "class", "container svelte-nn8nmj");
     			add_location(div3, file$t, 69, 2, 1598);
-    			attr_dev(header, "class", "svelte-1led4hd");
+    			attr_dev(header, "class", "svelte-nn8nmj");
     			toggle_class(header, "scrolled", /*scrolled*/ ctx[2]);
     			add_location(header, file$t, 68, 0, 1572);
     		},
@@ -1559,28 +1544,24 @@ var app = (function () {
     			append_dev(ul, li4);
     			append_dev(li4, a4);
     			append_dev(a4, t9);
-    			append_dev(ul, t10);
-    			append_dev(ul, li5);
-    			append_dev(li5, a5);
-    			append_dev(a5, t11);
-    			append_dev(div3, t12);
+    			append_dev(div3, t10);
     			append_dev(div3, div2);
     			append_dev(div2, div1);
     			append_dev(div1, button0);
     			append_dev(button0, img1);
-    			append_dev(button0, t13);
+    			append_dev(button0, t11);
     			append_dev(button0, span0);
-    			append_dev(div1, t15);
+    			append_dev(div1, t13);
     			append_dev(div1, button1);
     			append_dev(button1, img2);
-    			append_dev(button1, t16);
+    			append_dev(button1, t14);
     			append_dev(button1, span1);
-    			append_dev(div2, t18);
+    			append_dev(div2, t16);
     			append_dev(div2, button2);
     			append_dev(button2, span2);
-    			append_dev(button2, t19);
+    			append_dev(button2, t17);
     			append_dev(button2, span3);
-    			append_dev(button2, t20);
+    			append_dev(button2, t18);
     			append_dev(button2, span4);
 
     			if (!mounted) {
@@ -1589,9 +1570,9 @@ var app = (function () {
     					listen_dev(div0, "keydown", /*handleLogoKeydown*/ ctx[8], false, false, false, false),
     					listen_dev(a0, "click", prevent_default(/*click_handler_1*/ ctx[10]), false, true, false, false),
     					listen_dev(a1, "click", prevent_default(/*click_handler_2*/ ctx[11]), false, true, false, false),
-    					listen_dev(a3, "click", prevent_default(/*click_handler_3*/ ctx[12]), false, true, false, false),
-    					listen_dev(a4, "click", prevent_default(/*click_handler_4*/ ctx[13]), false, true, false, false),
-    					listen_dev(a5, "click", prevent_default(/*click_handler_5*/ ctx[14]), false, true, false, false),
+    					listen_dev(a2, "click", prevent_default(/*click_handler_3*/ ctx[12]), false, true, false, false),
+    					listen_dev(a3, "click", prevent_default(/*click_handler_4*/ ctx[13]), false, true, false, false),
+    					listen_dev(a4, "click", prevent_default(/*click_handler_5*/ ctx[14]), false, true, false, false),
     					listen_dev(button0, "click", /*click_handler_6*/ ctx[15], false, false, false, false),
     					listen_dev(button1, "click", /*click_handler_7*/ ctx[16], false, false, false, false),
     					listen_dev(button2, "click", /*toggleMobileMenu*/ ctx[6], false, false, false, false)
@@ -1613,34 +1594,33 @@ var app = (function () {
     				toggle_class(li1, "active", /*currentPage*/ ctx[1] === 'booking');
     			}
 
-    			if (dirty & /*$currentLang*/ 16 && t5_value !== (t5_value = (/*$currentLang*/ ctx[4] === 'hu' ? 'SZERVIZ' : 'SERVICE') + "")) set_data_dev(t5, t5_value);
-    			if (dirty & /*$currentLang*/ 16 && t7_value !== (t7_value = t('nav.services', /*$currentLang*/ ctx[4]) + "")) set_data_dev(t7, t7_value);
+    			if (dirty & /*$currentLang*/ 16 && t5_value !== (t5_value = t('nav.services', /*$currentLang*/ ctx[4]) + "")) set_data_dev(t5, t5_value);
 
     			if (dirty & /*currentPage*/ 2) {
-    				toggle_class(li3, "active", /*currentPage*/ ctx[1] === 'services');
+    				toggle_class(li2, "active", /*currentPage*/ ctx[1] === 'services');
     			}
 
-    			if (dirty & /*$currentLang*/ 16 && t9_value !== (t9_value = t('nav.faq', /*$currentLang*/ ctx[4]) + "")) set_data_dev(t9, t9_value);
+    			if (dirty & /*$currentLang*/ 16 && t7_value !== (t7_value = t('nav.faq', /*$currentLang*/ ctx[4]) + "")) set_data_dev(t7, t7_value);
 
     			if (dirty & /*currentPage*/ 2) {
-    				toggle_class(li4, "active", /*currentPage*/ ctx[1] === 'faq');
+    				toggle_class(li3, "active", /*currentPage*/ ctx[1] === 'faq');
     			}
 
-    			if (dirty & /*$currentLang*/ 16 && t11_value !== (t11_value = t('nav.contact', /*$currentLang*/ ctx[4]) + "")) set_data_dev(t11, t11_value);
+    			if (dirty & /*$currentLang*/ 16 && t9_value !== (t9_value = t('nav.contact', /*$currentLang*/ ctx[4]) + "")) set_data_dev(t9, t9_value);
 
     			if (dirty & /*currentPage*/ 2) {
-    				toggle_class(li5, "active", /*currentPage*/ ctx[1] === 'contact');
+    				toggle_class(li4, "active", /*currentPage*/ ctx[1] === 'contact');
     			}
 
     			if (dirty & /*mobileMenuOpen*/ 8) {
     				toggle_class(nav, "open", /*mobileMenuOpen*/ ctx[3]);
     			}
 
-    			if (dirty & /*$currentLang*/ 16 && button0_class_value !== (button0_class_value = "language-button " + (/*$currentLang*/ ctx[4] === 'hu' ? 'active' : '') + " svelte-1led4hd")) {
+    			if (dirty & /*$currentLang*/ 16 && button0_class_value !== (button0_class_value = "language-button " + (/*$currentLang*/ ctx[4] === 'hu' ? 'active' : '') + " svelte-nn8nmj")) {
     				attr_dev(button0, "class", button0_class_value);
     			}
 
-    			if (dirty & /*$currentLang*/ 16 && button1_class_value !== (button1_class_value = "language-button " + (/*$currentLang*/ ctx[4] === 'en' ? 'active' : '') + " svelte-1led4hd")) {
+    			if (dirty & /*$currentLang*/ 16 && button1_class_value !== (button1_class_value = "language-button " + (/*$currentLang*/ ctx[4] === 'en' ? 'active' : '') + " svelte-nn8nmj")) {
     				attr_dev(button1, "class", button1_class_value);
     			}
 
@@ -1991,9 +1971,13 @@ var app = (function () {
 
     	let t45;
     	let t46;
-    	let button1;
+    	let a13;
     	let svg3;
     	let path3;
+    	let t47;
+    	let button1;
+    	let svg4;
+    	let path4;
     	let button1_aria_label_value;
     	let mounted;
     	let dispose;
@@ -2100,32 +2084,36 @@ var app = (function () {
     			a12 = element("a");
     			t45 = text(t45_value);
     			t46 = space();
-    			button1 = element("button");
+    			a13 = element("a");
     			svg3 = svg_element("svg");
     			path3 = svg_element("path");
+    			t47 = space();
+    			button1 = element("button");
+    			svg4 = svg_element("svg");
+    			path4 = svg_element("path");
     			if (!src_url_equal(img.src, img_src_value = "images/newlog_full.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "A&T Group");
-    			attr_dev(img, "class", "svelte-1lunbpq");
+    			attr_dev(img, "class", "svelte-c8tztd");
     			add_location(img, file$s, 49, 12, 1357);
-    			attr_dev(div0, "class", "footer-logo svelte-1lunbpq");
+    			attr_dev(div0, "class", "footer-logo svelte-c8tztd");
     			add_location(div0, file$s, 48, 10, 1319);
-    			attr_dev(h30, "class", "svelte-1lunbpq");
+    			attr_dev(h30, "class", "svelte-c8tztd");
     			add_location(h30, file$s, 52, 12, 1476);
-    			attr_dev(p0, "class", "address svelte-1lunbpq");
+    			attr_dev(p0, "class", "address svelte-c8tztd");
     			add_location(p0, file$s, 53, 12, 1531);
     			add_location(strong0, file$s, 55, 14, 1620);
     			attr_dev(a0, "href", "tel:+36705859959");
-    			attr_dev(a0, "class", "contact-link svelte-1lunbpq");
+    			attr_dev(a0, "class", "contact-link svelte-c8tztd");
     			add_location(a0, file$s, 56, 14, 1686);
-    			attr_dev(p1, "class", "svelte-1lunbpq");
+    			attr_dev(p1, "class", "svelte-c8tztd");
     			add_location(p1, file$s, 54, 12, 1602);
     			add_location(strong1, file$s, 61, 14, 1857);
     			attr_dev(a1, "href", "mailto:parking@atgroup.hu");
-    			attr_dev(a1, "class", "contact-link svelte-1lunbpq");
+    			attr_dev(a1, "class", "contact-link svelte-c8tztd");
     			add_location(a1, file$s, 62, 14, 1923);
-    			attr_dev(p2, "class", "svelte-1lunbpq");
+    			attr_dev(p2, "class", "svelte-c8tztd");
     			add_location(p2, file$s, 60, 12, 1839);
-    			attr_dev(div1, "class", "contact-info svelte-1lunbpq");
+    			attr_dev(div1, "class", "contact-info svelte-c8tztd");
     			add_location(div1, file$s, 51, 10, 1437);
     			attr_dev(path0, "d", "M12 2.04001C6.5 2.04001 2 6.53001 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85001C10.44 7.34001 11.93 5.96001 14.22 5.96001C15.31 5.96001 16.45 6.15001 16.45 6.15001V8.62001H15.19C13.95 8.62001 13.56 9.39001 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96C15.9164 21.5879 18.0622 20.3855 19.6099 18.5701C21.1576 16.7546 22.0054 14.4457 22 12.06C22 6.53001 17.5 2.04001 12 2.04001Z");
     			attr_dev(path0, "fill", "currentColor");
@@ -2140,7 +2128,7 @@ var app = (function () {
     			attr_dev(a2, "target", "_blank");
     			attr_dev(a2, "rel", "noopener noreferrer");
     			attr_dev(a2, "aria-label", "Facebook");
-    			attr_dev(a2, "class", "svelte-1lunbpq");
+    			attr_dev(a2, "class", "svelte-c8tztd");
     			add_location(a2, file$s, 68, 12, 2140);
     			attr_dev(path1, "d", "M12 2C14.717 2 15.056 2.01 16.122 2.06C17.187 2.11 17.912 2.277 18.55 2.525C19.21 2.779 19.766 3.123 20.322 3.678C20.8305 4.1779 21.224 4.78259 21.475 5.45C21.722 6.087 21.89 6.813 21.94 7.878C21.987 8.944 22 9.283 22 12C22 14.717 21.99 15.056 21.94 16.122C21.89 17.187 21.722 17.912 21.475 18.55C21.2247 19.2178 20.8311 19.8226 20.322 20.322C19.822 20.8303 19.2173 21.2238 18.55 21.475C17.913 21.722 17.187 21.89 16.122 21.94C15.056 21.987 14.717 22 12 22C9.283 22 8.944 21.99 7.878 21.94C6.813 21.89 6.088 21.722 5.45 21.475C4.78233 21.2245 4.17753 20.8309 3.678 20.322C3.16941 19.8222 2.77593 19.2175 2.525 18.55C2.277 17.913 2.11 17.187 2.06 16.122C2.013 15.056 2 14.717 2 12C2 9.283 2.01 8.944 2.06 7.878C2.11 6.812 2.277 6.088 2.525 5.45C2.77524 4.78218 3.1688 4.17732 3.678 3.678C4.17767 3.16923 4.78243 2.77573 5.45 2.525C6.088 2.277 6.812 2.11 7.878 2.06C8.944 2.013 9.283 2 12 2ZM12 7C10.6739 7 9.40215 7.52678 8.46447 8.46447C7.52678 9.40215 7 10.6739 7 12C7 13.3261 7.52678 14.5979 8.46447 15.5355C9.40215 16.4732 10.6739 17 12 17C13.3261 17 14.5979 16.4732 15.5355 15.5355C16.4732 14.5979 17 13.3261 17 12C17 10.6739 16.4732 9.40215 15.5355 8.46447C14.5979 7.52678 13.3261 7 12 7ZM18.5 6.75C18.5 6.41848 18.3683 6.10054 18.1339 5.86612C17.8995 5.6317 17.5815 5.5 17.25 5.5C16.9185 5.5 16.6005 5.6317 16.3661 5.86612C16.1317 6.10054 16 6.41848 16 6.75C16 7.08152 16.1317 7.39946 16.3661 7.63388C16.6005 7.8683 16.9185 8 17.25 8C17.5815 8 17.8995 7.8683 18.1339 7.63388C18.3683 7.39946 18.5 7.08152 18.5 6.75ZM12 9C12.7956 9 13.5587 9.31607 14.1213 9.87868C14.6839 10.4413 15 11.2044 15 12C15 12.7956 14.6839 13.5587 14.1213 14.1213C13.5587 14.6839 12.7956 15 12 15C11.2044 15 10.4413 14.6839 9.87868 14.1213C9.31607 13.5587 9 12.7956 9 12C9 11.2044 9.31607 10.4413 9.87868 9.87868C10.4413 9.31607 11.2044 9 12 9Z");
     			attr_dev(path1, "fill", "currentColor");
@@ -2155,47 +2143,47 @@ var app = (function () {
     			attr_dev(a3, "target", "_blank");
     			attr_dev(a3, "rel", "noopener noreferrer");
     			attr_dev(a3, "aria-label", "Instagram");
-    			attr_dev(a3, "class", "svelte-1lunbpq");
+    			attr_dev(a3, "class", "svelte-c8tztd");
     			add_location(a3, file$s, 87, 12, 3115);
-    			attr_dev(div2, "class", "social-links svelte-1lunbpq");
+    			attr_dev(div2, "class", "social-links svelte-c8tztd");
     			add_location(div2, file$s, 67, 10, 2101);
     			attr_dev(div3, "class", "footer-info");
     			add_location(div3, file$s, 47, 8, 1283);
-    			attr_dev(h31, "class", "svelte-1lunbpq");
+    			attr_dev(h31, "class", "svelte-c8tztd");
     			add_location(h31, file$s, 110, 10, 5544);
     			attr_dev(a4, "href", "#home");
-    			attr_dev(a4, "class", "svelte-1lunbpq");
+    			attr_dev(a4, "class", "svelte-c8tztd");
     			add_location(a4, file$s, 113, 14, 5633);
-    			attr_dev(li0, "class", "svelte-1lunbpq");
+    			attr_dev(li0, "class", "svelte-c8tztd");
     			add_location(li0, file$s, 112, 12, 5614);
     			attr_dev(a5, "href", "#booking");
-    			attr_dev(a5, "class", "svelte-1lunbpq");
+    			attr_dev(a5, "class", "svelte-c8tztd");
     			add_location(a5, file$s, 118, 14, 5813);
-    			attr_dev(li1, "class", "svelte-1lunbpq");
+    			attr_dev(li1, "class", "svelte-c8tztd");
     			add_location(li1, file$s, 117, 12, 5794);
     			attr_dev(a6, "href", "#about");
-    			attr_dev(a6, "class", "svelte-1lunbpq");
+    			attr_dev(a6, "class", "svelte-c8tztd");
     			add_location(a6, file$s, 126, 14, 6049);
-    			attr_dev(li2, "class", "svelte-1lunbpq");
+    			attr_dev(li2, "class", "svelte-c8tztd");
     			add_location(li2, file$s, 125, 12, 6030);
     			attr_dev(a7, "href", "#services");
-    			attr_dev(a7, "class", "svelte-1lunbpq");
+    			attr_dev(a7, "class", "svelte-c8tztd");
     			add_location(a7, file$s, 134, 14, 6279);
-    			attr_dev(li3, "class", "svelte-1lunbpq");
+    			attr_dev(li3, "class", "svelte-c8tztd");
     			add_location(li3, file$s, 133, 12, 6260);
     			attr_dev(a8, "href", "#faq");
-    			attr_dev(a8, "class", "svelte-1lunbpq");
+    			attr_dev(a8, "class", "svelte-c8tztd");
     			add_location(a8, file$s, 142, 14, 6518);
-    			attr_dev(li4, "class", "svelte-1lunbpq");
+    			attr_dev(li4, "class", "svelte-c8tztd");
     			add_location(li4, file$s, 141, 12, 6499);
     			attr_dev(a9, "href", "#contact");
-    			attr_dev(a9, "class", "svelte-1lunbpq");
+    			attr_dev(a9, "class", "svelte-c8tztd");
     			add_location(a9, file$s, 153, 14, 6849);
-    			attr_dev(li5, "class", "svelte-1lunbpq");
+    			attr_dev(li5, "class", "svelte-c8tztd");
     			add_location(li5, file$s, 152, 12, 6830);
-    			attr_dev(ul, "class", "svelte-1lunbpq");
+    			attr_dev(ul, "class", "svelte-c8tztd");
     			add_location(ul, file$s, 111, 10, 5597);
-    			attr_dev(div4, "class", "footer-links svelte-1lunbpq");
+    			attr_dev(div4, "class", "footer-links svelte-c8tztd");
     			add_location(div4, file$s, 109, 8, 5507);
     			if (!src_url_equal(iframe.src, iframe_src_value = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2700.102580768995!2d19.230113876877105!3d47.40994027117247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c1ece824d30f%3A0x632898beef8d5983!2sZima%20Auto%20Airport%20Parking%20-%20Aut%C3%B3szerv%C3%ADz%20-%20Gumiszerv%C3%ADz%20-%20K%C3%A9zi%20aut%C3%B3mos%C3%B3!5e0!3m2!1sen!2shu!4v1745609320883!5m2!1sen!2shu")) attr_dev(iframe, "src", iframe_src_value);
     			attr_dev(iframe, "width", "100%");
@@ -2205,7 +2193,7 @@ var app = (function () {
     			attr_dev(iframe, "loading", "lazy");
     			attr_dev(iframe, "referrerpolicy", "no-referrer-when-downgrade");
     			attr_dev(iframe, "title", "A&T Group location");
-    			attr_dev(iframe, "class", "svelte-1lunbpq");
+    			attr_dev(iframe, "class", "svelte-c8tztd");
     			add_location(iframe, file$s, 165, 12, 7169);
     			attr_dev(path2, "d", "M9 18l6-6-6-6");
     			add_location(path2, file$s, 189, 16, 8383);
@@ -2219,60 +2207,75 @@ var app = (function () {
     			attr_dev(svg2, "stroke-linecap", "round");
     			attr_dev(svg2, "stroke-linejoin", "round");
     			add_location(svg2, file$s, 178, 14, 8026);
-    			attr_dev(button0, "class", "directions-link svelte-1lunbpq");
+    			attr_dev(button0, "class", "directions-link svelte-c8tztd");
     			add_location(button0, file$s, 176, 12, 7866);
-    			attr_dev(div5, "class", "map-container svelte-1lunbpq");
+    			attr_dev(div5, "class", "map-container svelte-c8tztd");
     			add_location(div5, file$s, 164, 10, 7129);
-    			attr_dev(div6, "class", "footer-map svelte-1lunbpq");
+    			attr_dev(div6, "class", "footer-map svelte-c8tztd");
     			add_location(div6, file$s, 163, 8, 7094);
-    			attr_dev(div7, "class", "footer-grid svelte-1lunbpq");
+    			attr_dev(div7, "class", "footer-grid svelte-c8tztd");
     			add_location(div7, file$s, 46, 6, 1249);
     			attr_dev(div8, "class", "container");
     			add_location(div8, file$s, 45, 4, 1219);
-    			attr_dev(div9, "class", "footer-top svelte-1lunbpq");
+    			attr_dev(div9, "class", "footer-top svelte-c8tztd");
     			add_location(div9, file$s, 44, 2, 1190);
-    			attr_dev(p3, "class", "svelte-1lunbpq");
+    			attr_dev(p3, "class", "svelte-c8tztd");
     			add_location(p3, file$s, 200, 6, 8583);
     			attr_dev(a10, "href", "#privacy");
-    			attr_dev(a10, "class", "legal-link svelte-1lunbpq");
+    			attr_dev(a10, "class", "legal-link svelte-c8tztd");
     			add_location(a10, file$s, 202, 8, 8668);
-    			attr_dev(span0, "class", "separator svelte-1lunbpq");
+    			attr_dev(span0, "class", "separator svelte-c8tztd");
     			add_location(span0, file$s, 209, 8, 8899);
     			attr_dev(a11, "href", "#imprint");
-    			attr_dev(a11, "class", "legal-link svelte-1lunbpq");
+    			attr_dev(a11, "class", "legal-link svelte-c8tztd");
     			add_location(a11, file$s, 210, 8, 8940);
-    			attr_dev(span1, "class", "separator svelte-1lunbpq");
+    			attr_dev(span1, "class", "separator svelte-c8tztd");
     			add_location(span1, file$s, 217, 8, 9152);
     			attr_dev(a12, "href", "#terms");
-    			attr_dev(a12, "class", "legal-link svelte-1lunbpq");
+    			attr_dev(a12, "class", "legal-link svelte-c8tztd");
     			add_location(a12, file$s, 218, 8, 9193);
-    			attr_dev(div10, "class", "legal-links svelte-1lunbpq");
+    			attr_dev(div10, "class", "legal-links svelte-c8tztd");
     			add_location(div10, file$s, 201, 6, 8634);
-    			attr_dev(div11, "class", "container svelte-1lunbpq");
+    			attr_dev(div11, "class", "container svelte-c8tztd");
     			add_location(div11, file$s, 199, 4, 8553);
-    			attr_dev(div12, "class", "footer-bottom svelte-1lunbpq");
+    			attr_dev(div12, "class", "footer-bottom svelte-c8tztd");
     			add_location(div12, file$s, 198, 2, 8521);
-    			attr_dev(path3, "d", "M18 15l-6-6-6 6");
-    			add_location(path3, file$s, 246, 6, 9859);
+    			attr_dev(path3, "d", "M12.031 21c-1.636 0-3.222-.416-4.648-1.211L3 20.916l1.173-4.223A8.956 8.956 0 013 12c0-4.962 4.038-9 9-9s9 4.038 9 9-4.038 9-8.969 9zM12 4.606C7.925 4.606 4.606 7.925 4.606 12c0 1.62.52 3.167 1.493 4.444l-.678 2.44 2.508-.658a7.359 7.359 0 004.071 1.211c4.075 0 7.394-3.319 7.394-7.394 0-4.075-3.319-7.394-7.394-7.394zm3.968 10.37c-.218-.109-1.287-.636-1.485-.709-.199-.073-.343-.109-.488.109-.144.218-.564.709-.691.854-.127.145-.254.164-.472.055-.218-.109-.918-.338-1.748-1.077-.645-.575-1.08-1.285-1.207-1.503-.127-.218-.014-.336.095-.445.099-.098.218-.254.327-.381.109-.127.145-.218.218-.363.073-.145.036-.272-.018-.381-.055-.109-.488-1.18-.669-1.616-.176-.425-.355-.367-.488-.374-.127-.007-.272-.007-.418-.007s-.381.055-.581.272c-.199.218-.763.745-.763 1.816s.781 2.107.89 2.253c.109.145 1.536 2.344 3.725 3.29.52.225.926.359 1.242.459.523.166 1.001.143 1.381.087.427-.063 1.287-.527 1.468-1.036.182-.509.182-.945.127-1.036-.054-.091-.199-.145-.417-.254z");
+    			add_location(path3, file$s, 237, 6, 9693);
     			attr_dev(svg3, "xmlns", "http://www.w3.org/2000/svg");
-    			attr_dev(svg3, "width", "24");
-    			attr_dev(svg3, "height", "24");
+    			attr_dev(svg3, "width", "28");
+    			attr_dev(svg3, "height", "28");
     			attr_dev(svg3, "viewBox", "0 0 24 24");
-    			attr_dev(svg3, "fill", "none");
-    			attr_dev(svg3, "stroke", "currentColor");
-    			attr_dev(svg3, "stroke-width", "2");
-    			attr_dev(svg3, "stroke-linecap", "round");
-    			attr_dev(svg3, "stroke-linejoin", "round");
-    			add_location(svg3, file$s, 235, 4, 9612);
-    			attr_dev(button1, "class", "back-to-top svelte-1lunbpq");
+    			attr_dev(svg3, "fill", "currentColor");
+    			attr_dev(svg3, "class", "svelte-c8tztd");
+    			add_location(svg3, file$s, 236, 4, 9583);
+    			attr_dev(a13, "href", "https://wa.me/36705859959");
+    			attr_dev(a13, "class", "whatsapp-btn svelte-c8tztd");
+    			attr_dev(a13, "target", "_blank");
+    			attr_dev(a13, "rel", "noopener noreferrer");
+    			attr_dev(a13, "aria-label", "WhatsApp");
+    			add_location(a13, file$s, 229, 2, 9434);
+    			attr_dev(path4, "d", "M18 15l-6-6-6 6");
+    			add_location(path4, file$s, 258, 6, 11110);
+    			attr_dev(svg4, "xmlns", "http://www.w3.org/2000/svg");
+    			attr_dev(svg4, "width", "24");
+    			attr_dev(svg4, "height", "24");
+    			attr_dev(svg4, "viewBox", "0 0 24 24");
+    			attr_dev(svg4, "fill", "none");
+    			attr_dev(svg4, "stroke", "currentColor");
+    			attr_dev(svg4, "stroke-width", "2");
+    			attr_dev(svg4, "stroke-linecap", "round");
+    			attr_dev(svg4, "stroke-linejoin", "round");
+    			add_location(svg4, file$s, 247, 4, 10863);
+    			attr_dev(button1, "class", "back-to-top svelte-c8tztd");
 
     			attr_dev(button1, "aria-label", button1_aria_label_value = /*$currentLang*/ ctx[2] === "hu"
     			? "Vissza a tetejére"
     			: "Back to top");
 
     			toggle_class(button1, "visible", /*showBackToTop*/ ctx[1]);
-    			add_location(button1, file$s, 229, 2, 9434);
-    			attr_dev(footer, "class", "svelte-1lunbpq");
+    			add_location(button1, file$s, 241, 2, 10685);
+    			attr_dev(footer, "class", "svelte-c8tztd");
     			add_location(footer, file$s, 43, 0, 1179);
     		},
     		l: function claim(nodes) {
@@ -2377,9 +2380,13 @@ var app = (function () {
     			append_dev(div10, a12);
     			append_dev(a12, t45);
     			append_dev(footer, t46);
-    			append_dev(footer, button1);
-    			append_dev(button1, svg3);
+    			append_dev(footer, a13);
+    			append_dev(a13, svg3);
     			append_dev(svg3, path3);
+    			append_dev(footer, t47);
+    			append_dev(footer, button1);
+    			append_dev(button1, svg4);
+    			append_dev(svg4, path4);
 
     			if (!mounted) {
     				dispose = [
@@ -13013,48 +13020,41 @@ var app = (function () {
     	return child_ctx;
     }
 
-    function get_each_context_1$5(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[21] = list[i];
-    	child_ctx[20] = i;
-    	return child_ctx;
-    }
-
     // (202:6) {#each services as service, i}
-    function create_each_block_1$5(ctx) {
+    function create_each_block$b(ctx) {
     	let servicecard;
     	let current;
 
     	function func() {
-    		return /*func*/ ctx[12](/*service*/ ctx[21]);
+    		return /*func*/ ctx[10](/*service*/ ctx[18]);
     	}
 
     	servicecard = new ServiceCard({
     			props: {
-    				svgIcon: /*service*/ ctx[21].svgIcon,
-    				image: /*service*/ ctx[21].image,
-    				title: /*$currentLang*/ ctx[4] === "hu"
-    				? /*service*/ ctx[21].id === "parking"
+    				svgIcon: /*service*/ ctx[18].svgIcon,
+    				image: /*service*/ ctx[18].image,
+    				title: /*$currentLang*/ ctx[3] === "hu"
+    				? /*service*/ ctx[18].id === "parking"
     					? "24/7 REPÜLŐTÉRI PARKOLÁS"
     					: "AUTÓMOSÓ"
-    				: /*service*/ ctx[21].id === "parking"
+    				: /*service*/ ctx[18].id === "parking"
     					? "24/7 AIRPORT PARKING"
     					: "CAR WASH",
-    				description: /*$currentLang*/ ctx[4] === "hu"
-    				? /*service*/ ctx[21].id === "parking"
+    				description: /*$currentLang*/ ctx[3] === "hu"
+    				? /*service*/ ctx[18].id === "parking"
     					? "Biztonságos parkolóhelyeink 24 órás kamerás megfigyeléssel és szakértő személyzettel várják járművét, maximális biztonságot nyújtva."
     					: "Ajándékozza meg járművét egy fürdőnappal professzionális autómosó szolgáltatásainkkal, amelyek célja, hogy autója csillogóan tisztán és fiatalon maradjon."
-    				: /*service*/ ctx[21].id === "parking"
+    				: /*service*/ ctx[18].id === "parking"
     					? "Our secure parking facility features fenced boundaries and 24-hour camera surveillance, guaranteeing the highest security for your vehicle."
     					: "Treat your vehicle to a spa day with our professional car washing services aimed at keeping your car looking sparkling clean and youthful.",
     				index: /*i*/ ctx[20],
     				shouldAnimate: /*servicesVisible*/ ctx[1],
-    				ctaText: /*$currentLang*/ ctx[4] === "hu"
+    				ctaText: /*$currentLang*/ ctx[3] === "hu"
     				? "Foglalás"
     				: "Book now",
     				ctaAction: func,
-    				color: /*service*/ ctx[21].color,
-    				hoverColor: /*service*/ ctx[21].hoverColor
+    				color: /*service*/ ctx[18].color,
+    				hoverColor: /*service*/ ctx[18].hoverColor
     			},
     			$$inline: true
     		});
@@ -13071,25 +13071,25 @@ var app = (function () {
     			ctx = new_ctx;
     			const servicecard_changes = {};
 
-    			if (dirty & /*$currentLang*/ 16) servicecard_changes.title = /*$currentLang*/ ctx[4] === "hu"
-    			? /*service*/ ctx[21].id === "parking"
+    			if (dirty & /*$currentLang*/ 8) servicecard_changes.title = /*$currentLang*/ ctx[3] === "hu"
+    			? /*service*/ ctx[18].id === "parking"
     				? "24/7 REPÜLŐTÉRI PARKOLÁS"
     				: "AUTÓMOSÓ"
-    			: /*service*/ ctx[21].id === "parking"
+    			: /*service*/ ctx[18].id === "parking"
     				? "24/7 AIRPORT PARKING"
     				: "CAR WASH";
 
-    			if (dirty & /*$currentLang*/ 16) servicecard_changes.description = /*$currentLang*/ ctx[4] === "hu"
-    			? /*service*/ ctx[21].id === "parking"
+    			if (dirty & /*$currentLang*/ 8) servicecard_changes.description = /*$currentLang*/ ctx[3] === "hu"
+    			? /*service*/ ctx[18].id === "parking"
     				? "Biztonságos parkolóhelyeink 24 órás kamerás megfigyeléssel és szakértő személyzettel várják járművét, maximális biztonságot nyújtva."
     				: "Ajándékozza meg járművét egy fürdőnappal professzionális autómosó szolgáltatásainkkal, amelyek célja, hogy autója csillogóan tisztán és fiatalon maradjon."
-    			: /*service*/ ctx[21].id === "parking"
+    			: /*service*/ ctx[18].id === "parking"
     				? "Our secure parking facility features fenced boundaries and 24-hour camera surveillance, guaranteeing the highest security for your vehicle."
     				: "Treat your vehicle to a spa day with our professional car washing services aimed at keeping your car looking sparkling clean and youthful.";
 
     			if (dirty & /*servicesVisible*/ 2) servicecard_changes.shouldAnimate = /*servicesVisible*/ ctx[1];
 
-    			if (dirty & /*$currentLang*/ 16) servicecard_changes.ctaText = /*$currentLang*/ ctx[4] === "hu"
+    			if (dirty & /*$currentLang*/ 8) servicecard_changes.ctaText = /*$currentLang*/ ctx[3] === "hu"
     			? "Foglalás"
     			: "Book now";
 
@@ -13111,64 +13111,9 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block_1$5.name,
-    		type: "each",
-    		source: "(202:6) {#each services as service, i}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (251:6) {#each testimonials as testimonial, i}
-    function create_each_block$b(ctx) {
-    	let testimonialcard;
-    	let current;
-
-    	testimonialcard = new TestimonialCard({
-    			props: {
-    				name: /*testimonial*/ ctx[18].name,
-    				location: /*testimonial*/ ctx[18].location,
-    				text: /*testimonial*/ ctx[18].text,
-    				image: /*testimonial*/ ctx[18].image,
-    				index: /*i*/ ctx[20],
-    				isVisible: /*testimonialsVisible*/ ctx[2]
-    			},
-    			$$inline: true
-    		});
-
-    	const block = {
-    		c: function create() {
-    			create_component(testimonialcard.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(testimonialcard, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const testimonialcard_changes = {};
-    			if (dirty & /*testimonialsVisible*/ 4) testimonialcard_changes.isVisible = /*testimonialsVisible*/ ctx[2];
-    			testimonialcard.$set(testimonialcard_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(testimonialcard.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(testimonialcard.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(testimonialcard, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
     		id: create_each_block$b.name,
     		type: "each",
-    		source: "(251:6) {#each testimonials as testimonial, i}",
+    		source: "(202:6) {#each services as service, i}",
     		ctx
     	});
 
@@ -13188,7 +13133,7 @@ var app = (function () {
     	let div4;
     	let h1;
 
-    	let t3_value = (/*$currentLang*/ ctx[4] === "hu"
+    	let t3_value = (/*$currentLang*/ ctx[3] === "hu"
     	? "A&T Repülőtéri Parkolás és Autómosó"
     	: "A&T Airport Parking and Car Wash") + "";
 
@@ -13196,7 +13141,7 @@ var app = (function () {
     	let t4;
     	let p0;
 
-    	let t5_value = (/*$currentLang*/ ctx[4] === "hu"
+    	let t5_value = (/*$currentLang*/ ctx[3] === "hu"
     	? "Biztonságos repülőtéri parkolás és professzionális autómosó szolgáltatás"
     	: "Secure airport parking and professional car wash services") + "";
 
@@ -13204,7 +13149,7 @@ var app = (function () {
     	let t6;
     	let button;
 
-    	let t7_value = (/*$currentLang*/ ctx[4] === "hu"
+    	let t7_value = (/*$currentLang*/ ctx[3] === "hu"
     	? "FOGLALJON MOST"
     	: "BOOK NOW") + "";
 
@@ -13230,7 +13175,7 @@ var app = (function () {
     	let div12;
     	let h20;
 
-    	let t14_value = (/*$currentLang*/ ctx[4] === "hu"
+    	let t14_value = (/*$currentLang*/ ctx[3] === "hu"
     	? "SZOLGÁLTATÁSOK"
     	: "OUR SERVICES") + "";
 
@@ -13238,7 +13183,7 @@ var app = (function () {
     	let t15;
     	let p1;
 
-    	let t16_value = (/*$currentLang*/ ctx[4] === "hu"
+    	let t16_value = (/*$currentLang*/ ctx[3] === "hu"
     	? "Fedezze fel átfogó szolgáltatásainkat, melyek az Ön járművének minden igényét kielégítik"
     	: "Discover our comprehensive services covering all your vehicle needs in one place") + "";
 
@@ -13258,40 +13203,26 @@ var app = (function () {
     	let t21;
     	let div16;
     	let t22;
-    	let div21;
+    	let div20;
     	let h21;
 
-    	let t23_value = (/*$currentLang*/ ctx[4] === "hu"
+    	let t23_value = (/*$currentLang*/ ctx[3] === "hu"
     	? "Ügyfeleink Véleménye"
     	: "Customer Testimonials") + "";
 
     	let t23;
     	let t24;
-    	let div18;
-    	let t25;
-    	let div20;
     	let div19;
+    	let div18;
     	let a;
     	let img;
     	let img_src_value;
-    	let t26;
+    	let t25;
     	let span3;
     	let current;
     	let mounted;
     	let dispose;
-    	let each_value_1 = /*services*/ ctx[5];
-    	validate_each_argument(each_value_1);
-    	let each_blocks_1 = [];
-
-    	for (let i = 0; i < each_value_1.length; i += 1) {
-    		each_blocks_1[i] = create_each_block_1$5(get_each_context_1$5(ctx, each_value_1, i));
-    	}
-
-    	const out = i => transition_out(each_blocks_1[i], 1, 1, () => {
-    		each_blocks_1[i] = null;
-    	});
-
-    	let each_value = /*testimonials*/ ctx[6];
+    	let each_value = /*services*/ ctx[4];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -13299,7 +13230,7 @@ var app = (function () {
     		each_blocks[i] = create_each_block$b(get_each_context$b(ctx, each_value, i));
     	}
 
-    	const out_1 = i => transition_out(each_blocks[i], 1, 1, () => {
+    	const out = i => transition_out(each_blocks[i], 1, 1, () => {
     		each_blocks[i] = null;
     	});
 
@@ -13349,8 +13280,8 @@ var app = (function () {
     			t17 = space();
     			div11 = element("div");
 
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].c();
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
     			}
 
     			t18 = space();
@@ -13366,64 +13297,57 @@ var app = (function () {
     			t21 = space();
     			div16 = element("div");
     			t22 = space();
-    			div21 = element("div");
+    			div20 = element("div");
     			h21 = element("h2");
     			t23 = text(t23_value);
     			t24 = space();
-    			div18 = element("div");
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
-    			t25 = space();
-    			div20 = element("div");
     			div19 = element("div");
+    			div18 = element("div");
     			a = element("a");
     			img = element("img");
-    			t26 = space();
+    			t25 = space();
     			span3 = element("span");
     			span3.textContent = "Google reviews widget";
-    			attr_dev(div0, "class", "hero-image-left svelte-1lookd3");
+    			attr_dev(div0, "class", "hero-image-left svelte-7ngrha");
     			add_location(div0, file$p, 130, 4, 8781);
-    			attr_dev(div1, "class", "hero-image-right svelte-1lookd3");
+    			attr_dev(div1, "class", "hero-image-right svelte-7ngrha");
     			add_location(div1, file$p, 131, 4, 8821);
-    			attr_dev(div2, "class", "hero-background svelte-1lookd3");
+    			attr_dev(div2, "class", "hero-background svelte-7ngrha");
     			add_location(div2, file$p, 129, 2, 8747);
-    			attr_dev(div3, "class", "hero-overlay svelte-1lookd3");
+    			attr_dev(div3, "class", "hero-overlay svelte-7ngrha");
     			add_location(div3, file$p, 133, 2, 8869);
-    			attr_dev(h1, "class", "svelte-1lookd3");
+    			attr_dev(h1, "class", "svelte-7ngrha");
     			add_location(h1, file$p, 136, 6, 8980);
-    			attr_dev(p0, "class", "svelte-1lookd3");
+    			attr_dev(p0, "class", "svelte-7ngrha");
     			add_location(p0, file$p, 141, 6, 9132);
-    			attr_dev(button, "class", "btn btn-primary svelte-1lookd3");
+    			attr_dev(button, "class", "btn btn-primary svelte-7ngrha");
     			add_location(button, file$p, 146, 6, 9344);
-    			attr_dev(div4, "class", "hero-content svelte-1lookd3");
+    			attr_dev(div4, "class", "hero-content svelte-7ngrha");
     			add_location(div4, file$p, 135, 4, 8947);
-    			attr_dev(div5, "class", "wheel svelte-1lookd3");
+    			attr_dev(div5, "class", "wheel svelte-7ngrha");
     			add_location(div5, file$p, 172, 8, 10172);
-    			attr_dev(div6, "class", "mouse svelte-1lookd3");
+    			attr_dev(div6, "class", "mouse svelte-7ngrha");
     			add_location(div6, file$p, 171, 6, 10144);
-    			attr_dev(span0, "class", "svelte-1lookd3");
+    			attr_dev(span0, "class", "svelte-7ngrha");
     			add_location(span0, file$p, 175, 8, 10253);
-    			attr_dev(span1, "class", "svelte-1lookd3");
+    			attr_dev(span1, "class", "svelte-7ngrha");
     			add_location(span1, file$p, 176, 8, 10275);
-    			attr_dev(span2, "class", "svelte-1lookd3");
+    			attr_dev(span2, "class", "svelte-7ngrha");
     			add_location(span2, file$p, 177, 8, 10297);
-    			attr_dev(div7, "class", "scroll-arrows svelte-1lookd3");
+    			attr_dev(div7, "class", "scroll-arrows svelte-7ngrha");
     			add_location(div7, file$p, 174, 6, 10217);
-    			attr_dev(div8, "class", "scroll-down-indicator svelte-1lookd3");
+    			attr_dev(div8, "class", "scroll-down-indicator svelte-7ngrha");
     			attr_dev(div8, "tabindex", "0");
     			attr_dev(div8, "role", "button");
 
-    			attr_dev(div8, "aria-label", div8_aria_label_value = /*$currentLang*/ ctx[4] === "hu"
+    			attr_dev(div8, "aria-label", div8_aria_label_value = /*$currentLang*/ ctx[3] === "hu"
     			? "Görgessen lefelé"
     			: "Scroll down");
 
     			add_location(div8, file$p, 151, 4, 9510);
-    			attr_dev(div9, "class", "container hero-container svelte-1lookd3");
+    			attr_dev(div9, "class", "container hero-container svelte-7ngrha");
     			add_location(div9, file$p, 134, 2, 8904);
-    			attr_dev(section0, "class", "hero svelte-1lookd3");
+    			attr_dev(section0, "class", "hero svelte-7ngrha");
     			add_location(section0, file$p, 128, 0, 8698);
     			attr_dev(path0, "fill", "rgb(253, 251, 238)");
     			attr_dev(path0, "d", "M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z");
@@ -13433,9 +13357,9 @@ var app = (function () {
     			set_style(svg0, "display", "block");
     			set_style(svg0, "width", "calc(100% + 1.3px)");
     			set_style(svg0, "height", "80px");
-    			attr_dev(svg0, "class", "svelte-1lookd3");
+    			attr_dev(svg0, "class", "svelte-7ngrha");
     			add_location(svg0, file$p, 185, 4, 10537);
-    			attr_dev(div10, "class", "wave-top svelte-1lookd3");
+    			attr_dev(div10, "class", "wave-top svelte-7ngrha");
     			set_style(div10, "position", "absolute");
     			set_style(div10, "top", "-1px");
     			set_style(div10, "left", "0");
@@ -13443,11 +13367,11 @@ var app = (function () {
     			set_style(div10, "transform", "rotate(180deg)");
     			set_style(div10, "z-index", "10");
     			add_location(div10, file$p, 184, 4, 10409);
-    			attr_dev(h20, "class", "section-title svelte-1lookd3");
+    			attr_dev(h20, "class", "section-title svelte-7ngrha");
     			add_location(h20, file$p, 191, 4, 10955);
-    			attr_dev(p1, "class", "section-subtitle svelte-1lookd3");
+    			attr_dev(p1, "class", "section-subtitle svelte-7ngrha");
     			add_location(p1, file$p, 194, 4, 11062);
-    			attr_dev(div11, "class", "services-grid svelte-1lookd3");
+    			attr_dev(div11, "class", "services-grid svelte-7ngrha");
     			add_location(div11, file$p, 200, 4, 11329);
     			attr_dev(div12, "class", "container");
     			add_location(div12, file$p, 190, 2, 10927);
@@ -13459,47 +13383,45 @@ var app = (function () {
     			set_style(svg1, "display", "block");
     			set_style(svg1, "width", "calc(100% + 1.3px)");
     			set_style(svg1, "height", "80px");
-    			attr_dev(svg1, "class", "svelte-1lookd3");
+    			attr_dev(svg1, "class", "svelte-7ngrha");
     			add_location(svg1, file$p, 231, 4, 12921);
-    			attr_dev(div13, "class", "wave-bottom svelte-1lookd3");
+    			attr_dev(div13, "class", "wave-bottom svelte-7ngrha");
     			set_style(div13, "position", "absolute");
     			set_style(div13, "bottom", "-1px");
     			set_style(div13, "left", "0");
     			set_style(div13, "width", "100%");
     			set_style(div13, "z-index", "10");
     			add_location(div13, file$p, 230, 4, 12814);
-    			attr_dev(section1, "class", "services-section svelte-1lookd3");
+    			attr_dev(section1, "class", "services-section svelte-7ngrha");
     			attr_dev(section1, "id", "services");
     			add_location(section1, file$p, 183, 0, 10356);
-    			attr_dev(div14, "class", "shape shape-1 svelte-1lookd3");
+    			attr_dev(div14, "class", "shape shape-1 svelte-7ngrha");
     			add_location(div14, file$p, 239, 4, 13386);
-    			attr_dev(div15, "class", "shape shape-2 svelte-1lookd3");
+    			attr_dev(div15, "class", "shape shape-2 svelte-7ngrha");
     			add_location(div15, file$p, 240, 4, 13424);
-    			attr_dev(div16, "class", "shape shape-3 svelte-1lookd3");
+    			attr_dev(div16, "class", "shape shape-3 svelte-7ngrha");
     			add_location(div16, file$p, 241, 4, 13462);
-    			attr_dev(div17, "class", "background-shapes svelte-1lookd3");
+    			attr_dev(div17, "class", "background-shapes svelte-7ngrha");
     			add_location(div17, file$p, 238, 2, 13350);
-    			attr_dev(h21, "class", "section-title svelte-1lookd3");
+    			attr_dev(h21, "class", "section-title svelte-7ngrha");
     			add_location(h21, file$p, 245, 4, 13536);
-    			attr_dev(div18, "class", "testimonials-grid svelte-1lookd3");
-    			add_location(div18, file$p, 249, 4, 13659);
     			if (!src_url_equal(img.src, img_src_value = "https://embedsocial.com/cdn/icon/embedsocial-logo.webp")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "EmbedSocial");
-    			add_location(img, file$p, 273, 10, 14360);
-    			add_location(span3, file$p, 277, 10, 14491);
+    			add_location(img, file$p, 262, 10, 14011);
+    			add_location(span3, file$p, 266, 10, 14142);
     			attr_dev(a, "href", "https://embedsocial.com/google-reviews-widget/");
     			attr_dev(a, "title", "Add Google reviews on a website");
     			attr_dev(a, "target", "_blank");
     			attr_dev(a, "class", "powered-by-es es-slider");
-    			add_location(a, file$p, 267, 8, 14155);
-    			attr_dev(div19, "class", "embedsocial-widget");
-    			attr_dev(div19, "data-ref", "0374a3cc3b883d7c92fcc25ebb3f82bc");
-    			add_location(div19, file$p, 263, 6, 14047);
-    			attr_dev(div20, "class", "widget-container svelte-1lookd3");
-    			add_location(div20, file$p, 262, 4, 14010);
-    			attr_dev(div21, "class", "container svelte-1lookd3");
-    			add_location(div21, file$p, 244, 2, 13508);
-    			attr_dev(section2, "class", "testimonials-section svelte-1lookd3");
+    			add_location(a, file$p, 256, 8, 13806);
+    			attr_dev(div18, "class", "embedsocial-widget");
+    			attr_dev(div18, "data-ref", "0374a3cc3b883d7c92fcc25ebb3f82bc");
+    			add_location(div18, file$p, 252, 6, 13698);
+    			attr_dev(div19, "class", "widget-container svelte-7ngrha");
+    			add_location(div19, file$p, 251, 4, 13661);
+    			attr_dev(div20, "class", "container svelte-7ngrha");
+    			add_location(div20, file$p, 244, 2, 13508);
+    			attr_dev(section2, "class", "testimonials-section svelte-7ngrha");
     			add_location(section2, file$p, 237, 0, 13309);
     		},
     		l: function claim(nodes) {
@@ -13535,7 +13457,7 @@ var app = (function () {
     			append_dev(div7, span1);
     			append_dev(div7, t11);
     			append_dev(div7, span2);
-    			/*section0_binding*/ ctx[11](section0);
+    			/*section0_binding*/ ctx[9](section0);
     			insert_dev(target, t12, anchor);
     			insert_dev(target, section1, anchor);
     			append_dev(section1, div10);
@@ -13551,9 +13473,9 @@ var app = (function () {
     			append_dev(div12, t17);
     			append_dev(div12, div11);
 
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				if (each_blocks_1[i]) {
-    					each_blocks_1[i].m(div11, null);
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				if (each_blocks[i]) {
+    					each_blocks[i].m(div11, null);
     				}
     			}
 
@@ -13570,98 +13492,57 @@ var app = (function () {
     			append_dev(div17, t21);
     			append_dev(div17, div16);
     			append_dev(section2, t22);
-    			append_dev(section2, div21);
-    			append_dev(div21, h21);
+    			append_dev(section2, div20);
+    			append_dev(div20, h21);
     			append_dev(h21, t23);
-    			append_dev(div21, t24);
-    			append_dev(div21, div18);
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				if (each_blocks[i]) {
-    					each_blocks[i].m(div18, null);
-    				}
-    			}
-
-    			append_dev(div21, t25);
-    			append_dev(div21, div20);
+    			append_dev(div20, t24);
     			append_dev(div20, div19);
-    			append_dev(div19, a);
+    			append_dev(div19, div18);
+    			append_dev(div18, a);
     			append_dev(a, img);
-    			append_dev(a, t26);
+    			append_dev(a, t25);
     			append_dev(a, span3);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button, "click", /*click_handler*/ ctx[8], false, false, false, false),
-    					listen_dev(div8, "click", /*click_handler_1*/ ctx[9], false, false, false, false),
-    					listen_dev(div8, "keydown", /*keydown_handler*/ ctx[10], false, false, false, false)
+    					listen_dev(button, "click", /*click_handler*/ ctx[6], false, false, false, false),
+    					listen_dev(div8, "click", /*click_handler_1*/ ctx[7], false, false, false, false),
+    					listen_dev(div8, "keydown", /*keydown_handler*/ ctx[8], false, false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if ((!current || dirty & /*$currentLang*/ 16) && t3_value !== (t3_value = (/*$currentLang*/ ctx[4] === "hu"
+    			if ((!current || dirty & /*$currentLang*/ 8) && t3_value !== (t3_value = (/*$currentLang*/ ctx[3] === "hu"
     			? "A&T Repülőtéri Parkolás és Autómosó"
     			: "A&T Airport Parking and Car Wash") + "")) set_data_dev(t3, t3_value);
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t5_value !== (t5_value = (/*$currentLang*/ ctx[4] === "hu"
+    			if ((!current || dirty & /*$currentLang*/ 8) && t5_value !== (t5_value = (/*$currentLang*/ ctx[3] === "hu"
     			? "Biztonságos repülőtéri parkolás és professzionális autómosó szolgáltatás"
     			: "Secure airport parking and professional car wash services") + "")) set_data_dev(t5, t5_value);
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t7_value !== (t7_value = (/*$currentLang*/ ctx[4] === "hu"
+    			if ((!current || dirty & /*$currentLang*/ 8) && t7_value !== (t7_value = (/*$currentLang*/ ctx[3] === "hu"
     			? "FOGLALJON MOST"
     			: "BOOK NOW") + "")) set_data_dev(t7, t7_value);
 
-    			if (!current || dirty & /*$currentLang*/ 16 && div8_aria_label_value !== (div8_aria_label_value = /*$currentLang*/ ctx[4] === "hu"
+    			if (!current || dirty & /*$currentLang*/ 8 && div8_aria_label_value !== (div8_aria_label_value = /*$currentLang*/ ctx[3] === "hu"
     			? "Görgessen lefelé"
     			: "Scroll down")) {
     				attr_dev(div8, "aria-label", div8_aria_label_value);
     			}
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t14_value !== (t14_value = (/*$currentLang*/ ctx[4] === "hu"
+    			if ((!current || dirty & /*$currentLang*/ 8) && t14_value !== (t14_value = (/*$currentLang*/ ctx[3] === "hu"
     			? "SZOLGÁLTATÁSOK"
     			: "OUR SERVICES") + "")) set_data_dev(t14, t14_value);
 
-    			if ((!current || dirty & /*$currentLang*/ 16) && t16_value !== (t16_value = (/*$currentLang*/ ctx[4] === "hu"
+    			if ((!current || dirty & /*$currentLang*/ 8) && t16_value !== (t16_value = (/*$currentLang*/ ctx[3] === "hu"
     			? "Fedezze fel átfogó szolgáltatásainkat, melyek az Ön járművének minden igényét kielégítik"
     			: "Discover our comprehensive services covering all your vehicle needs in one place") + "")) set_data_dev(t16, t16_value);
 
-    			if (dirty & /*services, $currentLang, servicesVisible, handleServiceAction*/ 178) {
-    				each_value_1 = /*services*/ ctx[5];
-    				validate_each_argument(each_value_1);
-    				let i;
-
-    				for (i = 0; i < each_value_1.length; i += 1) {
-    					const child_ctx = get_each_context_1$5(ctx, each_value_1, i);
-
-    					if (each_blocks_1[i]) {
-    						each_blocks_1[i].p(child_ctx, dirty);
-    						transition_in(each_blocks_1[i], 1);
-    					} else {
-    						each_blocks_1[i] = create_each_block_1$5(child_ctx);
-    						each_blocks_1[i].c();
-    						transition_in(each_blocks_1[i], 1);
-    						each_blocks_1[i].m(div11, null);
-    					}
-    				}
-
-    				group_outros();
-
-    				for (i = each_value_1.length; i < each_blocks_1.length; i += 1) {
-    					out(i);
-    				}
-
-    				check_outros();
-    			}
-
-    			if ((!current || dirty & /*$currentLang*/ 16) && t23_value !== (t23_value = (/*$currentLang*/ ctx[4] === "hu"
-    			? "Ügyfeleink Véleménye"
-    			: "Customer Testimonials") + "")) set_data_dev(t23, t23_value);
-
-    			if (dirty & /*testimonials, testimonialsVisible*/ 68) {
-    				each_value = /*testimonials*/ ctx[6];
+    			if (dirty & /*services, $currentLang, servicesVisible, handleServiceAction*/ 58) {
+    				each_value = /*services*/ ctx[4];
     				validate_each_argument(each_value);
     				let i;
 
@@ -13675,25 +13556,25 @@ var app = (function () {
     						each_blocks[i] = create_each_block$b(child_ctx);
     						each_blocks[i].c();
     						transition_in(each_blocks[i], 1);
-    						each_blocks[i].m(div18, null);
+    						each_blocks[i].m(div11, null);
     					}
     				}
 
     				group_outros();
 
     				for (i = each_value.length; i < each_blocks.length; i += 1) {
-    					out_1(i);
+    					out(i);
     				}
 
     				check_outros();
     			}
+
+    			if ((!current || dirty & /*$currentLang*/ 8) && t23_value !== (t23_value = (/*$currentLang*/ ctx[3] === "hu"
+    			? "Ügyfeleink Véleménye"
+    			: "Customer Testimonials") + "")) set_data_dev(t23, t23_value);
     		},
     		i: function intro(local) {
     			if (current) return;
-
-    			for (let i = 0; i < each_value_1.length; i += 1) {
-    				transition_in(each_blocks_1[i]);
-    			}
 
     			for (let i = 0; i < each_value.length; i += 1) {
     				transition_in(each_blocks[i]);
@@ -13702,12 +13583,6 @@ var app = (function () {
     			current = true;
     		},
     		o: function outro(local) {
-    			each_blocks_1 = each_blocks_1.filter(Boolean);
-
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				transition_out(each_blocks_1[i]);
-    			}
-
     			each_blocks = each_blocks.filter(Boolean);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -13718,13 +13593,12 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(section0);
-    			/*section0_binding*/ ctx[11](null);
+    			/*section0_binding*/ ctx[9](null);
     			if (detaching) detach_dev(t12);
     			if (detaching) detach_dev(section1);
-    			destroy_each(each_blocks_1, detaching);
+    			destroy_each(each_blocks, detaching);
     			if (detaching) detach_dev(t19);
     			if (detaching) detach_dev(section2);
-    			destroy_each(each_blocks, detaching);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -13744,7 +13618,7 @@ var app = (function () {
     function instance$p($$self, $$props, $$invalidate) {
     	let $currentLang;
     	validate_store(currentLang, 'currentLang');
-    	component_subscribe($$self, currentLang, $$value => $$invalidate(4, $currentLang = $$value));
+    	component_subscribe($$self, currentLang, $$value => $$invalidate(3, $currentLang = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Home', slots, []);
     	gsapWithCSS.registerPlugin(ScrollTrigger);
@@ -13860,7 +13734,7 @@ var app = (function () {
     				trigger: testimonialsSection,
     				start: "top 70%",
     				onEnter: () => {
-    					$$invalidate(2, testimonialsVisible = true);
+    					testimonialsVisible = true;
     				}
     			});
     		}
@@ -13901,7 +13775,7 @@ var app = (function () {
     	function section0_binding($$value) {
     		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
     			heroSection = $$value;
-    			$$invalidate(3, heroSection);
+    			$$invalidate(2, heroSection);
     		});
     	}
 
@@ -13939,10 +13813,10 @@ var app = (function () {
     		if ('navigate' in $$props) $$invalidate(0, navigate = $$props.navigate);
     		if ('lang' in $$props) lang = $$props.lang;
     		if ('servicesVisible' in $$props) $$invalidate(1, servicesVisible = $$props.servicesVisible);
-    		if ('testimonialsVisible' in $$props) $$invalidate(2, testimonialsVisible = $$props.testimonialsVisible);
+    		if ('testimonialsVisible' in $$props) testimonialsVisible = $$props.testimonialsVisible;
     		if ('bookingVisible' in $$props) bookingVisible = $$props.bookingVisible;
     		if ('ctaVisible' in $$props) ctaVisible = $$props.ctaVisible;
-    		if ('heroSection' in $$props) $$invalidate(3, heroSection = $$props.heroSection);
+    		if ('heroSection' in $$props) $$invalidate(2, heroSection = $$props.heroSection);
     		if ('showReviewsWidget' in $$props) showReviewsWidget = $$props.showReviewsWidget;
     	};
 
@@ -13953,11 +13827,9 @@ var app = (function () {
     	return [
     		navigate,
     		servicesVisible,
-    		testimonialsVisible,
     		heroSection,
     		$currentLang,
     		services,
-    		testimonials,
     		handleServiceAction,
     		click_handler,
     		click_handler_1,
@@ -13994,13 +13866,13 @@ var app = (function () {
 
     function get_each_context$a(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[3] = list[i];
+    	child_ctx[4] = list[i];
     	return child_ctx;
     }
 
-    // (215:18) {:else}
+    // (237:18) {:else}
     function create_else_block$b(ctx) {
-    	let t_1_value = /*item*/ ctx[3] + "";
+    	let t_1_value = /*item*/ ctx[4] + "";
     	let t_1;
 
     	const block = {
@@ -14011,7 +13883,7 @@ var app = (function () {
     			insert_dev(target, t_1, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*$currentLang*/ 1 && t_1_value !== (t_1_value = /*item*/ ctx[3] + "")) set_data_dev(t_1, t_1_value);
+    			if (dirty & /*$currentLang*/ 1 && t_1_value !== (t_1_value = /*item*/ ctx[4] + "")) set_data_dev(t_1, t_1_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(t_1);
@@ -14022,17 +13894,17 @@ var app = (function () {
     		block,
     		id: create_else_block$b.name,
     		type: "else",
-    		source: "(215:18) {:else}",
+    		source: "(237:18) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (213:18) {#if $currentLang === 'hu'}
+    // (235:18) {#if $currentLang === 'hu'}
     function create_if_block$h(ctx) {
     	let html_tag;
-    	let raw_value = /*item*/ ctx[3].replace(/\n/g, '<br><br>') + "";
+    	let raw_value = /*item*/ ctx[4].replace(/\n/g, '<br><br>') + "";
     	let html_anchor;
 
     	const block = {
@@ -14046,7 +13918,7 @@ var app = (function () {
     			insert_dev(target, html_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*$currentLang*/ 1 && raw_value !== (raw_value = /*item*/ ctx[3].replace(/\n/g, '<br><br>') + "")) html_tag.p(raw_value);
+    			if (dirty & /*$currentLang*/ 1 && raw_value !== (raw_value = /*item*/ ctx[4].replace(/\n/g, '<br><br>') + "")) html_tag.p(raw_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(html_anchor);
@@ -14058,14 +13930,14 @@ var app = (function () {
     		block,
     		id: create_if_block$h.name,
     		type: "if",
-    		source: "(213:18) {#if $currentLang === 'hu'}",
+    		source: "(235:18) {#if $currentLang === 'hu'}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (207:12) {#each content[$currentLang].offerings.block1.listItems as item}
+    // (229:12) {#each content[$currentLang].offerings.block1.listItems as item}
     function create_each_block$a(ctx) {
     	let li;
     	let div;
@@ -14094,7 +13966,7 @@ var app = (function () {
     			if_block.c();
     			t1 = space();
     			attr_dev(polyline, "points", "20 6 9 17 4 12");
-    			add_location(polyline, file$o, 209, 199, 11486);
+    			add_location(polyline, file$o, 231, 199, 12090);
     			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg, "width", "20");
     			attr_dev(svg, "height", "20");
@@ -14105,12 +13977,12 @@ var app = (function () {
     			attr_dev(svg, "stroke-linecap", "round");
     			attr_dev(svg, "stroke-linejoin", "round");
     			attr_dev(svg, "class", "svelte-1mlywh5");
-    			add_location(svg, file$o, 209, 18, 11305);
+    			add_location(svg, file$o, 231, 18, 11909);
     			attr_dev(div, "class", "list-icon svelte-1mlywh5");
-    			add_location(div, file$o, 208, 16, 11263);
-    			add_location(span, file$o, 211, 16, 11577);
+    			add_location(div, file$o, 230, 16, 11867);
+    			add_location(span, file$o, 233, 16, 12181);
     			attr_dev(li, "class", "svelte-1mlywh5");
-    			add_location(li, file$o, 207, 14, 11242);
+    			add_location(li, file$o, 229, 14, 11846);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -14145,7 +14017,7 @@ var app = (function () {
     		block,
     		id: create_each_block$a.name,
     		type: "each",
-    		source: "(207:12) {#each content[$currentLang].offerings.block1.listItems as item}",
+    		source: "(229:12) {#each content[$currentLang].offerings.block1.listItems as item}",
     		ctx
     	});
 
@@ -14382,129 +14254,129 @@ var app = (function () {
     			a = element("a");
     			t40 = text(t40_value);
     			attr_dev(div0, "class", "hero-background svelte-1mlywh5");
-    			add_location(div0, file$o, 149, 2, 8974);
+    			add_location(div0, file$o, 171, 2, 9578);
     			attr_dev(h1, "class", "hero-title svelte-1mlywh5");
-    			add_location(h1, file$o, 151, 4, 9054);
+    			add_location(h1, file$o, 173, 4, 9658);
     			attr_dev(p0, "class", "hero-subtitle svelte-1mlywh5");
-    			add_location(p0, file$o, 152, 4, 9116);
+    			add_location(p0, file$o, 174, 4, 9720);
     			attr_dev(div1, "class", "container relative z-10 svelte-1mlywh5");
-    			add_location(div1, file$o, 150, 2, 9012);
+    			add_location(div1, file$o, 172, 2, 9616);
     			attr_dev(path, "d", "M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z");
-    			add_location(path, file$o, 156, 6, 9314);
+    			add_location(path, file$o, 178, 6, 9918);
     			attr_dev(svg, "preserveAspectRatio", "none");
     			attr_dev(svg, "viewBox", "0 0 1440 120");
     			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg, "class", "svelte-1mlywh5");
-    			add_location(svg, file$o, 155, 4, 9217);
+    			add_location(svg, file$o, 177, 4, 9821);
     			attr_dev(div2, "class", "hero-wave svelte-1mlywh5");
-    			add_location(div2, file$o, 154, 2, 9189);
+    			add_location(div2, file$o, 176, 2, 9793);
     			attr_dev(section0, "class", "about-hero svelte-1mlywh5");
-    			add_location(section0, file$o, 148, 0, 8943);
+    			add_location(section0, file$o, 170, 0, 9547);
     			attr_dev(h20, "class", "svelte-1mlywh5");
-    			add_location(h20, file$o, 167, 10, 9772);
+    			add_location(h20, file$o, 189, 10, 10376);
     			attr_dev(div3, "class", "heading-accent svelte-1mlywh5");
-    			add_location(div3, file$o, 168, 10, 9827);
+    			add_location(div3, file$o, 190, 10, 10431);
     			attr_dev(p1, "class", "svelte-1mlywh5");
-    			add_location(p1, file$o, 169, 10, 9872);
+    			add_location(p1, file$o, 191, 10, 10476);
     			attr_dev(div4, "class", "about-content glass-card svelte-1mlywh5");
-    			add_location(div4, file$o, 166, 8, 9723);
+    			add_location(div4, file$o, 188, 8, 10327);
     			attr_dev(div5, "class", "image-glow svelte-1mlywh5");
-    			add_location(div5, file$o, 172, 10, 9981);
+    			add_location(div5, file$o, 194, 10, 10585);
     			if (!src_url_equal(img0.src, img0_src_value = "images/parking-lot.webp")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "alt", "A&T Group parking lot");
     			attr_dev(img0, "class", "svelte-1mlywh5");
-    			add_location(img0, file$o, 173, 10, 10022);
+    			add_location(img0, file$o, 195, 10, 10626);
     			attr_dev(div6, "class", "about-image-wrapper svelte-1mlywh5");
-    			add_location(div6, file$o, 171, 8, 9937);
+    			add_location(div6, file$o, 193, 8, 10541);
     			attr_dev(div7, "class", "about-grid svelte-1mlywh5");
-    			add_location(div7, file$o, 165, 6, 9690);
+    			add_location(div7, file$o, 187, 6, 10294);
     			attr_dev(div8, "class", "container");
-    			add_location(div8, file$o, 164, 4, 9660);
+    			add_location(div8, file$o, 186, 4, 10264);
     			attr_dev(section1, "class", "about-section odd-section svelte-1mlywh5");
-    			add_location(section1, file$o, 163, 2, 9612);
+    			add_location(section1, file$o, 185, 2, 10216);
     			attr_dev(div9, "class", "image-glow svelte-1mlywh5");
-    			add_location(div9, file$o, 184, 10, 10337);
+    			add_location(div9, file$o, 206, 10, 10941);
     			if (!src_url_equal(img1.src, img1_src_value = "images/map.avif")) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "alt", "Car Wash Service");
     			attr_dev(img1, "class", "svelte-1mlywh5");
-    			add_location(img1, file$o, 185, 10, 10378);
+    			add_location(img1, file$o, 207, 10, 10982);
     			attr_dev(div10, "class", "about-image-wrapper svelte-1mlywh5");
-    			add_location(div10, file$o, 183, 8, 10293);
+    			add_location(div10, file$o, 205, 8, 10897);
     			attr_dev(h21, "class", "svelte-1mlywh5");
-    			add_location(h21, file$o, 188, 10, 10503);
+    			add_location(h21, file$o, 210, 10, 11107);
     			attr_dev(div11, "class", "heading-accent svelte-1mlywh5");
-    			add_location(div11, file$o, 189, 10, 10560);
+    			add_location(div11, file$o, 211, 10, 11164);
     			attr_dev(p2, "class", "svelte-1mlywh5");
-    			add_location(p2, file$o, 190, 10, 10605);
+    			add_location(p2, file$o, 212, 10, 11209);
     			attr_dev(div12, "class", "about-content glass-card svelte-1mlywh5");
-    			add_location(div12, file$o, 187, 8, 10454);
+    			add_location(div12, file$o, 209, 8, 11058);
     			attr_dev(div13, "class", "about-grid reverse svelte-1mlywh5");
-    			add_location(div13, file$o, 182, 6, 10252);
+    			add_location(div13, file$o, 204, 6, 10856);
     			attr_dev(div14, "class", "container");
-    			add_location(div14, file$o, 181, 4, 10222);
+    			add_location(div14, file$o, 203, 4, 10826);
     			attr_dev(section2, "class", "about-section even-section svelte-1mlywh5");
-    			add_location(section2, file$o, 180, 2, 10173);
+    			add_location(section2, file$o, 202, 2, 10777);
     			attr_dev(h22, "class", "section-main-title svelte-1mlywh5");
-    			add_location(h22, file$o, 199, 6, 10822);
+    			add_location(h22, file$o, 221, 6, 11426);
     			attr_dev(h30, "class", "svelte-1mlywh5");
-    			add_location(h30, file$o, 203, 10, 10997);
+    			add_location(h30, file$o, 225, 10, 11601);
     			attr_dev(p3, "class", "svelte-1mlywh5");
-    			add_location(p3, file$o, 204, 10, 11063);
+    			add_location(p3, file$o, 226, 10, 11667);
     			attr_dev(ul, "class", "custom-list svelte-1mlywh5");
-    			add_location(ul, file$o, 205, 10, 11126);
+    			add_location(ul, file$o, 227, 10, 11730);
     			attr_dev(div15, "class", "about-content glass-card svelte-1mlywh5");
-    			add_location(div15, file$o, 202, 8, 10948);
+    			add_location(div15, file$o, 224, 8, 11552);
     			attr_dev(div16, "class", "image-glow svelte-1mlywh5");
-    			add_location(div16, file$o, 223, 10, 11914);
+    			add_location(div16, file$o, 245, 10, 12518);
     			if (!src_url_equal(img2.src, img2_src_value = "images/workshop2.jpg")) attr_dev(img2, "src", img2_src_value);
     			attr_dev(img2, "alt", "Auto Service");
     			attr_dev(img2, "class", "svelte-1mlywh5");
-    			add_location(img2, file$o, 224, 10, 11955);
+    			add_location(img2, file$o, 246, 10, 12559);
     			attr_dev(div17, "class", "about-image-wrapper svelte-1mlywh5");
-    			add_location(div17, file$o, 222, 8, 11870);
+    			add_location(div17, file$o, 244, 8, 12474);
     			attr_dev(div18, "class", "about-grid svelte-1mlywh5");
-    			add_location(div18, file$o, 201, 6, 10915);
+    			add_location(div18, file$o, 223, 6, 11519);
     			attr_dev(div19, "class", "container");
-    			add_location(div19, file$o, 198, 4, 10792);
+    			add_location(div19, file$o, 220, 4, 11396);
     			attr_dev(section3, "class", "about-section odd-section svelte-1mlywh5");
-    			add_location(section3, file$o, 197, 2, 10744);
+    			add_location(section3, file$o, 219, 2, 11348);
     			attr_dev(div20, "class", "image-glow svelte-1mlywh5");
-    			add_location(div20, file$o, 235, 10, 12268);
+    			add_location(div20, file$o, 257, 10, 12872);
     			if (!src_url_equal(img3.src, img3_src_value = "images/car-wash.webp")) attr_dev(img3, "src", img3_src_value);
     			attr_dev(img3, "alt", "Car Wash");
     			attr_dev(img3, "class", "svelte-1mlywh5");
-    			add_location(img3, file$o, 236, 10, 12309);
+    			add_location(img3, file$o, 258, 10, 12913);
     			attr_dev(div21, "class", "about-image-wrapper svelte-1mlywh5");
-    			add_location(div21, file$o, 234, 8, 12224);
+    			add_location(div21, file$o, 256, 8, 12828);
     			attr_dev(h31, "class", "svelte-1mlywh5");
-    			add_location(h31, file$o, 239, 10, 12431);
+    			add_location(h31, file$o, 261, 10, 13035);
     			attr_dev(p4, "class", "svelte-1mlywh5");
-    			add_location(p4, file$o, 240, 10, 12511);
+    			add_location(p4, file$o, 262, 10, 13115);
     			attr_dev(h32, "class", "mt-4 svelte-1mlywh5");
-    			add_location(h32, file$o, 242, 10, 12589);
+    			add_location(h32, file$o, 264, 10, 13193);
     			attr_dev(p5, "class", "svelte-1mlywh5");
-    			add_location(p5, file$o, 243, 10, 12674);
+    			add_location(p5, file$o, 265, 10, 13278);
     			attr_dev(p6, "class", "svelte-1mlywh5");
-    			add_location(p6, file$o, 246, 12, 12785);
+    			add_location(p6, file$o, 268, 12, 13389);
     			attr_dev(div22, "class", "conclusion-box svelte-1mlywh5");
-    			add_location(div22, file$o, 245, 10, 12744);
+    			add_location(div22, file$o, 267, 10, 13348);
     			attr_dev(div23, "class", "about-content glass-card svelte-1mlywh5");
-    			add_location(div23, file$o, 238, 8, 12382);
+    			add_location(div23, file$o, 260, 8, 12986);
     			attr_dev(div24, "class", "about-grid reverse svelte-1mlywh5");
-    			add_location(div24, file$o, 233, 6, 12183);
+    			add_location(div24, file$o, 255, 6, 12787);
     			attr_dev(div25, "class", "container");
-    			add_location(div25, file$o, 232, 4, 12153);
+    			add_location(div25, file$o, 254, 4, 12757);
     			attr_dev(section4, "class", "about-section even-section svelte-1mlywh5");
-    			add_location(section4, file$o, 231, 2, 12104);
+    			add_location(section4, file$o, 253, 2, 12708);
     			attr_dev(a, "href", "/services");
     			attr_dev(a, "class", "btn btn-primary svelte-1mlywh5");
-    			add_location(a, file$o, 255, 6, 13009);
+    			add_location(a, file$o, 277, 6, 13613);
     			attr_dev(div26, "class", "container");
-    			add_location(div26, file$o, 254, 4, 12979);
+    			add_location(div26, file$o, 276, 4, 13583);
     			attr_dev(section5, "class", "about-cta svelte-1mlywh5");
-    			add_location(section5, file$o, 253, 4, 12947);
+    			add_location(section5, file$o, 275, 4, 13551);
     			attr_dev(div27, "class", "about-container svelte-1mlywh5");
-    			add_location(div27, file$o, 161, 0, 9552);
+    			add_location(div27, file$o, 183, 0, 10156);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -14783,46 +14655,77 @@ var app = (function () {
     	};
 
     	// Keep existing animation logic and ensure ScrollTrigger is used
+    	let ctx;
+
     	onMount(() => {
-    		setTimeout(
-    			() => {
-    				ScrollTrigger.refresh();
+    		ctx = gsapWithCSS.context(() => {
+    			// Cinematic fade-in with slight scale
+    			gsapWithCSS.fromTo('.about-hero .container > *', { y: 30, opacity: 0 }, {
+    				y: 0,
+    				opacity: 1,
+    				duration: 1,
+    				stagger: 0.2,
+    				ease: 'power3.out',
+    				clearProps: 'all'
+    			});
 
-    				// Cinematic fade-in with slight scale
-    				gsapWithCSS.from('.about-hero .container > *', {
-    					y: 30,
-    					opacity: 0,
-    					duration: 1,
-    					stagger: 0.2,
-    					ease: 'power3.out'
-    				});
+    			// Animate individual sections with glassmorphism reveal
+    			gsapWithCSS.utils.toArray('.about-grid').forEach(section => {
+    				const content = section.querySelector('.about-content');
 
-    				// Animate individual sections with glassmorphism reveal
-    				gsapWithCSS.utils.toArray('.about-grid').forEach((section, i) => {
-    					gsapWithCSS.from(section.querySelector('.about-content'), {
-    						x: section.classList.contains('reverse') ? 50 : -50,
-    						opacity: 0,
-    						duration: 1,
-    						ease: 'power3.out',
-    						scrollTrigger: { trigger: section, start: 'top 85%' }
-    					});
+    				if (content) {
+    					gsapWithCSS.fromTo(
+    						content,
+    						{
+    							x: section.classList.contains('reverse') ? 50 : -50,
+    							opacity: 0
+    						},
+    						{
+    							x: 0,
+    							opacity: 1,
+    							duration: 1,
+    							ease: 'power3.out',
+    							scrollTrigger: { trigger: section, start: 'top 85%' },
+    							clearProps: 'all'
+    						}
+    					);
+    				}
 
-    					gsapWithCSS.from(section.querySelector('.about-image-wrapper'), {
-    						x: section.classList.contains('reverse') ? -50 : 50,
-    						opacity: 0,
-    						scale: 0.95,
-    						duration: 1,
-    						ease: 'power3.out',
-    						scrollTrigger: { trigger: section, start: 'top 85%' }
-    					});
-    				});
-    			},
-    			100
-    		);
+    				const image = section.querySelector('.about-image-wrapper');
+
+    				if (image) {
+    					gsapWithCSS.fromTo(
+    						image,
+    						{
+    							x: section.classList.contains('reverse') ? -50 : 50,
+    							opacity: 0,
+    							scale: 0.95
+    						},
+    						{
+    							x: 0,
+    							opacity: 1,
+    							scale: 1,
+    							duration: 1,
+    							ease: 'power3.out',
+    							scrollTrigger: { trigger: section, start: 'top 85%' },
+    							clearProps: 'all'
+    						}
+    					);
+    				}
+    			});
+
+    			// Refresh ScrollTrigger after a slight delay to ensure layout is ready
+    			setTimeout(
+    				() => {
+    					ScrollTrigger.refresh();
+    				},
+    				150
+    			);
+    		});
     	});
 
     	onDestroy(() => {
-    		ScrollTrigger.getAll().forEach(t => t.kill());
+    		if (ctx) ctx.revert();
     	});
 
     	const writable_props = [];
@@ -14840,11 +14743,13 @@ var app = (function () {
     		ScrollTrigger,
     		lang,
     		content,
+    		ctx,
     		$currentLang
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('lang' in $$props) lang = $$props.lang;
+    		if ('ctx' in $$props) ctx = $$props.ctx;
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -14943,7 +14848,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "svelte-70jpxq");
-    			add_location(li, file$n, 161, 14, 8244);
+    			add_location(li, file$n, 161, 14, 8233);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -14999,12 +14904,12 @@ var app = (function () {
     			t4 = text(t4_value);
     			t5 = space();
     			attr_dev(td0, "class", "day-col svelte-70jpxq");
-    			add_location(td0, file$n, 185, 16, 9146);
+    			add_location(td0, file$n, 185, 16, 9135);
     			attr_dev(td1, "class", "normal-price-col svelte-70jpxq");
-    			add_location(td1, file$n, 186, 16, 9200);
+    			add_location(td1, file$n, 186, 16, 9189);
     			attr_dev(td2, "class", "discount-col svelte-70jpxq");
-    			add_location(td2, file$n, 187, 16, 9265);
-    			add_location(tr, file$n, 184, 14, 9125);
+    			add_location(td2, file$n, 187, 16, 9254);
+    			add_location(tr, file$n, 184, 14, 9114);
     			this.first = tr;
     		},
     		m: function mount(target, anchor) {
@@ -15047,7 +14952,7 @@ var app = (function () {
     			div = element("div");
     			attr_dev(div, "class", "bubble svelte-70jpxq");
     			attr_dev(div, "style", "--size: " + (Math.random() * 5 + 1) + "rem; --left: " + Math.random() * 100 + "%; --animation-duration: " + (Math.random() * 10 + 5) + "s; --animation-delay: " + Math.random() * 5 + "s; --opacity: " + (Math.random() * 0.4 + 0.1) + "; /* Vary opacity */");
-    			add_location(div, file$n, 199, 12, 9559);
+    			add_location(div, file$n, 199, 12, 9548);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -15080,7 +14985,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "svelte-70jpxq");
-    			add_location(li, file$n, 226, 14, 11104);
+    			add_location(li, file$n, 226, 14, 11093);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -15116,7 +15021,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "svelte-70jpxq");
-    			add_location(li, file$n, 242, 27, 11852);
+    			add_location(li, file$n, 242, 27, 11841);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -15152,7 +15057,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "svelte-70jpxq");
-    			add_location(li, file$n, 250, 27, 12290);
+    			add_location(li, file$n, 250, 27, 12279);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -15215,14 +15120,14 @@ var app = (function () {
     			t6 = text(t6_value);
     			t7 = space();
     			attr_dev(td0, "class", "svelte-70jpxq");
-    			add_location(td0, file$n, 268, 30, 13214);
+    			add_location(td0, file$n, 268, 30, 13203);
     			attr_dev(td1, "class", "svelte-70jpxq");
-    			add_location(td1, file$n, 269, 30, 13280);
+    			add_location(td1, file$n, 269, 30, 13269);
     			attr_dev(td2, "class", "svelte-70jpxq");
-    			add_location(td2, file$n, 270, 30, 13350);
+    			add_location(td2, file$n, 270, 30, 13339);
     			attr_dev(td3, "class", "svelte-70jpxq");
-    			add_location(td3, file$n, 271, 30, 13406);
-    			add_location(tr, file$n, 267, 26, 13179);
+    			add_location(td3, file$n, 271, 30, 13395);
+    			add_location(tr, file$n, 267, 26, 13168);
     			this.first = tr;
     		},
     		m: function mount(target, anchor) {
@@ -15271,7 +15176,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "svelte-70jpxq");
-    			add_location(li, file$n, 284, 27, 14069);
+    			add_location(li, file$n, 284, 27, 14058);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -15307,7 +15212,7 @@ var app = (function () {
     			li = element("li");
     			t = text(t_value);
     			attr_dev(li, "class", "svelte-70jpxq");
-    			add_location(li, file$n, 292, 27, 14511);
+    			add_location(li, file$n, 292, 27, 14500);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li, anchor);
@@ -15370,14 +15275,14 @@ var app = (function () {
     			t6 = text(t6_value);
     			t7 = space();
     			attr_dev(td0, "class", "svelte-70jpxq");
-    			add_location(td0, file$n, 310, 30, 15439);
+    			add_location(td0, file$n, 310, 30, 15428);
     			attr_dev(td1, "class", "svelte-70jpxq");
-    			add_location(td1, file$n, 311, 30, 15505);
+    			add_location(td1, file$n, 311, 30, 15494);
     			attr_dev(td2, "class", "svelte-70jpxq");
-    			add_location(td2, file$n, 312, 30, 15575);
+    			add_location(td2, file$n, 312, 30, 15564);
     			attr_dev(td3, "class", "svelte-70jpxq");
-    			add_location(td3, file$n, 313, 30, 15631);
-    			add_location(tr, file$n, 309, 26, 15404);
+    			add_location(td3, file$n, 313, 30, 15620);
+    			add_location(tr, file$n, 309, 26, 15393);
     			this.first = tr;
     		},
     		m: function mount(target, anchor) {
@@ -15421,11 +15326,7 @@ var app = (function () {
     	let t0;
     	let div1;
     	let h1;
-
-    	let t1_value = (/*$currentLang*/ ctx[0] === 'hu'
-    	? 'SZOLGÁLTATÁSOK'
-    	: 'SERVICES') + "";
-
+    	let t1_value = (/*$currentLang*/ ctx[0] === 'hu' ? 'ÁRAK' : 'PRICING') + "";
     	let t1;
     	let t2;
     	let p0;
@@ -15962,152 +15863,152 @@ var app = (function () {
     			attr_dev(h1, "class", "svelte-70jpxq");
     			add_location(h1, file$n, 133, 4, 6476);
     			attr_dev(p0, "class", "svelte-70jpxq");
-    			add_location(p0, file$n, 134, 4, 6545);
+    			add_location(p0, file$n, 134, 4, 6534);
     			attr_dev(div1, "class", "container relative z-10 svelte-70jpxq");
     			add_location(div1, file$n, 132, 2, 6434);
     			attr_dev(path, "d", "M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z");
-    			add_location(path, file$n, 140, 6, 6831);
+    			add_location(path, file$n, 140, 6, 6820);
     			attr_dev(svg, "preserveAspectRatio", "none");
     			attr_dev(svg, "viewBox", "0 0 1440 120");
     			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg, "class", "svelte-70jpxq");
-    			add_location(svg, file$n, 139, 4, 6734);
+    			add_location(svg, file$n, 139, 4, 6723);
     			attr_dev(div2, "class", "hero-wave svelte-70jpxq");
-    			add_location(div2, file$n, 138, 2, 6706);
+    			add_location(div2, file$n, 138, 2, 6695);
     			attr_dev(section0, "class", "services-hero svelte-70jpxq");
     			add_location(section0, file$n, 130, 0, 6362);
     			attr_dev(h20, "class", "svelte-70jpxq");
-    			add_location(h20, file$n, 150, 10, 7260);
+    			add_location(h20, file$n, 150, 10, 7249);
     			attr_dev(p1, "class", "service-description svelte-70jpxq");
-    			add_location(p1, file$n, 151, 10, 7354);
+    			add_location(p1, file$n, 151, 10, 7343);
     			attr_dev(ul0, "class", "feature-list svelte-70jpxq");
-    			add_location(ul0, file$n, 156, 10, 7756);
+    			add_location(ul0, file$n, 156, 10, 7745);
     			attr_dev(a0, "href", "/booking");
     			attr_dev(a0, "class", "btn btn-primary svelte-70jpxq");
-    			add_location(a0, file$n, 164, 10, 8309);
+    			add_location(a0, file$n, 164, 10, 8298);
     			attr_dev(div3, "class", "service-content svelte-70jpxq");
-    			add_location(div3, file$n, 149, 8, 7220);
+    			add_location(div3, file$n, 149, 8, 7209);
     			if (!src_url_equal(img0.src, img0_src_value = "images/parking-lot.webp")) attr_dev(img0, "src", img0_src_value);
     			attr_dev(img0, "alt", "Airport Parking");
     			attr_dev(img0, "class", "svelte-70jpxq");
-    			add_location(img0, file$n, 169, 10, 8491);
+    			add_location(img0, file$n, 169, 10, 8480);
     			attr_dev(div4, "class", "service-image svelte-70jpxq");
-    			add_location(div4, file$n, 168, 8, 8453);
+    			add_location(div4, file$n, 168, 8, 8442);
     			attr_dev(div5, "class", "service-grid svelte-70jpxq");
-    			add_location(div5, file$n, 148, 6, 7185);
+    			add_location(div5, file$n, 148, 6, 7174);
     			attr_dev(th0, "class", "svelte-70jpxq");
-    			add_location(th0, file$n, 177, 14, 8766);
+    			add_location(th0, file$n, 177, 14, 8755);
     			attr_dev(th1, "class", "normal-price-header svelte-70jpxq");
-    			add_location(th1, file$n, 178, 14, 8829);
+    			add_location(th1, file$n, 178, 14, 8818);
     			attr_dev(th2, "class", "svelte-70jpxq");
-    			add_location(th2, file$n, 179, 14, 8935);
-    			add_location(tr0, file$n, 176, 12, 8747);
+    			add_location(th2, file$n, 179, 14, 8924);
+    			add_location(tr0, file$n, 176, 12, 8736);
     			attr_dev(thead0, "class", "svelte-70jpxq");
-    			add_location(thead0, file$n, 175, 10, 8727);
-    			add_location(tbody0, file$n, 182, 10, 9047);
+    			add_location(thead0, file$n, 175, 10, 8716);
+    			add_location(tbody0, file$n, 182, 10, 9036);
     			attr_dev(table0, "class", "pricing-table parking-table svelte-70jpxq");
-    			add_location(table0, file$n, 174, 8, 8673);
+    			add_location(table0, file$n, 174, 8, 8662);
     			attr_dev(div6, "class", "pricing-table-container scrollable-table parking-table-container svelte-70jpxq");
-    			add_location(div6, file$n, 173, 6, 8586);
+    			add_location(div6, file$n, 173, 6, 8575);
     			attr_dev(div7, "class", "container svelte-70jpxq");
-    			add_location(div7, file$n, 147, 4, 7155);
+    			add_location(div7, file$n, 147, 4, 7144);
     			attr_dev(section1, "class", "service-section svelte-70jpxq");
     			attr_dev(section1, "id", "parking");
-    			add_location(section1, file$n, 146, 2, 7104);
+    			add_location(section1, file$n, 146, 2, 7093);
     			attr_dev(div8, "class", "animated-background svelte-70jpxq");
-    			add_location(div8, file$n, 197, 4, 9479);
+    			add_location(div8, file$n, 197, 4, 9468);
     			if (!src_url_equal(img1.src, img1_src_value = "images/car-wash.webp")) attr_dev(img1, "src", img1_src_value);
     			attr_dev(img1, "alt", "Car Wash");
     			attr_dev(img1, "class", "svelte-70jpxq");
-    			add_location(img1, file$n, 212, 10, 10048);
+    			add_location(img1, file$n, 212, 10, 10037);
     			attr_dev(div9, "class", "service-image svelte-70jpxq");
-    			add_location(div9, file$n, 211, 8, 10010);
+    			add_location(div9, file$n, 211, 8, 9999);
     			attr_dev(h21, "class", "svelte-70jpxq");
-    			add_location(h21, file$n, 215, 10, 10161);
+    			add_location(h21, file$n, 215, 10, 10150);
     			attr_dev(p2, "class", "service-description svelte-70jpxq");
-    			add_location(p2, file$n, 216, 10, 10240);
+    			add_location(p2, file$n, 216, 10, 10229);
     			attr_dev(ul1, "class", "feature-list svelte-70jpxq");
-    			add_location(ul1, file$n, 221, 10, 10663);
+    			add_location(ul1, file$n, 221, 10, 10652);
     			attr_dev(a1, "href", "/booking");
     			attr_dev(a1, "class", "btn btn-primary svelte-70jpxq");
-    			add_location(a1, file$n, 229, 10, 11169);
+    			add_location(a1, file$n, 229, 10, 11158);
     			attr_dev(div10, "class", "service-content svelte-70jpxq");
-    			add_location(div10, file$n, 214, 8, 10121);
+    			add_location(div10, file$n, 214, 8, 10110);
     			attr_dev(div11, "class", "service-grid reverse svelte-70jpxq");
-    			add_location(div11, file$n, 210, 6, 9967);
+    			add_location(div11, file$n, 210, 6, 9956);
     			attr_dev(h30, "class", "car-wash-title smart-title svelte-70jpxq");
-    			add_location(h30, file$n, 236, 10, 11365);
+    			add_location(h30, file$n, 236, 10, 11354);
     			attr_dev(h40, "class", "inclusion-section-title svelte-70jpxq");
-    			add_location(h40, file$n, 239, 18, 11595);
+    			add_location(h40, file$n, 239, 18, 11584);
     			attr_dev(ul2, "class", "inclusion-pills smart-pills svelte-70jpxq");
-    			add_location(ul2, file$n, 240, 18, 11701);
+    			add_location(ul2, file$n, 240, 18, 11690);
     			attr_dev(div12, "class", "inclusion-card frosted-card svelte-70jpxq");
-    			add_location(div12, file$n, 238, 14, 11535);
+    			add_location(div12, file$n, 238, 14, 11524);
     			attr_dev(h41, "class", "inclusion-section-title svelte-70jpxq");
-    			add_location(h41, file$n, 247, 18, 12033);
+    			add_location(h41, file$n, 247, 18, 12022);
     			attr_dev(ul3, "class", "inclusion-pills smart-pills svelte-70jpxq");
-    			add_location(ul3, file$n, 248, 18, 12139);
+    			add_location(ul3, file$n, 248, 18, 12128);
     			attr_dev(div13, "class", "inclusion-card frosted-card svelte-70jpxq");
-    			add_location(div13, file$n, 246, 15, 11973);
+    			add_location(div13, file$n, 246, 15, 11962);
     			attr_dev(div14, "class", "package-inclusions-container svelte-70jpxq");
-    			add_location(div14, file$n, 237, 10, 11478);
+    			add_location(div14, file$n, 237, 10, 11467);
     			attr_dev(th3, "class", "svelte-70jpxq");
-    			add_location(th3, file$n, 259, 26, 12655);
+    			add_location(th3, file$n, 259, 26, 12644);
     			attr_dev(th4, "class", "svelte-70jpxq");
-    			add_location(th4, file$n, 260, 26, 12742);
+    			add_location(th4, file$n, 260, 26, 12731);
     			attr_dev(th5, "class", "svelte-70jpxq");
-    			add_location(th5, file$n, 261, 26, 12843);
+    			add_location(th5, file$n, 261, 26, 12832);
     			attr_dev(th6, "class", "svelte-70jpxq");
-    			add_location(th6, file$n, 262, 26, 12925);
-    			add_location(tr1, file$n, 258, 22, 12624);
+    			add_location(th6, file$n, 262, 26, 12914);
+    			add_location(tr1, file$n, 258, 22, 12613);
     			attr_dev(thead1, "class", "svelte-70jpxq");
-    			add_location(thead1, file$n, 257, 19, 12594);
-    			add_location(tbody1, file$n, 265, 18, 13054);
+    			add_location(thead1, file$n, 257, 19, 12583);
+    			add_location(tbody1, file$n, 265, 18, 13043);
     			attr_dev(table1, "class", "pricing-table car-wash-table smart-table svelte-70jpxq");
-    			add_location(table1, file$n, 256, 14, 12518);
+    			add_location(table1, file$n, 256, 14, 12507);
     			attr_dev(div15, "class", "pricing-table-container scrollable-table car-wash-table-container svelte-70jpxq");
-    			add_location(div15, file$n, 255, 10, 12424);
+    			add_location(div15, file$n, 255, 10, 12413);
     			attr_dev(h31, "class", "car-wash-title premium-title svelte-70jpxq");
-    			add_location(h31, file$n, 278, 10, 13572);
+    			add_location(h31, file$n, 278, 10, 13561);
     			attr_dev(h42, "class", "inclusion-section-title svelte-70jpxq");
-    			add_location(h42, file$n, 281, 18, 13808);
+    			add_location(h42, file$n, 281, 18, 13797);
     			attr_dev(ul4, "class", "inclusion-pills premium-pills svelte-70jpxq");
-    			add_location(ul4, file$n, 282, 18, 13914);
+    			add_location(ul4, file$n, 282, 18, 13903);
     			attr_dev(div16, "class", "inclusion-card frosted-card svelte-70jpxq");
-    			add_location(div16, file$n, 280, 14, 13748);
+    			add_location(div16, file$n, 280, 14, 13737);
     			attr_dev(h43, "class", "inclusion-section-title svelte-70jpxq");
-    			add_location(h43, file$n, 289, 18, 14250);
+    			add_location(h43, file$n, 289, 18, 14239);
     			attr_dev(ul5, "class", "inclusion-pills premium-pills svelte-70jpxq");
-    			add_location(ul5, file$n, 290, 18, 14356);
+    			add_location(ul5, file$n, 290, 18, 14345);
     			attr_dev(div17, "class", "inclusion-card frosted-card svelte-70jpxq");
-    			add_location(div17, file$n, 288, 15, 14190);
+    			add_location(div17, file$n, 288, 15, 14179);
     			attr_dev(div18, "class", "package-inclusions-container svelte-70jpxq");
-    			add_location(div18, file$n, 279, 10, 13691);
+    			add_location(div18, file$n, 279, 10, 13680);
     			attr_dev(th7, "class", "svelte-70jpxq");
-    			add_location(th7, file$n, 301, 26, 14878);
+    			add_location(th7, file$n, 301, 26, 14867);
     			attr_dev(th8, "class", "svelte-70jpxq");
-    			add_location(th8, file$n, 302, 26, 14965);
+    			add_location(th8, file$n, 302, 26, 14954);
     			attr_dev(th9, "class", "svelte-70jpxq");
-    			add_location(th9, file$n, 303, 26, 15066);
+    			add_location(th9, file$n, 303, 26, 15055);
     			attr_dev(th10, "class", "svelte-70jpxq");
-    			add_location(th10, file$n, 304, 26, 15148);
-    			add_location(tr2, file$n, 300, 22, 14847);
+    			add_location(th10, file$n, 304, 26, 15137);
+    			add_location(tr2, file$n, 300, 22, 14836);
     			attr_dev(thead2, "class", "svelte-70jpxq");
-    			add_location(thead2, file$n, 299, 19, 14817);
-    			add_location(tbody2, file$n, 307, 18, 15277);
+    			add_location(thead2, file$n, 299, 19, 14806);
+    			add_location(tbody2, file$n, 307, 18, 15266);
     			attr_dev(table2, "class", "pricing-table car-wash-table premium-table svelte-70jpxq");
-    			add_location(table2, file$n, 298, 14, 14739);
+    			add_location(table2, file$n, 298, 14, 14728);
     			attr_dev(div19, "class", "pricing-table-container scrollable-table car-wash-table-container svelte-70jpxq");
-    			add_location(div19, file$n, 297, 11, 14645);
+    			add_location(div19, file$n, 297, 11, 14634);
     			attr_dev(div20, "class", "car-wash-tables svelte-70jpxq");
-    			add_location(div20, file$n, 235, 6, 11325);
+    			add_location(div20, file$n, 235, 6, 11314);
     			attr_dev(div21, "class", "container svelte-70jpxq");
-    			add_location(div21, file$n, 209, 4, 9937);
+    			add_location(div21, file$n, 209, 4, 9926);
     			attr_dev(section2, "class", "service-section svelte-70jpxq");
     			attr_dev(section2, "id", "carwash");
-    			add_location(section2, file$n, 196, 2, 9428);
+    			add_location(section2, file$n, 196, 2, 9417);
     			attr_dev(div22, "class", "services-container svelte-70jpxq");
-    			add_location(div22, file$n, 145, 0, 7069);
+    			add_location(div22, file$n, 145, 0, 7058);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16320,9 +16221,7 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*$currentLang*/ 1 && t1_value !== (t1_value = (/*$currentLang*/ ctx[0] === 'hu'
-    			? 'SZOLGÁLTATÁSOK'
-    			: 'SERVICES') + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*$currentLang*/ 1 && t1_value !== (t1_value = (/*$currentLang*/ ctx[0] === 'hu' ? 'ÁRAK' : 'PRICING') + "")) set_data_dev(t1, t1_value);
 
     			if (dirty & /*$currentLang*/ 1 && t3_value !== (t3_value = (/*$currentLang*/ ctx[0] === 'hu'
     			? 'Mindent egy helyen az Ön járművének kényeztetéséhez'
@@ -46570,7 +46469,7 @@ Megrendelő aláírása: _________________________________`;
     			button = element("button");
     			t0 = text(t0_value);
     			t1 = space();
-    			attr_dev(button, "class", "svelte-mqe8vy");
+    			attr_dev(button, "class", "svelte-gz1hby");
     			toggle_class(button, "active", /*activeCategory*/ ctx[0] === /*category*/ ctx[5].id);
     			add_location(button, file$3, 42, 10, 1655);
     		},
@@ -46727,28 +46626,28 @@ Megrendelő aláírása: _________________________________`;
     			path2 = svg_element("path");
     			polyline = svg_element("polyline");
     			t12 = text("\n            parking@atgroup.hu");
-    			attr_dev(div0, "class", "hero-background svelte-mqe8vy");
+    			attr_dev(div0, "class", "hero-background svelte-gz1hby");
     			add_location(div0, file$3, 20, 2, 733);
-    			attr_dev(h1, "class", "svelte-mqe8vy");
+    			attr_dev(h1, "class", "svelte-gz1hby");
     			add_location(h1, file$3, 22, 4, 813);
-    			attr_dev(p, "class", "svelte-mqe8vy");
+    			attr_dev(p, "class", "svelte-gz1hby");
     			add_location(p, file$3, 25, 4, 923);
-    			attr_dev(div1, "class", "container relative z-10 svelte-mqe8vy");
+    			attr_dev(div1, "class", "container relative z-10 svelte-gz1hby");
     			add_location(div1, file$3, 21, 2, 771);
     			attr_dev(path0, "d", "M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z");
     			add_location(path0, file$3, 33, 6, 1253);
     			attr_dev(svg0, "preserveAspectRatio", "none");
     			attr_dev(svg0, "viewBox", "0 0 1440 120");
     			attr_dev(svg0, "xmlns", "http://www.w3.org/2000/svg");
-    			attr_dev(svg0, "class", "svelte-mqe8vy");
+    			attr_dev(svg0, "class", "svelte-gz1hby");
     			add_location(svg0, file$3, 32, 4, 1156);
-    			attr_dev(div2, "class", "hero-wave svelte-mqe8vy");
+    			attr_dev(div2, "class", "hero-wave svelte-gz1hby");
     			add_location(div2, file$3, 31, 2, 1128);
-    			attr_dev(section0, "class", "faq-hero svelte-mqe8vy");
+    			attr_dev(section0, "class", "faq-hero svelte-gz1hby");
     			add_location(section0, file$3, 19, 2, 704);
-    			attr_dev(div3, "class", "filter-bar svelte-mqe8vy");
+    			attr_dev(div3, "class", "filter-bar svelte-gz1hby");
     			add_location(div3, file$3, 40, 6, 1557);
-    			attr_dev(h3, "class", "svelte-mqe8vy");
+    			attr_dev(h3, "class", "svelte-gz1hby");
     			add_location(h3, file$3, 58, 8, 2057);
     			attr_dev(path1, "d", "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z");
     			add_location(path1, file$3, 66, 14, 2469);
@@ -46758,10 +46657,10 @@ Megrendelő aláírása: _________________________________`;
     			attr_dev(svg1, "fill", "none");
     			attr_dev(svg1, "stroke", "currentColor");
     			attr_dev(svg1, "stroke-width", "2");
-    			attr_dev(svg1, "class", "svelte-mqe8vy");
+    			attr_dev(svg1, "class", "svelte-gz1hby");
     			add_location(svg1, file$3, 65, 12, 2355);
     			attr_dev(a0, "href", "tel:+36705859959");
-    			attr_dev(a0, "class", "btn btn-primary svelte-mqe8vy");
+    			attr_dev(a0, "class", "btn btn-primary svelte-gz1hby");
     			add_location(a0, file$3, 64, 10, 2291);
     			attr_dev(path2, "d", "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z");
     			add_location(path2, file$3, 72, 14, 3034);
@@ -46773,20 +46672,20 @@ Megrendelő aláírása: _________________________________`;
     			attr_dev(svg2, "fill", "none");
     			attr_dev(svg2, "stroke", "currentColor");
     			attr_dev(svg2, "stroke-width", "2");
-    			attr_dev(svg2, "class", "svelte-mqe8vy");
+    			attr_dev(svg2, "class", "svelte-gz1hby");
     			add_location(svg2, file$3, 71, 12, 2920);
     			attr_dev(a1, "href", "mailto:parking@atgroup.hu");
-    			attr_dev(a1, "class", "btn btn-secondary svelte-mqe8vy");
+    			attr_dev(a1, "class", "btn btn-secondary svelte-gz1hby");
     			add_location(a1, file$3, 70, 10, 2845);
-    			attr_dev(div4, "class", "cta-buttons svelte-mqe8vy");
+    			attr_dev(div4, "class", "cta-buttons svelte-gz1hby");
     			add_location(div4, file$3, 63, 8, 2255);
-    			attr_dev(div5, "class", "contact-cta svelte-mqe8vy");
+    			attr_dev(div5, "class", "contact-cta svelte-gz1hby");
     			add_location(div5, file$3, 57, 6, 2023);
     			attr_dev(div6, "class", "container");
     			add_location(div6, file$3, 39, 4, 1527);
-    			attr_dev(section1, "class", "faq-content svelte-mqe8vy");
+    			attr_dev(section1, "class", "faq-content svelte-gz1hby");
     			add_location(section1, file$3, 38, 2, 1493);
-    			attr_dev(main, "class", "faq-page svelte-mqe8vy");
+    			attr_dev(main, "class", "faq-page svelte-gz1hby");
     			add_location(main, file$3, 18, 0, 678);
     		},
     		l: function claim(nodes) {
@@ -47093,25 +46992,25 @@ Megrendelő aláírása: _________________________________`;
     			attr_dev(svg, "stroke-linecap", "round");
     			attr_dev(svg, "stroke-linejoin", "round");
     			add_location(svg, file$2, 93, 8, 2565);
-    			attr_dev(button0, "class", "close-button svelte-zpy6qp");
+    			attr_dev(button0, "class", "close-button svelte-1xfbyqg");
     			attr_dev(button0, "aria-label", button0_aria_label_value = /*lang*/ ctx[2] === 'hu' ? 'Bezárás' : 'Close');
     			add_location(button0, file$2, 88, 6, 2425);
-    			attr_dev(div0, "class", "discount-badge svelte-zpy6qp");
+    			attr_dev(div0, "class", "discount-badge svelte-1xfbyqg");
     			add_location(div0, file$2, 100, 8, 2926);
-    			attr_dev(h2, "class", "svelte-zpy6qp");
+    			attr_dev(h2, "class", "svelte-1xfbyqg");
     			add_location(h2, file$2, 101, 8, 2972);
-    			attr_dev(p, "class", "svelte-zpy6qp");
+    			attr_dev(p, "class", "svelte-1xfbyqg");
     			add_location(p, file$2, 104, 8, 3076);
-    			attr_dev(div1, "class", "offer-note svelte-zpy6qp");
+    			attr_dev(div1, "class", "offer-note svelte-1xfbyqg");
     			add_location(div1, file$2, 110, 8, 3331);
-    			attr_dev(button1, "class", "discount-btn svelte-zpy6qp");
+    			attr_dev(button1, "class", "discount-btn svelte-1xfbyqg");
     			add_location(button1, file$2, 116, 8, 3547);
-    			attr_dev(div2, "class", "popup-text svelte-zpy6qp");
+    			attr_dev(div2, "class", "popup-text svelte-1xfbyqg");
     			add_location(div2, file$2, 99, 6, 2893);
-    			attr_dev(div3, "class", "popup-content svelte-zpy6qp");
+    			attr_dev(div3, "class", "popup-content svelte-1xfbyqg");
     			attr_dev(div3, "role", "document");
     			add_location(div3, file$2, 82, 4, 2294);
-    			attr_dev(div4, "class", "popup-overlay svelte-zpy6qp");
+    			attr_dev(div4, "class", "popup-overlay svelte-1xfbyqg");
     			attr_dev(div4, "role", "dialog");
     			attr_dev(div4, "aria-modal", "true");
 
@@ -48001,7 +47900,7 @@ Megrendelő aláírása: _________________________________`;
     const { console: console_1 } = globals;
     const file = "src/App.svelte";
 
-    // (125:2) {#if currentPage !== 'admin'}
+    // (126:2) {#if currentPage !== 'admin'}
     function create_if_block_12(ctx) {
     	let header;
     	let current;
@@ -48047,14 +47946,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_12.name,
     		type: "if",
-    		source: "(125:2) {#if currentPage !== 'admin'}",
+    		source: "(126:2) {#if currentPage !== 'admin'}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (152:4) {:else}
+    // (153:4) {:else}
     function create_else_block(ctx) {
     	let div;
     	let h1;
@@ -48072,11 +47971,11 @@ Megrendelő aláírása: _________________________________`;
     			button = element("button");
     			button.textContent = "Go to Home";
     			attr_dev(h1, "class", "svelte-1swx92k");
-    			add_location(h1, file, 154, 8, 4654);
+    			add_location(h1, file, 155, 8, 4738);
     			attr_dev(button, "class", "svelte-1swx92k");
-    			add_location(button, file, 155, 8, 4686);
+    			add_location(button, file, 156, 8, 4770);
     			attr_dev(div, "class", "error-container svelte-1swx92k");
-    			add_location(div, file, 153, 6, 4616);
+    			add_location(div, file, 154, 6, 4700);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -48103,14 +48002,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(152:4) {:else}",
+    		source: "(153:4) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (150:36) 
+    // (151:36) 
     function create_if_block_11(ctx) {
     	let faqpage;
     	let current;
@@ -48151,14 +48050,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_11.name,
     		type: "if",
-    		source: "(150:36) ",
+    		source: "(151:36) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (148:38) 
+    // (149:38) 
     function create_if_block_10(ctx) {
     	let terms;
     	let current;
@@ -48199,14 +48098,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_10.name,
     		type: "if",
-    		source: "(148:38) ",
+    		source: "(149:38) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (146:40) 
+    // (147:40) 
     function create_if_block_9(ctx) {
     	let imprint;
     	let current;
@@ -48247,14 +48146,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_9.name,
     		type: "if",
-    		source: "(146:40) ",
+    		source: "(147:40) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (144:38) 
+    // (145:38) 
     function create_if_block_8(ctx) {
     	let admin;
     	let current;
@@ -48295,14 +48194,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_8.name,
     		type: "if",
-    		source: "(144:38) ",
+    		source: "(145:38) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (142:41) 
+    // (143:41) 
     function create_if_block_7(ctx) {
     	let thankyou;
     	let current;
@@ -48343,14 +48242,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_7.name,
     		type: "if",
-    		source: "(142:41) ",
+    		source: "(143:41) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (140:40) 
+    // (141:40) 
     function create_if_block_6(ctx) {
     	let privacy;
     	let current;
@@ -48391,14 +48290,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_6.name,
     		type: "if",
-    		source: "(140:40) ",
+    		source: "(141:40) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (138:40) 
+    // (139:40) 
     function create_if_block_5(ctx) {
     	let contact;
     	let current;
@@ -48442,14 +48341,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_5.name,
     		type: "if",
-    		source: "(138:40) ",
+    		source: "(139:40) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (136:40) 
+    // (137:40) 
     function create_if_block_4(ctx) {
     	let booking;
     	let current;
@@ -48490,14 +48389,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(136:40) ",
+    		source: "(137:40) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (134:41) 
+    // (135:41) 
     function create_if_block_3(ctx) {
     	let services;
     	let current;
@@ -48538,14 +48437,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(134:41) ",
+    		source: "(135:41) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (132:38) 
+    // (133:38) 
     function create_if_block_2(ctx) {
     	let about;
     	let current;
@@ -48586,14 +48485,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(132:38) ",
+    		source: "(133:38) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (130:4) {#if currentPage === 'home'}
+    // (131:4) {#if currentPage === 'home'}
     function create_if_block_1(ctx) {
     	let home;
     	let current;
@@ -48637,14 +48536,14 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(130:4) {#if currentPage === 'home'}",
+    		source: "(131:4) {#if currentPage === 'home'}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (161:2) {#if currentPage !== 'admin'}
+    // (162:2) {#if currentPage !== 'admin'}
     function create_if_block(ctx) {
     	let footer;
     	let t0;
@@ -48724,7 +48623,7 @@ Megrendelő aláírása: _________________________________`;
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(161:2) {#if currentPage !== 'admin'}",
+    		source: "(162:2) {#if currentPage !== 'admin'}",
     		ctx
     	});
 
@@ -48803,18 +48702,18 @@ Megrendelő aláírása: _________________________________`;
     			if (!src_url_equal(img.src, img_src_value = "images/newlog_full.png")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "A&T Group");
     			attr_dev(img, "class", "svelte-1swx92k");
-    			add_location(img, file, 119, 6, 3627);
+    			add_location(img, file, 120, 6, 3711);
     			attr_dev(div0, "class", "logo-container svelte-1swx92k");
-    			add_location(div0, file, 118, 4, 3592);
+    			add_location(div0, file, 119, 4, 3676);
     			attr_dev(div1, "class", "spinner svelte-1swx92k");
-    			add_location(div1, file, 121, 4, 3695);
+    			add_location(div1, file, 122, 4, 3779);
     			attr_dev(div2, "class", "loader svelte-1swx92k");
     			toggle_class(div2, "hidden", !/*pageLoading*/ ctx[1]);
-    			add_location(div2, file, 117, 2, 3539);
+    			add_location(div2, file, 118, 2, 3623);
     			attr_dev(main, "class", "svelte-1swx92k");
-    			add_location(main, file, 128, 2, 3823);
+    			add_location(main, file, 129, 2, 3907);
     			attr_dev(div3, "class", div3_class_value = "app-container " + (/*pageLoading*/ ctx[1] ? 'loading' : '') + " " + (/*pageTransition*/ ctx[2] ? 'page-transition' : '') + " svelte-1swx92k");
-    			add_location(div3, file, 116, 0, 3436);
+    			add_location(div3, file, 117, 0, 3520);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -48969,7 +48868,7 @@ Megrendelő aláírása: _________________________________`;
     		setTimeout(
     			() => {
     				$$invalidate(0, currentPage = page);
-    				window.scrollTo(0, 0);
+    				window.scrollTo({ top: 0, behavior: 'instant' });
 
     				// Update URL using HTML5 history API instead of hash
     				if (page === 'home') {
@@ -48981,6 +48880,7 @@ Megrendelő aláírása: _________________________________`;
     				// After page loads, remove transition class
     				setTimeout(
     					() => {
+    						window.scrollTo({ top: 0, behavior: 'instant' });
     						$$invalidate(2, pageTransition = false);
     					},
     					100
