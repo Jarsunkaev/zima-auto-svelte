@@ -696,7 +696,7 @@
     </div>
 
     <div class="contact-info">
-        <p><strong>Érkezéskor hívja:</strong> +36 70 555 0588</p>
+        <p><strong>Érkezéskor hívja:</strong> +36 70 585 9959</p>
         <p><strong>Email:</strong> info@zima-auto.com</p>
     </div>
 
@@ -754,7 +754,7 @@ Felvétel időpontja: ${formatDateForDocument(booking["TÁVOZÁS"])}
 Nap: ${booking["HÁNY NAP"]}
 Elérhetőség: ${booking["EMAIL"]} / ${booking["TELEFON"]}
 
-Érkezéskor hívja: +36 70 555 0588
+Érkezéskor hívja: +36 70 585 9959
 info@zima-auto.com
 
 Dátum: Vecsés, ${currentDate}

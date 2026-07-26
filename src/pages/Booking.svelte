@@ -22,6 +22,7 @@
   let isSubmitting = false; // Indicates if backend submission is in progress
   let submitError = null; // Stores error message from backend submission
   let submitSuccess = false; // Indicates successful backend submission
+  let emailSent = true; // Tracks whether confirmation email was sent
   let lang = 'hu'; // Local state for current language
 
   // Subscribe to language changes
@@ -189,6 +190,7 @@
         console.log('Booking successful:', result);
         submitSuccess = true;
         showConfirmation = true;
+        emailSent = result.data.emailSent !== false; // Default to true if not specified
         
         // Extract data from the response
         const { data } = result;
@@ -258,6 +260,7 @@
     submitSuccess = false;
     isSubmitting = false; // Ensure submitting state is false
     bookingDetails = {}; // Clear previous booking details
+    emailSent = true; // Reset email status
     window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
   }
 
@@ -342,6 +345,7 @@
     {content}
     currentLang={lang}
     resetBooking={resetBooking}
+    {emailSent}
   />
 {/if}
 

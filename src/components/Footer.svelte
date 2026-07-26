@@ -49,7 +49,7 @@
           <div class="contact-info">
             <h3>{t('footer.visit', $currentLang)}</h3>
             <p class="address">{t('footer.address', $currentLang)}</p>
-            <p><strong>{t('footer.phone', $currentLang)}:</strong> <a href="tel:+36705550588" class="contact-link">{t('footer.phoneNumber', $currentLang)}</a></p>
+            <p><strong>{t('footer.phone', $currentLang)}:</strong> <a href="tel:+36705859959" class="contact-link">{t('footer.phoneNumber', $currentLang)}</a></p>
             <p><strong>{t('footer.email', $currentLang)}:</strong> <a href="mailto:info@zima-auto.com" class="contact-link">{t('footer.emailAddress', $currentLang)}</a></p>
           </div>
           <div class="social-links">

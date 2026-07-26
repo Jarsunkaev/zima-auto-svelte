@@ -57,7 +57,7 @@
           <p><strong>3.2.</strong> {lang === 'hu' ? 'A foglalás a következő módokon történhet:' : 'Booking can be made in the following ways:'}</p>
           <ul>
             <li>{lang === 'hu' ? 'Online foglalási rendszeren keresztül' : 'Through online booking system'}</li>
-            <li>{lang === 'hu' ? 'Telefonon: +36 70 555 0588' : 'By phone: +36 70 555 0588'}</li>
+            <li>{lang === 'hu' ? 'Telefonon: +36 70 585 9959' : 'By phone: +36 70 585 9959'}</li>
             <li>{lang === 'hu' ? 'Emailben: info@zima-auto.com' : 'By email: info@zima-auto.com'}</li>
           </ul>
           
@@ -141,7 +141,7 @@
             <strong>{lang === 'hu' ? 'Cím:' : 'Address:'}</strong> 2220 Vecsés, Ipari utca 1.
           </div>
           <div class="contact-item">
-            <strong>{lang === 'hu' ? 'Telefon:' : 'Phone:'}</strong> +36 70 555 0588
+            <strong>{lang === 'hu' ? 'Telefon:' : 'Phone:'}</strong> +36 70 585 9959
           </div>
           <div class="contact-item">
             <strong>{lang === 'hu' ? 'Email:' : 'Email:'}</strong> info@zima-auto.com

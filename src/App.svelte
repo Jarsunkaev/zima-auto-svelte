@@ -14,6 +14,7 @@
 	import Imprint from './pages/Imprint.svelte';
 	import Terms from './pages/Terms.svelte';
 	import DiscountPopup from './components/DiscountPopup.svelte';
+	import PhoneChangePopup from './components/PhoneChangePopup.svelte';
 	import CookieConsent from './components/CookieConsent.svelte';
   
 	// Page routing
@@ -171,6 +172,7 @@ const handleRouting = () => {
 
   <Footer {navigate} {lang} />
   <CookieConsent {lang} />
+  <PhoneChangePopup {lang} />
   <DiscountPopup {lang} />
 </div>
 

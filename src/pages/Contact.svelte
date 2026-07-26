@@ -42,7 +42,7 @@
       },
       phone: {
         title: 'TELEFON',
-        content: '06 70 555 0588'
+        content: '06 70 585 9959'
       },
       email: {
         title: 'EMAIL',
@@ -73,7 +73,7 @@
       },
       phone: {
         title: 'PHONE',
-        content: '06 70 555 0588'
+        content: '06 70 585 9959'
       },
       email: {
         title: 'EMAIL',
@@ -254,7 +254,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
             </div>
             <div class="info-content">
               <h3>{content[$currentLang].phone.title}</h3>
-              <p><a href="tel:+36705550588" class="contact-link">{content[$currentLang].phone.content}</a></p>
+              <p><a href="tel:+36705859959" class="contact-link">{content[$currentLang].phone.content}</a></p>
             </div>
           </div>
 

@@ -213,7 +213,7 @@ class EmailService {
                         
                         <p style="margin-top: 20px;">If you have any questions, please contact us at:</p>
                         <p><strong>Email:</strong> info@zima-auto.com</p>
-                        <p><strong>Phone:</strong> +36 70 555 0588</p>
+                        <p><strong>Phone:</strong> +36 70 585 9959</p>
                     </div>
                     <div class="footer">
                         &copy; 2025 Zima Auto. All rights reserved.

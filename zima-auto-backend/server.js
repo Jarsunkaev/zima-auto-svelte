@@ -820,6 +820,11 @@ function parseAirportParkingDateRange(dateRangeStr) {
   }
 }
 
+// --- Health Check ---
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // --- Routes ---
 
 // API Endpoint to fetch available time slots
@@ -1067,6 +1072,7 @@ app.post('/api/send-booking-emails', async (req, res) => {
     }
 
     // Send confirmation emails
+    let emailSent = false;
     try {
       // Prepare email data
       const emailData = {
@@ -1083,10 +1089,13 @@ app.post('/api/send-booking-emails', async (req, res) => {
 
       console.log('Attempting to send confirmation email to:', emailData.customerEmail);
       await emailService.sendBookingConfirmationEmails(emailData);
+      emailSent = true;
       console.log('Confirmation email sent successfully');
     } catch (emailError) {
       console.error('Failed to send confirmation email:', emailError);
-      // Don't fail the request if email fails
+      console.error('Email error details:', emailError.message);
+      // Don't fail the request if email fails — booking is still saved
+      emailSent = false;
     }
 
     // Add booking to Google Calendar with special handling for airport parking
@@ -1223,7 +1232,8 @@ app.post('/api/send-booking-emails', async (req, res) => {
       ...bookingData,
       id: bookingData.eventId || `booking-${Date.now()}`,
       savedToSheets,
-      calendarEvent: bookingData.eventId || null
+      calendarEvent: bookingData.eventId || null,
+      emailSent
     });
 
     // Respond to Frontend

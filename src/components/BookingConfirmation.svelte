@@ -6,6 +6,7 @@
   export let content = {};
   export let currentLang;
   export let resetBooking;
+  export let emailSent = true;
 
   // Format currency in Hungarian format
   function formatCurrency(amount) {
@@ -177,6 +178,19 @@
 
       <p class="email-notice">{content[currentLang].confirmation.emailSent}</p>
 
+      {#if !emailSent}
+        <div class="email-warning">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p>
+            {currentLang === 'hu'
+              ? 'A visszaigazoló e-mail küldése nem sikerült. Foglalása rögzítve lett. Kérdés esetén hívjon minket: +36 70 585 9959'
+              : 'Confirmation email could not be sent. Your booking has been recorded. For questions call us: +36 70 585 9959'}
+          </p>
+        </div>
+      {/if}
+
       <div class="confirmation-actions">
         <button class="btn btn-primary" on:click={resetBooking}>
           {content[currentLang].confirmation.return}
@@ -293,6 +307,31 @@
 
   .confirmation-actions button {
     padding: 0.8rem 2rem;
+  }
+
+  .email-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background-color: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    text-align: left;
+    color: #856404;
+  }
+
+  .email-warning svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #e6a800;
+  }
+
+  .email-warning p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
   }
 
   /* Responsive Styles */
