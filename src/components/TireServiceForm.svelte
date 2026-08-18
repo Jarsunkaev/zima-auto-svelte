@@ -253,11 +253,12 @@
     </div>
   
     <div class="form-section">
-      <h3>{content[currentLang].bookingForm.tireService.notes || 'Additional Notes'}</h3>
+      <h3>{content[currentLang]?.bookingForm?.tireService?.notes || (currentLang === 'hu' ? 'Megjegyzés' : 'Additional Notes')}</h3>
       <div class="form-group">
         <textarea
+          id="notes"
           bind:value={formData.notes}
-          placeholder={content[currentLang].bookingForm.tireService.notesPlaceholder || 'Any special requests or additional information'}
+          placeholder={currentLang === 'hu' ? 'Megjegyzés, speciális kérések (opcionális)' : 'Special requests or additional notes (optional)'}
           rows="4"
         ></textarea>
       </div>
@@ -324,9 +325,20 @@
     }
   
     .form-section h3 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
       color: var(--text);
+      position: relative;
+    }
+
+    .form-section h3::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background-color: var(--primary);
     }
   
 

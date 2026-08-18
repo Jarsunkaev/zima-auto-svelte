@@ -100,18 +100,18 @@
       <div class="popup-text">
         <div class="discount-badge">20%</div>
         <h2>
-          {lang === 'hu' ? 'Kedvezmény Autómosásra!' : 'Off Your Car Wash!'}
+          {lang === 'hu' ? '20% Kedvezmény Autómosásra!' : '20% Off Your Car Wash!'}
         </h2>
         <p>
           {lang === 'hu'
-            ? 'Parkolj autóddal repülőtéri parkolónkban, és élvezd a 20% kedvezményt az autómosás árából.'
-            : 'Park your car at our airport parking and enjoy a 20% discount on your car wash.'}
+            ? 'Szervizeltesse nálunk gépjárművét, és prémium külső-belső autómosásunkat most 20% kedvezménnyel veheti igénybe!'
+            : 'Get your car serviced with us and enjoy a 20% discount on our premium exterior & interior car wash!'}
         </p>
 
         <div class="offer-note">
           {lang === 'hu'
-            ? 'Az ajánlat minden repülőtéri parkoló ügyfél számára érvényes.'
-            : 'Offer valid for all airport parking customers.'}
+            ? 'Az ajánlat minden szervizszolgáltatásunkat igénybe vevő ügyfelünk számára érvényes.'
+            : 'Offer valid for all auto service customers.'}
         </div>
 
         <button class="discount-btn" on:click={closePopup}>

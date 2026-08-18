@@ -320,9 +320,20 @@
   }
 
   .form-section h3 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
     color: var(--text);
+    position: relative;
+  }
+
+  .form-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: rgba(27, 42, 75, 0.7);
   }
 
   .service-types {

@@ -172,6 +172,13 @@
               {/if}
             </span>
           </div>
+
+          {#if bookingDetails.notes}
+            <div class="detail-item" style="grid-column: 1 / -1;">
+              <span class="detail-label">{currentLang === 'hu' ? 'Megjegyzés' : 'Notes'}:</span>
+              <span class="detail-value">{bookingDetails.notes}</span>
+            </div>
+          {/if}
         </div>
       </div>
 
@@ -191,58 +198,69 @@
   .confirmation-section {
     padding: 6rem 2rem;
     background-color: rgb(253, 251, 238);
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
   }
 
   .confirmation-container {
-    max-width: 700px;
+    max-width: 750px;
     margin: 0 auto;
-    background-color: var(--light);
-    border-radius: 12px;
-    padding: 3rem 2rem;
+    background-color: rgb(27, 42, 75);
+    border-radius: 20px;
+    padding: 3.5rem 2.5rem;
     text-align: center;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 20px 50px rgba(27, 42, 75, 0.3);
+    border: 1px solid rgba(253, 251, 238, 0.15);
     width: 100%;
+    color: white;
   }
 
   .confirmation-icon {
-    width: 80px;
-    height: 80px;
+    width: 84px;
+    height: 84px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #e6f7ff;
+    background-color: rgba(253, 251, 238, 0.12);
+    border: 2px solid rgba(253, 251, 238, 0.3);
     border-radius: 50%;
     margin: 0 auto 2rem;
-    color: var(--primary);
+    color: rgb(253, 251, 238);
   }
 
   .confirmation-container h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: var(--text);
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    color: #ffffff;
+    letter-spacing: -0.01em;
   }
 
   .confirmation-subtitle {
-    font-size: 1.1rem;
-    color: var(--text-light);
+    font-size: 1.15rem;
+    color: rgba(253, 251, 238, 0.85);
     margin-bottom: 2.5rem;
+    font-weight: 400;
   }
 
   .confirmation-details {
     background-color: rgb(253, 251, 238);
-    border-radius: 8px;
-    padding: 2rem;
+    border-radius: 14px;
+    padding: 2.2rem;
     text-align: left;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     margin-bottom: 2rem;
+    color: rgb(27, 42, 75);
   }
 
   .confirmation-details h3 {
-    font-size: 1.3rem;
+    font-size: 1.35rem;
+    font-weight: 700;
     margin-bottom: 1.5rem;
-    color: var(--text);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding-bottom: 1rem;
+    color: rgb(27, 42, 75);
+    border-bottom: 2px solid rgba(27, 42, 75, 0.15);
+    padding-bottom: 0.8rem;
   }
 
   .details-grid {
@@ -252,38 +270,41 @@
   }
 
   .detail-item {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
   
   .total-price-item {
     grid-column: span 2;
     margin-top: 0.5rem;
-    padding-top: 1rem;
-    border-top: 2px solid rgba(0, 186, 229, 0.2);
+    padding-top: 1.2rem;
+    border-top: 2px solid rgba(27, 42, 75, 0.2);
   }
 
   .detail-label {
     display: block;
-    font-size: 0.85rem;
-    color: var(--text-light);
-    margin-bottom: 0.3rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #64748b;
+    margin-bottom: 0.25rem;
   }
 
   .detail-value {
     font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--text);
+    font-weight: 600;
+    color: rgb(27, 42, 75);
   }
   
   .total-price-value {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--primary);
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: rgb(27, 42, 75);
   }
 
   .email-notice {
-    font-size: 1rem;
-    color: var(--text-light);
+    font-size: 1.05rem;
+    color: rgba(253, 251, 238, 0.9);
     margin-bottom: 2rem;
   }
 
@@ -291,8 +312,23 @@
     margin-top: 1rem;
   }
 
-  .confirmation-actions button {
-    padding: 0.8rem 2rem;
+  .confirmation-actions .btn-primary {
+    background-color: rgb(253, 251, 238) !important;
+    color: rgb(27, 42, 75) !important;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 0.9rem 2.5rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .confirmation-actions .btn-primary:hover {
+    background-color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   }
 
   /* Responsive Styles */
@@ -311,7 +347,8 @@
 
     .confirmation-container {
       max-width: 100%;
-      padding: 2rem 1rem;
+      padding: 2.5rem 1.25rem;
+      border-radius: 16px;
     }
 
     .confirmation-details {
@@ -325,17 +362,17 @@
     }
 
     .confirmation-container {
-      padding: 1.5rem 0.75rem;
-      border-radius: 8px;
+      padding: 2rem 1rem;
+      border-radius: 12px;
     }
 
     .confirmation-container h2 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
     }
     
     .confirmation-details {
       padding: 1.25rem 0.75rem;
-      border-radius: 6px;
+      border-radius: 10px;
     }
 
     .confirmation-details h3 {
@@ -347,11 +384,11 @@
     }
     
     .total-price-value {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
     }
 
     .detail-label {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
     }
   }
 </style>

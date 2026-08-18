@@ -9,8 +9,20 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 5001;
 
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
+// Health check endpoint for Fly.io
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+// Serve static files from the 'public' directory with caching
+app.use(express.static('public', {
+  maxAge: '1h',
+  setHeaders: (res, path) => {
+    if (path.includes('/build/') || path.endsWith('.js') || path.endsWith('.css')) {
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    }
+  }
+}));
 
 // For any request that doesn't match a static file, send the index.html
 app.get('*', (req, res) => {

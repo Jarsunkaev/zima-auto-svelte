@@ -28,7 +28,7 @@
         }
         
         .email-header {
-            background-color: #000000;
+            background-color: rgb(27, 42, 75);
             color: white;
             padding: 25px 20px;
             text-align: center;
@@ -92,7 +92,7 @@
         .section-title {
             margin-top: 0;
             margin-bottom: 15px;
-            color: #00bae5;
+            color: rgb(27, 42, 75);
             font-size: 18px;
             font-weight: 600;
         }
@@ -106,7 +106,7 @@
             background-color: #f9fafb;
             border-radius: 8px;
             padding: 20px;
-            border-left: 5px solid #00bae5;
+            border-left: 5px solid rgb(27, 42, 75);
             margin-bottom: 20px;
         }
         
@@ -152,7 +152,7 @@
         
         .price-row.total {
             font-weight: 700;
-            color: #00bae5;
+            color: rgb(27, 42, 75);
             font-size: 18px;
             margin-top: 5px;
             padding-top: 15px;
@@ -165,10 +165,10 @@
         }
         
         .contact-box {
-            background-color: #e6f2ff;
+            background-color: #f0f4f8;
             border-radius: 8px;
             padding: 20px;
-            color: #0056b3;
+            color: rgb(27, 42, 75);
             margin-top: 25px;
             text-align: center;
         }
@@ -178,29 +178,27 @@
             font-weight: 600;
         }
         
-        .email-footer {
-            background-color: #f4f7f9;
-            padding: 20px;
-            text-align: center;
-            color: #888;
-            font-size: 12px;
+        .contact-box a {
+            color: rgb(27, 42, 75);
         }
         
-        /* Responsive adjustments */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #888;
+            background-color: #f5f5f5;
+        }
+        
         @media only screen and (max-width: 600px) {
-            .email-body {
-                padding: 20px 15px;
+            .email-container {
+                width: 100% !important;
             }
             
             .detail-label,
             .detail-value {
                 width: 100%;
                 margin-bottom: 5px;
-            }
-            
-            .price-row {
-                flex-direction: column;
-                padding: 10px 0;
             }
             
             .price-row.total {
@@ -213,7 +211,7 @@
     <div class="email-container">
         <div class="email-header">
             <div class="email-logo">
-                <img src="https://atgroup.hu/images/newlog_full.png" alt="A&T Group Logo" />
+                <img src="https://atgroup.hu/images/newlogbeige.png" alt="A&T Group Logo" />
             </div>
             <h1 class="email-title">Foglalás visszaigazolás / Booking Confirmation</h1>
             <p class="email-subtitle">Reptéri Parkolás / Airport Parking</p>
@@ -243,6 +241,13 @@
                         <div class="detail-label">Rendszám:</div>
                         <div class="detail-value">{{licensePlate}}</div>
                     </div>
+                    
+                    {{#if notes}}
+                    <div class="detail-item">
+                        <div class="detail-label">Megjegyzés:</div>
+                        <div class="detail-value">{{notes}}</div>
+                    </div>
+                    {{/if}}
                 </div>
                 
                 <div class="price-card">
@@ -309,6 +314,13 @@
                         <div class="detail-label">License Plate:</div>
                         <div class="detail-value">{{licensePlate}}</div>
                     </div>
+                    
+                    {{#if notes}}
+                    <div class="detail-item">
+                        <div class="detail-label">Notes:</div>
+                        <div class="detail-value">{{notes}}</div>
+                    </div>
+                    {{/if}}
                 </div>
                 
                 <div class="price-card">
@@ -352,8 +364,8 @@
             
             <div class="contact-box">
                 <p>Contact / Kapcsolat:</p>
-                <p>📞 +36 70 555 0588</p>
-                <p>✉️ parking@atgroup.hu</p>
+                <p>📞 +36 70 585 9959</p>
+                <p>✉️ info@atgroup.hu</p>
                 <p>📍 Vecsés Széchényi utca 62 mellett, 2220</p>
             </div>
         </div>

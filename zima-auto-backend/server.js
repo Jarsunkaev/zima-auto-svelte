@@ -173,7 +173,8 @@ async function saveAirportParking(bookingData) {
       departureDate = bookingData.departureDate || bookingData.endDate || '',
       arrivalTime = bookingData.arrivalTime || bookingData.startTime || '00:00',
       departureTime = bookingData.departureTime || bookingData.endTime || '00:00',
-      totalPrice = (bookingData.priceBreakdown && bookingData.priceBreakdown.totalPrice) || bookingData.totalPrice || '0'
+      totalPrice = (bookingData.priceBreakdown && bookingData.priceBreakdown.totalPrice) || bookingData.totalPrice || '0',
+      notes = bookingData.notes || ''
     } = bookingData;
     
     // Parse the date range with validation
@@ -319,7 +320,8 @@ async function saveAirportParking(bookingData) {
       phone: phoneNumber || 'N/A',
       createdAt: new Date().toISOString(),
       status: 'NEM FIZETETT',
-      carWashPackage: carWashPackage || 'none'
+      carWashPackage: carWashPackage || 'none',
+      notes: notes || ''
     };
     
     // Log the data being saved to the sheet
@@ -340,7 +342,8 @@ async function saveAirportParking(bookingData) {
         sheetData.phone,                // TELEFON
         sheetData.createdAt,            // CREATED_AT
         sheetData.status,               // ÁLLAPOT
-        sheetData.carWashPackage        // MOSÁS CSOMAG
+        sheetData.carWashPackage,       // MOSÁS CSOMAG
+        sheetData.notes                 // MEGJEGYZÉS
       ]
     ];
     
@@ -1089,6 +1092,7 @@ app.post('/api/send-booking-emails', async (req, res) => {
         service: bookingData.service || 'airportParking',
         date: bookingData.date || new Date().toISOString(),
         time: bookingData.time || '',
+        notes: bookingData.notes || '',
         totalPrice: bookingData.totalPrice || 0,
         priceBreakdown: bookingData.priceBreakdown || {}
       };

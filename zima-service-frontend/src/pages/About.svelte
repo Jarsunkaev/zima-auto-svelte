@@ -18,15 +18,15 @@
   const content = {
     hu: {
       title: 'Kik vagyunk?',
-      subtitle: 'A A&T Group Kft-nél új értelmet kap a kényelem és a kiválóság az autóápolási szolgáltatások terén. Több mint egy évtizedes tapasztalattal és szakértelemmel, büszkén kínáljuk az egyik legkiterjedtebb autószolgáltatási kínálatot, amely az Ön járművének minden igényét kielégíti egy helyen.',
+      subtitle: 'Az A&T Groupnál új értelmet kap a kényelem és a kiválóság az autóápolási szolgáltatások terén. Több mint egy évtizedes tapasztalattal és szakértelemmel, büszkén kínáljuk az egyik legkiterjedtebb autószolgáltatási kínálatot, amely az Ön járművének minden igényét kielégíti egy helyen.',
       story: {
         title: 'Tapasztalat, amiben megbízhat',
-        text: 'Több mint 10 év tapasztalattal szolgálva ügyfeleinket, tökéletesítettük képességeinket és finomítottuk folyamatainkat annak érdekében, hogy a legmagasabb színvonalú szolgáltatást és ügyfél-elégedettséget biztosítsunk. Járműve csak a legjobbat érdemli, és pontosan ezt nyújtjuk a A&T Group Kft-nél.'
+        text: 'Több mint 10 év tapasztalattal szolgálva ügyfeleinket, tökéletesítettük képességeinket és finomítottuk folyamatainkat annak érdekében, hogy a legmagasabb színvonalú szolgáltatást és ügyfél-elégedettséget biztosítsunk. Járműve csak a legjobbat érdemli, és pontosan ezt nyújtjuk az A&T Groupnál.'
       },
       // Repurposed 'mission' section for location
       mission: {
         title: 'Kiváló elhelyezkedés',
-        text: 'Stratégiai helyen, mindössze 5 kilométerre és 5 percre a Budapest Liszt Ferenc Nemzetközi Repülőterétől, Vecsésen, létesítményünk páratlan elérhetőséget és kényelmet biztosít. Búcsút mondhat a városban szétszórva lévő szolgáltatók keresési nehézségeinek. A A&T Group Kft-vel gyorsan és hatékonyan kezelheti minden autójával kapcsolatos igényét, időt és energiát megtakarítva ezzel.'
+        text: 'Stratégiai helyen, mindössze 5 kilométerre és 5 percre a Budapest Liszt Ferenc Nemzetközi Repülőterétől, Vecsésen, létesítményünk páratlan elérhetőséget és kényelmet biztosít. Búcsút mondhat a városban szétszórva lévő szolgáltatók keresési nehézségeinek. Az A&T Grouppal gyorsan és hatékonyan kezelheti minden autójával kapcsolatos igényét, időt és energiát megtakarítva ezzel.'
       },
       // Repurposed 'values' section for 'Why Choose Us?'
       values: {
@@ -42,16 +42,16 @@
                listItems: [ // Detailed list for HU
                   'Repülőtéri parkoló: Nyugodtan utazzon tudva, hogy járműve biztonságban van, amíg Ön távol van. Biztonságos parkoló létesítményünk körbekerített és 24/7-es kamerafelügyelettel biztosítja járműve maximális biztonságát. Ráadásul élvezze az ingyenes repülőtéri transzfert a parkolóból a repülőtérre kényelmes shuttle szolgáltatásunkkal, ami megszünteti az utazási logisztika stresszét. 3000 négyzetméteres, nyitott parkolóhelyünkön 150 parkolóhely áll rendelkezésre, így járművének helyet találni sosem jelenthet gondot. Akár online foglalja, akár egyszerűen csak behajt, mi gondoskodunk róla.',
                   'Kézi Autómosó: Kényeztesse járművét egy profi külső-belső autómosás szolgáltatással, amely ragyogóan tisztává és újjászületetté varázsolja autóját.',
-                  'Gumiszervíz: Ne engedje, hogy egy defektes gumi gátat szabjon a programjának. Szakértőink azonnal foglalkoznak bármilyen gumival kapcsolatos problémával, gumicserével, és biztonságosan visszajuttatják Önt az útra.',
-                  'Autószervíz: A rutinellenőrzésektől a bonyolult javításokig képzett szerelőink fel vannak készülve az Ön karbantartási és javítási igényeinek kezelésére, hogy járműve zökkenőmentesen és hatékonyan működjön.'
+                  'Gumiszerviz: Ne engedje, hogy egy defektes gumi gátat szabjon a programjának. Szakértőink azonnal foglalkoznak bármilyen gumival kapcsolatos problémával, gumicserével, és biztonságosan visszajuttatják Önt az útra.',
+                  'Autószerviz: A rutinellenőrzésektől a bonyolult javításokig képzett szerelőink fel vannak készülve az Ön karbantartási és javítási igényeinek kezelésére, hogy járműve zökkenőmentesen és hatékonyan működjön.'
               ]
           },
           block2: { // Second grid block content
               paymentOptionsTitle: 'Rugalmas fizetési lehetőségek',
               paymentOptionsText: 'Tudjuk, hogy a kényelem fontos, ezért rugalmas fizetési lehetőségeket kínálunk, beleértve a készpénzes, bankkártyás fizetést is.',
               pricesTitle: 'Versenyképes árak',
-              pricesText: 'A A&T Group Kft-nél úgy véljük, hogy a minőségi autóápolásnak mindenki számára elérhetőnek kell lennie. Ezért kínáljuk a legjobb árakat minden szolgáltatásunkra, biztosítva, hogy a lehető legtöbbet kapja pénzéért, anélkül, hogy engednénk a minőségből.',
-               conclusion: 'Tapasztalja meg a különbséget a A&T Group Kft-nél - ahol minden alkalommal a kiválóság találkozik a kényelemmel.\n\nLépjen kapcsolatba velünk még ma, hogy felfedezze, hogyan emelhetjük autóápolási élményét új magasságokba!'
+              pricesText: 'Az A&T Groupnál úgy véljük, hogy a minőségi autóápolásnak mindenki számára elérhetőnek kell lennie. Ezért kínáljuk a legjobb árakat minden szolgáltatásunkra, biztosítva, hogy a lehető legtöbbet kapja pénzéért, anélkül, hogy engednénk a minőségből.',
+               conclusion: 'Tapasztalja meg a különbséget az A&T Groupnál - ahol minden alkalommal a kiválóság találkozik a kényelemmel.\n\nLépjen kapcsolatba velünk még ma, hogy felfedezze, hogyan emelhetjük autóápolási élményét új magasságokba!'
           }
       },
       cta: 'Vegye igénybe szolgáltatásainkat'
@@ -61,12 +61,12 @@
       subtitle: 'With over a decade of unwavering dedication and expertise in the industry, we take pride in offering an unmatched range of services tailored to meet all your automotive requirements under one roof.',
       story: {
         title: 'Experience You Can Trust',
-        text: 'With more than 10 years of experience serving our valued customers, we have honed our skills and refined our processes to ensure the highest quality of service and customer satisfaction. Your vehicle deserves nothing but the best, and that\'s precisely what we deliver at A&T Group Kft.'
+        text: 'With more than 10 years of experience serving our valued customers, we have honed our skills and refined our processes to ensure the highest quality of service and customer satisfaction. Your vehicle deserves nothing but the best, and that\'s precisely what we deliver at A&T Group.'
       },
        // Repurposed 'mission' section for location
       mission: {
         title: 'Unbeatable Location',
-        text: 'Strategically situated just 4.8 kilometers and 5 minutes away from the Budapest Airport, at Vecsés our facility provides unparalleled accessibility and convenience. Say goodbye to the hassle of searching for multiple service providers scattered across the city. With A&T Group Kft, you can address all your car care needs swiftly and efficiently, saving both time and effort.'
+        text: 'Strategically situated just 4.8 kilometers and 5 minutes away from the Budapest Airport, at Vecsés our facility provides unparalleled accessibility and convenience. Say goodbye to the hassle of searching for multiple service providers scattered across the city. With A&T Group, you can address all your car care needs swiftly and efficiently, saving both time and effort.'
       },
       // Repurposed 'values' section for 'Why Choose Us?'
       values: {
@@ -90,7 +90,7 @@
               paymentOptionsTitle: 'Flexible Payment Options',
               paymentOptionsText: 'We understand the importance of convenience, which is why we offer flexible payment options including cash, debit, and credit cards, making your car care experience seamless and hassle-free.',
               pricesTitle: 'Competitive Prices',
-              pricesText: 'At A&T Group Kft, we believe that quality car care should be accessible to everyone. That\'s why we offer the best competitive prices on all our services, ensuring that you get the most value for your money without compromising on quality.',
+              pricesText: 'At A&T Group, we believe that quality car care should be accessible to everyone. That\'s why we offer the best competitive prices on all our services, ensuring that you get the most value for your money without compromising on quality.',
               conclusion: 'Experience the difference with A&T Group - where excellence meets convenience, every time.\n\nGet in touch with us today to discover how we can elevate your car care experience to new heights!'
           }
       },

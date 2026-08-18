@@ -60,7 +60,7 @@
           },
           prices: [
               { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '9900 Ft', 'Exterior': '6990 Ft', 'Interior': '4990 Ft' },
-              { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '14990 Ft', 'Exterior': '8990 Ft', 'Interior': '7990 Ft' }
+              { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '12999 Ft', 'Exterior': '8990 Ft', 'Interior': '7990 Ft' }
           ]
       },
       premium: {
@@ -95,8 +95,8 @@
           }
           ,
           prices: [
-              { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '14990 Ft', 'Exterior': '8990 Ft', 'Interior': '7990 Ft' },
-              { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '19990 Ft', 'Exterior': '10990 Ft', 'Interior': '11900 Ft' }
+              { type: { hu: 'Személyautó', en: 'Passenger Car' }, 'Exterior & Interior': '13500 Ft', 'Exterior': '8990 Ft', 'Interior': '7990 Ft' },
+              { type: { hu: 'SUV/Kisbusz', en: 'SUV/Minivan' }, 'Exterior & Interior': '17999 Ft', 'Exterior': '10990 Ft', 'Interior': '11900 Ft' }
           ]
       }
   };
@@ -902,13 +902,13 @@
       font-size: 1rem;
     }
 
-    /* Adjust min-widths for smaller mobile screens - increased font sizes as requested */
-    .parking-table th,
-    .parking-table td { min-width: 75px; font-size: 1rem; } /* Increased from 0.85rem */
-    .parking-table .day-col { min-width: 45px;}
+    /* Adjust min-widths for smaller mobile screens - compact single row */
+    .parking-table th { font-size: 0.82rem; padding: 0.6rem 0.35rem; white-space: nowrap; }
+    .parking-table td { font-size: 0.88rem; padding: 0.55rem 0.35rem; white-space: nowrap; }
+    .parking-table .day-col { font-size: 0.88rem; white-space: nowrap; }
 
     .car-wash-table th,
-    .car-wash-table td { min-width: 70px; font-size: 1rem; } /* Increased from 0.85rem */
+    .car-wash-table td { min-width: 70px; font-size: 1rem; }
     .car-wash-table th:first-child,
     .car-wash-table td:first-child { min-width: 90px;}
 

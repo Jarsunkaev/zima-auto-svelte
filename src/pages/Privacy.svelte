@@ -14,7 +14,7 @@
     <div class="privacy-content">
       {#if $currentLang === 'hu'}
         <!-- Hungarian Privacy Policy -->
-        <p>Ez az adatvédelmi nyilatkozat a A&T Group Kft. („mi", „minket" vagy „miénk") részéről leírja, hogy miként és miért gyűjthetjük, tárolhatjuk, használhatjuk és/vagy oszthatjuk meg („kezeljük") az Ön adatait, amikor Ön a szolgáltatásainkat használja („Szolgáltatások"), például amikor:</p>
+        <p>Ez az adatvédelmi nyilatkozat az A&T Group („mi", „minket" vagy „miénk") részéről leírja, hogy miként és miért gyűjthetjük, tárolhatjuk, használhatjuk és/vagy oszthatjuk meg („kezeljük") az Ön adatait, amikor Ön a szolgáltatásainkat használja („Szolgáltatások"), például amikor:</p>
 
         <ul>
           <li>Meglátogatja weboldalunkat a http://www.atgroup.hu címen, vagy bármely más weboldalunkat, amely erre az adatvédelmi nyilatkozatra hivatkozik</li>
@@ -168,13 +168,14 @@
 
         <h2 id="section-12">12. HOGYAN LÉPHET KAPCSOLATBA VELÜNK EZZEL AZ ÉRTESÍTÉSSEL KAPCSOLATBAN?</h2>
 
-        <p>Ha kérdései vagy megjegyzései vannak ezzel az értesítéssel kapcsolatban, kapcsolatba léphet velünk emailben az info@atgroup.hu címen vagy postai úton:</p>
+        <p>Ha kérdései vagy megjegyzései vannak ezzel az értesítéssel kapcsolatban, kapcsolatba léphet velünk emailben az info@atgroup.hu címen, telefonon a +36 70 585 9959 számon vagy postai úton:</p>
 
         <p>
-        A&T Group Kft.<br>
+        A&T Group<br>
         Vecsés Széchényi utca 62 mellett<br>
         Hrsz 0182/55<br>
-        2220 Hungary
+        2220 Hungary<br>
+        Telefon: +36 70 585 9959
         </p>
 
         <h2 id="section-13">13. HOGYAN TEKINTHETI ÁT, FRISSÍTHETI VAGY TÖRHETI AZ ÖNÁLTALUNK GYŰJTÖTT ADATOKAT?</h2>
@@ -183,7 +184,7 @@
 
       {:else}
         <!-- English Privacy Policy -->
-        <p>This privacy notice for A&T Group Kft. ('we', 'us', or 'our'), describes how and why we might collect, store, use, and/or share ('process') your information when you use our services ('Services'), such as when you:</p>
+        <p>This privacy notice for A&T Group ('we', 'us', or 'our'), describes how and why we might collect, store, use, and/or share ('process') your information when you use our services ('Services'), such as when you:</p>
 
         <ul>
           <li>Visit our website at http://www.atgroup.hu, or any website of ours that links to this privacy notice</li>
@@ -337,13 +338,14 @@
 
         <h2 id="section-12">12. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</h2>
 
-        <p>If you have questions or comments about this notice, you may contact us by email at info@atgroup.hu or by post at:</p>
+        <p>If you have questions or comments about this notice, you may contact us by email at info@atgroup.hu, by phone at +36 70 585 9959, or by post at:</p>
 
         <p>
-        A&T Group Kft.<br>
+        A&T Group<br>
         Vecsés Széchényi utca 62 mellett<br>
         Hrsz 0182/55<br>
-        2220 Hungary
+        2220 Hungary<br>
+        Phone: +36 70 585 9959
         </p>
 
         <h2 id="section-13">13. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?</h2>

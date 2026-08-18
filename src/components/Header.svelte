@@ -82,7 +82,7 @@
       role="button"
       aria-label="Go to homepage"
     >
-      <img src="images/newlog_full.png" alt="A&T Group" />
+      <img src={scrolled ? "images/newlogblue.png" : "images/newlogbeige.png"} alt="A&T Group" />
     </div>
 
     <nav class:open={mobileMenuOpen}>

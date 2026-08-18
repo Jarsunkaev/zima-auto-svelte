@@ -6,7 +6,7 @@ export const faqContent = {
       question: 'What are your opening hours?',
       questionHu: 'Mik a nyitvatartási idők?',
       answer: 'Auto Service: Mon–Sat (08:00–18:00) | Tire Service: Mon–Sat (08:00–18:00)',
-      answerHu: 'Autó Szerviz: H–Szo (08:00–18:00) | Gumiszerviz: H–Szo (08:00–18:00)'
+      answerHu: 'Autószerviz: H–Szo (08:00–18:00) | Gumiszerviz: H–Szo (08:00–18:00)'
     },
     {
       category: 'General',

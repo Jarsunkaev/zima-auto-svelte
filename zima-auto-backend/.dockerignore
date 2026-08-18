@@ -1,4 +1,7 @@
 # flyctl launch added from .gitignore
 **/zima-auto-backend/credentials/service-account.json
 node_modules
+.git
+.DS_Store
+**/.DS_Store
 fly.toml

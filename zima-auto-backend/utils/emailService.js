@@ -178,12 +178,7 @@ class EmailService {
     createFallbackTemplate(service, data) {
         const serviceName = EmailService.formatServiceName(service, 'en');
         
-        let contactEmail = 'info@atgroup.hu';
-        if (service === 'airportParking' || service === 'carWash') {
-            contactEmail = 'parking@atgroup.hu';
-        } else if (service === 'autoService' || service === 'tireService') {
-            contactEmail = 'szerviz@atgroup.hu';
-        }
+        const contactEmail = 'info@atgroup.hu';
 
         // Basic responsive email template
         return `
@@ -220,7 +215,7 @@ class EmailService {
                         
                         <p style="margin-top: 20px;">If you have any questions, please contact us at:</p>
                         <p><strong>Email:</strong> ${contactEmail}</p>
-                        <p><strong>Phone:</strong> +36 70 555 0588</p>
+                        <p><strong>Phone:</strong> +36 70 585 9959</p>
                     </div>
                     <div class="footer">
                         &copy; 2025 A&T Group. All rights reserved.
@@ -470,10 +465,9 @@ class EmailService {
             const serviceNameHu = EmailService.formatServiceName(bookingData.service, 'hu');
             const subject = `A&T Group - ${serviceNameHu} / ${serviceNameEn} - Confirmation`;
 
-            // Send email to customer with CC to admin
+            // Send email to customer without CC
             await this.sendEmail({
                 to: customerEmail,
-                cc: 'ahmed@atgroup.hu',
                 subject,
                 html: emailHtml
             });
@@ -481,18 +475,9 @@ class EmailService {
             // Create admin notification email
             const adminHtml = this.createAdminNotificationHtml(bookingData, customerEmail);
 
-            // Determine admin notification email address based on service
-            let adminEmail = 'info@atgroup.hu';
-            if (bookingData.service === 'airportParking' || bookingData.service === 'carWash') {
-                adminEmail = 'parking@atgroup.hu';
-            } else if (bookingData.service === 'autoService' || bookingData.service === 'tireService') {
-                adminEmail = 'szerviz@atgroup.hu';
-            }
-
-            // Send email to A&T Group admin
+            // Send email to A&T Group admin (info@atgroup.hu only)
             await this.sendEmail({
-                to: adminEmail,
-                cc: 'ahmed@atgroup.hu',
+                to: 'info@atgroup.hu',
                 replyTo: customerEmail ? `${bookingData.customerName || 'Customer'} <${customerEmail}>` : undefined,
                 subject: `New Booking - ${serviceNameEn}`,
                 html: adminHtml
@@ -557,10 +542,9 @@ class EmailService {
                 <p>${message}</p>
             `;
 
-            // Send email to A&T Group admin
+            // Send email to A&T Group admin (info@atgroup.hu only, no CC)
             await this.sendEmail({
                 to: 'info@atgroup.hu',
-                cc: 'ahmed@atgroup.hu',
                 replyTo: customerEmail ? `${customerName || 'Customer'} <${customerEmail}>` : undefined,
                 subject: 'New Contact Form Submission',
                 html: adminHtml

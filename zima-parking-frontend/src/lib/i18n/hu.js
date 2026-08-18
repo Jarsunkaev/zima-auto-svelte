@@ -2,7 +2,7 @@ export default {
   thankYou: {
     title: "Köszönjük!",
     message: "Az űrlapot sikeresen elküldtük. Köszönjük érdeklődését szolgáltatásaink iránt, és a lehető leghamarabb feldolgozzuk kérését.",
-    contactInfo: "Ha bármilyen kérdése van, forduljon hozzánk bizalommal a 06 70 585 9959 telefonszámon vagy az parking@atgroup.hu e-mail címen.",
+    contactInfo: "Ha bármilyen kérdése van, forduljon hozzánk bizalommal a +36 70 585 9959 telefonszámon vagy az info@atgroup.hu e-mail címen.",
     homeButton: "VISSZA A FŐOLDALRA",
     contactButton: "KAPCSOLAT"
   },
@@ -26,13 +26,13 @@ export default {
   },
   faq: {
     title: "Gyakran Ismételt Kérdések",
-    subtitle: "Mindent a parkolásról és az autóápolásról a Zimánál.",
+    subtitle: "Mindent a parkolásról és az autóápolásról az A&T Groupnál.",
     viewAll: "Összes kérdés megtekintése",
     contactCta: "Gyors választ szeretne?",
     contactButton: "Lépjen kapcsolatba velünk"
   },
   hero: {
-    welcome: "Üdvözöljük az A&T Group-nál!",
+    welcome: "Üdvözöljük az A&T Groupnál!",
     subtitle: "Ahol az autója minden igényére egy helyen kínálunk megoldást!",
     cta: "FOGLALJON MOST"
   },
@@ -42,7 +42,7 @@ export default {
     // --- New Booking Page Content ---
     content: {
       sectionTitle: "Reptéri Parkolás Foglalás Részletei",
-      paragraph1: "Üdvözöljük online foglalási rendszerünkben. Kérjük, adja meg az alábbi szükséges információkat, hogy lefoglalhassa parkolóhelyét a A&T Group reptér melletti létesítményében.",
+      paragraph1: "Üdvözöljük online foglalási rendszerünkben. Kérjük, adja meg az alábbi szükséges információkat, hogy lefoglalhassa parkolóhelyét az A&T Group reptér melletti létesítményében.",
       paragraph2: "Telephelyünk csak percekre található a repülőtértől, biztonságos és kényelmes parkolási megoldást kínálva utazásához.",
       paragraph3: "Kérésének elküldése után visszaigazoló e-mailt fog kapni a foglalás minden részletével, beleértve az útvonaltervet és a bejelentkezési eljárásokat.",
       note: "Ha bármilyen különleges kérése van vagy segítségre van szüksége, kérjük, lépjen kapcsolatba velünk közvetlenül."
@@ -80,9 +80,9 @@ export default {
     visit: "LÁTOGASSON MEG MINKET",
     address: "Vecsés Széchényi utca 62 mellett, Hrsz 0182/55, 2220",
     phone: "Telefon",
-    phoneNumber: "06 70 585 9959",
+    phoneNumber: "+36 70 585 9959",
     email: "Email",
-    emailAddress: "parking@atgroup.hu",
+    emailAddress: "info@atgroup.hu",
     links: "Hivatkozások",
     copyright: "© 2025 atgroup.hu. Minden jog fenntartva."
   }

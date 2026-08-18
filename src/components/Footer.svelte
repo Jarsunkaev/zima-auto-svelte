@@ -22,9 +22,8 @@
 
   // Function to open Google Maps directions to A&T Group
   function openGoogleMapsDirections() {
-    // Updated URL based on user feedback
     window.open(
-      "https://www.google.com/maps/place/A&T Group+Auto+Airport+Parking+-+Aut%C3%B3szerv%C3%ADz+-+Gumiszerv%C3%ADz+-+K%C3%A9zi+aut%C3%B3mos%C3%B3/@47.4099403,19.2301139,17z/data=!3m1!4b1!4m6!3m5!1s0x4741c1ece824d30f:0x632898beef8d5983!8m2!3d47.4099403!4d19.2326888!16s%2Fg%2F11vyx0730g?entry=ttu&g_ep=EgoyMDI1MDQyMy4wIKXMDSoASAFQAw%3D%3D",
+      "https://www.google.com/maps/place/A%26T+Rept%C3%A9ri+Parkol%C3%B3+%C3%A9s+K%C3%A9zi+Aut%C3%B3mos%C3%B3/@47.409985,19.0926473,21108m/data=!3m1!1e3!4m10!1m2!2m1!1sat+parking!3m6!1s0x4741c1683c4acc0d:0xd5187321a7799279!8m2!3d47.4099852!4d19.232723!15sCgphdCBwYXJraW5nkgELcGFya2luZ19sb3TgAQA!16s%2Fg%2F11zh3c3lc4?entry=ttu&g_ep=EgoyMDI2MDgxMi4wIKXMDSoASAFQAw%3D%3D",
       "_blank",
     );
   }
@@ -47,18 +46,18 @@
       <div class="footer-grid">
         <div class="footer-info">
           <div class="footer-logo">
-            <img src="images/newlog_full.png" alt="A&T Group" />
+            <img src="images/newlogblue.png" alt="A&T Group" />
           </div>
           <div class="contact-info">
             <h3>{t("footer.visit", $currentLang)}</h3>
             <p class="address">{t("footer.address", $currentLang)}</p>
             <p>
               <strong>{t("footer.phone", $currentLang)}:</strong><br/>
-              <a href="tel:+36707343444" class="contact-link"
-                >+36 70 734 3444</a
-              ><br/>
               <a href="tel:+36705859959" class="contact-link"
                 >+36 70 585 9959</a
+              ><br/>
+              <a href="tel:+36707343444" class="contact-link"
+                >+36 70 734 3444</a
               >
             </p>
             <p>
@@ -169,7 +168,7 @@
         <div class="footer-map">
           <div class="map-container">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2700.102580768995!2d19.230113876877105!3d47.40994027117247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c1ece824d30f%3A0x632898beef8d5983!2sZima%20Auto%20Airport%20Parking%20-%20Aut%C3%B3szerv%C3%ADz%20-%20Gumiszerv%C3%ADz%20-%20K%C3%A9zi%20aut%C3%B3mos%C3%B3!5e0!3m2!1sen!2shu!4v1745609320883!5m2!1sen!2shu"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2700.0990847936746!2d19.230148076877074!3d47.40998517117243!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c1683c4acc0d%3A0xd5187321a7799279!2sA%26T%20Rept%C3%A9ri%20Parkol%C3%B3%20%C3%A9s%20K%C3%A9zi%20Aut%C3%B3mos%C3%B3!5e0!3m2!1shu!2shu!4v1745609320883!5m2!1shu!2shu"
               width="100%"
               height="100%"
               style="border:0;"

@@ -704,7 +704,7 @@
 
     <div class="contact-info">
         <p><strong>Érkezéskor hívja:</strong> +36 70 585 9959</p>
-        <p><strong>Email:</strong> parking@atgroup.hu</p>
+        <p><strong>Email:</strong> info@atgroup.hu</p>
     </div>
 
     <div class="footer">
@@ -762,7 +762,7 @@ Nap: ${booking["HÁNY NAP"]}
 Elérhetőség: ${booking["EMAIL"]} / ${booking["TELEFON"]}
 
 Érkezéskor hívja: +36 70 585 9959
-parking@atgroup.hu
+info@atgroup.hu
 
 Dátum: Vecsés, ${currentDate}
 

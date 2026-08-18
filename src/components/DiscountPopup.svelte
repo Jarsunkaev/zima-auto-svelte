@@ -30,31 +30,27 @@
       }
     };
 
-    // Also check phone modal status
-    const phoneChangeClosed = localStorage.getItem('phoneChangeModalClosed') === 'true';
-
-    // If both closed, show popup after delay
-    if (cookieConsentClosed && phoneChangeClosed) {
+    // If cookie consent already closed, show popup after delay
+    if (cookieConsentClosed) {
       showPopupWithDelay();
     } else {
-      // Otherwise, wait for both to be closed
+      // Otherwise, wait for cookie consent to be closed
       const checkPrerequisites = setInterval(() => {
         const consent = localStorage.getItem('cookieConsent');
-        const phoneClosed = localStorage.getItem('phoneChangeModalClosed') === 'true';
-        if (consent && phoneClosed) {
+        if (consent) {
           cookieConsentClosed = true;
           clearInterval(checkPrerequisites);
           showPopupWithDelay();
         }
       }, 1000); // Check every second
 
-      // Fallback: Show after 20 seconds regardless
+      // Fallback: Show after 15 seconds regardless
       setTimeout(() => {
         if (!showPopup && !hasShown) {
           showPopup = true;
           clearInterval(checkPrerequisites);
         }
-      }, 20000); // Fallback after 20 seconds
+      }, 15000); // Fallback after 15 seconds
     }
   });
 

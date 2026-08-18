@@ -136,7 +136,7 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
         passengers: formData.passengers || 1, // Number of passengers
 
         // Always include admin email
-        adminEmail: 'ahmed@atgroup.hu',
+        adminEmail: 'info@atgroup.hu',
         
         // Add timestamps
         createdAt: new Date().toISOString()

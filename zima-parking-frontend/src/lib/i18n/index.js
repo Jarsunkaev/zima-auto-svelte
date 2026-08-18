@@ -8,7 +8,18 @@ export const translations = {
   en
 };
 
-export const currentLang = writable('hu');
+const initialLang = (typeof window !== 'undefined' && localStorage.getItem('app_language')) || 'hu';
+export const currentLang = writable(initialLang);
+
+if (typeof window !== 'undefined') {
+  currentLang.subscribe((lang) => {
+    try {
+      localStorage.setItem('app_language', lang);
+    } catch (e) {
+      // ignore
+    }
+  });
+}
 
 export function t(key, lang) {
   const keys = key.split('.');

@@ -1,9 +1,10 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import { slide } from "svelte/transition";
   import { currentLang, t } from "../lib/i18n/index.js";
   import ServiceCard from "../components/ServiceCard.svelte";
   import TestimonialCard from "../components/TestimonialCard.svelte";
+  import HeroBookingWidget from "../components/HeroBookingWidget.svelte";
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -20,11 +21,31 @@
   let ctaVisible = false;
   let heroSection;
   let showReviewsWidget = false;
+  let scrollTriggers = [];
 
   // Subscribe to language changes
   currentLang.subscribe((value) => {
     lang = value;
   });
+
+  // Parking prices data
+  const parkingPrices = [
+    { days: 1, normal: '7500 Ft', discount: '6700 Ft' }, { days: 2, normal: '8200 Ft', discount: '7400 Ft' },
+    { days: 3, normal: '9000 Ft', discount: '8200 Ft' }, { days: 4, normal: '9800 Ft', discount: '9200 Ft' },
+    { days: 5, normal: '10500 Ft', discount: '9800 Ft' }, { days: 6, normal: '11200 Ft', discount: '10700 Ft' },
+    { days: 7, normal: '12500 Ft', discount: '11700 Ft' }, { days: 8, normal: '14000 Ft', discount: '12200 Ft' },
+    { days: 9, normal: '15500 Ft', discount: '12700 Ft' }, { days: 10, normal: '16000 Ft', discount: '13200 Ft' },
+    { days: 11, normal: '17000 Ft', discount: '13600 Ft' }, { days: 12, normal: '17600 Ft', discount: '14100 Ft' },
+    { days: 13, normal: '18000 Ft', discount: '14700 Ft' }, { days: 14, normal: '18500 Ft', discount: '15100 Ft' },
+    { days: 15, normal: '19000 Ft', discount: '15500 Ft' }, { days: 16, normal: '19500 Ft', discount: '15900 Ft' },
+    { days: 17, normal: '20000 Ft', discount: '16200 Ft' }, { days: 18, normal: '20500 Ft', discount: '16600 Ft' },
+    { days: 19, normal: '21000 Ft', discount: '17000 Ft' }, { days: 20, normal: '21500 Ft', discount: '17400 Ft' },
+    { days: 21, normal: '22000 Ft', discount: '17800 Ft' }, { days: 22, normal: '22500 Ft', discount: '18200 Ft' },
+    { days: 23, normal: '23000 Ft', discount: '18600 Ft' }, { days: 24, normal: '23500 Ft', discount: '19000 Ft' },
+    { days: 25, normal: '24000 Ft', discount: '19400 Ft' }, { days: 26, normal: '24500 Ft', discount: '19800 Ft' },
+    { days: 27, normal: '25000 Ft', discount: '20200 Ft' }, { days: 28, normal: '25500 Ft', discount: '20700 Ft' },
+    { days: 29, normal: '26000 Ft', discount: '20700 Ft' }, { days: 30, normal: '26000 Ft', discount: '20700 Ft' }
+  ];
 
   // Service data with SVG icons - Only Parking and Car Wash for parking frontend
   const services = [
@@ -91,62 +112,87 @@
     // Debug logging
     console.log("Component mounted");
 
-    // Load EmbedSocial script
-    const script = document.createElement("script");
-    script.id = "EmbedSocialWidgetScript";
-    script.src = "https://embedsocial.com/cdn/aht.js";
-    document.head.appendChild(script);
-
-    // Setup parallax effect for hero section
+    // Load Elfsight Google Reviews script
+    if (!document.querySelector('script[src*="elfsightcdn.com/platform.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://elfsightcdn.com/platform.js";
+      script.async = true;
+      document.head.appendChild(script);
+    }
 
     // Setup animations with ScrollTrigger
     // Services section animation (handled by the shouldAnimate prop)
     const servicesSection = document.querySelector(".services-section");
     if (servicesSection) {
-      ScrollTrigger.create({
+      const st1 = ScrollTrigger.create({
         trigger: servicesSection,
         start: "top 70%",
         onEnter: () => {
           servicesVisible = true;
         },
       });
+      scrollTriggers.push(st1);
     }
 
     // Testimonials section animation
     const testimonialsSection = document.querySelector(".testimonials-section");
     if (testimonialsSection) {
-      ScrollTrigger.create({
+      const st2 = ScrollTrigger.create({
         trigger: testimonialsSection,
         start: "top 70%",
         onEnter: () => {
           testimonialsVisible = true;
         },
       });
+      scrollTriggers.push(st2);
     }
+
+    ScrollTrigger.refresh();
+  });
+
+  onDestroy(() => {
+    scrollTriggers.forEach((trigger) => trigger.kill());
+    scrollTriggers = [];
   });
 </script>
 
 <section class="hero" bind:this={heroSection}>
   <div class="hero-background">
-    <div class="hero-image-left"></div>
-    <div class="hero-image-right"></div>
+    <div class="hero-image"></div>
   </div>
   <div class="hero-overlay"></div>
   <div class="container hero-container">
-    <div class="hero-content">
-      <h1>
-        {$currentLang === "hu"
-          ? "A&T Repülőtéri Parkolás és Autómosó"
-          : "A&T Airport Parking and Car Wash"}
-      </h1>
-      <p>
-        {$currentLang === "hu"
-          ? "Biztonságos repülőtéri parkolás és professzionális autómosó szolgáltatás"
-          : "Secure airport parking and professional car wash services"}
-      </p>
-      <button class="btn btn-primary" on:click={() => navigate("booking")}>
-        {$currentLang === "hu" ? "FOGLALJON MOST" : "BOOK NOW"}
-      </button>
+    <div class="hero-flex-wrapper">
+      <div class="hero-content">
+        <h1>
+          {$currentLang === "hu"
+            ? "A&T Reptéri Parkoló és Kézi Autómosó"
+            : "A&T Airport Parking & Hand Car Wash"}
+        </h1>
+        <p>
+          {$currentLang === "hu"
+            ? "Biztonságos repülőtéri parkolás és professzionális autómosó szolgáltatás"
+            : "Secure airport parking and professional car wash services"}
+        </p>
+        <div class="hero-features">
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span>{$currentLang === 'hu' ? 'Ingyenes reptéri transzfer (oda-vissza)' : 'Free airport shuttle (round-trip)'}</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span>{$currentLang === 'hu' ? '0–24 órás kamerás felügyelet és őrzés' : '24/7 camera surveillance & on-site security'}</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span>{$currentLang === 'hu' ? 'Autómosás és szerviz a parkolás alatt' : 'Car wash & maintenance during parking'}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-widget-col">
+        <HeroBookingWidget {navigate} />
+      </div>
     </div>
 
     <div
@@ -230,8 +276,55 @@
 
     <div class="wave-bottom" style="position: absolute; bottom: -1px; left: 0; width: 100%; z-index: 10;">
     <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" style="display: block; width: calc(100% + 1.3px); height: 80px;">
-      <path fill="#ffffff" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+      <path fill="rgb(253, 251, 238)" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,42.7C1120,32,1280,32,1360,32L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
     </svg>
+  </div>
+</section>
+
+<!-- Airport Parking Pricing Table Section -->
+<section class="parking-prices-section" id="parking-prices">
+  <div class="container">
+    <div class="pricing-header">
+      <h2 class="section-title">
+        {$currentLang === 'hu' ? 'Reptéri Parkolási Áraink' : 'Airport Parking Prices'}
+      </h2>
+      <p class="section-subtitle">
+        {$currentLang === 'hu'
+          ? 'Átlátható árak, ingyenes oda-vissza reptéri transzferrel és 0–24 órás őrzéssel.'
+          : 'Transparent rates with free round-trip terminal shuttle and 24/7 on-site security.'}
+      </p>
+    </div>
+
+    <div class="pricing-table-wrapper">
+      <div class="pricing-table-container scrollable-table parking-table-container">
+        <table class="pricing-table parking-table">
+          <thead>
+            <tr>
+              <th>{$currentLang === 'hu' ? 'Nap' : 'Day'}</th>
+              <th class="normal-price-header">{$currentLang === 'hu' ? 'Normál ár' : 'Normal Price'}</th>
+              <th>{$currentLang === 'hu' ? 'Kedvezményes ár' : 'Discounted Price'}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {#each parkingPrices as price (price.days)}
+              <tr>
+                <td class="day-col">
+                  <strong>{price.days}</strong> {$currentLang === 'hu' ? 'nap' : (price.days === 1 ? 'day' : 'days')}
+                </td>
+                <td class="normal-price-col">{price.normal}</td>
+                <td class="discount-col">{price.discount}</td>
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-action-wrap">
+        <button class="btn btn-primary" on:click={() => navigate("booking")}>
+          {$currentLang === 'hu' ? 'FOGLALJON MOST' : 'BOOK NOW'}
+        </button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -250,23 +343,8 @@
 
 
     <div class="widget-container">
-      <div
-        class="embedsocial-widget"
-        data-ref="0374a3cc3b883d7c92fcc25ebb3f82bc"
-      >
-        <a
-          href="https://embedsocial.com/google-reviews-widget/"
-          title="Add Google reviews on a website"
-          target="_blank"
-          class="powered-by-es es-slider"
-        >
-          <img
-            src="https://embedsocial.com/cdn/icon/embedsocial-logo.webp"
-            alt="EmbedSocial"
-          />
-          <span>Google reviews widget</span>
-        </a>
-      </div>
+      <!-- Elfsight Google Reviews | Untitled Google Reviews -->
+      <div class="elfsight-app-f5a37e33-3ebf-4e83-943c-50f49277b06e" data-elfsight-app-lazy></div>
     </div>
   </div>
 </section>
@@ -274,120 +352,177 @@
 <style>
   /* Hero Section */
   .hero {
-    height: 100vh;
-    min-height: 600px;
+    min-height: 100vh;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     overflow: hidden;
+    padding: 100px 0 60px;
+    box-sizing: border-box;
   }
 
   .hero-background {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     z-index: 0;
     overflow: hidden;
   }
 
-  .hero-image-left {
+  .hero-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("/images/aero.jpg");
+    background-image: url("/images/aero.webp");
     background-size: cover;
     background-position: center 20%;
     background-repeat: no-repeat;
-    /* Steeper diagonal on desktop */
-    clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
-    z-index: 1;
-  }
-
-  .hero-image-right {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("/images/wash.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    /* Steeper diagonal on desktop */
-    clip-path: polygon(30% 0, 100% 0, 100% 100%, 70% 100%);
     z-index: 1;
   }
 
   .hero-overlay {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.45);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.55);
     z-index: 1;
   }
 
   .hero-container {
     position: relative;
     z-index: 2;
-    padding: 0 2rem;
-    height: 100%;
+    padding: 0 1.5rem;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
 
+  .hero-flex-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.5rem;
+    width: 100%;
+  }
+
   .hero-content {
-    text-align: center;
+    flex: 1;
+    text-align: left;
+    max-width: 600px;
     z-index: 2;
-    max-width: 1200px;
-    padding: 0 2rem;
   }
 
   .hero-content h1 {
-    font-size: 4rem;
+    font-size: 3.2rem;
     letter-spacing: -0.02em;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    line-height: 1.15;
+    color: #ffffff;
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
   }
 
   .hero-content p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    line-height: 1.4;
+    font-size: 1.18rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    color: #f8fafc;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   }
 
-  .hero-content .btn {
-    font-size: 1.1rem;
-    padding: 1rem 2.5rem;
+  .hero-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    color: #ffffff;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   }
 
-  .hero-content .btn:hover,
-  .hero-content .btn:focus {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    background-color: var(--primary-dark);
-    outline: none;
+  .feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgb(27, 42, 75);
+    color: rgb(253, 251, 238);
+    border: 1.5px solid rgba(253, 251, 238, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    font-size: 0.85rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .hero-widget-col {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 3;
+  }
+
+  @media (max-width: 992px) {
+    .hero {
+      height: auto;
+      min-height: 100vh;
+      padding: 155px 0 70px;
+    }
+
+    .hero-flex-wrapper {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.75rem;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 100%;
+      padding: 0;
+    }
+
+    .hero-content h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-content p {
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-features {
+      display: none;
+    }
+
+    .hero-widget-col {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .scroll-down-indicator {
+      display: none !important;
+    }
   }
 
   /* Scroll down indicator */
@@ -402,6 +537,12 @@
     cursor: pointer;
     z-index: 10;
     transition: opacity 0.3s ease;
+  }
+
+  @media (max-width: 992px) {
+    .scroll-down-indicator {
+      display: none !important;
+    }
   }
 
   .scroll-down-indicator:hover {
@@ -477,6 +618,8 @@
     text-align: center;
     margin-bottom: 1.5rem;
     font-size: 2.2rem;
+    font-weight: 800;
+    color: rgb(27, 42, 75);
     position: relative;
   }
 
@@ -495,7 +638,7 @@
     text-align: center;
     max-width: 700px;
     margin: 0 auto 3rem;
-    color: #666;
+    color: #64748b;
     font-size: 1.1rem;
     line-height: 1.6;
   }
@@ -606,19 +749,134 @@
   }
 
   .testimonials-section .section-title::after {
-    background: linear-gradient(to right, #00bae5, #0088cc);
-    height: 3px;
-    width: 60px;
+    display: none !important;
   }
 
-  .testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 3rem;
+  /* Parking Pricing Section */
+  .parking-prices-section {
+    padding: 5.5rem 1.5rem;
+    background: rgb(253, 251, 238);
+    position: relative;
+    z-index: 5;
   }
 
-  /* CTA Section */
+  .pricing-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+  }
+
+  .pricing-header .section-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: rgb(27, 42, 75);
+    margin-bottom: 1.5rem;
+  }
+
+  .pricing-header .section-title::after {
+    display: none !important;
+  }
+
+  .pricing-header .section-subtitle {
+    font-size: 1.15rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .pricing-table-wrapper {
+    max-width: 850px;
+    margin: 0 auto;
+  }
+
+  .pricing-table-container {
+    background: #ffffff;
+    border: 1px solid rgba(27, 42, 75, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .parking-table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .parking-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .parking-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgb(27, 42, 75);
+    color: #ffffff;
+    padding: 1.1rem 1.25rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  .parking-table td {
+    padding: 0.85rem 1.25rem;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.98rem;
+    color: #1e293b;
+  }
+
+  .parking-table tbody tr:nth-child(even) {
+    background: rgba(253, 251, 238, 0.4);
+  }
+
+  .parking-table tbody tr:hover {
+    background: rgba(253, 251, 238, 0.85);
+  }
+
+  .parking-table .day-col {
+    font-weight: 600;
+    color: rgb(27, 42, 75);
+  }
+
+  .parking-table .normal-price-col {
+    text-decoration: line-through;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .parking-table .discount-col {
+    color: #dc2626;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  .table-action-wrap {
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+
+  .table-action-wrap .btn {
+    padding: 1rem 3.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgb(27, 42, 75);
+    color: #ffffff;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 8px 20px rgba(27, 42, 75, 0.25);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    letter-spacing: 0.03em;
+  }
+
+  .table-action-wrap .btn:hover {
+    background: rgb(45, 68, 115);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(27, 42, 75, 0.35);
+  }
 
   /* Responsive Styles - Optimized for mobile */
   @media screen and (max-width: 1200px) {
@@ -626,29 +884,9 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
     }
-
-    .testimonials-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    .services-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
   }
 
   @media screen and (max-width: 992px) {
-    .booking-container {
-      flex-direction: column;
-      max-width: 600px;
-    }
-
-    .booking-image {
-      width: 100%;
-      height: 250px;
-    }
     .section-title {
       font-size: 2rem;
     }
@@ -659,31 +897,20 @@
   }
 
   @media screen and (max-width: 768px) {
-    /* Make the diagonal split more dramatic on mobile */
-    .hero-image-left {
-      clip-path: polygon(0 0, 100% 0, 0 100%);
-    }
-
-    .hero-image-right {
-      clip-path: polygon(0 100%, 100% 0, 100% 100%);
-    }
-
     .hero {
-      min-height: 500px;
+      min-height: auto;
+      padding: 150px 0 60px;
     }
+
     .hero-content h1 {
-      font-size: 2.8rem;
+      font-size: 2.4rem;
       white-space: normal;
       overflow: visible;
       text-overflow: clip;
     }
 
     .hero-content p {
-      font-size: 1.4rem;
-    }
-
-    .scroll-down-indicator {
-      bottom: 20px;
+      font-size: 1.2rem;
     }
 
     .services-grid {
@@ -691,31 +918,59 @@
       gap: 1.5rem;
     }
 
-    .testimonials-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
     .section-title {
-      font-size: 2.2rem;
+      font-size: 2rem;
     }
 
     .section-subtitle {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
 
     .testimonials-section .section-title {
-      font-size: 2.2rem;
+      font-size: 2rem;
     }
 
     .services-section,
-    .testimonials-section {
-      padding: 4rem 1.5rem;
+    .testimonials-section,
+    .parking-prices-section {
+      padding: 3.5rem 1.25rem;
     }
 
     .wave-top,
     .wave-bottom {
       height: 10px;
+    }
+
+    /* Parking table mobile polish */
+    .parking-table thead th {
+      padding: 0.8rem 0.45rem;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .parking-table td {
+      padding: 0.65rem 0.45rem;
+      font-size: 0.88rem;
+    }
+
+    .parking-table .day-col {
+      white-space: nowrap;
+      font-size: 0.88rem;
+    }
+
+    .parking-table .day-col strong {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .parking-table .normal-price-col {
+      white-space: nowrap;
+      font-size: 0.85rem;
+    }
+
+    .parking-table .discount-col {
+      white-space: nowrap;
+      font-size: 0.92rem;
     }
 
     /* Increased text sizes for mobile */
@@ -740,31 +995,62 @@
 
   @media screen and (max-width: 480px) {
     .hero {
-      min-height: 400px;
+      height: auto;
+      min-height: auto;
+      padding: 140px 0 50px;
     }
     .hero-content h1 {
-      font-size: 2.4rem;
+      font-size: 1.85rem;
     }
 
     .hero-content p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
-
-    .hero-content .btn {
-      font-size: 1.1rem;
-      padding: 0.8rem 2rem;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
     }
 
     .services-section,
-    .testimonials-section {
-      padding: 3rem 1rem;
+    .testimonials-section,
+    .parking-prices-section {
+      padding: 3rem 0.85rem;
     }
 
     .wave-top,
     .wave-bottom {
       height: 5px;
     }
+
+    /* Parking table small mobile polish */
+    .parking-table thead th {
+      padding: 0.7rem 0.25rem;
+      font-size: 0.76rem;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .parking-table td {
+      padding: 0.55rem 0.25rem;
+      font-size: 0.82rem;
+    }
+
+    .parking-table .day-col {
+      white-space: nowrap;
+      font-size: 0.82rem;
+    }
+
+    .parking-table .day-col strong {
+      font-size: 0.88rem;
+    }
+
+    .parking-table .normal-price-col {
+      white-space: nowrap;
+      font-size: 0.8rem;
+    }
+
+    .parking-table .discount-col {
+      white-space: nowrap;
+      font-size: 0.85rem;
+    }
+
     /* Even larger text sizes for smaller screens */
     :global(.service-card h3) {
       font-size: 1.8rem !important;
@@ -789,29 +1075,9 @@
     max-width: 1000px;
     margin: 3rem auto 0;
     background: rgb(253, 251, 238);
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  }
-
-  /* EmbedSocial widget styles */
-  :global(.embedsocial-widget) {
-    width: 100% !important;
-  }
-
-  :global(.powered-by-es) {
-    display: none !important;
-  }
-
-  /* Target the 'Leave a review' button inside EmbedSocial */
-  :global(.embedsocial-widget .es-button),
-  :global(.embedsocial-widget .es-btn),
-  :global(.embedsocial-widget [class*="-button"]),
-  :global(.embedsocial-widget [class*="-btn"]),
-  :global(.embedsocial-widget a.es-leave-review) {
-    background-color: rgb(27, 42, 75) !important;
-    border-color: rgb(27, 42, 75) !important;
-    color: white !important;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
   /* Responsive adjustments */

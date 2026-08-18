@@ -16,17 +16,17 @@
   const tireServicePrices = {
       // Main service: Wheel fitting, tire fitting, alignment per 4 tires
       fullServicePer4Tires: [
-          { size: '16"', price: '16000 Ft' },
-          { size: '17"', price: '17000 Ft' },
-          { size: '18"', price: '19000 Ft' },
-          { size: '19"', price: '21000 Ft' },
-          { size: '20"', price: '22000 Ft' },
-          { size: '21"', price: '25000 Ft' }
+          { size: '16"', price: '18000 Ft' },
+          { size: '17"', price: '19000 Ft' },
+          { size: '18"', price: '21000 Ft' },
+          { size: '19"', price: '23000 Ft' },
+          { size: '20"', price: '24000 Ft' },
+          { size: '21"-től', price: '27000 Ft' }
       ],
       // Other services
-      patching: { // Defekt javítás
-          name: { hu: 'Defekt javítás', en: 'Tire Patching' },
-          pricePerTyre: '2000 Ft',
+      patching: { // Defektjavítás
+          name: { hu: 'Defektjavítás', en: 'Tire Patching' },
+          pricePerTyre: '3000 Ft',
           note: { hu: '/ gumi + szerelés', en: '/ tire + mounting' }
       },
       wheelMountingOnly: { // Kerék le-fel szerelés (4 pcs)
@@ -90,6 +90,34 @@
 </section>
 
 <div class="services-container">
+  <section class="service-section" id="maintenance">
+    <div class="container">
+      <div class="service-content centered-content">
+        <h2>{$currentLang === 'hu' ? 'MÁRKAFÜGGETLEN AUTÓSZERVIZ' : 'BRAND-AGNOSTIC CAR SERVICE'}</h2>
+        <p class="service-description">
+          {$currentLang === 'hu'
+            ? 'Szakértő csapatunk széles körű szervizszolgáltatást nyújt minden autómárka számára, a rendszeres karbantartástól a komplex javításokig.'
+            : 'Our expert team provides a wide range of maintenance services for all car brands, from routine maintenance to complex repairs.'}
+        </p>
+      </div>
+
+      <div class="maintenance-bubbles-container">
+        {#each maintenanceServices as service (service.name.hu)}
+          <div class="maintenance-bubble">
+              {service.name[$currentLang]}
+          </div>
+        {/each}
+      </div>
+
+      <div class="centered-button-container">
+            <a href="/contact" class="btn btn-primary maintenance-contact-btn">
+              {$currentLang === 'hu' ? 'Kérj árajánlatot' : 'Request a Quote'}
+          </a>
+      </div>
+
+    </div>
+  </section>
+
   <section class="service-section" id="tire">
     <div class="container">
       <div class="service-grid">
@@ -118,7 +146,7 @@
       </div>
 
       <h3 class="tire-main-service-title">
-          {$currentLang === 'hu' ? 'Kerék le-fel szerelés, Gumiabroncs átszerelés és Centrízorás' : 'Wheel & Tire Fitting, Alignment'}
+          {$currentLang === 'hu' ? 'Kerék le-fel szerelés, Gumiabroncs átszerelés és Centrírozás' : 'Wheel & Tire Fitting, Alignment'}
       </h3>
       <div class="pricing-table-container scrollable-table tire-table-container">
         <table class="pricing-table tire-service-main-table">
@@ -172,34 +200,6 @@
        </div>
 
        </div>
-  </section>
-
-  <section class="service-section" id="maintenance">
-    <div class="container">
-      <div class="service-content centered-content">
-        <h2>{$currentLang === 'hu' ? 'MÁRKAFÜGGETLEN AUTÓSZERVIZ' : 'BRAND-AGNOSTIC CAR SERVICE'}</h2>
-        <p class="service-description">
-          {$currentLang === 'hu'
-            ? 'Szakértő csapatunk széles körű szervizszolgáltatást nyújt minden autómárka számára, a rendszeres karbantartástól a komplex javításokig.'
-            : 'Our expert team provides a wide range of maintenance services for all car brands, from routine maintenance to complex repairs.'}
-        </p>
-      </div>
-
-      <div class="maintenance-bubbles-container">
-        {#each maintenanceServices as service (service.name.hu)}
-          <div class="maintenance-bubble">
-              {service.name[$currentLang]}
-          </div>
-        {/each}
-      </div>
-
-      <div class="centered-button-container">
-            <a href="/contact" class="btn btn-primary maintenance-contact-btn">
-              {$currentLang === 'hu' ? 'Kérj árajánlatot' : 'Request a Quote'}
-          </a>
-      </div>
-
-    </div>
   </section>
 </div>
 
@@ -443,13 +443,68 @@
   }
 
     /* Tire Service Styles */
+    #tire {
+      background-color: rgb(27, 42, 75);
+      color: white;
+    }
+
+    #tire .service-content h2 {
+      color: white;
+    }
+
+    #tire .service-content h2::after {
+      background-color: rgb(253, 251, 238);
+    }
+
+    #tire .service-description {
+      color: #f1f5f9;
+    }
+
+    #tire .feature-list li {
+      color: white;
+    }
+
+    #tire .feature-list li::before {
+      color: rgb(253, 251, 238);
+    }
+
+    #tire .btn-primary {
+      background-color: rgb(253, 251, 238);
+      color: rgb(27, 42, 75);
+      font-weight: 700;
+    }
+
+    #tire .btn-primary:hover {
+      background-color: #ffffff;
+      color: rgb(27, 42, 75);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
     .tire-main-service-title {
         text-align: center;
         font-size: 1.5rem;
         margin-top: 3rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        color: white;
+    }
+
+    #tire .tire-table-container {
+        background: rgb(253, 251, 238);
+        border: 1px solid rgba(253, 251, 238, 0.4);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    #tire .pricing-table thead th {
+        background: rgb(27, 42, 75);
+        color: white;
+    }
+
+    #tire .pricing-table td {
+        color: rgb(27, 42, 75);
         font-weight: 600;
-        color: var(--text);
+        border-bottom: 1px solid rgba(27, 42, 75, 0.1);
     }
 
     /* Ensure the tire service main table has reasonable column widths */
@@ -471,30 +526,31 @@
     }
 
     .tire-service-block {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
-  }
-  .tire-service-block:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
-  }
+      background: rgb(253, 251, 238);
+      border: 1px solid rgba(253, 251, 238, 0.6);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+    }
+
+    .tire-service-block:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      background: #ffffff;
+    }
 
      .tire-service-block h3 {
-         font-size: 1.1rem;
-         font-weight: 600;
+         font-size: 1.15rem;
+         font-weight: 700;
          margin-bottom: 0.8rem;
-         color: var(--text);
+         color: rgb(27, 42, 75);
      }
 
     .service-price {
-      font-size: 1.2rem; /* Slightly larger price */
-      font-weight: 600; /* Bolder price */
+      font-size: 1.25rem; /* Slightly larger price */
+      font-weight: 700; /* Bolder price */
       color: rgb(27, 42, 75); /* Use primary color for price */
       margin-top: 0.5rem;
     }
@@ -512,21 +568,21 @@
     }
 
   .maintenance-bubble {
-    background: rgb(253, 251, 238);
-    border: none;
+    background: rgb(27, 42, 75);
+    border: 1px solid rgba(253, 251, 238, 0.15);
     border-radius: 50px;
     padding: 1rem 2rem;
-    box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
     font-weight: 600;
-    color: rgb(27, 42, 75);
+    color: rgb(253, 251, 238);
     text-align: center;
   }
   .maintenance-bubble:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.2);
-    background: #ffffff;
-    color: rgb(27, 42, 75);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+    background: rgb(35, 55, 98);
+    color: rgb(253, 251, 238);
   }
 
     /* Removed hover effect if they are not meant to be clicked */

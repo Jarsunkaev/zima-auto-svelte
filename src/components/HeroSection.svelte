@@ -10,11 +10,15 @@
   let nextSection;
 
   function scrollToNextSection() {
-    const viewportHeight = window.innerHeight;
-    window.scrollTo({
-      top: viewportHeight,
-      behavior: "smooth",
-    });
+    const nextSection = document.querySelector(".services-section") || document.querySelector("#services");
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: "smooth",
+      });
+    }
   }
 
   onMount(() => {
@@ -117,25 +121,24 @@
   }
 
   .hero-background {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center 20%;
     background-repeat: no-repeat;
     z-index: 0;
     background-image: url("/images/airport-car.webp");
-    will-change: transform;
   }
 
   .hero-overlay {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(
       to right,
       rgba(0, 0, 0, 0.8) 0%,

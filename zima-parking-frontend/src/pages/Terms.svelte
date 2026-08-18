@@ -4,26 +4,26 @@
 
 <svelte:head>
   <title>{lang === 'hu' ? 'Általános Szerződési Feltételek' : 'Terms & Conditions'} - A&T Group</title>
-  <meta name="description" content={lang === 'hu' ? 'A&T Group Kft. általános szerződési feltételei és szolgáltatási feltételek' : 'A&T Group Kft. terms and conditions and service terms'}>
+  <meta name="description" content={lang === 'hu' ? 'A&T Group általános szerződési feltételei és szolgáltatási feltételek' : 'A&T Group terms and conditions and service terms'}>
 </svelte:head>
 
 <div class="page-container">
   <div class="content-wrapper">
     <div class="page-header">
       <h1>{lang === 'hu' ? 'Általános Szerződési Feltételek' : 'Terms & Conditions'}</h1>
-      <p>{lang === 'hu' ? 'A&T Group Korlátolt Felelősségű Társaság szolgáltatási feltételei' : 'Service terms of A&T Group Limited Liability Company'}</p>
+      <p>{lang === 'hu' ? 'A&T Group szolgáltatási feltételei' : 'Service terms of A&T Group'}</p>
     </div>
 
     <div class="terms-content">
       <div class="terms-section">
         <h2>{lang === 'hu' ? '1. Általános rendelkezések' : '1. General Provisions'}</h2>
         <div class="terms-text">
-          <p><strong>1.1.</strong> {lang === 'hu' ? 'Jelen Általános Szerződési Feltételek (továbbiakban: ÁSZF) a A&T Group Korlátolt Felelősségű Társaság (továbbiakban: Szolgáltató) által nyújtott szolgáltatások igénybevételének feltételeit szabályozza.' : 'These General Terms and Conditions (hereinafter: GTC) govern the terms of use of services provided by A&T Group Limited Liability Company (hereinafter: Service Provider).'}</p>
+          <p><strong>1.1.</strong> {lang === 'hu' ? 'Jelen Általános Szerződési Feltételek (továbbiakban: ÁSZF) az A&T Group (továbbiakban: Szolgáltató) által nyújtott szolgáltatások igénybevételének feltételeit szabályozza.' : 'These General Terms and Conditions (hereinafter: GTC) govern the terms of use of services provided by A&T Group (hereinafter: Service Provider).'}</p>
           
           <p><strong>1.2.</strong> {lang === 'hu' ? 'A Szolgáltató adatai:' : 'Service Provider details:'}</p>
           <ul>
-            <li>{lang === 'hu' ? 'Név: A&T Group Korlátolt Felelősségű Társaság' : 'Name: A&T Group Limited Liability Company'}</li>
-            <li>{lang === 'hu' ? 'Rövidített név: A&T Group Kft.' : 'Short name: A&T Group Kft.'}</li>
+            <li>{lang === 'hu' ? 'Név: A&T Group' : 'Name: A&T Group'}</li>
+            <li>{lang === 'hu' ? 'Rövidített név: A&T Group' : 'Short name: A&T Group'}</li>
             <li>{lang === 'hu' ? 'Székhely: 2220 Vecsés, Ipari utca 1.' : 'Registered address: 2220 Vecsés, Ipari utca 1.'}</li>
             <li>{lang === 'hu' ? 'Cégjegyzékszám: 13 09 232195' : 'Company registration number: 13 09 232195'}</li>
             <li>{lang === 'hu' ? 'Adószám: 11713177-21462236-00000000' : 'Tax number: 11713177-21462236-00000000'}</li>
@@ -58,7 +58,7 @@
           <ul>
             <li>{lang === 'hu' ? 'Online foglalási rendszeren keresztül' : 'Through online booking system'}</li>
             <li>{lang === 'hu' ? 'Telefonon: +36 70 585 9959' : 'By phone: +36 70 585 9959'}</li>
-            <li>{lang === 'hu' ? 'Emailben: parking@atgroup.hu' : 'By email: parking@atgroup.hu'}</li>
+            <li>{lang === 'hu' ? 'Emailben: info@atgroup.hu' : 'By email: info@atgroup.hu'}</li>
           </ul>
           
           <p><strong>3.3.</strong> {lang === 'hu' ? 'A fizetés a következő módokon történhet:' : 'Payment can be made in the following ways:'}</p>
@@ -112,7 +112,7 @@
           
           <p><strong>6.2.</strong> {lang === 'hu' ? 'A panasz benyújtásának módjai:' : 'Ways to submit complaints:'}</p>
           <ul>
-            <li>{lang === 'hu' ? 'Email: parking@atgroup.hu' : 'Email: parking@atgroup.hu'}</li>
+            <li>{lang === 'hu' ? 'Email: info@atgroup.hu' : 'Email: info@atgroup.hu'}</li>
             <li>{lang === 'hu' ? 'Postai cím: 2220 Vecsés, Ipari utca 1.' : 'Postal address: 2220 Vecsés, Ipari utca 1.'}</li>
             <li>{lang === 'hu' ? 'Személyesen: a Szolgáltató székhelyén' : 'In person: at the Service Provider\'s registered office'}</li>
           </ul>
@@ -144,7 +144,7 @@
             <strong>{lang === 'hu' ? 'Telefon:' : 'Phone:'}</strong> +36 70 585 9959
           </div>
           <div class="contact-item">
-            <strong>{lang === 'hu' ? 'Email:' : 'Email:'}</strong> parking@atgroup.hu
+            <strong>{lang === 'hu' ? 'Email:' : 'Email:'}</strong> info@atgroup.hu
           </div>
           <div class="contact-item">
             <strong>{lang === 'hu' ? 'Nyitvatartás:' : 'Opening hours:'}</strong> {lang === 'hu' ? 'Hétfő - Vasárnap: 00:00 - 24:00' : 'Monday - Sunday: 00:00 - 24:00'}

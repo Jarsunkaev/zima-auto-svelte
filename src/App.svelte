@@ -14,7 +14,6 @@
 	import Terms from './pages/Terms.svelte';
 	import FAQPage from './pages/FAQ.svelte';
 	import CookieConsent from './components/CookieConsent.svelte';
-	import PhoneChangeModal from './components/PhoneChangeModal.svelte';
   
 	// Get initial page before component mounts to prevent double rendering
 	function getInitialPage() {
@@ -187,7 +186,6 @@ const handleRouting = () => {
   {#if currentPage !== 'admin'}
     <Footer {navigate} {lang} />
     <CookieConsent {lang} />
-    <PhoneChangeModal />
   {/if}
 </div>
 

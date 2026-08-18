@@ -29,7 +29,8 @@
     firstName: '',
     lastName: '',
     email: '',
-    phone: '' // Ensure phone is initialized as empty string
+    phone: '', // Ensure phone is initialized as empty string
+    notes: '' // Customer notes / special requests
   };
   
   // Ensure formData.phone is always a string to prevent undefined errors
@@ -226,6 +227,7 @@
       numberOfCars: formData.cars.length,
       licensePlate: formData.cars.map(c => c.licensePlate).join(', '),
       passengers: formData.cars.reduce((sum, car) => sum + parseInt(car.passengers || 0), 0).toString(),
+      notes: formData.notes || '',
       // Add timestamps
       createdAt: new Date().toISOString()
     };
@@ -433,6 +435,18 @@
     content={content}
     currentLang={currentLang}
   />
+
+  <div class="form-section">
+    <h3>{content[currentLang]?.bookingForm?.airportParking?.notes || (currentLang === 'hu' ? 'Megjegyzés' : 'Additional Notes')}</h3>
+    <div class="form-group">
+      <textarea
+        id="notes"
+        bind:value={formData.notes}
+        rows="4"
+        placeholder={content[currentLang]?.bookingForm?.airportParking?.notesPlaceholder || (currentLang === 'hu' ? 'Megjegyzés, speciális kérések (opcionális)' : 'Special requests or additional notes (optional)')}
+      ></textarea>
+    </div>
+  </div>
   
   <div class="form-submit">
     <button type="button" class="btn btn-primary" on:click={handleSubmit} disabled={isSubmitting}>
@@ -470,15 +484,15 @@
     gap: 1.5rem;
   }
   
-  .form-row h3 {
+  .form-row h3, .form-section h3 {
     font-size: 1.3rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     color: var(--text);
     position: relative;
     grid-column: 1 / -1;
   }
   
-  .form-row h3::after {
+  .form-row h3::after, .form-section h3::after {
     content: '';
     position: absolute;
     bottom: -8px;

@@ -21,21 +21,42 @@
             max-width: 650px;
             margin: 0 auto;
             background-color: #ffffff;
-            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
         }
         
         .email-header {
-            background-color: #00bae5;
+            background-color: rgb(27, 42, 75);
             color: white;
-            padding: 20px;
+            padding: 25px 20px;
             text-align: center;
-            border-radius: 8px 8px 0 0;
+        }
+
+        .email-logo {
+            margin-bottom: 15px;
+        }
+
+        .email-logo img {
+            max-height: 50px;
+        }
+
+        .email-title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .email-subtitle {
+            margin-top: 5px;
+            font-size: 16px;
+            opacity: 0.9;
+            color: rgba(253, 251, 238, 0.9);
         }
         
         .email-body {
-            padding: 20px;
+            padding: 25px 20px;
         }
         
         .contact-details {
@@ -43,6 +64,7 @@
             padding: 15px;
             border-radius: 5px;
             margin-top: 20px;
+            border-left: 5px solid rgb(27, 42, 75);
         }
         
         .language-separator {
@@ -68,25 +90,29 @@
 </head>
 <body>
     <div class="email-container">
-        <div class="email-logo">
-            <img src="https://atgroup.hu/images/newlog_full.png" alt="A&T Group Logo" />
+        <div class="email-header">
+            <div class="email-logo">
+                <img src="https://atgroup.hu/images/newlogbeige.png" alt="A&T Group Logo" />
+            </div>
+            <h1 class="email-title">Kapcsolatfelvétel / Contact Form</h1>
+            <p class="email-subtitle">Ügyfél megkeresés / Customer Inquiry</p>
         </div>
-        <h1 class="email-title">Kapcsolatfelvétel / Contact Form</h1>
-        <p class="email-subtitle">Ügyfél megkeresés / Customer Inquiry</p>
-        <p>Kedves {{customerName}}! / Dear {{customerName}},</p>
         
-        <p>Köszönjük, hogy kapcsolatba lépett velünk. Hamarosan válaszolunk megkeresésére.</p>
-        <p>Thank you for contacting us. We will respond to your inquiry soon.</p>
-        
-        <div class="contact-details">
-            <h3>Beküldött üzenet részletei / Submitted Message Details:</h3>
-            <p><strong>Név / Name:</strong> {{customerName}}</p>
-            <p><strong>Email:</strong> {{email}}</p>
-            <p><strong>Üzenet / Message:</strong> {{message}}</p>
+        <div class="email-body">
+            <p>Kedves {{customerName}}! / Dear {{customerName}},</p>
+            
+            <p>Köszönjük, hogy kapcsolatba lépett velünk. Hamarosan válaszolunk megkeresésére.</p>
+            <p>Thank you for contacting us. We will respond to your inquiry soon.</p>
+            
+            <div class="contact-details">
+                <h3>Beküldött üzenet részletei / Submitted Message Details:</h3>
+                <p><strong>Név / Name:</strong> {{customerName}}</p>
+                <p><strong>Email:</strong> {{email}}</p>
+                <p><strong>Üzenet / Message:</strong> {{message}}</p>
+            </div>
         </div>
-    </div>
         
-        <div class="email-footer" style="text-align: center; padding: 10px; color: #666;">
+        <div class="email-footer" style="text-align: center; padding: 15px; color: #666; background-color: #f5f5f5; font-size: 12px;">
             <p>© 2025 A&T Group. Minden jog fenntartva. / All rights reserved.</p>
         </div>
     </div>

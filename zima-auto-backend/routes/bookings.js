@@ -53,13 +53,14 @@ async function saveAirportParking(bookingData) {
       bookingData.phone || '',
       new Date().toISOString(),
       'FELDOLGOZÁS ALATT',
-      bookingData.carWashPackage || 'none'
+      bookingData.carWashPackage || 'none',
+      bookingData.notes || ''
     ];
     
     // Append the new row to the sheet
     await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: 'Sheet1!A2:O2',
+      range: 'Sheet1!A2:P2',
       valueInputOption: 'USER_ENTERED',
       resource: {
         values: [rowData]

@@ -4,14 +4,14 @@
 
 <svelte:head>
   <title>{lang === 'hu' ? 'Impresszum' : 'Imprint'} - A&T Group</title>
-  <meta name="description" content={lang === 'hu' ? 'A&T Group Kft. impresszum és cégadatok' : 'A&T Group Kft. imprint and company information'}>
+  <meta name="description" content={lang === 'hu' ? 'A&T Group impresszum és cégadatok' : 'A&T Group imprint and company information'}>
 </svelte:head>
 
 <div class="page-container">
   <div class="content-wrapper">
     <div class="page-header">
       <h1>{lang === 'hu' ? 'Impresszum' : 'Imprint'}</h1>
-      <p>{lang === 'hu' ? 'A&T Group Korlátolt Felelősségű Társaság hivatalos adatai' : 'Official company information of A&T Group Limited Liability Company'}</p>
+      <p>{lang === 'hu' ? 'A&T Group hivatalos adatai' : 'Official company information of A&T Group'}</p>
     </div>
 
     <div class="imprint-content">
@@ -36,7 +36,7 @@
       <div class="company-section">
         <h2>{lang === 'hu' ? '3. A cég rövidített elnevezése' : '3. Company Short Name'}</h2>
         <div class="terms-text">
-          <p><strong>Rövidített név:</strong> A&T Group Kft.</p>
+          <p><strong>Rövidített név:</strong> A&T Group</p>
           <p><strong>Bejegyzés kelte:</strong> 2024.02.06.</p>
           <p><strong>Hatályos:</strong> 2024.02.06. - ...</p>
           <p><strong>Közzétéve:</strong> 2024.02.07.</p>
@@ -44,9 +44,11 @@
       </div>
 
       <div class="company-section">
-        <h2>{lang === 'hu' ? '5. A cég székhelye' : '5. Company Registered Office'}</h2>
+        <h2>{lang === 'hu' ? '5. A cég székhelye és elérhetősége' : '5. Company Registered Office & Contact'}</h2>
         <div class="terms-text">
           <p><strong>Cím:</strong> 2220 Vecsés, Ipari utca 1.</p>
+          <p><strong>{lang === 'hu' ? 'Telefonszám:' : 'Phone:'}</strong> +36 70 585 9959</p>
+          <p><strong>{lang === 'hu' ? 'Email:' : 'Email:'}</strong> info@atgroup.hu</p>
           <p><strong>Változás időpontja:</strong> 2024.03.20.</p>
           <p><strong>Bejegyzés kelte:</strong> 2024.03.27.</p>
           <p><strong>Hatályos:</strong> 2024.03.20. - ...</p>

@@ -703,8 +703,8 @@
     </div>
 
     <div class="contact-info">
-        <p><strong>Érkezéskor hívja:</strong> +36 70 555 0588</p>
-        <p><strong>Email:</strong> szerviz@atgroup.hu</p>
+        <p><strong>Érkezéskor hívja:</strong> +36 70 585 9959</p>
+        <p><strong>Email:</strong> info@atgroup.hu</p>
     </div>
 
     <div class="footer">
@@ -761,8 +761,8 @@ Felvétel időpontja: ${formatDateForDocument(booking["TÁVOZÁS"])}
 Nap: ${booking["HÁNY NAP"]}
 Elérhetőség: ${booking["EMAIL"]} / ${booking["TELEFON"]}
 
-Érkezéskor hívja: +36 70 555 0588
-szerviz@atgroup.hu
+Érkezéskor hívja: +36 70 585 9959
+info@atgroup.hu
 
 Dátum: Vecsés, ${currentDate}
 
