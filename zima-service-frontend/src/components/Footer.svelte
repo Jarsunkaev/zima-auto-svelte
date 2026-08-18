@@ -277,10 +277,17 @@
 
   .footer-logo {
     margin-bottom: 25px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 
   .footer-logo img {
-    height: 110px;
+    height: 65px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    display: block;
   }
 
   .contact-info h3 {
@@ -451,6 +458,24 @@
     .footer-grid {
       grid-template-columns: 1fr;
       gap: 30px;
+    }
+
+    .footer-logo {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .footer-logo img {
+      height: 50px;
+      width: auto;
+      max-width: 130px;
+      margin-left: 0;
+      margin-right: auto;
+      display: block;
+      object-fit: contain;
     }
 
     .footer-map {

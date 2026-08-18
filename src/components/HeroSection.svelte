@@ -111,7 +111,9 @@
 <style>
   .hero {
     height: 100vh;
-    height: 100dvh; /* Dynamic viewport height for mobile browsers */
+    height: 100svh;
+    min-height: 100svh;
+    max-height: 100svh;
     position: relative;
     display: flex;
     align-items: center;
@@ -310,42 +312,48 @@
   /* Responsive adjustments */
   @media screen and (max-width: 768px) {
     .hero {
-      height: 100vh;
-      height: 100dvh; /* Dynamic viewport height for mobile browsers */
+      height: 100svh;
+      min-height: 100svh;
+      max-height: 100svh;
     }
     .hero-content h1 {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       white-space: normal;
       overflow: visible;
       text-overflow: clip;
     }
 
     .hero-content p {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
 
     .scroll-down-indicator {
-      bottom: 20px;
+      bottom: 18px;
     }
   }
 
   @media screen and (max-width: 480px) {
     .hero {
-      height: 100vh;
-      height: 100dvh; /* Dynamic viewport height for mobile browsers */
+      height: 100svh;
+      min-height: 100svh;
+      max-height: 100svh;
     }
     .hero-content h1 {
-      font-size: 2rem;
+      font-size: 1.85rem;
     }
 
     .hero-content p {
-      font-size: 1rem;
-      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
     }
 
     .hero-content .btn {
-      font-size: 1rem;
-      padding: 0.8rem 2rem;
+      font-size: 0.95rem;
+      padding: 0.75rem 1.75rem;
+    }
+
+    .scroll-down-indicator {
+      bottom: 15px;
     }
   }
 
