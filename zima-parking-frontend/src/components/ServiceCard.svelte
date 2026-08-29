@@ -12,6 +12,8 @@
   export let color = '#2b0f4d';
   export let hoverColor = '#1f0839';
   
+  import { onMount } from 'svelte';
+
   let isVisible = false;
   let isHovered = false;
   
@@ -19,8 +21,16 @@
     // Add a staggered delay based on the index
     setTimeout(() => {
       isVisible = true;
-    }, 150 * index);
+    }, 100 * index);
   }
+
+  onMount(() => {
+    // Safety fallback: ensure card is visible even if ScrollTrigger fails
+    const timer = setTimeout(() => {
+      isVisible = true;
+    }, 250 + (100 * index));
+    return () => clearTimeout(timer);
+  });
 
   function handleMouseEnter() {
     isHovered = true;

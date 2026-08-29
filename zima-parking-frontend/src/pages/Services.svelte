@@ -2,9 +2,6 @@
   import { onMount, onDestroy } from 'svelte';
   import { currentLang } from '../lib/i18n';
   import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-  gsap.registerPlugin(ScrollTrigger);
 
   let lang;
   currentLang.subscribe(value => {
@@ -104,27 +101,29 @@
 
   // Tire and Maintenance services removed for parking frontend
 
+  let observer;
+
   onMount(() => {
-    // Refresh ScrollTrigger to fix height calculations after navigation
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-      // Animate service sections
-      gsap.from('.service-section', {
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.3,
-        scrollTrigger: {
-          trigger: '.services-container',
-          start: 'top 70%'
-        }
-      });
-    }, 100);
+    const sections = document.querySelectorAll('.service-section');
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            gsap.fromTo(entry.target,
+              { y: 30, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', clearProps: 'all' }
+            );
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+      sections.forEach((s) => observer.observe(s));
+    }
   });
 
   onDestroy(() => {
-    // Kill all scroll triggers to prevent issues when navigating away
-    ScrollTrigger.getAll().forEach(t => t.kill());
+    if (observer) observer.disconnect();
   });
 </script>
 
@@ -151,13 +150,13 @@
           <h2>{$currentLang === 'hu' ? '24/7 REPTÉRI PARKOLÁS' : '24/7 AIRPORT PARKING'}</h2>
           <p class="service-description">
             {$currentLang === 'hu'
-              ? 'Biztonságos parkolóhelyeink 24 órás kamerás megfigyeléssel és szakértő személyzettel várják járművét, maximális biztonságot nyújtva.'
-              : 'Our secure parking facility features fenced boundaries and 24/7 CCTV surveillance, ensuring the highest level of security for your vehicle.'}
+              ? '0-24 őrzött reptéri parkolás ingyenes transzferrel, pár percre a repülőtértől. Bekerített telephely helyszíni személyzettel.'
+              : '24/7 secure airport parking with free airport shuttle, just minutes from the airport. Fenced facility with on-site staff.'}
           </p>
           <ul class="feature-list">
             {#each ($currentLang === 'hu'
-              ? ['Biztonságos, kamerával megfigyelt területt', '24/7 személyzet a helyszínen', 'Kedvező árak hosszabb tartózkodásra is', 'Ingyenes transzfer a repülőtérre és vissza', 'Előfoglalási lehetőség']
-              : ['Secure, camera-monitored area', '24/7 staff on site', 'Favorable rates for longer stays', 'Free transfer to and from the airport', 'Pre-booking option']
+              ? ['Biztonságos, bekerített terület', '24/7 személyzet a helyszínen', 'Kedvező árak hosszabb tartózkodásra is', 'Ingyenes transzfer a repülőtérre és vissza', 'Előfoglalási lehetőség']
+              : ['Secure, fenced area', '24/7 staff on site', 'Favorable rates for longer stays', 'Free transfer to and from the airport', 'Pre-booking option']
             ) as feature}
               <li>{feature}</li>
             {/each}

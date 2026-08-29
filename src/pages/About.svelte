@@ -2,10 +2,6 @@
   import { onMount, onDestroy } from 'svelte';
   import { currentLang, t } from '../lib/i18n';
   import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
-  
-  // Register ScrollTrigger
-  gsap.registerPlugin(ScrollTrigger);
 
   let lang;
 
@@ -40,7 +36,7 @@
               title: 'Átfogó Szolgáltatási Kínálat',
               text: 'Megértjük, hogy járműve több, mint egyszerű közlekedési eszköz; egy befektetés, amely megérdemli a legnagyobb gondosságot és figyelmet. Ezért kínálunk teljes körű szolgáltatási listát, ideértve:',
                listItems: [ // Detailed list for HU
-                  'Repülőtéri parkoló: Nyugodtan utazzon tudva, hogy járműve biztonságban van, amíg Ön távol van. Biztonságos parkoló létesítményünk körbekerített és 24/7-es kamerafelügyelettel biztosítja járműve maximális biztonságát. Ráadásul élvezze az ingyenes repülőtéri transzfert a parkolóból a repülőtérre kényelmes shuttle szolgáltatásunkkal, ami megszünteti az utazási logisztika stresszét. 3000 négyzetméteres, nyitott parkolóhelyünkön 150 parkolóhely áll rendelkezésre, így járművének helyet találni sosem jelenthet gondot. Akár online foglalja, akár egyszerűen csak behajt, mi gondoskodunk róla.',
+                  'Repülőtéri parkoló: Nyugodtan utazzon tudva, hogy járműve biztonságban van, amíg Ön távol van. Biztonságos, körbekerített telephelyünkön 0–24 órás helyszíni személyzet gondoskodik járműve biztonságáról. Ráadásul élvezze az ingyenes repülőtéri transzfert a parkolóból a repülőtérre kényelmes shuttle szolgáltatásunkkal, ami megszünteti az utazási logisztika stresszét. 3000 négyzetméteres, nyitott parkolóhelyünkön 150 parkolóhely áll rendelkezésre, így járművének helyet találni sosem jelenthet gondot. Akár online foglalja, akár egyszerűen csak behajt, mi gondoskodunk róla.',
                   'Kézi Autómosó: Kényeztesse járművét egy profi külső-belső autómosás szolgáltatással, amely ragyogóan tisztává és újjászületetté varázsolja autóját.',
                   'Gumiszerviz: Ne engedje, hogy egy defektes gumi gátat szabjon a programjának. Szakértőink azonnal foglalkoznak bármilyen gumival kapcsolatos problémával, gumicserével, és biztonságosan visszajuttatják Önt az útra.',
                   'Autószerviz: A rutinellenőrzésektől a bonyolult javításokig képzett szerelőink fel vannak készülve az Ön karbantartási és javítási igényeinek kezelésére, hogy járműve zökkenőmentesen és hatékonyan működjön.'
@@ -98,73 +94,55 @@
     }
   };
 
-  // Keep existing animation logic and ensure ScrollTrigger is used
-  let ctx;
+  let observer;
 
   onMount(() => {
-    ctx = gsap.context(() => {
-      // Cinematic fade-in with slight scale
-      gsap.fromTo('.about-hero .container > *', 
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power3.out',
-          clearProps: 'all'
-        }
-      );
+    // Cinematic fade-in for hero
+    gsap.fromTo('.about-hero .container > *', 
+      { y: 30, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: 'power3.out',
+        clearProps: 'all'
+      }
+    );
 
-      // Animate individual sections with glassmorphism reveal
-      gsap.utils.toArray('.about-grid').forEach((section) => {
-        const content = section.querySelector('.about-content');
-        if (content) {
-          gsap.fromTo(content, 
-            { x: section.classList.contains('reverse') ? 50 : -50, opacity: 0 },
-            {
-              x: 0,
-              opacity: 1,
-              duration: 1,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 85%',
-              },
-              clearProps: 'all'
+    // Reliable reveal for sections using IntersectionObserver
+    const sections = document.querySelectorAll('.about-grid');
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const section = entry.target;
+            const content = section.querySelector('.about-content');
+            const image = section.querySelector('.about-image-wrapper');
+            
+            if (content) {
+              gsap.fromTo(content,
+                { x: section.classList.contains('reverse') ? 30 : -30, opacity: 0 },
+                { x: 0, opacity: 1, duration: 0.7, ease: 'power3.out', clearProps: 'all' }
+              );
             }
-          );
-        }
+            if (image) {
+              gsap.fromTo(image,
+                { x: section.classList.contains('reverse') ? -30 : 30, opacity: 0, scale: 0.96 },
+                { x: 0, opacity: 1, scale: 1, duration: 0.7, ease: 'power3.out', clearProps: 'all' }
+              );
+            }
+            observer.unobserve(section);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-        const image = section.querySelector('.about-image-wrapper');
-        if (image) {
-          gsap.fromTo(image, 
-            { x: section.classList.contains('reverse') ? -50 : 50, opacity: 0, scale: 0.95 },
-            {
-              x: 0,
-              opacity: 1,
-              scale: 1,
-              duration: 1,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 85%',
-              },
-              clearProps: 'all'
-            }
-          );
-        }
-      });
-      
-      // Refresh ScrollTrigger after a slight delay to ensure layout is ready
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 150);
-    });
+      sections.forEach((s) => observer.observe(s));
+    }
   });
 
   onDestroy(() => {
-    if (ctx) ctx.revert();
+    if (observer) observer.disconnect();
   });
 </script>
 

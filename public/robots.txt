@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://zima-auto.com/sitemap.xml
+Sitemap: https://atgroup.hu/sitemap.xml

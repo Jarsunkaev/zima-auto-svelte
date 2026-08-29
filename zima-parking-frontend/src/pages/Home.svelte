@@ -5,12 +5,6 @@
   import ServiceCard from "../components/ServiceCard.svelte";
   import TestimonialCard from "../components/TestimonialCard.svelte";
   import HeroBookingWidget from "../components/HeroBookingWidget.svelte";
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-  // Register ScrollTrigger
-  gsap.registerPlugin(ScrollTrigger);
-
   // Add navigate prop
   export let navigate;
 
@@ -108,10 +102,9 @@
     showReviewsWidget = !showReviewsWidget;
   }
 
-  onMount(() => {
-    // Debug logging
-    console.log("Component mounted");
+  let observer;
 
+  onMount(() => {
     // Load Elfsight Google Reviews script
     if (!document.querySelector('script[src*="elfsightcdn.com/platform.js"]')) {
       const script = document.createElement("script");
@@ -120,39 +113,34 @@
       document.head.appendChild(script);
     }
 
-    // Setup animations with ScrollTrigger
-    // Services section animation (handled by the shouldAnimate prop)
-    const servicesSection = document.querySelector(".services-section");
-    if (servicesSection) {
-      const st1 = ScrollTrigger.create({
-        trigger: servicesSection,
-        start: "top 70%",
-        onEnter: () => {
-          servicesVisible = true;
-        },
-      });
-      scrollTriggers.push(st1);
-    }
+    // Set up reliable IntersectionObserver for section reveals
+    if (typeof window !== "undefined" && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (entry.target.classList.contains("services-section")) {
+              servicesVisible = true;
+            }
+            if (entry.target.classList.contains("testimonials-section")) {
+              testimonialsVisible = true;
+            }
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-    // Testimonials section animation
-    const testimonialsSection = document.querySelector(".testimonials-section");
-    if (testimonialsSection) {
-      const st2 = ScrollTrigger.create({
-        trigger: testimonialsSection,
-        start: "top 70%",
-        onEnter: () => {
-          testimonialsVisible = true;
-        },
-      });
-      scrollTriggers.push(st2);
+      const sSec = document.querySelector(".services-section");
+      const tSec = document.querySelector(".testimonials-section");
+      if (sSec) observer.observe(sSec);
+      if (tSec) observer.observe(tSec);
+    } else {
+      servicesVisible = true;
+      testimonialsVisible = true;
     }
-
-    ScrollTrigger.refresh();
   });
 
   onDestroy(() => {
-    scrollTriggers.forEach((trigger) => trigger.kill());
-    scrollTriggers = [];
+    if (observer) observer.disconnect();
   });
 </script>
 
@@ -181,7 +169,7 @@
           </div>
           <div class="feature-item">
             <span class="feature-icon">✓</span>
-            <span>{$currentLang === 'hu' ? '0–24 órás kamerás felügyelet és őrzés' : '24/7 camera surveillance & on-site security'}</span>
+            <span>{$currentLang === 'hu' ? '0–24 órás őrzés és helyszíni személyzet' : '24/7 on-site security & staff'}</span>
           </div>
           <div class="feature-item">
             <span class="feature-icon">✓</span>
@@ -258,10 +246,10 @@
               : "CAR WASH"}
           description={$currentLang === "hu"
             ? service.id === "parking"
-              ? "Biztonságos parkolóhelyeink 24 órás kamerás megfigyeléssel és szakértő személyzettel várják járművét, maximális biztonságot nyújtva."
+              ? "0-24 őrzött reptéri parkolás ingyenes transzferrel, pár percre a repülőtértől. Bekerített telephely helyszíni személyzettel."
               : "Ajándékozza meg járművét egy fürdőnappal professzionális autómosó szolgáltatásainkkal, amelyek célja, hogy autója csillogóan tisztán és fiatalon maradjon."
             : service.id === "parking"
-              ? "Our secure parking facility features fenced boundaries and 24-hour camera surveillance, guaranteeing the highest security for your vehicle."
+              ? "24/7 secure airport parking with free shuttle service, just minutes from the airport. Fenced facility with on-site staff."
               : "Treat your vehicle to a spa day with our professional car washing services aimed at keeping your car looking sparkling clean and youthful."}
           index={i}
           shouldAnimate={servicesVisible}

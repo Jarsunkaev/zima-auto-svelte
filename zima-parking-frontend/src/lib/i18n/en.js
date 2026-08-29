@@ -62,7 +62,7 @@ export default {
     title: "OUR SERVICES",
     parking: {
       title: "24/7 AIRPORT PARKING",
-      description: "Our secure parking facility features fenced boundaries and 24-hour camera surveillance, guaranteeing the highest security for your vehicle."
+      description: "24/7 secure airport parking with free shuttle service, just minutes from the airport. Fenced facility with on-site staff."
     },
     washing: {
       title: "CAR WASH",

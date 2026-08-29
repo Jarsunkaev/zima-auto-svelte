@@ -32,8 +32,8 @@ export const faqContent = {
       categoryHu: 'Parkolás',
       question: 'Is the parking area secure?',
       questionHu: 'Biztonságos a parkoló?',
-      answer: 'Yes. The area is fully fenced, well lit, monitored by 24/7 CCTV and patrolled by our on-site team.',
-      answerHu: 'Igen. A parkoló teljesen bekerített, jól megvilágított, 0–24-es kamerarendszerrel és helyszíni járőrözéssel.'
+      answer: 'Yes. The area is fully fenced, well lit, and secured 24/7 with on-site staff.',
+      answerHu: 'Igen. A parkoló teljesen bekerített, jól megvilágított, és 0–24-es helyszíni személyzet felügyeli.'
     },
     {
       category: 'Parking',

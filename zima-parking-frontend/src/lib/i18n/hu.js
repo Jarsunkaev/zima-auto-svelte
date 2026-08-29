@@ -53,7 +53,7 @@ export default {
     title: "SZOLGÁLTATÁSOK",
     parking: {
       title: "24/7 REPÜLŐTÉRI PARKOLÁS",
-      description: "Biztonságos parkolási lehetőségünk bekerített határokkal és 24 órás kamerás megfigyeléssel rendelkezik, ami garantálja járművének a legnagyobb biztonságot."
+      description: "0-24 őrzött reptéri parkolás ingyenes transzferrel, pár percre a repülőtértől. Bekerített telephely helyszíni személyzettel."
     },
     washing: {
       title: "AUTÓMOSÓ",

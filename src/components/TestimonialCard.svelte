@@ -11,6 +11,19 @@
   import { onMount } from 'svelte';
   
   let isHovered = false;
+  let cardVisible = isVisible;
+  
+  $: if (isVisible) {
+    cardVisible = true;
+  }
+
+  onMount(() => {
+    // Safety fallback: ensure testimonial is visible even if ScrollTrigger fails
+    const timer = setTimeout(() => {
+      cardVisible = true;
+    }, 300 + (100 * index));
+    return () => clearTimeout(timer);
+  });
   
   function handleMouseEnter() {
     isHovered = true;
@@ -22,7 +35,7 @@
 </script>
 
 <div 
-  class="testimonial-card {isVisible ? 'visible' : ''} {isHovered ? 'hovered' : ''}" 
+  class="testimonial-card {cardVisible ? 'visible' : ''} {isHovered ? 'hovered' : ''}" 
   style="transition-delay: {150 * index}ms"
   on:mouseenter={handleMouseEnter}
   on:mouseleave={handleMouseLeave}
