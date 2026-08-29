@@ -3,7 +3,7 @@
   import { slide } from "svelte/transition";
   import { currentLang, t } from "../lib/i18n/index.js";
   import ServiceCard from "../components/ServiceCard.svelte";
-  import TestimonialCard from "../components/TestimonialCard.svelte";
+  import GoogleReviewsSlider from "../components/GoogleReviewsSlider.svelte";
   import HeroBookingWidget from "../components/HeroBookingWidget.svelte";
   // Add navigate prop
   export let navigate;
@@ -105,14 +105,6 @@
   let observer;
 
   onMount(() => {
-    // Load Elfsight Google Reviews script
-    if (!document.querySelector('script[src*="elfsightcdn.com/platform.js"]')) {
-      const script = document.createElement("script");
-      script.src = "https://elfsightcdn.com/platform.js";
-      script.async = true;
-      document.head.appendChild(script);
-    }
-
     // Set up reliable IntersectionObserver for section reveals
     if (typeof window !== "undefined" && "IntersectionObserver" in window) {
       observer = new IntersectionObserver((entries) => {
@@ -330,9 +322,8 @@
 
 
 
-    <div class="widget-container">
-      <!-- Elfsight Google Reviews | Untitled Google Reviews -->
-      <div class="elfsight-app-f5a37e33-3ebf-4e83-943c-50f49277b06e" data-elfsight-app-lazy></div>
+    <div class="reviews-slider-wrapper">
+      <GoogleReviewsSlider />
     </div>
   </div>
 </section>
@@ -1059,20 +1050,15 @@
     }
   }
 
-  .widget-container {
-    max-width: 1000px;
-    margin: 3rem auto 0;
-    background: rgb(253, 251, 238);
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  .reviews-slider-wrapper {
+    max-width: 1140px;
+    margin: 2.5rem auto 0;
   }
 
   /* Responsive adjustments */
   @media screen and (max-width: 768px) {
-    .widget-container {
-      padding: 1rem;
-      margin: 2rem 1rem 0;
+    .reviews-slider-wrapper {
+      margin: 1.5rem auto 0;
     }
   }
 </style>

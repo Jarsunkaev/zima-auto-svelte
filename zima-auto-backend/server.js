@@ -24,6 +24,9 @@ const emailService = EmailService.getInstance();
 // Import Google Calendar functions
 const { getGoogleCalendarClient, addEventToCalendar, checkTimeSlotAvailability } = require('./utils/googleCalendar');
 
+// Import Reviews Service
+const { getReviews } = require('./utils/reviewsService');
+
 // --- Google Sheets API integration ---
 let sheets;
 const SHEET_ID = process.env.SHEET_ID || '1WfGOZdb2mSo9AZYIKjdpkQcESzGHk2zzeSuKkv3XadU';
@@ -931,6 +934,23 @@ app.get('/api/available-slots', async (req, res) => {
       success: true,
       unavailableSlots: [], // Return empty array of unavailable slots
       message: 'Error occurred - using mock data'
+    });
+  }
+});
+
+// API Endpoint to fetch Google Reviews (cached)
+app.get('/api/reviews', async (req, res) => {
+  try {
+    const forceRefresh = req.query.refresh === 'true';
+    const language = req.query.lang || 'hu';
+    const reviewsData = await getReviews({ forceRefresh, language });
+    res.status(200).json(reviewsData);
+  } catch (error) {
+    console.error('Error handling /api/reviews:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch reviews',
+      error: error.message
     });
   }
 });
