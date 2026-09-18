@@ -1429,7 +1429,7 @@ Megrendelő aláírása: _________________________________`;
                 </div>
                 <div class="header-actions">
                   <a 
-                    href="https://docs.google.com/spreadsheets/d/1WfGOZdb2mSo9AZYIKjdpkQcESzGHk2zzeSuKkv3XadU/edit?usp=sharing" 
+                    href="https://docs.google.com/spreadsheets/d/1iDFzQFN-7-OOeg84eFybP0lxvq-IVJNMAUEQ3k9Teeo/edit?gid=751338493#gid=751338493" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     class="sheet-link"

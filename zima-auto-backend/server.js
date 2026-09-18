@@ -29,7 +29,7 @@ const { getReviews } = require('./utils/reviewsService');
 
 // --- Google Sheets API integration ---
 let sheets;
-const SHEET_ID = process.env.SHEET_ID || '1WfGOZdb2mSo9AZYIKjdpkQcESzGHk2zzeSuKkv3XadU';
+const SHEET_ID = process.env.SHEET_ID || '1iDFzQFN-7-OOeg84eFybP0lxvq-IVJNMAUEQ3k9Teeo';
 
 // Initialize Google Sheets client
 async function initializeGoogleSheets() {
