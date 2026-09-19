@@ -79,6 +79,7 @@ class EmailService {
                 'autoService.html', 
                 'tireService.html', 
                 'contactForm.html', 
+                'feedbackRequest.html',
                 'default.html'
             ];
             
@@ -102,6 +103,7 @@ class EmailService {
                 autoService: 'autoService.html',
                 tireService: 'tireService.html',
                 contactForm: 'contactForm.html',
+                feedbackRequest: 'feedbackRequest.html',
                 default: 'default.html'
             };
             
@@ -710,6 +712,49 @@ class EmailService {
         `;
         
         return adminHtml;
+    }
+
+    // Send feedback request email asking for Google Maps review
+    async sendFeedbackRequestEmail(bookingData) {
+        const customerEmail = EmailService.extractEmail(bookingData);
+        if (!EmailService.isValidEmail(customerEmail)) {
+            throw new Error(`Invalid email address for feedback: ${customerEmail}`);
+        }
+
+        const googleReviewUrl = bookingData.googleReviewUrl || "https://www.google.hu/maps/place/Vecs%C3%A9s,+A%26T+Aut%C3%B3szerviz+%C3%A9s+Gumiszerviz,+Ipar+u+1,+2220/@47.4099056,19.2326917,17z/data=!4m2!3m1!1s0x4741c10b9f9a1c83:0x71542c9df670578b";
+
+        const serviceNameMap = {
+            airportParking: { hu: 'Reptéri Parkolás',     en: 'Airport Parking' },
+            autoService:    { hu: 'Autószerviz',           en: 'Auto Service'    },
+            tireService:    { hu: 'Gumiszerviz',           en: 'Tire Service'    },
+            carWash:        { hu: 'Kézi Autómosó',         en: 'Car Wash'        },
+        };
+        const svcKey = bookingData.service || 'autoService';
+        const svcNames = serviceNameMap[svcKey] || serviceNameMap.autoService;
+
+        const templateData = {
+            customerName: bookingData.customerName || bookingData.name || 'Tisztelt Ügyfelünk',
+            serviceName:   bookingData.serviceName   || svcNames.hu,
+            serviceNameEn: bookingData.serviceNameEn || svcNames.en,
+            googleReviewUrl: googleReviewUrl
+        };
+
+        let compiledTemplate = this.compiledTemplates.feedbackRequest;
+        if (!compiledTemplate && this.templates.feedbackRequest) {
+            compiledTemplate = Handlebars.compile(this.templates.feedbackRequest);
+        }
+
+        if (!compiledTemplate) {
+            throw new Error('Feedback request template not found');
+        }
+
+        const html = compiledTemplate(templateData);
+
+        return await this.sendEmail({
+            to: customerEmail,
+            subject: 'A&T Group - Értékelje szolgáltatásunkat! / Rate Our Service',
+            html: html
+        });
     }
 }
 

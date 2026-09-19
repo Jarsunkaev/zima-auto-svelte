@@ -13,54 +13,13 @@ if (typeof globalThis.fetch === 'undefined') {
 const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 const CACHE_FILE_PATH = path.join(__dirname, '../reviews-cache.json');
 
-// Default / fallback reviews for A&T Group / Zima Auto
+// Default / fallback metadata for A&T Group / Zima Auto (no fake review cards)
 const FALLBACK_REVIEWS_DATA = {
   name: "A&T Reptéri Parkoló és Autószerviz",
   rating: 4.9,
   totalReviews: 198,
   googleMapsUrl: "https://www.google.com/maps/place/A%26T+Rept%C3%A9ri+Parkol%C3%B3+%C3%A9s+K%C3%A9zi+Aut%C3%B3mos%C3%B3/@47.409985,19.0926473,21108m/data=!3m1!1e3!4m10!1m2!2m1!1sat+parking!3m6!1s0x4741c1683c4acc0d:0xd5187321a7799279!8m2!3d47.4099852!4d19.232723!15sCgphdCBwYXJraW5nkgELcGFya2luZ19sb3TgAQA!16s%2Fg%2F11zh3c3lc4",
-  reviews: [
-    {
-      author_name: "Gábor Kovács",
-      profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjX8k-GaborKovacs=s128-c0x00000000-cc-rp-mo-ba4",
-      rating: 5,
-      relative_time_description: "egy hete",
-      text: "Kiváló reptéri parkoló! Gyors és pontos transzfer a terminálhoz, az autómat tisztán, biztonságban kaptam vissza. A szerviz szolgáltatásukat is igénybe vettem olajcserére, minden profi volt. Csak ajánlani tudom!",
-      time: Math.floor(Date.now() / 1000) - 604800
-    },
-    {
-      author_name: "Péter Nagy",
-      profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjV_PeterNagy=s128-c0x00000000-cc-rp-mo-ba3",
-      rating: 5,
-      relative_time_description: "2 hete",
-      text: "Már többször parkoltam náluk mikor repültem. Mindig rugalmasak és udvariasak. Külön plusz pont a kézi autómosóért: mire visszatértem az utazásból, csillogott-villogott az autó. 5 csillag!",
-      time: Math.floor(Date.now() / 1000) - 1209600
-    },
-    {
-      author_name: "Eszter Szabó",
-      profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjX_EszterSzabo=s128-c0x00000000-cc-rp-mo-ba4",
-      rating: 5,
-      relative_time_description: "egy hónapja",
-      text: "Nagyon megbízható csapat! Éjszaka érkeztünk vissza a reptérre, a transzfer busz 5 percen belül ott volt értünk. Az online foglalás gyors és egyszerű volt.",
-      time: Math.floor(Date.now() / 1000) - 2592000
-    },
-    {
-      author_name: "David Miller",
-      profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjX_DavidMiller=s128-c0x00000000-cc-rp-mo-ba2",
-      rating: 5,
-      relative_time_description: "a month ago",
-      text: "Super smooth airport parking experience in Budapest. Free and prompt shuttle to/from airport terminal. Great English communication and friendly staff. Will definitely use again!",
-      time: Math.floor(Date.now() / 1000) - 2678400
-    },
-    {
-      author_name: "Zoltán Tóth",
-      profile_photo_url: "https://lh3.googleusercontent.com/a-/ALV-UjX_ZoltanToth=s128-c0x00000000-cc-rp-mo-ba5",
-      rating: 5,
-      relative_time_description: "2 hónapja",
-      text: "Autószerviz és gumicsere kapcsán voltam náluk. Pontosak, korrektek, reális árakon dolgoznak és nem próbálnak felesleges dolgokat rábeszélni az emberre. Ritka az ilyen korrekt műhely.",
-      time: Math.floor(Date.now() / 1000) - 5184000
-    }
-  ]
+  reviews: []
 };
 
 // In-memory cache
@@ -103,8 +62,10 @@ async function saveDiskCache(data) {
  * @param {boolean} [options.forceRefresh=false]
  * @param {string} [options.language='hu']
  */
-async function getReviews({ forceRefresh = false, language = 'hu' } = {}) {
+async function getReviews({ forceRefresh = false, language = 'hu', placeId = null } = {}) {
   const now = Date.now();
+  const targetPlaceId = placeId || process.env.GOOGLE_PLACE_ID || process.env.GOOGLE_PLACE_ID_SERVICE || 'ChIJgxyanwvBQUcRi1dw9p0sVHE';
+  const cacheKey = `${targetPlaceId}_${language}`;
 
   // Try loading cache from disk if memory cache is empty
   if (!memoryCache.data) {
@@ -112,20 +73,19 @@ async function getReviews({ forceRefresh = false, language = 'hu' } = {}) {
   }
 
   // Return cached data if valid and fresh
-  if (!forceRefresh && memoryCache.data && (now - memoryCache.lastFetched < CACHE_DURATION_MS)) {
+  if (!forceRefresh && memoryCache.data && memoryCache.data[cacheKey] && (now - memoryCache.lastFetched < CACHE_DURATION_MS)) {
     return {
       success: true,
       cached: true,
       lastFetched: memoryCache.lastFetched,
-      ...memoryCache.data
+      ...memoryCache.data[cacheKey]
     };
   }
 
   const apiKey = process.env.GOOGLE_PLACES_API_KEY;
-  const placeId = process.env.GOOGLE_PLACE_ID;
 
-  if (!apiKey || !placeId) {
-    console.warn('[ReviewsService] GOOGLE_PLACES_API_KEY or GOOGLE_PLACE_ID not configured in .env. Using high-quality fallback reviews.');
+  if (!apiKey) {
+    console.warn('[ReviewsService] GOOGLE_PLACES_API_KEY not configured in .env. Using fallback reviews until API key is set.');
     return {
       success: true,
       cached: false,
@@ -135,21 +95,26 @@ async function getReviews({ forceRefresh = false, language = 'hu' } = {}) {
   }
 
   try {
-    const fields = 'name,rating,user_ratings_total,reviews,url';
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${encodeURIComponent(placeId)}&fields=${fields}&key=${encodeURIComponent(apiKey)}&language=${encodeURIComponent(language)}`;
+    const url = `https://places.googleapis.com/v1/places/${encodeURIComponent(targetPlaceId)}`;
+    console.log(`[ReviewsService] Fetching fresh reviews from Google Places API (v1) for place_id: ${targetPlaceId}`);
 
-    console.log(`[ReviewsService] Fetching fresh reviews from Google Places API for place_id: ${placeId}`);
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      headers: {
+        'X-Goog-Api-Key': apiKey,
+        'X-Goog-FieldMask': 'displayName,rating,userRatingCount,reviews,googleMapsUri'
+      }
+    });
+
     const data = await response.json();
 
-    if (data.status !== 'OK' || !data.result) {
-      console.error(`[ReviewsService] Google Places API error: ${data.status} - ${data.error_message || 'No details'}`);
-      if (memoryCache.data) {
+    if (data.error || typeof data.rating === 'undefined') {
+      console.error(`[ReviewsService] Google Places API error:`, data.error || 'No rating returned');
+      if (memoryCache.data && memoryCache.data[cacheKey]) {
         return {
           success: true,
           cached: true,
           stale: true,
-          ...memoryCache.data
+          ...memoryCache.data[cacheKey]
         };
       }
       return {
@@ -160,23 +125,24 @@ async function getReviews({ forceRefresh = false, language = 'hu' } = {}) {
       };
     }
 
-    const place = data.result;
     const formattedData = {
-      name: place.name || FALLBACK_REVIEWS_DATA.name,
-      rating: place.rating || FALLBACK_REVIEWS_DATA.rating,
-      totalReviews: place.user_ratings_total || FALLBACK_REVIEWS_DATA.totalReviews,
-      googleMapsUrl: place.url || FALLBACK_REVIEWS_DATA.googleMapsUrl,
-      reviews: (place.reviews || []).map(r => ({
-        author_name: r.author_name,
-        profile_photo_url: r.profile_photo_url,
-        rating: r.rating,
-        relative_time_description: r.relative_time_description,
-        text: r.text,
-        time: r.time
+      name: data.displayName?.text || FALLBACK_REVIEWS_DATA.name,
+      rating: data.rating || FALLBACK_REVIEWS_DATA.rating,
+      totalReviews: data.userRatingCount || FALLBACK_REVIEWS_DATA.totalReviews,
+      googleMapsUrl: data.googleMapsUri || FALLBACK_REVIEWS_DATA.googleMapsUrl,
+      reviews: (data.reviews || []).map(r => ({
+        author_name: r.authorAttribution?.displayName || 'Google Felhasználó',
+        profile_photo_url: r.authorAttribution?.photoUri || '',
+        rating: r.rating || 5,
+        relative_time_description: r.relativePublishTimeDescription || '',
+        text: r.text?.text || r.originalText?.text || '',
+        time: r.publishTime ? Math.floor(new Date(r.publishTime).getTime() / 1000) : Math.floor(Date.now() / 1000)
       }))
     };
 
-    await saveDiskCache(formattedData);
+    if (!memoryCache.data) memoryCache.data = {};
+    memoryCache.data[cacheKey] = formattedData;
+    await saveDiskCache(memoryCache.data);
 
     return {
       success: true,
@@ -185,12 +151,12 @@ async function getReviews({ forceRefresh = false, language = 'hu' } = {}) {
     };
   } catch (error) {
     console.error('[ReviewsService] Error fetching Google Reviews:', error.message);
-    if (memoryCache.data) {
+    if (memoryCache.data && memoryCache.data[cacheKey]) {
       return {
         success: true,
         cached: true,
         stale: true,
-        ...memoryCache.data
+        ...memoryCache.data[cacheKey]
       };
     }
     return {
@@ -202,7 +168,55 @@ async function getReviews({ forceRefresh = false, language = 'hu' } = {}) {
   }
 }
 
+/**
+ * Fetch reviews from both the service and parking place IDs and merge them.
+ * Used by the combined (zima-auto-svelte) frontend.
+ * @param {Object} options
+ * @param {boolean} [options.forceRefresh=false]
+ * @param {string} [options.language='hu']
+ */
+async function getReviewsForBothPlaces({ forceRefresh = false, language = 'hu' } = {}) {
+  const servicePlaceId = process.env.GOOGLE_PLACE_ID_SERVICE || 'ChIJgxyanwvBQUcRi1dw9p0sVHE';
+  const parkingPlaceId = process.env.GOOGLE_PLACE_ID_PARKING || 'ChIJDcxKPGjBQUcReZJ5pyFzGNU';
+
+  const [serviceData, parkingData] = await Promise.all([
+    getReviews({ forceRefresh, language, placeId: servicePlaceId }),
+    getReviews({ forceRefresh, language, placeId: parkingPlaceId })
+  ]);
+
+  // Interleave reviews sorted by time (newest first)
+  const allReviews = [
+    ...(serviceData.reviews || []),
+    ...(parkingData.reviews || [])
+  ].sort((a, b) => (b.time || 0) - (a.time || 0));
+
+  // Combined totals
+  const totalReviews = (serviceData.totalReviews || 0) + (parkingData.totalReviews || 0);
+
+  // Weighted average rating
+  const serviceCount = serviceData.totalReviews || 0;
+  const parkingCount = parkingData.totalReviews || 0;
+  const combined = serviceCount + parkingCount;
+  const avgRating = combined > 0
+    ? ((serviceData.rating || 5) * serviceCount + (parkingData.rating || 5) * parkingCount) / combined
+    : (serviceData.rating || parkingData.rating || 4.9);
+
+  // Use parking maps URL as the primary CTA (more reviews there)
+  const googleMapsUrl = parkingData.googleMapsUrl || serviceData.googleMapsUrl || FALLBACK_REVIEWS_DATA.googleMapsUrl;
+
+  return {
+    success: true,
+    cached: serviceData.cached && parkingData.cached,
+    name: 'A&T Group',
+    rating: Math.round(avgRating * 10) / 10,
+    totalReviews,
+    googleMapsUrl,
+    reviews: allReviews
+  };
+}
+
 module.exports = {
   getReviews,
+  getReviewsForBothPlaces,
   FALLBACK_REVIEWS_DATA
 };

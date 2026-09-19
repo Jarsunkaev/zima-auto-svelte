@@ -25,7 +25,7 @@ const emailService = EmailService.getInstance();
 const { getGoogleCalendarClient, addEventToCalendar, checkTimeSlotAvailability } = require('./utils/googleCalendar');
 
 // Import Reviews Service
-const { getReviews } = require('./utils/reviewsService');
+const { getReviews, getReviewsForBothPlaces } = require('./utils/reviewsService');
 
 // --- Google Sheets API integration ---
 let sheets;
@@ -59,6 +59,20 @@ async function startServer() {
     sheets = await initializeGoogleSheets();
     console.log('Google Sheets API initialized successfully');
     
+    // Run feedback email check on startup and schedule every 6 hours
+    setTimeout(() => {
+      Promise.all([
+        checkAndSendFeedbackEmails(),
+        checkAndSendServiceFeedbackEmails()
+      ]).catch(err => console.error('Feedback check error on start:', err));
+    }, 10000);
+    setInterval(() => {
+      Promise.all([
+        checkAndSendFeedbackEmails(),
+        checkAndSendServiceFeedbackEmails()
+      ]).catch(err => console.error('Feedback check error interval:', err));
+    }, 6 * 60 * 60 * 1000);
+
     // Get port from environment or use default
     const serverPort = process.env.PORT || port;
     
@@ -464,6 +478,184 @@ app.get('/api/bookings', async (req, res) => {
       details: e.message,
       stack: process.env.NODE_ENV === 'development' ? e.stack : undefined
     });
+  }
+});
+
+const sentFeedbackBookings = new Set();
+const sentServiceFeedbackBookings = new Set(); // tracks Calendar event IDs already emailed
+
+/**
+ * Check Google Calendar for service bookings (autoService, tireService, carWash)
+ * that ended 1-7 days ago and send feedback review request emails.
+ */
+async function checkAndSendServiceFeedbackEmails() {
+  try {
+    const calendarId = process.env.GOOGLE_CALENDAR_ID;
+    if (!calendarId) {
+      console.warn('[ServiceFeedback] GOOGLE_CALENDAR_ID not set, skipping Calendar feedback check');
+      return;
+    }
+
+    let calendarClient;
+    try {
+      calendarClient = await getGoogleCalendarClient();
+    } catch (err) {
+      console.warn('[ServiceFeedback] Could not initialise Calendar client:', err.message);
+      return;
+    }
+
+    const tz = 'Europe/Budapest';
+    const now = new Date();
+
+    // Query window: events that ended between 1 and 7 days ago
+    const timeMax = new Date(now);
+    timeMax.setDate(timeMax.getDate() - 1);
+    timeMax.setHours(23, 59, 59, 999);
+
+    const timeMin = new Date(now);
+    timeMin.setDate(timeMin.getDate() - 7);
+    timeMin.setHours(0, 0, 0, 0);
+
+    console.log(`🔄 [ServiceFeedback] Querying Calendar for service events between ${timeMin.toISOString()} and ${timeMax.toISOString()}`);
+
+    const response = await calendarClient.events.list({
+      calendarId: decodeURIComponent(calendarId),
+      timeMin: timeMin.toISOString(),
+      timeMax: timeMax.toISOString(),
+      singleEvents: true,
+      orderBy: 'startTime',
+      maxResults: 250
+    });
+
+    const events = response.data.items || [];
+    const serviceTypes = new Set(['autoService', 'tireService', 'carWash']);
+
+    // Filter to only our service bookings (not parking)
+    const serviceEvents = events.filter(ev => {
+      const svc = ev.extendedProperties?.private?.service;
+      return svc && serviceTypes.has(svc);
+    });
+
+    console.log(`[ServiceFeedback] Found ${serviceEvents.length} service events in window`);
+
+    let sentCount = 0;
+
+    for (const ev of serviceEvents) {
+      const eventId = ev.id;
+      if (sentServiceFeedbackBookings.has(eventId)) continue;
+
+      // Parse email and name from description
+      const description = ev.description || '';
+      const emailMatch = description.match(/Email:\s*([^\n\r]+)/);
+      const nameMatch  = description.match(/Customer:\s*([^\n\r]+)/);
+
+      const customerEmail = emailMatch ? emailMatch[1].trim() : null;
+      const customerName  = nameMatch  ? nameMatch[1].trim()  : 'Ügyfél';
+
+      if (!customerEmail || customerEmail === 'N/A' || !customerEmail.includes('@')) {
+        console.log(`[ServiceFeedback] Skipping event ${eventId} — no valid email found`);
+        sentServiceFeedbackBookings.add(eventId); // don't retry
+        continue;
+      }
+
+      console.log(`✉️ [ServiceFeedback] Sending review email to ${customerEmail} for event: ${ev.summary}`);
+      try {
+        await emailService.sendFeedbackRequestEmail({
+          customerName,
+          email: customerEmail,
+          service: ev.extendedProperties?.private?.service || 'autoService',
+          googleReviewUrl: 'https://maps.google.com/?cid=8166201081285597067'
+        });
+        sentServiceFeedbackBookings.add(eventId);
+        sentCount++;
+      } catch (emailErr) {
+        console.error(`[ServiceFeedback] Failed to send email to ${customerEmail}:`, emailErr.message);
+      }
+    }
+
+    console.log(`✅ [ServiceFeedback] Done. Sent ${sentCount} service feedback emails.`);
+  } catch (err) {
+    console.error('[ServiceFeedback] Error during Calendar feedback check:', err.message);
+  }
+}
+
+async function checkAndSendFeedbackEmails() {
+  if (!sheets) return;
+  try {
+    console.log('🔄 Running scheduled feedback email check...');
+    const getRes = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: 'Sheet1',
+    });
+    const rows = getRes.data.values;
+    if (!rows || rows.length < 2) {
+      console.log('No bookings found for feedback email check');
+      return;
+    }
+
+    const headers = rows[0];
+    const emailCol = headers.indexOf('EMAIL');
+    const nameCol = headers.indexOf('NÉV');
+    const departureCol = headers.indexOf('TÁVOZÁS');
+    const arrivalCol = headers.indexOf('ÉRKEZÉS');
+    const idCol = headers.indexOf('ID');
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let sentCount = 0;
+
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      const bookingId = (idCol !== -1 && row[idCol]) ? row[idCol] : `row-${i}`;
+      if (sentFeedbackBookings.has(bookingId)) continue;
+
+      const customerEmail = (emailCol !== -1) ? row[emailCol] : null;
+      const customerName = (nameCol !== -1) ? row[nameCol] : 'Ügyfél';
+      const departureStr = (departureCol !== -1 && row[departureCol]) ? row[departureCol] : ((arrivalCol !== -1) ? row[arrivalCol] : null);
+
+      if (!customerEmail || customerEmail === 'N/A' || !departureStr) continue;
+
+      // Extract date part YYYY-MM-DD
+      const datePart = departureStr.split(' ')[0];
+      const endDate = new Date(datePart);
+      if (isNaN(endDate.getTime())) continue;
+
+      // Target feedback date is 1 day after end/departure date
+      const targetDate = new Date(endDate);
+      targetDate.setDate(targetDate.getDate() + 1);
+      targetDate.setHours(0, 0, 0, 0);
+
+      // Send feedback email if today is 1 day or more past end date (within 7 day window)
+      const diffDays = Math.floor((today - targetDate) / (1000 * 60 * 60 * 24));
+      if (diffDays >= 0 && diffDays <= 7) {
+        console.log(`✉️ Sending feedback review email to ${customerEmail} for booking ${bookingId}`);
+        await emailService.sendFeedbackRequestEmail({
+          customerName: customerName,
+          email: customerEmail,
+          service: 'airportParking',
+          googleReviewUrl: 'https://maps.google.com/?cid=15355149517900583545'
+        });
+        sentFeedbackBookings.add(bookingId);
+        sentCount++;
+      }
+    }
+    console.log(`✅ Feedback email check completed. Sent ${sentCount} review emails.`);
+  } catch (err) {
+    console.error('Error checking feedback emails:', err.message);
+  }
+}
+
+// Trigger feedback email check manually (both parking Sheets + service Calendar)
+app.post('/api/trigger-feedback-emails', async (req, res) => {
+  try {
+    await Promise.all([
+      checkAndSendFeedbackEmails(),
+      checkAndSendServiceFeedbackEmails()
+    ]);
+    res.json({ success: true, message: 'Feedback email check completed (parking + service)' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -943,7 +1135,16 @@ app.get('/api/reviews', async (req, res) => {
   try {
     const forceRefresh = req.query.refresh === 'true';
     const language = req.query.lang || 'hu';
-    const reviewsData = await getReviews({ forceRefresh, language });
+    const placeId = req.query.placeId || req.query.place_id || process.env.GOOGLE_PLACE_ID_SERVICE;
+
+    let reviewsData;
+    if (placeId === 'both') {
+      // Combined frontend: merge reviews from both service and parking places
+      reviewsData = await getReviewsForBothPlaces({ forceRefresh, language });
+    } else {
+      reviewsData = await getReviews({ forceRefresh, language, placeId });
+    }
+
     res.status(200).json(reviewsData);
   } catch (error) {
     console.error('Error handling /api/reviews:', error);

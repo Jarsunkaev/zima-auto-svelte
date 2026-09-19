@@ -21,44 +21,7 @@
   let touchStartX = 0;
   let touchEndX = 0;
 
-  // Fallback reviews if API is loading or offline
-  const fallbackReviews = [
-    {
-      author_name: "Gábor Kovács",
-      rating: 5,
-      relative_time_description: "egy hete",
-      text: "Kiváló reptéri parkoló! Gyors és pontos transzfer a terminálhoz, az autómat tisztán, biztonságban kaptam vissza. A szerviz szolgáltatásukat is igénybe vettem olajcserére, minden profi volt. Csak ajánlani tudom!",
-      time: Math.floor(Date.now() / 1000) - 604800
-    },
-    {
-      author_name: "Péter Nagy",
-      rating: 5,
-      relative_time_description: "2 hete",
-      text: "Már többször parkoltam náluk mikor repültem. Mindig rugalmasak és udvariasak. Külön plusz pont a kézi autómosóért: mire visszatértem az utazásból, csillogott-villogott az autó. 5 csillag!",
-      time: Math.floor(Date.now() / 1000) - 1209600
-    },
-    {
-      author_name: "Eszter Szabó",
-      rating: 5,
-      relative_time_description: "egy hónapja",
-      text: "Nagyon megbízható csapat! Éjszaka érkeztünk vissza a reptérre, a transzfer busz 5 percen belül ott volt értünk. Az online foglalás gyors és egyszerű volt.",
-      time: Math.floor(Date.now() / 1000) - 2592000
-    },
-    {
-      author_name: "David Miller",
-      rating: 5,
-      relative_time_description: "a month ago",
-      text: "Super smooth airport parking experience in Budapest. Free and prompt shuttle to/from airport terminal. Great English communication and friendly staff. Will definitely use again!",
-      time: Math.floor(Date.now() / 1000) - 2678400
-    },
-    {
-      author_name: "Zoltán Tóth",
-      rating: 5,
-      relative_time_description: "2 hónapja",
-      text: "Autószerviz és gumicsere kapcsán voltam náluk. Pontosak, korrektek, reális árakon dolgoznak és nem próbálnak felesleges dolgokat rábeszélni az emberre. Ritka az ilyen korrekt műhely.",
-      time: Math.floor(Date.now() / 1000) - 5184000
-    }
-  ];
+  // No hardcoded fallback reviews — only real Google data is shown
 
   function getApiBaseUrl() {
     const isDevelopment = typeof window !== 'undefined' && (
@@ -74,7 +37,8 @@
     try {
       const apiBase = getApiBaseUrl().replace(/\/+$/, '').replace(/\/api$/, '');
       const lang = $currentLang || 'hu';
-      const res = await fetch(`${apiBase}/api/reviews?lang=${lang}`);
+      const placeId = 'ChIJDcxKPGjBQUcReZJ5pyFzGNU';
+      const res = await fetch(`${apiBase}/api/reviews?lang=${lang}&placeId=${placeId}`);
       
       if (!res.ok) {
         throw new Error(`Failed to load reviews (${res.status})`);
@@ -87,11 +51,11 @@
         if (data.totalReviews) totalReviews = data.totalReviews;
         if (data.googleMapsUrl) googleMapsUrl = data.googleMapsUrl;
       } else {
-        reviews = fallbackReviews;
+        reviews = [];
       }
     } catch (err) {
-      console.warn('[GoogleReviewsSlider] Using fallback reviews due to fetch error:', err.message);
-      reviews = fallbackReviews;
+      console.warn('[GoogleReviewsSlider] Could not load reviews:', err.message);
+      reviews = [];
     } finally {
       isLoading = false;
       resetSlider();

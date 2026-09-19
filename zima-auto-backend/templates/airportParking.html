@@ -39,7 +39,12 @@
         }
         
         .email-logo img {
-            max-height: 50px;
+            max-width: 180px !important;
+            width: 100% !important;
+            height: auto !important;
+            display: block !important;
+            margin: 0 auto !important;
+            object-fit: contain;
         }
         
         .email-title {
@@ -182,7 +187,7 @@
             color: rgb(27, 42, 75);
         }
         
-        .footer {
+        .email-footer, .footer {
             text-align: center;
             padding: 20px;
             font-size: 12px;
@@ -193,16 +198,31 @@
         @media only screen and (max-width: 600px) {
             .email-container {
                 width: 100% !important;
+                border-radius: 0 !important;
             }
-            
+            .email-header, .email-body, .email-footer, .footer {
+                padding: 20px 15px !important;
+            }
+            .email-title {
+                font-size: 18px !important;
+            }
+            .email-subtitle {
+                font-size: 14px !important;
+            }
+            .detail-item, .price-row {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+            }
             .detail-label,
             .detail-value {
-                width: 100%;
+                width: 100% !important;
                 margin-bottom: 5px;
+                text-align: left !important;
             }
-            
-            .price-row.total {
-                flex-direction: row;
+            .price-row span {
+                width: 100% !important;
+                text-align: left !important;
+                max-width: 100% !important;
             }
         }
     </style>
@@ -211,7 +231,7 @@
     <div class="email-container">
         <div class="email-header">
             <div class="email-logo">
-                <img src="https://atgroup.hu/images/newlogbeige.png" alt="A&T Group Logo" />
+                <img src="https://atgroup.hu/images/newlogbeige.png" alt="A&T Group Logo" style="max-width: 180px; width: 100%; height: auto; display: block; margin: 0 auto;" />
             </div>
             <h1 class="email-title">Foglalás visszaigazolás / Booking Confirmation</h1>
             <p class="email-subtitle">Reptéri Parkolás / Airport Parking</p>

@@ -1,0 +1,115 @@
+{
+  "data": {
+    "ChIJgxyanwvBQUcRi1dw9p0sVHE_hu": {
+      "name": "A&T Autószerviz és Gumiszerviz",
+      "rating": 5,
+      "totalReviews": 9,
+      "googleMapsUrl": "https://maps.google.com/?cid=8166201081285597067&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+      "reviews": []
+    },
+    "ChIJDcxKPGjBQUcReZJ5pyFzGNU_hu": {
+      "name": "A&T Reptéri Parkoló és Kézi Autómosó",
+      "rating": 5,
+      "totalReviews": 19,
+      "googleMapsUrl": "https://maps.google.com/?cid=15355149517900583545&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+      "reviews": [
+        {
+          "author_name": "Fatih",
+          "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjUfHkq3wpKi3yVm3A9SP9-3x2dufQo8vQ-YAP77J676oOD1UtC19w=s128-c0x00000000-cc-rp-mo",
+          "rating": 5,
+          "relative_time_description": "a month ago",
+          "text": "⭐️⭐️⭐️⭐️⭐️",
+          "time": 1786092083
+        },
+        {
+          "author_name": "Daniyar Salikhov",
+          "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJVa6oQqkiLgXpMh9_ObrO-KwV_HKuCCsmzlPHRO5t7i0cSfw=s128-c0x00000000-cc-rp-mo",
+          "rating": 5,
+          "relative_time_description": "3 weeks ago",
+          "text": "Really good airport parking we were very satisfied everything was as expected",
+          "time": 1787413969
+        },
+        {
+          "author_name": "Kubilay Öztürk",
+          "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocLKhWhJpuEa9g0AomtYjW_iVJ-JhAh4JzJJl6XfCQkvG-K8uA=s128-c0x00000000-cc-rp-mo",
+          "rating": 5,
+          "relative_time_description": "a month ago",
+          "text": "Really good airport parking and the transfer is very quick",
+          "time": 1786798977
+        },
+        {
+          "author_name": "Dániel Ferenc Nagy",
+          "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJB0SKjKliYpWGeTdOeYwdMYrIjPGL4cb6aNgWcoHuMntY3bg=s128-c0x00000000-cc-rp-mo",
+          "rating": 5,
+          "relative_time_description": "a month ago",
+          "text": "Good company!",
+          "time": 1785780660
+        },
+        {
+          "author_name": "Judit BABAIBAN",
+          "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVK6MVwldAE-dI4698WD5xXUKM3ZrIAXPdUbs8jyhYBc2kTM2VE=s128-c0x00000000-cc-rp-mo",
+          "rating": 5,
+          "relative_time_description": "in the last week",
+          "text": "",
+          "time": 1789409193
+        }
+      ]
+    },
+    "ChIJgxyanwvBQUcRi1dw9p0sVHE_en": {
+      "name": "A&T Autószerviz és Gumiszerviz",
+      "rating": 5,
+      "totalReviews": 9,
+      "googleMapsUrl": "https://maps.google.com/?cid=8166201081285597067&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+      "reviews": []
+    },
+    "ChIJDcxKPGjBQUcReZJ5pyFzGNU_en": {
+      "name": "A&T Reptéri Parkoló és Kézi Autómosó",
+      "rating": 5,
+      "totalReviews": 19,
+      "googleMapsUrl": "https://maps.google.com/?cid=15355149517900583545&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAIYBCAA",
+      "reviews": [
+        {
+          "author_name": "Fatih",
+          "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjUfHkq3wpKi3yVm3A9SP9-3x2dufQo8vQ-YAP77J676oOD1UtC19w=s128-c0x00000000-cc-rp-mo",
+          "rating": 5,
+          "relative_time_description": "a month ago",
+          "text": "⭐️⭐️⭐️⭐️⭐️",
+          "time": 1786092083
+        },
+        {
+          "author_name": "Daniyar Salikhov",
+          "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJVa6oQqkiLgXpMh9_ObrO-KwV_HKuCCsmzlPHRO5t7i0cSfw=s128-c0x00000000-cc-rp-mo",
+          "rating": 5,
+          "relative_time_description": "3 weeks ago",
+          "text": "Really good airport parking we were very satisfied everything was as expected",
+          "time": 1787413969
+        },
+        {
+          "author_name": "Kubilay Öztürk",
+          "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocLKhWhJpuEa9g0AomtYjW_iVJ-JhAh4JzJJl6XfCQkvG-K8uA=s128-c0x00000000-cc-rp-mo",
+          "rating": 5,
+          "relative_time_description": "a month ago",
+          "text": "Really good airport parking and the transfer is very quick",
+          "time": 1786798977
+        },
+        {
+          "author_name": "Dániel Ferenc Nagy",
+          "profile_photo_url": "https://lh3.googleusercontent.com/a/ACg8ocJB0SKjKliYpWGeTdOeYwdMYrIjPGL4cb6aNgWcoHuMntY3bg=s128-c0x00000000-cc-rp-mo",
+          "rating": 5,
+          "relative_time_description": "a month ago",
+          "text": "Good company!",
+          "time": 1785780660
+        },
+        {
+          "author_name": "Judit BABAIBAN",
+          "profile_photo_url": "https://lh3.googleusercontent.com/a-/ALV-UjVK6MVwldAE-dI4698WD5xXUKM3ZrIAXPdUbs8jyhYBc2kTM2VE=s128-c0x00000000-cc-rp-mo",
+          "rating": 5,
+          "relative_time_description": "in the last week",
+          "text": "",
+          "time": 1789409193
+        }
+      ]
+    }
+  },
+  "lastFetched": 1789810132942
+}

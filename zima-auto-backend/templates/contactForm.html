@@ -38,53 +38,28 @@
         }
 
         .email-logo img {
-            max-height: 50px;
+            max-width: 180px !important;
+            width: 100% !important;
+            height: auto !important;
+            display: block !important;
+            margin: 0 auto !important;
+            object-fit: contain;
         }
 
-        .email-title {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .email-subtitle {
-            margin-top: 5px;
-            font-size: 16px;
-            opacity: 0.9;
-            color: rgba(253, 251, 238, 0.9);
-        }
-        
-        .email-body {
-            padding: 25px 20px;
-        }
-        
-        .contact-details {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-            border-left: 5px solid rgb(27, 42, 75);
-        }
-        
-        .language-separator {
-            border: none;
-            height: 1px;
-            background-color: #e0e0e0;
-            margin: 30px 0;
-            position: relative;
-        }
-        
-        .language-separator::after {
-            content: 'EN / HU';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #ffffff;
-            padding: 0 15px;
-            color: #888;
-            font-size: 12px;
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                border-radius: 0 !important;
+            }
+            .email-header, .email-body, .email-footer, .footer {
+                padding: 20px 15px !important;
+            }
+            .email-title {
+                font-size: 18px !important;
+            }
+            .email-subtitle {
+                font-size: 14px !important;
+            }
         }
     </style>
 </head>
@@ -92,7 +67,7 @@
     <div class="email-container">
         <div class="email-header">
             <div class="email-logo">
-                <img src="https://atgroup.hu/images/newlogbeige.png" alt="A&T Group Logo" />
+                <img src="https://atgroup.hu/images/newlogbeige.png" alt="A&T Group Logo" style="max-width: 180px; width: 100%; height: auto; display: block; margin: 0 auto;" />
             </div>
             <h1 class="email-title">Kapcsolatfelvétel / Contact Form</h1>
             <p class="email-subtitle">Ügyfél megkeresés / Customer Inquiry</p>
