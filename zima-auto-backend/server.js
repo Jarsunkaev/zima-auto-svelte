@@ -55,6 +55,9 @@ const port = process.env.PORT || 3001; // Use port from env or default to 3001
 // Initialize server
 async function startServer() {
   try {
+    // Load sent feedback email history from disk
+    await loadSentFeedbackEmails();
+
     // Initialize Google Sheets
     sheets = await initializeGoogleSheets();
     console.log('Google Sheets API initialized successfully');
@@ -481,8 +484,58 @@ app.get('/api/bookings', async (req, res) => {
   }
 });
 
-const sentFeedbackBookings = new Set();
-const sentServiceFeedbackBookings = new Set(); // tracks Calendar event IDs already emailed
+const FEEDBACK_STORAGE_FILE = path.join(__dirname, 'sent-feedback-emails.json');
+
+// In-memory cache of sent feedback emails mapping lowercase normalized email -> metadata object
+// e.g. { "user@example.com": { sentAt: "2026-09-20T...", service: "airportParking" } }
+let sentFeedbackEmails = {};
+
+// Load sent feedback history from disk
+async function loadSentFeedbackEmails() {
+  try {
+    const raw = await fs.readFile(FEEDBACK_STORAGE_FILE, 'utf8');
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') {
+      sentFeedbackEmails = parsed;
+      console.log(`✅ Loaded ${Object.keys(sentFeedbackEmails).length} sent feedback records from disk.`);
+      return;
+    }
+  } catch (err) {
+    // File doesn't exist yet or is invalid
+  }
+  sentFeedbackEmails = {};
+}
+
+// Persist sent feedback history to disk
+async function saveSentFeedbackEmails() {
+  try {
+    await fs.writeFile(FEEDBACK_STORAGE_FILE, JSON.stringify(sentFeedbackEmails, null, 2), 'utf8');
+  } catch (err) {
+    console.error('❌ Failed to save sent feedback emails to disk:', err.message);
+  }
+}
+
+function normalizeEmail(email) {
+  if (!email || typeof email !== 'string') return null;
+  const normalized = email.trim().toLowerCase();
+  return normalized.includes('@') ? normalized : null;
+}
+
+function hasSentFeedbackToUser(email) {
+  const norm = normalizeEmail(email);
+  if (!norm) return false;
+  return Boolean(sentFeedbackEmails[norm]);
+}
+
+async function recordSentFeedbackToUser(email, metadata = {}) {
+  const norm = normalizeEmail(email);
+  if (!norm) return;
+  sentFeedbackEmails[norm] = {
+    sentAt: new Date().toISOString(),
+    ...metadata
+  };
+  await saveSentFeedbackEmails();
+}
 
 /**
  * Check Google Calendar for service bookings (autoService, tireService, carWash)
@@ -542,7 +595,6 @@ async function checkAndSendServiceFeedbackEmails() {
 
     for (const ev of serviceEvents) {
       const eventId = ev.id;
-      if (sentServiceFeedbackBookings.has(eventId)) continue;
 
       // Parse email and name from description
       const description = ev.description || '';
@@ -554,19 +606,29 @@ async function checkAndSendServiceFeedbackEmails() {
 
       if (!customerEmail || customerEmail === 'N/A' || !customerEmail.includes('@')) {
         console.log(`[ServiceFeedback] Skipping event ${eventId} — no valid email found`);
-        sentServiceFeedbackBookings.add(eventId); // don't retry
         continue;
       }
 
+      // Ensure we only send feedback email once per user
+      if (hasSentFeedbackToUser(customerEmail)) {
+        console.log(`[ServiceFeedback] Skipping ${customerEmail} (event ${eventId}) — feedback email already sent previously`);
+        continue;
+      }
+
+      const serviceType = ev.extendedProperties?.private?.service || 'autoService';
       console.log(`✉️ [ServiceFeedback] Sending review email to ${customerEmail} for event: ${ev.summary}`);
       try {
         await emailService.sendFeedbackRequestEmail({
           customerName,
           email: customerEmail,
-          service: ev.extendedProperties?.private?.service || 'autoService',
+          service: serviceType,
           googleReviewUrl: 'https://maps.google.com/?cid=8166201081285597067'
         });
-        sentServiceFeedbackBookings.add(eventId);
+        await recordSentFeedbackToUser(customerEmail, {
+          service: serviceType,
+          eventId: eventId,
+          summary: ev.summary || ''
+        });
         sentCount++;
       } catch (emailErr) {
         console.error(`[ServiceFeedback] Failed to send email to ${customerEmail}:`, emailErr.message);
@@ -608,13 +670,18 @@ async function checkAndSendFeedbackEmails() {
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i];
       const bookingId = (idCol !== -1 && row[idCol]) ? row[idCol] : `row-${i}`;
-      if (sentFeedbackBookings.has(bookingId)) continue;
 
       const customerEmail = (emailCol !== -1) ? row[emailCol] : null;
       const customerName = (nameCol !== -1) ? row[nameCol] : 'Ügyfél';
       const departureStr = (departureCol !== -1 && row[departureCol]) ? row[departureCol] : ((arrivalCol !== -1) ? row[arrivalCol] : null);
 
-      if (!customerEmail || customerEmail === 'N/A' || !departureStr) continue;
+      if (!customerEmail || customerEmail === 'N/A' || !departureStr || !customerEmail.includes('@')) continue;
+
+      // Ensure we only send feedback email once per user
+      if (hasSentFeedbackToUser(customerEmail)) {
+        console.log(`[ParkingFeedback] Skipping ${customerEmail} (booking ${bookingId}) — feedback email already sent previously`);
+        continue;
+      }
 
       // Extract date part YYYY-MM-DD
       const datePart = departureStr.split(' ')[0];
@@ -636,7 +703,10 @@ async function checkAndSendFeedbackEmails() {
           service: 'airportParking',
           googleReviewUrl: 'https://maps.google.com/?cid=15355149517900583545'
         });
-        sentFeedbackBookings.add(bookingId);
+        await recordSentFeedbackToUser(customerEmail, {
+          service: 'airportParking',
+          bookingId: bookingId
+        });
         sentCount++;
       }
     }
