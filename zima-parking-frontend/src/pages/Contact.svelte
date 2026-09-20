@@ -61,7 +61,9 @@
         subject: 'Tárgy',
         message: 'Üzenet',
         button: 'KÜLDÉS',
-        success: 'Köszönjük üzenetét! Hamarosan válaszolunk.'
+        success: 'Köszönjük üzenetét! Hamarosan válaszolunk.',
+        captchaLabel: 'Nem vagyok robot',
+        captchaError: 'Kérjük igazolja, hogy nem robot'
       }
     },
     en: {
@@ -92,7 +94,9 @@
         subject: 'Subject',
         message: 'Message',
         button: 'SEND',
-        success: 'Thank you for your message! We\'ll get back to you soon.'
+        success: 'Thank you for your message! We\'ll get back to you soon.',
+        captchaLabel: 'I am human',
+        captchaError: 'Please verify that you are human'
       }
     }
   };
@@ -102,6 +106,13 @@
   let isSuccess = false;
   let errorMessage = '';
   let formErrors = {}; // Added formErrors object for client-side validation
+  let isHuman = false;
+  let honeyField = '';
+  let formLoadedAt = Date.now();
+
+  onMount(() => {
+    formLoadedAt = Date.now();
+  });
 
   // Function to validate form before submission
   function validateForm() {
@@ -131,6 +142,11 @@
       isValid = false;
     }
 
+    if (!isHuman) {
+      formErrors.captcha = $currentLang === 'hu' ? 'Kérjük igazolja, hogy nem robot' : 'Please verify that you are human';
+      isValid = false;
+    }
+
     return isValid;
   }
 
@@ -140,6 +156,13 @@
       ? 'Kérjük javítsa a hibákat az űrlapon.'
       : 'Please correct the errors in the form.';
     isSuccess = false; // Ensure success message is hidden
+    return;
+  }
+
+  // Bot detection check
+  if (honeyField && honeyField.trim().length > 0) {
+    console.warn('Spam bot detected via honeypot field');
+    navigate('thankyou');
     return;
   }
 
@@ -154,7 +177,10 @@
       customerPhone: formData.phone || '',
       subject: formData.subject || 'Contact Form Inquiry',
       message: formData.message,
-      adminEmail: 'info@atgroup.hu'
+      adminEmail: 'info@atgroup.hu',
+      _gotcha: honeyField,
+      isHuman: true,
+      formLoadedAt: formLoadedAt
     };
 
     console.log('Sending contact form data to backend:', contactData);
@@ -374,6 +400,47 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
              {#if formErrors.message}
               <p class="error-message">{formErrors.message}</p>
             {/if}
+          </div>
+
+          <!-- "I am human" Captcha Widget -->
+          <div class="captcha-wrapper">
+            <div class="captcha-box {isHuman ? 'verified' : ''} {formErrors.captcha ? 'has-error' : ''}">
+              <label class="captcha-label" for="captcha-check-parking">
+                <input
+                  type="checkbox"
+                  id="captcha-check-parking"
+                  bind:checked={isHuman}
+                  on:change={() => { if (isHuman && formErrors.captcha) formErrors.captcha = ''; }}
+                />
+                <span class="custom-checkbox" aria-hidden="true">
+                  {#if isHuman}
+                    <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  {/if}
+                </span>
+                <span class="captcha-text">
+                  {content[$currentLang].form.captchaLabel || ($currentLang === 'hu' ? 'Nem vagyok robot' : 'I am human')}
+                </span>
+              </label>
+              <div class="captcha-badge">
+                <svg class="shield-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <div class="badge-info">
+                  <span class="badge-title">Security</span>
+                  <span class="badge-subtitle">Verification</span>
+                </div>
+              </div>
+            </div>
+            {#if formErrors.captcha}
+              <p class="error-message captcha-error-msg">{formErrors.captcha}</p>
+            {/if}
+          </div>
+
+          <!-- Honeypot field for bot protection -->
+          <div class="honey-field" style="display:none !important; position:absolute; left:-9999px; opacity:0; height:0; width:0; pointer-events:none;" aria-hidden="true">
+            <input type="text" name="_gotcha" bind:value={honeyField} tabindex="-1" autocomplete="off" />
           </div>
 
           <button
@@ -869,5 +936,141 @@ const BACKEND_API_URL = isDevelopment ? 'http://localhost:3001' : (import.meta.e
 
   .contact-link:hover {
     color: rgb(27, 42, 75);
+  }
+
+  /* Captcha styles */
+  .captcha-wrapper {
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .captcha-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border: 1px solid #d3d3d3;
+    border-radius: 8px;
+    padding: 0.85rem 1.15rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.25s ease;
+  }
+
+  .captcha-box:hover {
+    border-color: #b0b0b0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  }
+
+  .captcha-box.verified {
+    border-color: #28a745;
+    background-color: #f9fff9;
+  }
+
+  .captcha-box.has-error {
+    border-color: #dc3545;
+    background-color: #fff9f9;
+  }
+
+  .captcha-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    margin-bottom: 0;
+    user-select: none;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333333;
+  }
+
+  .captcha-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+  }
+
+  .custom-checkbox {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border: 2px solid #a0a0a0;
+    border-radius: 4px;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+  }
+
+  .captcha-label:hover .custom-checkbox {
+    border-color: rgb(27, 42, 75);
+  }
+
+  .captcha-box.verified .custom-checkbox {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #ffffff;
+  }
+
+  .check-icon {
+    width: 16px;
+    height: 16px;
+    stroke: #ffffff;
+    animation: checkmark-pop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes checkmark-pop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .captcha-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgb(27, 42, 75);
+  }
+
+  .captcha-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #888888;
+    padding-left: 0.75rem;
+    border-left: 1px solid #eeeeee;
+  }
+
+  .shield-icon {
+    width: 22px;
+    height: 22px;
+    stroke: rgb(27, 42, 75);
+    opacity: 0.75;
+  }
+
+  .badge-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  .badge-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+  }
+
+  .badge-subtitle {
+    font-size: 0.6rem;
+    color: #999;
+  }
+
+  .captcha-error-msg {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 0.35rem;
+    margin-left: 0.25rem;
   }
 </style>

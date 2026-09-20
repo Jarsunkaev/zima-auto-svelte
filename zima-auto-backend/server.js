@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
-const fs = require('fs').promises;
+const fs = require('fs');
 const { google } = require('googleapis');
 
 // Import fetch for Node.js compatibility (if not available globally)
@@ -47,6 +47,59 @@ async function initializeGoogleSheets() {
     console.error('Error initializing Google Sheets API:', error);
     throw error;
   }
+}
+
+const FEEDBACK_STORAGE_FILE = path.join(__dirname, 'sent-feedback-emails.json');
+
+// In-memory cache of sent feedback emails mapping lowercase normalized email -> metadata object
+// e.g. { "user@example.com": { sentAt: "2026-09-20T...", service: "airportParking" } }
+let sentFeedbackEmails = {};
+
+// Load sent feedback history from disk
+async function loadSentFeedbackEmails() {
+  try {
+    const raw = await fs.promises.readFile(FEEDBACK_STORAGE_FILE, 'utf8');
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object') {
+      sentFeedbackEmails = parsed;
+      console.log(`✅ Loaded ${Object.keys(sentFeedbackEmails).length} sent feedback records from disk.`);
+      return;
+    }
+  } catch (err) {
+    // File doesn't exist yet or is invalid
+  }
+  sentFeedbackEmails = {};
+}
+
+// Persist sent feedback history to disk
+async function saveSentFeedbackEmails() {
+  try {
+    await fs.promises.writeFile(FEEDBACK_STORAGE_FILE, JSON.stringify(sentFeedbackEmails, null, 2), 'utf8');
+  } catch (err) {
+    console.error('❌ Failed to save sent feedback emails to disk:', err.message);
+  }
+}
+
+function normalizeEmail(email) {
+  if (!email || typeof email !== 'string') return null;
+  const normalized = email.trim().toLowerCase();
+  return normalized.includes('@') ? normalized : null;
+}
+
+function hasSentFeedbackToUser(email) {
+  const norm = normalizeEmail(email);
+  if (!norm) return false;
+  return Boolean(sentFeedbackEmails[norm]);
+}
+
+async function recordSentFeedbackToUser(email, metadata = {}) {
+  const norm = normalizeEmail(email);
+  if (!norm) return;
+  sentFeedbackEmails[norm] = {
+    sentAt: new Date().toISOString(),
+    ...metadata
+  };
+  await saveSentFeedbackEmails();
 }
 
 const app = express();
@@ -483,59 +536,6 @@ app.get('/api/bookings', async (req, res) => {
     });
   }
 });
-
-const FEEDBACK_STORAGE_FILE = path.join(__dirname, 'sent-feedback-emails.json');
-
-// In-memory cache of sent feedback emails mapping lowercase normalized email -> metadata object
-// e.g. { "user@example.com": { sentAt: "2026-09-20T...", service: "airportParking" } }
-let sentFeedbackEmails = {};
-
-// Load sent feedback history from disk
-async function loadSentFeedbackEmails() {
-  try {
-    const raw = await fs.readFile(FEEDBACK_STORAGE_FILE, 'utf8');
-    const parsed = JSON.parse(raw);
-    if (parsed && typeof parsed === 'object') {
-      sentFeedbackEmails = parsed;
-      console.log(`✅ Loaded ${Object.keys(sentFeedbackEmails).length} sent feedback records from disk.`);
-      return;
-    }
-  } catch (err) {
-    // File doesn't exist yet or is invalid
-  }
-  sentFeedbackEmails = {};
-}
-
-// Persist sent feedback history to disk
-async function saveSentFeedbackEmails() {
-  try {
-    await fs.writeFile(FEEDBACK_STORAGE_FILE, JSON.stringify(sentFeedbackEmails, null, 2), 'utf8');
-  } catch (err) {
-    console.error('❌ Failed to save sent feedback emails to disk:', err.message);
-  }
-}
-
-function normalizeEmail(email) {
-  if (!email || typeof email !== 'string') return null;
-  const normalized = email.trim().toLowerCase();
-  return normalized.includes('@') ? normalized : null;
-}
-
-function hasSentFeedbackToUser(email) {
-  const norm = normalizeEmail(email);
-  if (!norm) return false;
-  return Boolean(sentFeedbackEmails[norm]);
-}
-
-async function recordSentFeedbackToUser(email, metadata = {}) {
-  const norm = normalizeEmail(email);
-  if (!norm) return;
-  sentFeedbackEmails[norm] = {
-    sentAt: new Date().toISOString(),
-    ...metadata
-  };
-  await saveSentFeedbackEmails();
-}
 
 /**
  * Check Google Calendar for service bookings (autoService, tireService, carWash)
@@ -1226,6 +1226,40 @@ app.get('/api/reviews', async (req, res) => {
   }
 });
 
+// Anti-spam / Bot detection heuristic
+function isSpamOrGibberish(name, email, message) {
+  if (!name || !message) return true;
+
+  const combined = `${name} ${message}`;
+
+  // 1. Check for long unnatural consonant clusters (6+ latin consonants in a row)
+  // e.g. "ZCRSULMNfqLppsrsI" or "QqjuDuGBPwQtcBkVxGVC"
+  const consonantClusterRegex = /[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]{6,}/;
+  if (consonantClusterRegex.test(name) || consonantClusterRegex.test(message)) {
+    return true;
+  }
+
+  // 2. Check for abnormal alternating upper/lower casing in single words
+  const words = combined.split(/\s+/);
+  for (const word of words) {
+    if (word.length >= 8 && /^[a-zA-Z]+$/.test(word)) {
+      const upperCount = (word.match(/[A-Z]/g) || []).length;
+      const lowerCount = (word.match(/[a-z]/g) || []).length;
+      if (upperCount >= 3 && lowerCount >= 3) {
+        let caseSwitches = 0;
+        for (let i = 1; i < word.length; i++) {
+          const prevUpper = word[i - 1] === word[i - 1].toUpperCase();
+          const currUpper = word[i] === word[i].toUpperCase();
+          if (prevUpper !== currUpper) caseSwitches++;
+        }
+        if (caseSwitches >= 3) return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 // API Endpoint for Contact Form
 app.post('/api/send-contact-email', async (req, res) => {
   try {
@@ -1236,8 +1270,38 @@ app.post('/api/send-contact-email', async (req, res) => {
     console.log('Contact data:', JSON.stringify(contactData, null, 2));
     console.log('======================================');
 
+    // Layer 0: Honeypot trap check
+    if (contactData && (contactData._gotcha || contactData._honey || contactData.honeyField)) {
+      console.warn('⚠️ [AntiBot Layer 0] Spam bot blocked via honeypot field:', contactData._gotcha || contactData._honey || contactData.honeyField);
+      return res.status(200).json({ success: true, message: 'Contact form processed successfully' });
+    }
+
+    // Layer 1: Strict isHuman verification from verified frontend
+    if (!contactData || contactData.isHuman !== true) {
+      console.warn('⚠️ [AntiBot Layer 1] Automated raw API request blocked (missing isHuman verification)');
+      return res.status(200).json({ success: true, message: 'Contact form processed successfully' });
+    }
+
+    // Layer 2: Time-based challenge (form loaded time vs submit time)
+    if (contactData.formLoadedAt) {
+      const elapsedMs = Date.now() - Number(contactData.formLoadedAt);
+      if (isNaN(elapsedMs) || elapsedMs < 1500) {
+        console.warn(`⚠️ [AntiBot Layer 2] Instant bot submission blocked (elapsed: ${elapsedMs}ms)`);
+        return res.status(200).json({ success: true, message: 'Contact form processed successfully' });
+      }
+    } else {
+      console.warn('⚠️ [AntiBot Layer 2] Request blocked (missing formLoadedAt timestamp)');
+      return res.status(200).json({ success: true, message: 'Contact form processed successfully' });
+    }
+
+    // Layer 3: Gibberish & random string pattern detection
+    if (isSpamOrGibberish(contactData.customerName, contactData.customerEmail, contactData.message)) {
+      console.warn(`⚠️ [AntiBot Layer 3] Gibberish spambot blocked: Name="${contactData.customerName}", Message="${contactData.message}"`);
+      return res.status(200).json({ success: true, message: 'Contact form processed successfully' });
+    }
+
     // Validate required fields
-    if (!contactData || !contactData.customerName || !contactData.customerEmail || !contactData.message) {
+    if (!contactData.customerName || !contactData.customerEmail || !contactData.message) {
       console.error('Received invalid contact data: Missing core fields', contactData);
       return res.status(400).json({
         success: false,
